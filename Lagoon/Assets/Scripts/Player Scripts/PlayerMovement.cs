@@ -22,7 +22,8 @@ public class PlayerMovement : MonoBehaviour
     void HandleInput()
     {
 
-     MovementDirection = new Vector3(Input.GetAxisRaw("PlayerLH") * MovementSpeed, 0, Input.GetAxisRaw("PlayerLV") * MovementSpeed);   
+        MovementDirection = new Vector3(Input.GetAxisRaw("PlayerLH") * MovementSpeed, 0, Input.GetAxisRaw("PlayerLV") * MovementSpeed);
+        MovementDirection.Normalize();
 
     }
     // Update is called once per frame
@@ -37,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        GetComponent<Rigidbody>().AddForce(MovementDirection * MovementSpeed, ForceMode.VelocityChange);
-
+        //GetComponent<Rigidbody>().AddForce(MovementDirection * MovementSpeed, ForceMode.VelocityChange);
+        GetComponent<Rigidbody>().AddRelativeForce(MovementDirection * MovementSpeed, ForceMode.VelocityChange);
     }
 }
