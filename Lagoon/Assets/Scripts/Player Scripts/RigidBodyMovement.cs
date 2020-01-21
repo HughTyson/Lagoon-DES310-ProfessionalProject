@@ -5,6 +5,7 @@ using UnityEngine;
 public class RigidBodyMovement : MonoBehaviour
 {
     [SerializeField] Rigidbody body;
+    [SerializeField] Transform third_person_camera;
 
     //Movement direction indicated by the left analogue stick
     Vector3 direction = new Vector3();
@@ -41,7 +42,8 @@ public class RigidBodyMovement : MonoBehaviour
 
         if (body.velocity.magnitude > 0.5f)
         {
-            body.rotation = Quaternion.Lerp(body.rotation, Quaternion.Euler(0, rs_x, 0), Time.deltaTime * player_rotation_speed);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0,rs_x,0), Time.deltaTime * player_rotation_speed);
+
         }
 
         body.AddRelativeForce(direction * speed, ForceMode.VelocityChange); //Add force onto the player
