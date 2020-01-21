@@ -52,12 +52,14 @@ public class MovingCamera : MonoBehaviour
 
     }
 
-    // Update is called once per frame - uses late update so it will be done after all the update functions are done
-    void LateUpdate()
+    private void Update()
     {
-
         HandleInput();
+    }
 
+    // Update is called once per frame - uses late update so it will be done after all the update functions are done
+    void FixedUpdate()
+    {
         MoveCamera();
     }
 }
