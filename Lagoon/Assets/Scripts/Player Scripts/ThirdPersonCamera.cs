@@ -12,6 +12,7 @@ public class ThirdPersonCamera : MonoBehaviour
     [SerializeField] Transform target; //what the camera looks at
 
 
+
     [SerializeField] float camera_rotation_speed = 1.0f;
 
 
@@ -37,8 +38,8 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void HandleInput()
     {
-        currentX += Input.GetAxisRaw("PlayerRH") * camera_rotation_speed;
-        currentY += Input.GetAxisRaw("PlayerRV") * camera_rotation_speed;
+        currentX += Input.GetAxisRaw("PlayerRH") *camera_rotation_speed * Time.deltaTime;
+        currentY += Input.GetAxisRaw("PlayerRV");
 
         currentY = Mathf.Clamp(currentY, ANGLE_MIN, ANGLE_MAX);
     }
