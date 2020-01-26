@@ -4,7 +4,6 @@ using UnityEngine;
 
 
 // Apply this script to an object which can interact with liquid
-[RequireComponent(typeof(Collider))]
 public class BuoyancyPhysics : MonoBehaviour
 {
 
@@ -33,8 +32,8 @@ public class BuoyancyPhysics : MonoBehaviour
        
     }
 
-    STATE current_state;
-    STATE previous_state;
+    STATE current_state = STATE.NONE;
+    STATE previous_state = STATE.NONE;
     bool state_changed = false;
 
     public STATE GetCurrentState()
@@ -52,7 +51,7 @@ public class BuoyancyPhysics : MonoBehaviour
         if (other.GetComponent<WaterPhysics>() != null)
         {
             GetComponentInParent<Rigidbody>().drag = waterDrag;
-            current_state = STATE.IN_WATER;   
+            current_state = STATE.IN_WATER;
         }
     }
 

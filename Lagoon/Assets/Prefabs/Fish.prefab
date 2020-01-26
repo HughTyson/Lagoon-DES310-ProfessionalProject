@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 4002937522456851497}
   - component: {fileID: 4002937522456851502}
   - component: {fileID: 4002937522456851503}
-  - component: {fileID: 4002937522456851500}
-  - component: {fileID: 4002937522456851501}
-  - component: {fileID: 4002937522456851499}
-  - component: {fileID: 4002937522456851496}
+  - component: {fileID: 2343003906326262995}
+  - component: {fileID: 3616592645954150662}
+  - component: {fileID: 2019809194733221602}
+  - component: {fileID: 7681242413175681464}
   m_Layer: 0
   m_Name: Fish
   m_TagString: Untagged
@@ -32,7 +32,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.25, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4104469028361689783}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -82,21 +83,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &4002937522456851500
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4002937522456851506}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 1.09
-  m_Height: 1
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &4002937522456851501
+--- !u!54 &2343003906326262995
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,25 +99,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4002937522456851499
-MonoBehaviour:
+--- !u!136 &3616592645954150662
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4002937522456851506}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e87a0cd4e77a6e44e964f2e4eee54afb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxVelocity: 4.29
-  maxForce: 10.21
-  targetLocation: {x: 0, y: 0}
-  targetRadius: 0
-  wanderingTargetRadius: 0.75
-  wanderingTargetDistance: 1
---- !u!114 &4002937522456851496
+  m_Radius: 0.5771259
+  m_Height: 1.09
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2019809194733221602
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,3 +128,84 @@ MonoBehaviour:
   buoyancy: 1.24
   waterDrag: 1
   airDrag: 1
+--- !u!114 &7681242413175681464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4002937522456851506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8806654c6f90147bf0d3a0f428eaeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tags: 0300000001000000
+--- !u!1 &4514368179317815065
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4104469028361689783}
+  - component: {fileID: 6990952486476646594}
+  - component: {fileID: 1548021472832447566}
+  m_Layer: 0
+  m_Name: FishBrain
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4104469028361689783
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4514368179317815065}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.061}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4002937522456851497}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6990952486476646594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4514368179317815065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e87a0cd4e77a6e44e964f2e4eee54afb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxVelocity: 5
+  TerminalForce_min: 0.1
+  TerminalForce_max: 10
+  TerminalForceDuration_min: 0.1
+  TerminalForceDuration_max: 5
+  targetRadius: 0
+  wanderingTargetRadius: 0.75
+  wanderingTargetDistance: 1
+  lureAttractionSuccessRate: 1
+  physicsCollider: {fileID: 3616592645954150662}
+--- !u!136 &1548021472832447566
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4514368179317815065}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.85
+  m_Height: 1.82
+  m_Direction: 2
+  m_Center: {x: 0, y: -0.2878828, z: 1.03}
