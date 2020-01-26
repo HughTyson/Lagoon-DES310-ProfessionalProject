@@ -428,11 +428,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d61fe4d0ea53564486ef6562c3bb9ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 0}
-  direction: {x: 0, y: 0, z: 0}
-  rs_x: 0
-  speed: 1
-  player_rotation_speed: 1
 --- !u!114 &281496856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -746,7 +741,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1360284183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -967,7 +962,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1880950283
 Transform:
   m_ObjectHideFlags: 0
@@ -996,8 +991,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   body: {fileID: 0}
+  third_person_camera: {fileID: 2113350372}
   speed: 1
-  player_rotation_speed: 1
+  player_rotation_speed: 5
 --- !u!54 &1880950285
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1107,8 +1103,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ANGLE_MIN: -10
   ANGLE_MAX: 80
-  target: {fileID: 1880950283}
-  camera_rotation_speed: 1
+  target: {fileID: 1360284187}
+  camera_rotation_speed: 15
 --- !u!81 &2113350370
 AudioListener:
   m_ObjectHideFlags: 0
