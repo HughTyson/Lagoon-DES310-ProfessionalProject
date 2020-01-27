@@ -5,65 +5,90 @@ using UnityEngine;
 public class CharacterControllerMovement : MonoBehaviour
 {
 
-    
 
-    [SerializeField] CharacterController controller;
+    // ==========================================
+    //              Visible Variables
+    //===========================================
 
 
+    [SerializeField] Transform _camera;
 
-    [SerializeField] float player_rotation_speed = 1.0f;
-    [SerializeField] float speed = 5.0f;
+    [SerializeField] float move_speed = 6.0f;
+
+    [Range(0.01f, 0.5f)]
+    [SerializeField] float player_rotation_speed = 0.12f;
+
     [SerializeField] float gravityScale = 20.0f;
-     
-    //Movement direction indicated by the left analogue stick
-    Vector3 direction = Vector3.zero;
 
-    private float rs_x = 0.0f;
+    // ==========================================
+    //              Hidden Variables
+    //===========================================
+
+    private CharacterController controller;
+    Vector2 movement_input = Vector2.zero;
+    private bool moving = false;
+    Vector3 gravity;
 
 
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        HandleInput();
+        moving = isMoving();
 
-        float h = Input.GetAxis("PlayerLH");
-        float v = Input.GetAxis("PlayerLV");
-
-        //limit ot forward movement
-        if(v < 0)
-        {
-            v = 0;
-        }
-
-        transform.Rotate(0, h * player_rotation_speed * Time.deltaTime, 0);
-
-        if(controller.isGrounded)
-        {
-
-            direction = Vector3.forward * v;
-
-            //this is where the animation call for walking would go
-
-            direction = transform.TransformDirection(direction);
-            direction *= speed;
-
-        }
-
-        direction.y -= gravityScale * Time.deltaTime;
-
-        controller.Move(direction * Time.deltaTime);
-        
+        Rotation();
+        controller.Move(transform.forward * movement_input.magnitude * Time.deltaTime);
     }
 
+     //this function is called every fixed framerate frame
+    private void FixedUpdate()
+    {
+        gravity.y = Physics.gravity.y * Time.deltaTime;
+
+        controller.Move(gravity * gravityScale * Time.deltaTime);
+    }
+
+    //methods
     private void HandleInput()
     {
+        movement_input = new Vector3(Input.GetAxisRaw("PlayerLH") * move_speed, Input.GetAxisRaw("PlayerLV") * move_speed);
+    }
+
+    private void Rotation()
+    {
+        //Gets the camera forward and right vector
+        Vector3 forward = _camera.forward;
+        Vector3 right = _camera.right;
+
+        forward.y = 0.0f;
+        forward = forward.normalized;
+
+        right.y = 0.0f;
+        right = right.normalized;
+
+        //create target direction for the player to look
+        Vector3 target_direction = (forward * movement_input.y) + (right * movement_input.x);
+
+        if (moving && target_direction != Vector3.zero)
+        {
+            Quaternion target_rotation = Quaternion.LookRotation(target_direction);
+            Quaternion new_rotation = Quaternion.Slerp(transform.rotation, target_rotation, player_rotation_speed);
+
+            transform.rotation = new_rotation;
+        }
 
 
+    }
 
+    private bool isMoving()
+    {
+        return (movement_input.x != 0) || (movement_input.y != 0);
     }
 }
