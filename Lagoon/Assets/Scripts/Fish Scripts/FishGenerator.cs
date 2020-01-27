@@ -26,15 +26,15 @@ public class FishGenerator : MonoBehaviour
             SpawnFish();
         }
 
-        for (int i = 0; i < fishList.Count; i++)
-        {
-            Vector2 distanceVec = new Vector2(fishList[i].transform.position.x - spawnCentre3d.x, fishList[i].transform.position.z - spawnCentre3d.z);
-            if (distanceVec.magnitude > spawnRadius)
-            {
-                Destroy(fishList[i]);
-                fishList.RemoveAt(i);
-            }
-        }
+        //for (int i = 0; i < fishList.Count; i++)
+        //{
+        //    Vector2 distanceVec = new Vector2(fishList[i].transform.position.x - spawnCentre3d.x, fishList[i].transform.position.z - spawnCentre3d.z);
+        //    if (distanceVec.magnitude > spawnRadius)
+        //    {
+        //        Destroy(fishList[i]);
+        //        fishList.RemoveAt(i);
+        //    }
+        //}
     }
 
     void SpawnFish()
