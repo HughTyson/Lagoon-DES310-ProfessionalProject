@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 219013996}
   - component: {fileID: 219013995}
   - component: {fileID: 219013994}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 540545806}
   - component: {fileID: 540545805}
   - component: {fileID: 540545804}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 1131202894}
   - component: {fileID: 1131202893}
   - component: {fileID: 1131202892}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -531,6 +531,7 @@ MonoBehaviour:
   ANGLE_MIN: -10
   ANGLE_MAX: 80
   camera_rotation_speed: 80
+  camera_movement_speed: 10
   drawDesiredCollisionLines: 1
   drawAdjustedCollisionLines: 1
 --- !u!81 &2113350370
@@ -612,7 +613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera_collisison_layer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 256
   collision: 0
   adjustedCameraClipPoints: []
   desiredCameraClipPoints: []
@@ -689,5 +690,10 @@ PrefabInstance:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 2113350372}
+    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: gravityScale
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2944652e70498a4aa30ffd9044c0e23, type: 3}

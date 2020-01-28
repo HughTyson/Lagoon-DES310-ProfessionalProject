@@ -54,18 +54,23 @@ public class CameraCollision : MonoBehaviour
         intoArray[3] = (cp_rotation * new Vector3(x, -y, z)) + camera_position; //add and rotate the collision point based on camera
                                                                                 //cam_pos
         intoArray[4] = camera_position - camera.transform.forward;
+
+        
     }
 
     //determines if there is a collision at any of these clip points
     bool CollisionDetectedAtClipPoints(Vector3[] clip_points, Vector3 target_position)
     {
+        
         for (int i = 0; i < clip_points.Length; i++)
         {
             Ray ray = new Ray(target_position, clip_points[i] - target_position); //cast ray at targets poisiton for the distance between clip point and target
-            float distance = Vector3.Distance(clip_points[i], target_position); //set distancethat the ray will be 
+            float distance = Vector3.Distance(clip_points[i], target_position); //set distance that the ray will be 
+            RaycastHit hit;
 
-            if (Physics.Raycast(ray, distance, camera_collisison_layer)) //if collision within this ray
+            if (Physics.Raycast(ray, out hit)) //if collision within this ray
             {
+
                 return true;
             }
         }
@@ -110,6 +115,7 @@ public class CameraCollision : MonoBehaviour
 
     public void CheckColliding(Vector3 target_position)
     {
+
         if (CollisionDetectedAtClipPoints(desiredCameraClipPoints, target_position))
         {
             collision = true;
