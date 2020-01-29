@@ -20,7 +20,7 @@ public class ThirdPersonCamera : MonoBehaviour
     [SerializeField] float ANGLE_MAX = 80.0f;
 
     [SerializeField] float camera_rotation_speed = 1f;
-
+    [SerializeField] float camera_movement_speed = 0.3f;
 
     [Header("Varibles used for Camera Collisions")]
 
@@ -45,6 +45,7 @@ public class ThirdPersonCamera : MonoBehaviour
     private Vector3 pivot_offset;
 
     private Vector3 destination;
+    private Vector3 adjusted_destination;
 
     float adjustment_distance = 0;
 
@@ -66,7 +67,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
         collision.Initialize(Camera.main);
         collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
-        collision.UpdateCameraClipPoints(current_cam_pos, transform.rotation, ref collision.desiredCameraClipPoints);
+        collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
 
     }
 
@@ -74,32 +75,35 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-
         HandleInput();
 
         Quaternion rot_y = Quaternion.Euler(0, camera_input.x, 0);
         Quaternion rot_aim = Quaternion.Euler(-camera_input.y, camera_input.x, 0);
         _camera.rotation = rot_aim;
 
-      //  Debug.Log(adjustment_distance);
+
+        Debug.Log(adjustment_distance);
+
 
         if (collision.collision)
         {
-            destination = target.position + ((rot_y * pivot_offset) + (rot_aim * position_offset));
+            destination = target.position + ((rot_y * pivot_offset/adjustment_distance) + (rot_aim * position_offset/ adjustment_distance));
         }
         else
         {
             destination = target.position + (rot_y * pivot_offset) + (rot_aim * position_offset);
         }
 
-        _camera.position = destination;
+        _camera.position = Vector3.Lerp(_camera.position, destination, camera_movement_speed * Time.deltaTime);
+
+        //_camera.position = destination;
 
     }
 
     private void FixedUpdate()
     {
         collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
-        collision.UpdateCameraClipPoints(_camera.position, transform.rotation, ref collision.desiredCameraClipPoints);
+        collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
 
         for (int i = 0; i < 5; i++)
         {
@@ -116,6 +120,8 @@ public class ThirdPersonCamera : MonoBehaviour
 
         collision.CheckColliding(target.position); //using raycasts here
         adjustment_distance = collision.GetAdjustedDistanceWithRay(target.position);
+
+        //Debug.Log(adjustment_distance);
     }
 
     //methods
