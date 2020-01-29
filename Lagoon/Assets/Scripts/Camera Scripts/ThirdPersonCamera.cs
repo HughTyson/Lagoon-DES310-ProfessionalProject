@@ -9,18 +9,25 @@ public class ThirdPersonCamera : MonoBehaviour
     //              Visible Variables
     //===========================================
 
-
+    [Header("Target that the camera will be looking at and rotating around")]
     [SerializeField] Transform target; //what the camera looks at
 
-    [SerializeField] Vector3 base_position = new Vector3(0.4f ,0.5f, -2.0f);
-    [SerializeField] Vector3 base_pivot = new Vector3(0.0f, 1.0f,  0.0f);
+    [Header("Variables used to determine what shoulder camera looks over")]
 
+    [SerializeField] Vector3 camera_offset_right = new Vector3(0.4f ,0.5f, -2.0f);
+    [SerializeField] Vector3 camera_offset_left = new Vector3(0f, 0f, 0f);
+    [SerializeField] bool shoulder_side = false; // false is for left   |  true is for right
+
+
+    [Header("Misc")]
     //minimum and maximum angles for the Y axis
     [SerializeField] float ANGLE_MIN = -10.0f;
     [SerializeField] float ANGLE_MAX = 80.0f;
 
-    [SerializeField] float camera_rotation_speed = 1f;
-    [SerializeField] float camera_movement_speed = 0.3f;
+    [SerializeField] float camera_rotation_speed = 1f; //how fast the rotation of the camera is around the player
+    [SerializeField] float camera_movement_speed = 0.3f; //how fast the camera moves to its new position
+
+    [SerializeField] float distance_from_target = 5.0f; //how far away the camera is from the target
 
     [Header("Varibles used for Camera Collisions")]
 
@@ -31,37 +38,27 @@ public class ThirdPersonCamera : MonoBehaviour
     //              Hidden Variables
     //===========================================
 
-    Camera camera;
     CameraCollision collision = new CameraCollision();
 
     private Transform _camera;
-
     private Vector2 camera_input = Vector2.zero;
+   
 
-    private Vector3 current_cam_pos;
-    private float current_cam_distance;
-
-    private Vector3 position_offset;
-    private Vector3 pivot_offset;
-
+    //varibales used for calculating new position of the player
     private Vector3 destination;
     private Vector3 adjusted_destination;
+    private Vector3 target_pos;
+    private Vector3 target_offset;
 
-    float adjustment_distance = 0;
+    private float adjusted_distance = 0f;
 
     void Start()
     {
         _camera = transform;
 
-        //set the default position and rotation of the camera
-        _camera.position = target.position + Quaternion.identity * base_pivot + Quaternion.identity * base_position;
-        _camera.rotation = Quaternion.identity;
-
-        current_cam_pos = _camera.position - target.position;
-        current_cam_distance = current_cam_pos.magnitude;
-
-        position_offset = base_position;
-        pivot_offset = base_pivot;
+        target_pos = target.position;
+        destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
+        destination += target_pos;
 
         //Collision
 
@@ -69,37 +66,61 @@ public class ThirdPersonCamera : MonoBehaviour
         collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
         collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
 
+        if(shoulder_side)
+        {
+            target_offset = camera_offset_right;
+        }
+        else
+        {
+            target_offset = camera_offset_left;
+        }
+
     }
 
     //update function
 
-    private void LateUpdate()
+    private void Update()
     {
         HandleInput();
 
-        Quaternion rot_y = Quaternion.Euler(0, camera_input.x, 0);
-        Quaternion rot_aim = Quaternion.Euler(-camera_input.y, camera_input.x, 0);
-        _camera.rotation = rot_aim;
-
-        if (collision.collision)
+        if (shoulder_side)
         {
-            destination = target.position + ((rot_y * pivot_offset/adjustment_distance) + (rot_aim * position_offset/ adjustment_distance));
+            target_offset = camera_offset_right;
         }
         else
         {
-            destination = target.position + (rot_y * pivot_offset) + (rot_aim * position_offset);
+            target_offset = camera_offset_left;
+        }
+    }
+
+    private void LateUpdate()
+    {
+        collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
+        collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
+
+        target_pos = target.position + Vector3.up * target_offset.y + Vector3.forward * target_offset.z + transform.TransformDirection(Vector3.right * target_offset.x);
+        destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
+        destination += target_pos;
+
+        if(collision.collision)
+        {
+            adjusted_destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * adjusted_distance;
+            adjusted_destination += target.position;
+            _camera.position = Vector3.Lerp(_camera.position, adjusted_destination, camera_movement_speed * Time.deltaTime);
+        }
+        else
+        {
+            _camera.position = Vector3.Lerp(_camera.position, destination, camera_movement_speed * Time.deltaTime); ;
         }
 
-        _camera.position = Vector3.Lerp(_camera.position, destination, camera_movement_speed * Time.deltaTime);
-
-        //_camera.position = destination;
+        _camera.LookAt(target_pos);
 
     }
 
     private void FixedUpdate()
     {
-        collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
-        collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
+        //collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
+        //collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
 
         for (int i = 0; i < 5; i++)
         {
@@ -115,9 +136,8 @@ public class ThirdPersonCamera : MonoBehaviour
         }
 
         collision.CheckColliding(target.position); //using raycasts here
-        adjustment_distance = collision.GetAdjustedDistanceWithRay(target.position);
+        adjusted_distance = collision.GetAdjustedDistanceWithRay(target.position);
 
-        //Debug.Log(adjustment_distance);
     }
 
     //methods

@@ -67,10 +67,11 @@ public class CameraCollision : MonoBehaviour
             Ray ray = new Ray(target_position, clip_points[i] - target_position); //cast ray at targets poisiton for the distance between clip point and target
             float distance = Vector3.Distance(clip_points[i], target_position); //set distance that the ray will be 
             RaycastHit hit;
+        
+            //Physics.Raycast(clip_points[i], Vector3.Distance(clip_points[i], target_position), hit, distance)
 
             if (Physics.Raycast(ray, out hit)) //if collision within this ray
             {
-
                 return true;
             }
         }
