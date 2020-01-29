@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class PlayerFishing : MonoBehaviour
+public class PlayerFishing : BaseState
 {
 
 
@@ -37,8 +37,10 @@ public class PlayerFishing : MonoBehaviour
     [Header("Pointers")]
     [Tooltip("the transform of the camera")]
     [SerializeField] Transform cameraTransform;
-    [Tooltip("the fishing rod tip")]
+    [Tooltip("the flexible fishing rod tip")]
     [SerializeField] Transform fishingRodTip;
+    [Tooltip("the fishing line logic in the fishing line object")]
+    [SerializeField] FishingLineLogic fishingLineLogic;
     
 
     float currentCastTimeToMax = 0;
@@ -64,8 +66,18 @@ public class PlayerFishing : MonoBehaviour
         fishing_state = FISHING_STATE.NOT_FISHING;
     }
 
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+            
+    }
+
     // Update is called once per frame
-    void Update()
+    public override void StateUpdate()
     {
         switch (fishing_state)
         {
@@ -93,9 +105,13 @@ public class PlayerFishing : MonoBehaviour
                 {
                     if (instanceFishingCastIndicator != null)
                     {
-                        if (istantanceFishingBob.GetComponentInChildren<FishingBobLogic>().GetState() == FishingBobLogic.STATE.SETTLED)
+                        if (istantanceFishingBob.GetComponentInChildren<FishingBobLogic>().GetState() == FishingBobLogic.STATE.SETTLED) // bob has settled
                         {
                             Destroy(instanceFishingCastIndicator);
+                        }
+                        else // bob is moving through the air
+                        {
+                            
                         }
                     }
 
@@ -181,10 +197,14 @@ public class PlayerFishing : MonoBehaviour
         istantanceFishingBob = Instantiate(prefabFishingBob);
         istantanceFishingBob.GetComponentInChildren<FishingBobLogic>().Setup(this);
 
+        fishingLineLogic.setupLine(istantanceFishingBob);
+        fishingLineLogic.LooseString();
+
         Collider[] colliders = istantanceFishingBob.GetComponentsInChildren<Collider>();
         for (int i = 0; i < colliders.Length; i++) // ignore collisions to the player
         {
             Physics.IgnoreCollision(GetComponent<Collider>(), colliders[i]);
+            Physics.IgnoreCollision(GetComponent<CharacterController>(), colliders[i]);
         }
        
         istantanceFishingBob.transform.position = transform.position;
@@ -209,8 +229,10 @@ public class PlayerFishing : MonoBehaviour
         else // no fish attached
         {
             Vector3 directionVector = (fishingRodTip.position - istantanceFishingBob.transform.position).normalized;
-            istantanceFishingBob.GetComponent<Rigidbody>().AddForce(directionVector * fishingReelInSpeed, ForceMode.Acceleration);
+         //   istantanceFishingBob.GetComponent<Rigidbody>().AddForce(directionVector * fishingReelInSpeed, ForceMode.Acceleration);
             istantanceFishingBob.GetComponentInChildren<FishingBobLogic>().BobIsMoving();
+
+            fishingLineLogic.ReelIn();
 
             if (Vector3.Distance(istantanceFishingBob.transform.position, fishingRodTip.position) < 1.0f) // bob is at the player
             {

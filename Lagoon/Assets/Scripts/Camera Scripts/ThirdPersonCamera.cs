@@ -81,7 +81,7 @@ public class ThirdPersonCamera : MonoBehaviour
         Quaternion rot_aim = Quaternion.Euler(-camera_input.y, camera_input.x, 0);
         _camera.rotation = rot_aim;
 
-        Debug.Log(adjustment_distance);
+      //  Debug.Log(adjustment_distance);
 
         if (collision.collision)
         {

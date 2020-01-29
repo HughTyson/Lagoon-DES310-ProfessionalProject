@@ -14,7 +14,10 @@ public class TagsScript : MonoBehaviour
     FISH,
     PLAYER,
     ACTION_SCARES_FISH,
-    WATER
+    WATER,
+    COLLIDES_WITH_ROPE__BOX_COLLIDER,
+    COLLIDES_WITH_ROPE__SPHERE_COLLIDER,
+    FISHING_LOCATION_TRIGGER
     };
 
     
@@ -25,4 +28,6 @@ public class TagsScript : MonoBehaviour
     {
         return tags.Contains(tag);
     }
+
+
 }
