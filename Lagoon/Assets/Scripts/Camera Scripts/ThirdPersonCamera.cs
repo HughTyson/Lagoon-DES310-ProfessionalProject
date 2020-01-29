@@ -83,6 +83,7 @@ public class ThirdPersonCamera : MonoBehaviour
     {
         HandleInput();
 
+
         if (shoulder_side)
         {
             target_offset = camera_offset_right;

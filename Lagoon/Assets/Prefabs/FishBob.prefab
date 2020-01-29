@@ -218,7 +218,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5578413304653352252
 GameObject:
@@ -263,7 +263,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8911401922870001427
 MonoBehaviour:
@@ -277,6 +277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2d1f0e3ae3220b43864df94a85201bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buoyancy: 5
-  waterDrag: 3
+  buoyancy: 30
+  waterDrag: 5
   airDrag: 0
