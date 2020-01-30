@@ -9,19 +9,24 @@ public class ThirdPersonCamera : MonoBehaviour
     //              Visible Variables
     //===========================================
 
-    [Header("Target that the camera will be looking at and rotating around")]
-    [SerializeField] Transform target; //what the camera looks at
+    [Header("Targets")]
+    [Tooltip("The game object that the camera rotates around")]
+    [SerializeField] Transform rot_target; //what the camera rotates around
+    [Tooltip("The game object that the camera will look at as it rotates")]
+    [SerializeField] public Transform look_at_target; // what the camera looks at
 
     [Header("Variables used to determine what shoulder camera looks over")]
 
     [SerializeField] Vector3 camera_offset_right = new Vector3(0.4f ,0.5f, -2.0f);
     [SerializeField] Vector3 camera_offset_left = new Vector3(0f, 0f, 0f);
+    [Tooltip("False looks over left shoulder, true looks over right shoulder")]
     [SerializeField] bool shoulder_side = false; // false is for left   |  true is for right
-
 
     [Header("Misc")]
     //minimum and maximum angles for the Y axis
+    [Tooltip("Minimum angles for the Y axis movement of the camera")]
     [SerializeField] float ANGLE_MIN = -10.0f;
+    [Tooltip("Maximum angles for the Y axis movement of the camera")]
     [SerializeField] float ANGLE_MAX = 80.0f;
 
     [SerializeField] float camera_rotation_speed = 1f; //how fast the rotation of the camera is around the player
@@ -52,11 +57,19 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private float adjusted_distance = 0f;
 
+    public enum STATE
+    {
+        NORMAL,       //Camera has free rotation around target
+        FISHING       //Camera rotates around the player, but will look at the position of the fishing bob
+       
+    }
+    [SerializeField] public STATE current_state;
+
     void Start()
     {
         _camera = transform;
 
-        target_pos = target.position;
+        target_pos = rot_target.position;
         destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
         destination += target_pos;
 
@@ -75,6 +88,7 @@ public class ThirdPersonCamera : MonoBehaviour
             target_offset = camera_offset_left;
         }
 
+        current_state = STATE.NORMAL;
     }
 
     //update function
@@ -82,6 +96,20 @@ public class ThirdPersonCamera : MonoBehaviour
     private void Update()
     {
         HandleInput();
+
+        switch (current_state)
+        {
+            case STATE.NORMAL:
+                { }
+                break;
+            case STATE.FISHING:
+                {
+                    camera_input.x = Mathf.Clamp(camera_input.x, -50, 50);
+                }
+                break;
+            default:
+                break;
+        }
 
 
         if (shoulder_side)
@@ -96,48 +124,84 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
-        collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
 
-        target_pos = target.position + Vector3.up * target_offset.y + Vector3.forward * target_offset.z + transform.TransformDirection(Vector3.right * target_offset.x);
-        destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
-        destination += target_pos;
-
-        if(collision.collision)
+        switch (current_state)
         {
-            adjusted_destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * adjusted_distance;
-            adjusted_destination += target.position;
-            _camera.position = Vector3.Lerp(_camera.position, adjusted_destination, camera_movement_speed * Time.deltaTime);
-        }
-        else
-        {
-            _camera.position = Vector3.Lerp(_camera.position, destination, camera_movement_speed * Time.deltaTime); ;
+            case STATE.NORMAL:
+                {
+                    collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
+                    collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
+
+                    target_pos = rot_target.position + Vector3.up * target_offset.y + Vector3.forward * target_offset.z + transform.TransformDirection(Vector3.right * target_offset.x);
+                    destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
+                    destination += target_pos;
+
+                    if(collision.collision)
+                    {
+                        adjusted_destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * adjusted_distance;
+                        adjusted_destination += rot_target.position;
+                        _camera.position = Vector3.Lerp(_camera.position, adjusted_destination, camera_movement_speed * Time.deltaTime);
+                    }
+                    else
+                    {
+                        _camera.position = Vector3.Lerp(_camera.position, destination, camera_movement_speed * Time.deltaTime); ;
+                    }
+
+                    _camera.LookAt(target_pos);
+
+                }
+                break;
+            case STATE.FISHING:
+                {
+                    collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
+                    collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
+
+                    target_pos = rot_target.position + Vector3.up * target_offset.y + Vector3.forward * target_offset.z + transform.TransformDirection(Vector3.right * target_offset.x);
+                    destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
+                    destination += target_pos;
+
+                    if (collision.collision)
+                    {
+                        adjusted_destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * adjusted_distance;
+                        adjusted_destination += rot_target.position;
+                        _camera.position = Vector3.Lerp(_camera.position, adjusted_destination, camera_movement_speed * Time.deltaTime);
+                    }
+                    else
+                    {
+                        _camera.position = Vector3.Lerp(_camera.position, destination, camera_movement_speed * Time.deltaTime); ;
+                    }
+
+                    _camera.LookAt(look_at_target);
+                }
+                break;
+            default:
+                break;
         }
 
-        _camera.LookAt(target_pos);
+
+
+
 
     }
 
     private void FixedUpdate()
     {
-        //collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
-        //collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
 
         for (int i = 0; i < 5; i++)
         {
             if (drawDesiredCollisionLines)
             {
-                Debug.DrawLine(target.position, collision.desiredCameraClipPoints[i], Color.white);
+                Debug.DrawLine(rot_target.position, collision.desiredCameraClipPoints[i], Color.white);
             }
 
             if (drawAdjustedCollisionLines)
             {
-                Debug.DrawLine(target.position, collision.adjustedCameraClipPoints[i], Color.green);
+                Debug.DrawLine(rot_target.position, collision.adjustedCameraClipPoints[i], Color.green);
             }
         }
 
-        collision.CheckColliding(target.position); //using raycasts here
-        adjusted_distance = collision.GetAdjustedDistanceWithRay(target.position);
+        collision.CheckColliding(rot_target.position); //using raycasts here
+        adjusted_distance = collision.GetAdjustedDistanceWithRay(rot_target.position);
 
     }
 
