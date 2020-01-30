@@ -538,7 +538,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22ca5552553a61542a10d892a4a8826f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 7745113462265003517}
+  rot_target: {fileID: 7745113462265003517}
+  look_at_target: {fileID: 7745113462265003517}
   camera_offset_right: {x: 0.4, y: 0.5, z: -2}
   camera_offset_left: {x: 0, y: 0, z: 0}
   shoulder_side: 0
@@ -546,9 +547,10 @@ MonoBehaviour:
   ANGLE_MAX: 80
   camera_rotation_speed: 80
   camera_movement_speed: 5
-  distance_from_target: 5
+  distance_from_target: 10
   drawDesiredCollisionLines: 1
   drawAdjustedCollisionLines: 1
+  current_state: 0
 --- !u!114 &5714017189736757802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -921,6 +923,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5354929108403043656}
     m_Modifications:
+    - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: textFishingCastPower
+      value: 
+      objectReference: {fileID: 5190895037895051770}
+    - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: textFishingFishCaught
+      value: 
+      objectReference: {fileID: 4257575682944715892}
+    - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: cameraTransform
+      value: 
+      objectReference: {fileID: 5549753304947937101}
+    - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: fishingRodTip
+      value: 
+      objectReference: {fileID: 8533800884972578086}
+    - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: fishingLineLogic
+      value: 
+      objectReference: {fileID: 4074023804289180387}
     - target: {fileID: 6160413944266683237, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: m_Name
@@ -996,31 +1023,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.33
       objectReference: {fileID: 0}
-    - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: textFishingCastPower
-      value: 
-      objectReference: {fileID: 5190895037895051770}
-    - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: textFishingFishCaught
-      value: 
-      objectReference: {fileID: 4257575682944715892}
-    - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: cameraTransform
-      value: 
-      objectReference: {fileID: 5549753304947937101}
-    - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: fishingRodTip
-      value: 
-      objectReference: {fileID: 8533800884972578086}
-    - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: fishingLineLogic
-      value: 
-      objectReference: {fileID: 4074023804289180387}
     - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: _camera

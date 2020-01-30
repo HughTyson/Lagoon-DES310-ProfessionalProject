@@ -137,11 +137,11 @@ public class PlayerFishingState : BaseState
             case FISHING_STATE.CASTING_ANIMATION: // the bob has been thrown
                 {
                     TransformIndicator();
-                   AnimatorStateInfo test = GetComponentInChildren<Animator>().GetCurrentAnimatorStateInfo(0);
-                    if (test.speed == 0)
-                    {
+                   //AnimatorStateInfo test = GetComponentInChildren<Animator>().GetCurrentAnimatorStateInfo(0);
+                    //if (test.speed == 0)
+                    //{
                         PowerUpThrow();
-                    }
+                    //}
 
 
                     break;
@@ -214,7 +214,7 @@ public class PlayerFishingState : BaseState
     void BeginCastingAnimation()
     {
         fishing_state = FISHING_STATE.CASTING_ANIMATION;
-        GetComponentInChildren<Animator>().Play("Rod Flick");
+        //GetComponentInChildren<Animator>().Play("Rod Flick");
     }
     void PowerUpThrow()
     {
