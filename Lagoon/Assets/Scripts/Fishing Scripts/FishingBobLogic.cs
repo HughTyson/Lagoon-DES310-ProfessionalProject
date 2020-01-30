@@ -30,6 +30,8 @@ public class FishingBobLogic : MonoBehaviour
 
     public enum STATE
     { 
+        HIT_LAND_OR_FLOATING,
+        HIT_WATER,
         MOVING,              // the bob is moving and fish will ignore it
         SETTLED,             // the bob is settled and will send periodic attraction pulses to the fish
         FISH_INTERACTING,    // a fish is interacting with the bob
@@ -45,7 +47,7 @@ public class FishingBobLogic : MonoBehaviour
     List<GameObject> nearbyFish = new List<GameObject>(); // list of nearby fish
     GameObject interactingFish;                           // the current interacting fish
 
-    PlayerFishing refPlayerFishing;                       // pointer to PlayerFishing script attached to the player
+    PlayerFishingState refPlayerFishing;                       // pointer to PlayerFishing script attached to the player
     int fishbiteFailCounter = 0;                          
     float fishbiteTimer = 0.0f;                                                                                                                    
     float currentFishHoldBitTime = 0.0f;                  
@@ -61,26 +63,61 @@ public class FishingBobLogic : MonoBehaviour
 
     private void FixedUpdate()
     {
+        float XZVelocityMag = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z).magnitude;
+        Debug.Log(XZVelocityMag);
+
         switch (current_state)
         {
             case STATE.MOVING: // the bob is moving and fish will ignore it
                 {
-                    current_attration_time = attractionPulseTimeInterval;
-                    if (physicsBuoyancy.GetCurrentState() == BuoyancyPhysics.STATE.IN_WATER && GetComponentInParent<Rigidbody>().velocity.magnitude < 0.1) // settle the bob if it is in water and it isn't moving
+                    switch (physicsBuoyancy.GetCurrentState())
                     {
-                        current_state = STATE.SETTLED;
+                        case BuoyancyPhysics.STATE.IN_AIR:
+                            {
+                                float test = (GetComponentInParent<Rigidbody>().velocity.magnitude);
+                                if (GetComponentInParent<Rigidbody>().velocity.magnitude < 0.01)
+                                {
+                                    current_state = STATE.HIT_LAND_OR_FLOATING;
+                                }
+                                break;
+                            }
+                        case BuoyancyPhysics.STATE.IN_WATER:
+                            {
+                                current_state = STATE.HIT_WATER;
+                                break;
+                            }
+
                     }
                     break;
                 }
+            case STATE.HIT_LAND_OR_FLOATING:
+                {
+                    if (GetComponentInParent<Rigidbody>().velocity.magnitude > 0.1)
+                    {
+                        current_state = STATE.MOVING;
+                    }
+                    break;
+                }
+            case STATE.HIT_WATER:
+                {
+                    if (GetComponentInParent<Rigidbody>().velocity.magnitude < 0.1)
+                    {
+                           current_attration_time = attractionPulseTimeInterval;
+                           current_state = STATE.SETTLED;
+                    }
+                    break;
+                }
+                        
             case STATE.SETTLED: // the bob is settled and will send periodic attraction pulses to the fish
                 {
                     current_attration_time -= Time.deltaTime;
-
                     if (current_attration_time <= 0.0f) // send attraction pulse
                     {
                         AttractionPulse();
                         current_attration_time = attractionPulseTimeInterval;
                     }
+
+                    BobUnsettledCheck();
                     break;
                 }
             case STATE.FISH_INTERACTING: // a fish is interacting with the bob
@@ -116,6 +153,10 @@ public class FishingBobLogic : MonoBehaviour
 
                         }
                     }
+                    else
+                    {
+                        BobUnsettledCheck();
+                    }
                     break;
                 }
             case STATE.FISH_BITE: // a fish has bit the lure
@@ -146,6 +187,19 @@ public class FishingBobLogic : MonoBehaviour
     }
 
 
+    void BobUnsettledCheck()
+    {
+        float XZVelocityMag = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z).magnitude;
+        if (XZVelocityMag >= 1.0f)
+        {
+            current_state = STATE.MOVING;
+            current_attration_time = attractionPulseTimeInterval;
+            for (int i = 0; i < nearbyFish.Count; i++)
+            {
+                nearbyFish[i].GetComponentInChildren<FishLogic>().LostInterestInFishingBob(5.0f);
+            }
+        }
+    }
 
     // something came into the bob's sphere of influence
     private void OnTriggerEnter(Collider other)
@@ -176,15 +230,15 @@ public class FishingBobLogic : MonoBehaviour
 
 
     // -- Public Functions -- //
-    public void BobIsMoving() // bob is moving; reel in was pressed
-    {
-        for (int i = 0; i < nearbyFish.Count; i++)
-        {
-            nearbyFish[i].GetComponentInChildren<FishLogic>().LostInterestInFishingBob(5.0f);
-            current_state = STATE.MOVING;
-            current_attration_time = attractionPulseTimeInterval;
-        }
-    }
+    //public void BobIsMoving() // bob is moving; reel in was pressed
+    //{
+    //    for (int i = 0; i < nearbyFish.Count; i++)
+    //    {
+    //        nearbyFish[i].GetComponentInChildren<FishLogic>().LostInterestInFishingBob(5.0f);
+    //        current_state = STATE.MOVING;
+    //        current_attration_time = attractionPulseTimeInterval;
+    //    }
+    //}
 
     // call by FishLogic when an attracted fish reaches the bob
     public void FishStartsInteracting(GameObject interactingFish_)
@@ -197,6 +251,7 @@ public class FishingBobLogic : MonoBehaviour
             }
         }
         current_state = STATE.FISH_INTERACTING;
+        fishbiteTimer = Random.Range(fishbiteTimerMin, fishbiteTimerMax);
         fishbiteFailCounter = 0;
         interactingFish = interactingFish_;
     }
@@ -210,7 +265,7 @@ public class FishingBobLogic : MonoBehaviour
     }
 
     // Initialize pointers when this object is instantiated
-    public void Setup(PlayerFishing refPlayerFishing_)
+    public void Setup(PlayerFishingState refPlayerFishing_)
     {
         refPlayerFishing = refPlayerFishing_;
     }
