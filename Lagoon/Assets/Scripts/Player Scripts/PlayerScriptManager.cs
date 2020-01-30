@@ -6,7 +6,10 @@ using UnityEngine;
 
 public abstract class BaseState : MonoBehaviour
 {
-    
+    public void SetStateManagerPointer(PlayerScriptManager manager)
+    {
+        StateManager = manager;
+    }
     public virtual void StateUpdate() { }
     public virtual void StateFixedUpdate() { }
 
@@ -16,6 +19,10 @@ public abstract class BaseState : MonoBehaviour
     public virtual void StateOnTriggerStay(Collider other) { }
     public virtual void StateOnTriggerExit(Collider other) { }
 
+    protected PlayerScriptManager StateManager;
+    
+
+
 }
 
 public class PlayerScriptManager : MonoBehaviour
@@ -24,7 +31,7 @@ public class PlayerScriptManager : MonoBehaviour
 
     [SerializeField] BaseState currentState;
 
-    [SerializeField] PlayerFishing stateFishing;
+    [SerializeField] PlayerFishingState stateFishing;
 
     public enum STATE
     { 
@@ -36,6 +43,8 @@ public class PlayerScriptManager : MonoBehaviour
     void Start()
     {
         currentState.enabled = true;
+
+        stateFishing.SetStateManagerPointer(this);
     }
 
     // Update is called once per frame

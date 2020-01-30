@@ -15,7 +15,6 @@ public class BuoyancyPhysics : MonoBehaviour
 
     public enum STATE
     {
-        NONE,
         IN_WATER,
         IN_AIR
     };
@@ -32,8 +31,8 @@ public class BuoyancyPhysics : MonoBehaviour
        
     }
 
-    STATE current_state = STATE.NONE;
-    STATE previous_state = STATE.NONE;
+    STATE current_state = STATE.IN_AIR;
+    STATE previous_state = STATE.IN_AIR;
     bool state_changed = false;
 
     public STATE GetCurrentState()

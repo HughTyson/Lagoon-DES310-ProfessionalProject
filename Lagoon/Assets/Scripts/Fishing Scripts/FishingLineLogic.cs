@@ -16,13 +16,18 @@ public class FishingLineLogic : MonoBehaviour
     GameObject fishingBob;
 
 
-    enum STATE
+    public enum STATE
     { 
         LOOSE_STRING,
         NORMAL,
         NOT_ACTIVE
     };
     STATE current_state = STATE.NOT_ACTIVE;
+
+    public void SetState(STATE state)
+    {
+        current_state = state;
+    }
 
     class LineParticle
     {
@@ -37,6 +42,12 @@ public class FishingLineLogic : MonoBehaviour
     public void setupLine(GameObject fishingBob_)
     {
         fishingBob = fishingBob_;
+        for (int i = 0; i < LineParticles.Count; i++)
+        {
+            LineParticles[i].position = FishingLineTip.position;
+            LineParticles[i].oldPosition = FishingLineTip.position;
+
+        }
     }
     void Start()
     {
@@ -58,8 +69,6 @@ public class FishingLineLogic : MonoBehaviour
 
     public void LooseString()
     {
-
-        GetComponent<LineRenderer>().enabled = true;
         current_state = STATE.LOOSE_STRING;
         for (int i = 0; i < LineParticles.Count; i++)
         {
@@ -140,7 +149,7 @@ public class FishingLineLogic : MonoBehaviour
                     {
                         LineParticles[0].position = FishingLineTip.position;
                         LineParticles[LineParticles.Count - 1].position = fishingBob.transform.position;
-                        lineLength = Vector3.Distance(FishingLineTip.position, fishingBob.transform.position);
+                        lineLength = Mathf.Max(0.01f, Vector3.Distance(FishingLineTip.position, fishingBob.transform.position) * 1.1f);
 
                         for (int i = 1; i < LineParticles.Count; i++)
                         {
@@ -152,7 +161,7 @@ public class FishingLineLogic : MonoBehaviour
                         {
                             for (int i = 0; i < LineParticles.Count - 1; i++)
                             {
-                                PoleConstraint(LineParticles[i], LineParticles[i + 1], lineLength / (float)particleAmmount);
+                                PoleConstraint(LineParticles[i], LineParticles[i + 1], lineLength / (float)LineParticles.Count);
                             }
                         }
 
@@ -164,11 +173,6 @@ public class FishingLineLogic : MonoBehaviour
                         linePositions[0] = FishingLineTip.position;
                         linePositions[LineParticles.Count - 1] = fishingBob.transform.position;
                         GetComponent<LineRenderer>().SetPositions(linePositions);
-
-                        if (fishingBob.GetComponentInChildren<FishingBobLogic>().GetState() == FishingBobLogic.STATE.SETTLED)
-                        {
-                            current_state = STATE.NORMAL;
-                        }
                         break;
                     }
                 case STATE.NORMAL:
@@ -193,7 +197,7 @@ public class FishingLineLogic : MonoBehaviour
                         {
                             for (int i = 0; i < LineParticles.Count - 1; i++)
                             {
-                                PoleConstraint(LineParticles[i], LineParticles[i + 1], lineLength / (float)particleAmmount);
+                                PoleConstraint(LineParticles[i], LineParticles[i + 1], lineLength / (float)LineParticles.Count);
                             }
                         }
 
