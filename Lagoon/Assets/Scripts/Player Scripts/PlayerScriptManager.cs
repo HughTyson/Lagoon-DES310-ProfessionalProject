@@ -71,7 +71,6 @@ public class PlayerScriptManager : MonoBehaviour
         {
             case STATE.EXPLORING:
                 {
-
                     break;
                 }
             case STATE.FISHING:

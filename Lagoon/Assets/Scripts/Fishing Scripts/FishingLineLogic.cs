@@ -179,11 +179,20 @@ public class FishingLineLogic : MonoBehaviour
                     {
 
 
-                        LineParticles[0].position = FishingLineTip.position;
-                     //  LineParticles[0].oldPosition = FishingLineTip.position;
+                        //if (lineLength < Vector3.Distance(FishingLineTip.position, fishingBob.transform.position))
+                        //{
+                        //    float strength = Vector3.Distance(FishingLineTip.position, fishingBob.transform.position) - lineLength;
+                        //    float max_dist = 1.0f;
+                        //    float max_mag = 10.0f;
+                        //    fishingRod.GetComponent<Rigidbody>().AddForceAtPosition(FishingLineTip.position, (fishingBob.transform.position - FishingLineTip.position).normalized * -Mathf.Lerp(0,max_mag,strength/max_dist), ForceMode.Acceleration);
+                        //}
+
+
+
 
                         LineParticles[LineParticles.Count - 1].position = fishingBob.transform.position;
-                    //    LineParticles[LineParticles.Count - 1].oldPosition = fishingBob.transform.position;
+
+                        LineParticles[0].position = FishingLineTip.position;
 
 
                         for (int i = 0; i < LineParticles.Count - 1; i++)
@@ -191,7 +200,6 @@ public class FishingLineLogic : MonoBehaviour
                             Verlet(LineParticles[i]);
                         }
 
-                       
 
                         for (int k = 0; k < accuracyItirations; k++)
                         {
@@ -201,17 +209,31 @@ public class FishingLineLogic : MonoBehaviour
                             }
                         }
 
+                        //float total_line_length = 0;
+                        //for (int i = 0; i < LineParticles.Count - 1; i++)
+                        //{
+                        //    total_line_length += Vector3.Distance(LineParticles[i].position, LineParticles[i + 1].position);
+                        //}
+
+                        //if (total_line_length < lineLength * 1.2f)
+                        //{
+
+                        //    fishingBob.GetComponent<Rigidbody>().isKinematic = false;
+
+                        //}
+                        //else
+                        //{
+                        //    fishingBob.GetComponent<Rigidbody>().isKinematic = true;
+                        //    fishingBob.GetComponent<Rigidbody>().MovePosition(LineParticles[LineParticles.Count - 1].position);
+                        //}
+
                         fishingBob.GetComponent<Rigidbody>().AddForce((LineParticles[LineParticles.Count - 1].position - fishingBob.transform.position) / fishingBobMass, ForceMode.VelocityChange);
 
-              
 
-                        //if (lineLength < Vector3.Distance(FishingLineTip.position, fishingBob.transform.position))
-                        //{
-                        //    float strength = Vector3.Distance(FishingLineTip.position, fishingBob.transform.position) - lineLength;
-                        //    float max_dist = 1.0f;
-                        //    float max_mag = 10.0f;
-                        //    fishingRod.GetComponent<Rigidbody>().AddForceAtPosition(FishingLineTip.position, (fishingBob.transform.position - FishingLineTip.position).normalized * -Mathf.Lerp(0,max_mag,strength/max_dist), ForceMode.Acceleration);
-                        //}
+
+
+
+
 
                         Vector3[] linePositions = new Vector3[LineParticles.Count];
                         for (int i = 0; i < LineParticles.Count; i++)
