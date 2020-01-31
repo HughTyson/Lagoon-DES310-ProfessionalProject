@@ -35,6 +35,8 @@ public class CharacterControllerMovement : MonoBehaviour
     private bool moving = false;
     Vector3 gravity;
 
+    Vector3 move_direction;
+
     public enum STATE
     {
         FREE_MOVEMENT,       //Player can move any way they want
@@ -63,7 +65,9 @@ public class CharacterControllerMovement : MonoBehaviour
                 {
                     HandleInput();
                     Rotation();
-                    controller.Move(transform.forward * movement_input.magnitude * Time.deltaTime);
+
+                    controller.Move(move_direction);
+
                 }
                 break;
             case STATE.ROT_ONLY:
@@ -89,6 +93,8 @@ public class CharacterControllerMovement : MonoBehaviour
             case STATE.ROT_CAMERA:
                 {
                     //rotates to face the camera in real time
+ 
+                    transform.rotation = Quaternion.Euler(transform.localEulerAngles.x, _camera.localEulerAngles.y, transform.localEulerAngles.z);
                 }
                 break;
             default:
@@ -99,9 +105,13 @@ public class CharacterControllerMovement : MonoBehaviour
      //this function is called every fixed framerate frame
     private void FixedUpdate()
     {
-        gravity.y = Physics.gravity.y * Time.deltaTime;
+        //gravity.y = Physics.gravity.y * Time.fixedDeltaTime;
 
-        controller.Move(gravity * gravityScale * Time.deltaTime);
+        move_direction = transform.forward * movement_input.magnitude * Time.deltaTime;
+
+        move_direction.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
+
+
     }
 
     //methods
