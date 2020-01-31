@@ -56,6 +56,7 @@ public class PlayerFishingState : BaseState
 
     enum FISHING_STATE
     {
+        TEMP_EXPLORING_STATE,
         PREPAIRING_ROD,
         IDLE,
         POWERING_UP,
@@ -77,8 +78,11 @@ public class PlayerFishingState : BaseState
     bool heldRTInPreviousState = false;
     private void OnEnable()
     {
-        fishing_state = FISHING_STATE.PREPAIRING_ROD;
-        characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
+        fishing_state = FISHING_STATE.TEMP_EXPLORING_STATE;
+        //characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
+        fishingRodMesh.SetActive(false);
+        characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
+
         thirdPersonCamera.current_state = ThirdPersonCamera.STATE.NORMAL;
         heldRTInPreviousState = false;
     }
@@ -110,6 +114,14 @@ public class PlayerFishingState : BaseState
 
         switch (fishing_state)
         {
+            case FISHING_STATE.TEMP_EXPLORING_STATE:
+                {
+                    if (Input.GetButtonDown("PlayerA"))
+                    {
+                       fishing_state = FISHING_STATE.PREPAIRING_ROD;
+                    }
+                    break;
+                }
             case FISHING_STATE.PREPAIRING_ROD:
                 {
                     fishingRodMesh.SetActive(true);
@@ -134,7 +146,21 @@ public class PlayerFishingState : BaseState
                     }
                     else if (Input.GetButtonDown("PlayerB"))
                     {
-                        StateManager.ChangeState(PlayerScriptManager.STATE.EXPLORING);
+                        fishing_state = FISHING_STATE.TEMP_EXPLORING_STATE;
+                        fishingRodMesh.SetActive(false);
+                        if (istantanceFishingBob != null)
+                        {
+                            Destroy(istantanceFishingBob);
+                        }
+                        if (instanceFishingCastIndicator != null)
+                        {
+                            Destroy(instanceFishingCastIndicator);
+                        }
+
+                        staticFishingRodLogic.ChangeState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
+                        characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
+                        thirdPersonCamera.current_state = ThirdPersonCamera.STATE.NORMAL;
+
                     }
                     break;
                 }
@@ -241,7 +267,7 @@ public class PlayerFishingState : BaseState
 
         fishing_state = FISHING_STATE.POWERING_UP;
 
-        characterControllerMovement.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
+       // characterControllerMovement.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
      
         castingTime = 0.0f;
         textFishingFishCaught.text = "";
@@ -262,7 +288,7 @@ public class PlayerFishingState : BaseState
         }
 
         heldRTInPreviousState = true;
-        characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_ONLY;
+        characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
         staticFishingRodLogic.ChangeState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
         fishing_state = FISHING_STATE.IDLE;
     }
@@ -326,7 +352,7 @@ public class PlayerFishingState : BaseState
 
         fishing_state = FISHING_STATE.BOB_IS_FLYING;
         staticFishingRodLogic.ChangeState(StaticFishingRodLogic.STATE.ANALOG_CONTROL);
-
+        characterControllerMovement.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
         thirdPersonCamera.look_at_target = istantanceFishingBob.transform;
         thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FISHING;
     }

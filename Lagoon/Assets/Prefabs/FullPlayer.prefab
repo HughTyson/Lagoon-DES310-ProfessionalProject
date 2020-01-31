@@ -923,6 +923,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5354929108403043656}
     m_Modifications:
+    - target: {fileID: 6160413944266683237, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: m_Name
+      value: Player - Character Controller
+      objectReference: {fileID: 0}
     - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: textFishingCastPower
@@ -973,11 +978,6 @@ PrefabInstance:
       propertyPath: fishingRodLogic
       value: 
       objectReference: {fileID: 4281157510535367594}
-    - target: {fileID: 6160413944266683237, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: m_Name
-      value: Player - Character Controller
-      objectReference: {fileID: 0}
     - target: {fileID: 6160413944266683240, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1033,6 +1033,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6301241936874654446, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: analogMovementRodSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6301241936874654446, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: RotationXMaxDown
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6301241936874654446, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: RotationXMaxUp
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: _camera
+      value: 
+      objectReference: {fileID: 5549753304947937101}
     - target: {fileID: 708451495562159640, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1048,11 +1068,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.33
       objectReference: {fileID: 0}
-    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: _camera
-      value: 
-      objectReference: {fileID: 5549753304947937101}
     - target: {fileID: 3055954728931745731, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: m_Enabled
@@ -1202,11 +1217,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Positions.Array.data[29].z
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6301241936874654446, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: analogMovementRodSpeed
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7448653754897206114, guid: d2944652e70498a4aa30ffd9044c0e23, type: 3}
