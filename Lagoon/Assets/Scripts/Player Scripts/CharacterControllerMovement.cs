@@ -11,31 +11,34 @@ public class CharacterControllerMovement : MonoBehaviour
     //===========================================
 
 
-    [SerializeField] Transform _camera;
+    [SerializeField] Transform _camera;                         //The cameras informtation
 
-    [SerializeField] float move_speed = 6.0f;
+    [SerializeField] float joyStick_sensitivity = 6.0f;         //Value that the input can be multiplied by to increase sensitivity
 
     [Range(0.01f, 0.5f)]
-    [SerializeField] float player_rotation_speed = 0.12f;
+    [SerializeField] float player_rotation_speed = 0.12f;       //Variable increases the speed of the rotation
 
-    [SerializeField] float gravityScale = 20.0f;
+    [SerializeField] float gravityScale = 1.0f;                 //1 = 9.8ms^2 - if increased gravity increases            
 
     
-    [SerializeField] float X_ANGLE_LIMITS = 30f;
+    [SerializeField] float X_ANGLE_LIMITS = 30f;                // limits of the players movement for certain states
 
 
-    [SerializeField] public STATE current_state;
+    [SerializeField] public STATE current_state;                // the current state fo the character controller
+
+    [SerializeField] float acceleration = 1.0f;                 //The acceleration valeue
+    [SerializeField] float max_velocity = 5.0f;                 //The max velocity that the player can reach before being clamped
 
     // ==========================================
     //              Hidden Variables
     //===========================================
 
-    private CharacterController controller;
-    Vector2 movement_input = Vector2.zero;
-    private bool moving = false;
-    Vector3 gravity;
+    private CharacterController controller;                     //Define the character contoller
+    Vector2 movement_input = Vector2.zero;                      //A vector 2 to store the input taken in when moving the character
 
-    Vector3 move_direction;
+    Vector3 move_direction;                                     //stores the move information thats calculated in the 
+
+    float current_velocity;                                     //keeps track of the players current_velocity
 
     public enum STATE
     {
@@ -52,6 +55,7 @@ public class CharacterControllerMovement : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         current_state = STATE.FREE_MOVEMENT;
+
         
     }
 
@@ -105,19 +109,25 @@ public class CharacterControllerMovement : MonoBehaviour
      //this function is called every fixed framerate frame
     private void FixedUpdate()
     {
-        //gravity.y = Physics.gravity.y * Time.fixedDeltaTime;
+        current_velocity += acceleration * movement_input.magnitude;
+        current_velocity = Mathf.Clamp(current_velocity, 0, max_velocity);
 
-        move_direction = transform.forward * movement_input.magnitude * Time.deltaTime;
+        if (movement_input.x == 0 && movement_input.y == 0)
+        {
+            if (current_velocity > 0)
+                current_velocity -= acceleration;
+        }
+
+        move_direction = transform.forward * current_velocity * Time.deltaTime;
 
         move_direction.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
-
 
     }
 
     //methods
     private void HandleInput()
     {
-        movement_input = new Vector3(Input.GetAxisRaw("PlayerLH") * move_speed, Input.GetAxisRaw("PlayerLV") * move_speed);
+        movement_input = new Vector3(Input.GetAxisRaw("PlayerLH") * joyStick_sensitivity, Input.GetAxisRaw("PlayerLV") * joyStick_sensitivity);
     }
 
     private void Rotation()
