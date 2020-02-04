@@ -36,8 +36,6 @@ public class PlayerFishingState : BaseState
     [SerializeField] Transform cameraTransform;
     [Tooltip("the flexible fishing rod tip")]
     [SerializeField] Transform fishingRodTip;
-    [Tooltip(" flexible fishing rod")]
-    [SerializeField] GameObject flexibleFishingRod;
     [Tooltip("the fishing line logic in the fishing line object")]
     [SerializeField] FishingLineLogic fishingLineLogic;
     [Tooltip("the fishing rod mesh")]
@@ -50,9 +48,15 @@ public class PlayerFishingState : BaseState
     [SerializeField] StaticFishingRodLogic staticFishingRodLogic;
     [Tooltip("the flexible fishing rod logic script")]
     [SerializeField] FishingRodLogic fishingRodLogic;
+    [Tooltip("the fishing indicator")]
+    [SerializeField] GameObject TODO2;
+    [Tooltip("the fishing fish indicator")]
+    [SerializeField] GameObject TODO;
+    [Tooltip("the fishing bob logic script")]
+    [SerializeField] FishingBobLogic fishingBobLogic;
 
 
-
+ 
 
     enum FISHING_STATE
     {
@@ -68,8 +72,6 @@ public class PlayerFishingState : BaseState
 
 
     private FISHING_STATE fishing_state;
-    private GameObject istantanceFishingBob; // the instantiated fishing bob
-    private GameObject instanceFishingCastIndicator;
 
     int failedFishCounter = 0; // amount of times a fish tried 3x and lost interest
 
@@ -83,7 +85,7 @@ public class PlayerFishingState : BaseState
         //characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
         fishingRodMesh.SetActive(false);
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
-
+        staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
         thirdPersonCamera.current_state = ThirdPersonCamera.STATE.NORMAL;
         heldRTInPreviousState = false;
     }
@@ -91,16 +93,11 @@ public class PlayerFishingState : BaseState
     private void OnDisable()
     {
         fishingRodMesh.SetActive(false);
-        if (istantanceFishingBob != null)
-        {
-            Destroy(istantanceFishingBob);
-        }
-        if (instanceFishingCastIndicator != null)
-        {
-            Destroy(instanceFishingCastIndicator);
-        }
 
-        staticFishingRodLogic.ChangeState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
+        fishingBobLogic.gameObject.SetActive(false);
+        TODO.gameObject.SetActive(false);
+        TODO2.gameObject.SetActive(false);
+
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
         thirdPersonCamera.current_state = ThirdPersonCamera.STATE.NORMAL;
     }
@@ -144,17 +141,15 @@ public class PlayerFishingState : BaseState
                     else if (Input.GetButtonDown("PlayerB"))
                     {
                         fishing_state = FISHING_STATE.TEMP_EXPLORING_STATE;
-                        fishingRodMesh.SetActive(false);
-                        if (istantanceFishingBob != null)
-                        {
-                            Destroy(istantanceFishingBob);
-                        }
-                        if (instanceFishingCastIndicator != null)
-                        {
-                            Destroy(instanceFishingCastIndicator);
-                        }
+                        OnDisable(); // TEMPORARY
 
-                        staticFishingRodLogic.ChangeState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
+                        fishingRodMesh.SetActive(false);
+                        fishingBobLogic.gameObject.SetActive(false);
+                        TODO.gameObject.SetActive(false);
+                        TODO2.gameObject.SetActive(false);
+
+
+                        staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
                         characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
                         thirdPersonCamera.current_state = ThirdPersonCamera.STATE.NORMAL;
 

@@ -23,14 +23,12 @@ public class StaticFishingRodLogic : MonoBehaviour
     public enum STATE
     { 
     GO_TO_DEFAULT_POSITION,
-    ANALOG_CONTROL,
     FREEZE,
-    ANALOG_CONTROL_H_ONLY
     };
 
     STATE current_state = STATE.GO_TO_DEFAULT_POSITION;
 
-    public void ChangeState(STATE state)
+    public void SetState(STATE state)
     {
         current_state = state;
     }
@@ -56,8 +54,6 @@ public class StaticFishingRodLogic : MonoBehaviour
             eulerRotations.x = Mathf.Lerp(DefaultRotationXZ.x, RotationXMaxUp, percentageZ);
         }
         transform.localRotation = Quaternion.Euler(eulerRotations);
-
-        current_state = STATE.FREEZE;
     }
     // Update is called once per frame
     void Update()
@@ -69,51 +65,51 @@ public class StaticFishingRodLogic : MonoBehaviour
                     transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(DefaultRotationXZ.x, 0, DefaultRotationXZ.y), Time.deltaTime * analogMovementRodSpeed);
                     break;
                 }
-            case STATE.ANALOG_CONTROL:
-                {
-                    Vector2 analog = new Vector2(Input.GetAxis("PlayerLH"), Input.GetAxis("PlayerLV")); // normalized to change square into circle
-                    Vector3 eulerRotations = Vector3.zero;
-                    if (analog.x < 0)
-                    {
-                        eulerRotations.z = Mathf.Lerp(RotationZMaxLeft, DefaultRotationXZ.y, analog.x + 1.0f);
-                    }
-                    else
-                    {
-                        eulerRotations.z = Mathf.Lerp(DefaultRotationXZ.y, RotationZMaxRight, analog.x);
-                    }
+            //case STATE.ANALOG_CONTROL:
+            //    {
+            //        Vector2 analog = new Vector2(Input.GetAxis("PlayerLH"), Input.GetAxis("PlayerLV")); // normalized to change square into circle
+            //        Vector3 eulerRotations = Vector3.zero;
+            //        if (analog.x < 0)
+            //        {
+            //            eulerRotations.z = Mathf.Lerp(RotationZMaxLeft, DefaultRotationXZ.y, analog.x + 1.0f);
+            //        }
+            //        else
+            //        {
+            //            eulerRotations.z = Mathf.Lerp(DefaultRotationXZ.y, RotationZMaxRight, analog.x);
+            //        }
 
-                    if (analog.y < 0)
-                    {
-                        eulerRotations.x = Mathf.Lerp(RotationXMaxDown, DefaultRotationXZ.x, analog.y + 1.0f);
-                    }
-                    else
-                    {
-                        eulerRotations.x = Mathf.Lerp(DefaultRotationXZ.x,RotationXMaxUp, analog.y);
-                    }
-                    transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(eulerRotations), Time.deltaTime* analogMovementRodSpeed);
-                    break;
-                }
+            //        if (analog.y < 0)
+            //        {
+            //            eulerRotations.x = Mathf.Lerp(RotationXMaxDown, DefaultRotationXZ.x, analog.y + 1.0f);
+            //        }
+            //        else
+            //        {
+            //            eulerRotations.x = Mathf.Lerp(DefaultRotationXZ.x,RotationXMaxUp, analog.y);
+            //        }
+            //        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(eulerRotations), Time.deltaTime* analogMovementRodSpeed);
+            //        break;
+            //    }
             case STATE.FREEZE:
                 {
 
                     break;
                 }
-            case STATE.ANALOG_CONTROL_H_ONLY:
-                {
-                    Vector2 analog = new Vector2(Input.GetAxis("PlayerLH"), Input.GetAxis("PlayerLV")); // normalized to change square into circle
-                    Vector3 eulerRotations = transform.localRotation.eulerAngles;
-                    if (analog.x < 0)
-                    {
-                        eulerRotations.z = Mathf.Lerp(RotationZMaxLeft, DefaultRotationXZ.y, analog.x + 1.0f);
-                    }
-                    else
-                    {
-                        eulerRotations.z = Mathf.Lerp(DefaultRotationXZ.y, RotationZMaxRight, analog.x);
-                    }
+            //case STATE.ANALOG_CONTROL_H_ONLY:
+            //    {
+            //        Vector2 analog = new Vector2(Input.GetAxis("PlayerLH"), Input.GetAxis("PlayerLV")); // normalized to change square into circle
+            //        Vector3 eulerRotations = transform.localRotation.eulerAngles;
+            //        if (analog.x < 0)
+            //        {
+            //            eulerRotations.z = Mathf.Lerp(RotationZMaxLeft, DefaultRotationXZ.y, analog.x + 1.0f);
+            //        }
+            //        else
+            //        {
+            //            eulerRotations.z = Mathf.Lerp(DefaultRotationXZ.y, RotationZMaxRight, analog.x);
+            //        }
 
-                    transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(eulerRotations), Time.deltaTime * analogMovementRodSpeed);
-                    break;
-                }            
+            //        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(eulerRotations), Time.deltaTime * analogMovementRodSpeed);
+            //        break;
+            //    }            
 
         }
     }
