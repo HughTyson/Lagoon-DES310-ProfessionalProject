@@ -8,6 +8,7 @@ public class PlayerExploreState : BaseState
     [SerializeField] CharacterControllerMovement movement_;
     [SerializeField] ThirdPersonCamera camera_;
 
+
     private void OnEnable()
     {
         movement_.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
@@ -16,8 +17,16 @@ public class PlayerExploreState : BaseState
 
     private void OnDisable()
     {
-        
     }
 
+    private void Update()
+    {
+        if(Input.GetButtonDown("PlayerA"))
+        {
+            StateManager.ChangeState(PlayerScriptManager.STATE.FISHING);
+        }
+    }
+
+    
 
 }

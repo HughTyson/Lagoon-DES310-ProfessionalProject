@@ -563,12 +563,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ed5aa840ee158b4ca6880ccf1354916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera_collisison_layer:
-    serializedVersion: 2
-    m_Bits: 4294967295
   collision: 0
-  adjustedCameraClipPoints: []
-  desiredCameraClipPoints: []
+  adjusted_cp_pos: []
+  desired_cp_pos: []
   collision_box_size: 3.41
 --- !u!1 &7617065909836960056
 GameObject:
@@ -1053,6 +1050,16 @@ PrefabInstance:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 5549753304947937101}
+    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: acceleration
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: max_velocity
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 708451495562159640, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: m_LocalPosition.x
