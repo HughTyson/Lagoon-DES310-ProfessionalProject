@@ -11,7 +11,7 @@ public class PlayerExploreState : BaseState
     private void OnEnable()
     {
         movement_.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
-        camera_.current_state = ThirdPersonCamera.STATE.NORMAL;
+        camera_.current_state = ThirdPersonCamera.STATE.FREE;
     }
 
     private void OnDisable()

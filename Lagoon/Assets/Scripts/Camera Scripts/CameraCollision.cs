@@ -8,15 +8,15 @@ public class CameraCollision : MonoBehaviour
     //              Visible Variables
     //===========================================
 
-    [SerializeField] LayerMask camera_collisison_layer;
+    int camera_collisison_layer;
 
     
     //collision detection variables 
 
     [SerializeField] public bool collision = false;
 
-    [SerializeField] public Vector3[] adjustedCameraClipPoints;
-    [SerializeField] public Vector3[] desiredCameraClipPoints;
+    [SerializeField] public Vector3[] adjusted_cp_pos;
+    [SerializeField] public Vector3[] desired_cp_pos;
 
     [Range(2.0f, 4.0f)]
     [SerializeField] float collision_box_size = 3.41f;
@@ -30,12 +30,14 @@ public class CameraCollision : MonoBehaviour
     public void Initialize(Camera cam)
     {
         camera = cam;
-        adjustedCameraClipPoints = new Vector3[5]; //4 clip points and the cameras position
-        desiredCameraClipPoints = new Vector3[5];
+        adjusted_cp_pos = new Vector3[5]; //4 clip points and the cameras position
+        desired_cp_pos = new Vector3[5];
 
-        camera_collisison_layer.value = 9;
+        camera_collisison_layer = 1 << 9;
 
-        Debug.Log(camera_collisison_layer.value);
+        camera_collisison_layer = ~camera_collisison_layer;
+
+
     }
 
     public void UpdateCameraClipPoints(Vector3 camera_position, Quaternion cp_rotation, ref Vector3[] intoArray)
@@ -71,18 +73,11 @@ public class CameraCollision : MonoBehaviour
             RaycastHit hit;
 
             //Physics.Raycast(clip_points[i], Vector3.Distance(clip_points[i], target_position), hit, distance)
-
-            Debug.Log(camera_collisison_layer.value);
             
-            if(Physics.Raycast(ray, out hit, camera_collisison_layer))
+            if(Physics.Raycast(ray, out hit, distance, camera_collisison_layer))
             {
                 return true;
             }
-
-            //if (Physics.Raycast(ray, out hit)) //if collision within this ray
-            //{
-            //    return true;
-            //}
         }
 
         return false;
@@ -92,9 +87,9 @@ public class CameraCollision : MonoBehaviour
     {
         float distance = -1;
 
-        for (int i = 0; i < desiredCameraClipPoints.Length; i++)
+        for (int i = 0; i < desired_cp_pos.Length; i++)
         {
-            Ray ray = new Ray(target_position, desiredCameraClipPoints[i] - target_position);
+            Ray ray = new Ray(target_position, desired_cp_pos[i] - target_position);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))
@@ -126,7 +121,7 @@ public class CameraCollision : MonoBehaviour
     public void CheckColliding(Vector3 target_position)
     {
 
-        if (CollisionDetectedAtClipPoints(desiredCameraClipPoints, target_position))
+        if (CollisionDetectedAtClipPoints(desired_cp_pos, target_position))
         {
             collision = true;
         }

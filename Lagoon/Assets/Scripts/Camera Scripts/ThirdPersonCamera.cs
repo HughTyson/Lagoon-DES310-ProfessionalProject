@@ -61,8 +61,8 @@ public class ThirdPersonCamera : MonoBehaviour
 
     public enum STATE
     {
-        NORMAL,       //Camera has free rotation around target
-        FISHING       //Camera rotates around the player, but will look at the position of the fishing bob
+        FREE,       //Camera has free rotation around target
+        CLAMPED_LOOK_AT       //Camera rotates around the player, but will look at the position of the fishing bob
        
     }
     [SerializeField] public STATE current_state;
@@ -78,8 +78,8 @@ public class ThirdPersonCamera : MonoBehaviour
         //Collision
 
         collision.Initialize(Camera.main);
-        collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints);
-        collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
+        collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjusted_cp_pos);
+        collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desired_cp_pos);
 
         if(shoulder_side)
         {
@@ -90,7 +90,7 @@ public class ThirdPersonCamera : MonoBehaviour
             target_offset = camera_offset_left;
         }
 
-        current_state = STATE.NORMAL;
+        current_state = STATE.FREE;
     }
 
     //update function
@@ -101,10 +101,10 @@ public class ThirdPersonCamera : MonoBehaviour
 
         switch (current_state)
         {
-            case STATE.NORMAL:
+            case STATE.FREE:
                 { }
                 break;
-            case STATE.FISHING:
+            case STATE.CLAMPED_LOOK_AT:
                 {
                     camera_input.x = Mathf.Clamp(camera_input.x, -50, 50);
                 }
@@ -129,9 +129,9 @@ public class ThirdPersonCamera : MonoBehaviour
 
         switch (current_state)
         {
-            case STATE.NORMAL:
+            case STATE.FREE:
                 {
-                    collisionUpdate();              //update the collisions aorund the camera
+                    //collisionUpdate();              //update the collisions aorund the camera
 
                     destinationUpdate();            //calculate the new poititon of the camera
 
@@ -141,12 +141,14 @@ public class ThirdPersonCamera : MonoBehaviour
 
                     _camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
 
+                    
+
                 }
                 break;
-            case STATE.FISHING:
+            case STATE.CLAMPED_LOOK_AT:
                 {
 
-                    collisionUpdate();              //update the collisions aorund the camera
+                    //collisionUpdate();              //update the collisions aorund the camera
 
                     destinationUpdate();            //calculate the new poititon of the camera
 
@@ -155,6 +157,8 @@ public class ThirdPersonCamera : MonoBehaviour
                     Quaternion new_look = Quaternion.LookRotation(look_at_target.position - _camera.position);
 
                     _camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
+
+                    
                 }
                 break;
             default:
@@ -165,16 +169,18 @@ public class ThirdPersonCamera : MonoBehaviour
     private void FixedUpdate()
     {
 
+        collisionUpdate();
+
         for (int i = 0; i < 5; i++)
         {
             if (drawDesiredCollisionLines)
             {
-                Debug.DrawLine(rot_target.position, collision.desiredCameraClipPoints[i], Color.white);
+                Debug.DrawLine(rot_target.position, collision.desired_cp_pos[i], Color.white);
             }
 
             if (drawAdjustedCollisionLines)
             {
-                Debug.DrawLine(rot_target.position, collision.adjustedCameraClipPoints[i], Color.green);
+                Debug.DrawLine(rot_target.position, collision.adjusted_cp_pos[i], Color.green);
             }
         }
 
@@ -196,8 +202,8 @@ public class ThirdPersonCamera : MonoBehaviour
     //updates the clip points for the collision
     private void collisionUpdate()
     {
-        collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjustedCameraClipPoints); 
-        collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desiredCameraClipPoints);
+        collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjusted_cp_pos); 
+        collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desired_cp_pos);
     }
 
     private void destinationUpdate()

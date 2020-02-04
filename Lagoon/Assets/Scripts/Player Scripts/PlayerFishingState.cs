@@ -83,7 +83,7 @@ public class PlayerFishingState : BaseState
         fishingRodMesh.SetActive(false);
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
 
-        thirdPersonCamera.current_state = ThirdPersonCamera.STATE.NORMAL;
+        thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FREE;
         heldRTInPreviousState = false;
     }
 
@@ -101,7 +101,7 @@ public class PlayerFishingState : BaseState
 
         staticFishingRodLogic.ChangeState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
-        thirdPersonCamera.current_state = ThirdPersonCamera.STATE.NORMAL;
+        thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FREE;
     }
 
     // Update is called once per frame
@@ -159,7 +159,7 @@ public class PlayerFishingState : BaseState
 
                         staticFishingRodLogic.ChangeState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
                         characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
-                        thirdPersonCamera.current_state = ThirdPersonCamera.STATE.NORMAL;
+                        thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FREE;
 
                     }
                     break;
@@ -354,7 +354,7 @@ public class PlayerFishingState : BaseState
         staticFishingRodLogic.ChangeState(StaticFishingRodLogic.STATE.ANALOG_CONTROL);
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
         thirdPersonCamera.look_at_target = istantanceFishingBob.transform;
-        thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FISHING;
+        thirdPersonCamera.current_state = ThirdPersonCamera.STATE.CLAMPED_LOOK_AT;
     }
 
     // Calculate landing of Fishing Bob
@@ -434,7 +434,7 @@ public class PlayerFishingState : BaseState
                 staticFishingRodLogic.ChangeState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
                 characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
                 thirdPersonCamera.look_at_target = transform;
-                thirdPersonCamera.current_state = ThirdPersonCamera.STATE.NORMAL;
+                thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FREE;
             }
         }
         else // no fish attached
@@ -453,7 +453,7 @@ public class PlayerFishingState : BaseState
                     staticFishingRodLogic.ChangeState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
                     characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
                     thirdPersonCamera.look_at_target = transform;
-                    thirdPersonCamera.current_state = ThirdPersonCamera.STATE.NORMAL;
+                    thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FREE;
                 }
 
             }
@@ -464,7 +464,7 @@ public class PlayerFishingState : BaseState
     void CancelCasted()
     {
         thirdPersonCamera.look_at_target = transform;
-        thirdPersonCamera.current_state = ThirdPersonCamera.STATE.NORMAL;
+        thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FREE;
 
         if (istantanceFishingBob != null) // if there is a bob currecntly attached, destroy it
         {
