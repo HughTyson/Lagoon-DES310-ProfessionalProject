@@ -33,9 +33,10 @@ public class FishLogic : MonoBehaviour
     [Header("Required Pointers")]
     [Tooltip("The physics collider of the fish")]
     [SerializeField] Collider physicsCollider;                        // the physics collider of the fish
+    [Tooltip("The transform of the fish head")]
+    [SerializeField] Transform fishheadTransform;                       
 
 
-   
 
 
 
@@ -54,7 +55,7 @@ public class FishLogic : MonoBehaviour
 
     const float wanderingTargetRadius = 0.75f;  // used for wandering algorithm
     const float wanderingTargetDistance = 1.0f; // used for wandering algorithm
-    const float targetRadius = 1.0f;            // used for arrival algorith
+    const float targetRadius = 4.0f;            // used for arrival algorith
 
 
     List<Collider> avoidingObjects = new List<Collider>(); // list of objects the fish sees and is avoinding
@@ -75,7 +76,7 @@ public class FishLogic : MonoBehaviour
     Collider attractorCollider;                 // the fishing bob collider pointer
     FishingBobLogic attractorLogic;             // the fishing bob logic pointer
     float NotInterestedInBobTime = 0.0f;        // time left until able to be interested in fishing bob
-
+    Vector2 headVectorXZ = new Vector2();
 
     void Start()
     {
@@ -148,9 +149,9 @@ public class FishLogic : MonoBehaviour
                         {
                             GetComponentInParent<MeshRenderer>().material.color = new Color(0.5f, 0.5f, 0.2f); // used for debgging
 
-                            Arrive(new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z)); // move towards the fishing bob, stopping when it's been reached
+                            Arrive(headVectorXZ ,new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z)); // move towards the fishing bob, stopping when it's been reached
 
-                            if (physicsCollider.bounds.Intersects(attractorCollider.bounds)) // the bob has been reached
+                            if (Vector2.Distance(headVectorXZ, new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z)) < 0.1f) // the bob has been reached
                             {
                                 attractorLogic.FishStartsInteracting(gameObject);
                                 avoidingObjects.Clear();
@@ -174,6 +175,19 @@ public class FishLogic : MonoBehaviour
                 }
             case STATE.INTERACTING:
                 {
+                    if (attractorCollider == null) // fish bob was destroyed, so go back to wandering
+                    {
+                        current_state = STATE.WANDERING;
+                    }
+                    else
+                    {
+                        GetComponentInParent<MeshRenderer>().material.color = new Color(0.5f, 0.5f, 0.2f); // used for debgging
+
+                        if (Vector2.Distance(headVectorXZ, new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z)) > 1.0f)  // move towards the fishing bob, if drifted away
+                        {
+                            Arrive(headVectorXZ, new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z));
+                        }
+                    }
                     GetComponentInParent<MeshRenderer>().material.color = Color.cyan; // used for debugging
                     break;
                 }
@@ -185,6 +199,9 @@ public class FishLogic : MonoBehaviour
 
     void FixedUpdate()
     {
+        headVectorXZ.x = fishheadTransform.position.x;
+        headVectorXZ.y = fishheadTransform.position.z;
+
         StateTick(); // update state
 
         NotInterestedInBobTime = Mathf.Max(0, NotInterestedInBobTime - Time.fixedDeltaTime); // countdown time 
@@ -318,9 +335,9 @@ public class FishLogic : MonoBehaviour
     }
 
     // go to a specific location with care about slowing down and stopping at it
-    void Arrive(Vector2 target)
+    void Arrive(Vector2 myPos,Vector2 target)
     {
-        Vector2 location = new Vector2(transform.position.x, transform.position.z);
+        Vector2 location = myPos;
         Vector2 desired = target - location;
         float desired_dist = desired.magnitude;
 
@@ -348,7 +365,7 @@ public class FishLogic : MonoBehaviour
                 if (other.GetComponent<TagsScript>().ContainsTheTag(TagsScript.TAGS.ACTION_SCARES_FISH)) // does the thing that the fish sees scare the fish?
                 {
                     avoidingObjects.Add(other);
-
+                    
 
                 }
             }

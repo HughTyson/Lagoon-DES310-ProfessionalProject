@@ -221,7 +221,7 @@ Transform:
   m_GameObject: {fileID: 6172555}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -2.03, y: -0.83, z: 24.16}
-  m_LocalScale: {x: 5, y: 1, z: 45}
+  m_LocalScale: {x: 5, y: 13.69, z: 45}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
@@ -313,8 +313,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 105033325}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.62, z: 0}
-  m_LocalScale: {x: 9, y: 1, z: 9}
+  m_LocalPosition: {x: 0, y: -4.94, z: 0}
+  m_LocalScale: {x: 9, y: 9.64, z: 9}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -553,7 +553,7 @@ Transform:
   m_GameObject: {fileID: 902177450}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -2.03, y: -0.83, z: -21.94}
-  m_LocalScale: {x: 5, y: 1, z: 45}
+  m_LocalScale: {x: 5, y: 13.69, z: 45}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
@@ -650,6 +650,11 @@ PrefabInstance:
       propertyPath: distance_from_target
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 7597720287063508091, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: analogMovementRodSpeed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1959907275581513573, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: m_Mass
@@ -664,11 +669,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Damper
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7597720287063508091, guid: 44c1c3a266e23f84da21ac8855c56dfb,
-        type: 3}
-      propertyPath: analogMovementRodSpeed
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44c1c3a266e23f84da21ac8855c56dfb, type: 3}
@@ -773,7 +773,7 @@ Transform:
   m_GameObject: {fileID: 1297296096}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 21.5, y: -0.83, z: 0}
-  m_LocalScale: {x: 5, y: 1, z: 45}
+  m_LocalScale: {x: 5, y: 13.69, z: 45}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 9
@@ -1203,7 +1203,7 @@ Transform:
   m_GameObject: {fileID: 2102741538}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -24.09, y: -0.83, z: 0}
-  m_LocalScale: {x: 5, y: 1, z: 45}
+  m_LocalScale: {x: 5, y: 13.69, z: 45}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6

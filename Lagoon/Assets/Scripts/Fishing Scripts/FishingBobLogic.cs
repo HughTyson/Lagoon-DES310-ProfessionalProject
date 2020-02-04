@@ -48,6 +48,7 @@ public class FishingBobLogic : MonoBehaviour
     GameObject interactingFish;                           // the current interacting fish
 
     PlayerFishingState refPlayerFishing;                       // pointer to PlayerFishing script attached to the player
+    FishingLineLogic fishingLineLogic;                       // pointer to FishingLineLogic script
     int fishbiteFailCounter = 0;                          
     float fishbiteTimer = 0.0f;                                                                                                                    
     float currentFishHoldBitTime = 0.0f;                  
@@ -111,6 +112,8 @@ public class FishingBobLogic : MonoBehaviour
             case STATE.SETTLED: // the bob is settled and will send periodic attraction pulses to the fish
                 {
                     current_attration_time -= Time.deltaTime;
+
+
                     if (current_attration_time <= 0.0f) // send attraction pulse
                     {
                         AttractionPulse();
@@ -265,9 +268,10 @@ public class FishingBobLogic : MonoBehaviour
     }
 
     // Initialize pointers when this object is instantiated
-    public void Setup(PlayerFishingState refPlayerFishing_)
+    public void Setup(PlayerFishingState refPlayerFishing_, FishingLineLogic refFishinfLineLogic_)
     {
         refPlayerFishing = refPlayerFishing_;
+        fishingLineLogic = refFishinfLineLogic_;
     }
 
 

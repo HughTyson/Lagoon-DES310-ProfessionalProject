@@ -24,7 +24,8 @@ public class StaticFishingRodLogic : MonoBehaviour
     { 
     GO_TO_DEFAULT_POSITION,
     ANALOG_CONTROL,
-    FREEZE    
+    FREEZE,
+    ANALOG_CONTROL_H_ONLY
     };
 
     STATE current_state = STATE.GO_TO_DEFAULT_POSITION;
@@ -32,6 +33,31 @@ public class StaticFishingRodLogic : MonoBehaviour
     public void ChangeState(STATE state)
     {
         current_state = state;
+    }
+
+    public void SetRodRotation(float percentageX, float percentageZ)
+    {
+        Vector3 eulerRotations = Vector3.zero;
+        if (percentageX < 0)
+        {
+            eulerRotations.z = Mathf.Lerp(RotationZMaxLeft, DefaultRotationXZ.y, percentageX + 1.0f);
+        }
+        else
+        {
+            eulerRotations.z = Mathf.Lerp(DefaultRotationXZ.y, RotationZMaxRight, percentageX);
+        }
+
+        if (percentageZ < 0)
+        {
+            eulerRotations.x = Mathf.Lerp(RotationXMaxDown, DefaultRotationXZ.x, percentageZ + 1.0f);
+        }
+        else
+        {
+            eulerRotations.x = Mathf.Lerp(DefaultRotationXZ.x, RotationXMaxUp, percentageZ);
+        }
+        transform.localRotation = Quaternion.Euler(eulerRotations);
+
+        current_state = STATE.FREEZE;
     }
     // Update is called once per frame
     void Update()
@@ -72,6 +98,22 @@ public class StaticFishingRodLogic : MonoBehaviour
 
                     break;
                 }
+            case STATE.ANALOG_CONTROL_H_ONLY:
+                {
+                    Vector2 analog = new Vector2(Input.GetAxis("PlayerLH"), Input.GetAxis("PlayerLV")); // normalized to change square into circle
+                    Vector3 eulerRotations = transform.localRotation.eulerAngles;
+                    if (analog.x < 0)
+                    {
+                        eulerRotations.z = Mathf.Lerp(RotationZMaxLeft, DefaultRotationXZ.y, analog.x + 1.0f);
+                    }
+                    else
+                    {
+                        eulerRotations.z = Mathf.Lerp(DefaultRotationXZ.y, RotationZMaxRight, analog.x);
+                    }
+
+                    transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(eulerRotations), Time.deltaTime * analogMovementRodSpeed);
+                    break;
+                }            
 
         }
     }
