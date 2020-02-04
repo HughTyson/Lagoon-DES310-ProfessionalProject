@@ -20,9 +20,28 @@ public class FishingLineLogic : MonoBehaviour
     { 
         LOOSE_STRING,
         NORMAL,
-        NOT_ACTIVE
+        NOT_ACTIVE,
+        TIGHT
     };
     STATE current_state = STATE.NOT_ACTIVE;
+
+    
+    void Start()
+    {
+        for (int i = 0; i < particleAmmount; i++)
+        {
+            LineParticles.Add(new LineParticle());
+       
+        }
+
+      //  LineParticles[0].dragPercentage = 1.0f;
+        //LineParticles[1].dragPercentage = 1.0f;
+
+     //   LineParticles[LineParticles.Count - 1].dragPercentage = 1.0f;
+
+
+        LineParticles[LineParticles.Count - 2].dragPercentage = 0.5f;
+    }
 
     public void SetState(STATE state)
     {
@@ -49,23 +68,6 @@ public class FishingLineLogic : MonoBehaviour
 
         }
     }
-    void Start()
-    {
-        for (int i = 0; i < particleAmmount; i++)
-        {
-            LineParticles.Add(new LineParticle());
-       
-        }
-
-      //  LineParticles[0].dragPercentage = 1.0f;
-        //LineParticles[1].dragPercentage = 1.0f;
-
-     //   LineParticles[LineParticles.Count - 1].dragPercentage = 1.0f;
-
-
-        LineParticles[LineParticles.Count - 2].dragPercentage = 0.5f;
-    }
-
 
     public void LooseString()
     {
@@ -249,6 +251,13 @@ public class FishingLineLogic : MonoBehaviour
                 case STATE.NOT_ACTIVE:
                     {
                         GetComponent<LineRenderer>().enabled = false;
+                        break;
+                    }
+                case STATE.TIGHT:
+                    {
+                        //lineLength = Mathf.Max(0.01f, Vector3.Distance(FishingLineTip.position, fishingBob.transform.position) * 0.8f);
+                        //LineParticles[0].position = FishingLineTip.position;
+                        //LineParticles[LineParticles.Count - 1].position = fishingBob.transform.position;
                         break;
                     }
 
