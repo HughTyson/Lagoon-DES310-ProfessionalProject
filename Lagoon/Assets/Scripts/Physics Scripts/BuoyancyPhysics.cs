@@ -10,8 +10,14 @@ public class BuoyancyPhysics : MonoBehaviour
     WaterPhysics currentWater = null; // used to apply correct WaterPhysics if traversing between different waters
 
     [SerializeField] float buoyancy = 1;
-    [SerializeField] float waterDrag = 1;
-    [SerializeField] float airDrag = 1;
+    [SerializeField] float defaultWaterDrag = 1;
+    [SerializeField] float defaultAirDrag = 0;
+
+    [SerializeField] float equilibriumAcceptance = 0.2f;
+
+
+    float WaterDrag = 1;
+    float AirDrag = 1;
 
     public enum STATE
     {
@@ -20,7 +26,17 @@ public class BuoyancyPhysics : MonoBehaviour
     };
 
 
-    void LateUpdate()
+    private void OnEnable()
+    {
+        WaterDrag = defaultWaterDrag;
+        AirDrag = defaultAirDrag;
+         current_state = STATE.IN_AIR;
+         previous_state = STATE.IN_AIR;
+         state_changed = false;
+        GetComponentInParent<Rigidbody>().drag = AirDrag;
+    }
+
+    private void LateUpdate()
     {
         state_changed = false;
         if (previous_state != current_state)
@@ -35,6 +51,7 @@ public class BuoyancyPhysics : MonoBehaviour
     STATE previous_state = STATE.IN_AIR;
     bool state_changed = false;
 
+
     public STATE GetCurrentState()
     {
         return current_state;
@@ -45,11 +62,34 @@ public class BuoyancyPhysics : MonoBehaviour
     }
 
 
+    public void SetAirDrag(float drag)
+    {
+        AirDrag = drag;
+    }
+    public void SetWaterDrag(float drag)
+    {
+        WaterDrag = drag;
+    }
+
+    public void SetToDefaultAirDrag()
+    {
+        AirDrag = defaultAirDrag;
+    }
+
+    public void SetToDefaultWaterDrag()
+    {
+        WaterDrag = defaultWaterDrag;
+    }
+
+    public bool IsInEquilibrium()
+    {
+        return GetComponentInParent<Rigidbody>().velocity.magnitude < equilibriumAcceptance;
+    }
     void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<WaterPhysics>() != null)
         {
-            GetComponentInParent<Rigidbody>().drag = waterDrag;
+            GetComponentInParent<Rigidbody>().drag = WaterDrag;
             current_state = STATE.IN_WATER;
         }
     }
@@ -76,7 +116,7 @@ public class BuoyancyPhysics : MonoBehaviour
                 currentWater = null;
                 current_state = STATE.IN_AIR;
             }
-            GetComponentInParent<Rigidbody>().drag = airDrag;
+            GetComponentInParent<Rigidbody>().drag = AirDrag;
         }
 
     }

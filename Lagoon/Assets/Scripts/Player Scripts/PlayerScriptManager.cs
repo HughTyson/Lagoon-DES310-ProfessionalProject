@@ -32,7 +32,6 @@ public class PlayerScriptManager : MonoBehaviour
     [SerializeField] BaseState currentState;
 
     [SerializeField] PlayerFishingState stateFishing;
-
     [SerializeField] PlayerExploreState stateExplore;
     public enum STATE
     { 
@@ -47,6 +46,11 @@ public class PlayerScriptManager : MonoBehaviour
 
         stateFishing.SetStateManagerPointer(this);
         stateExplore.SetStateManagerPointer(this);
+
+        stateFishing.enabled = false;
+        stateExplore.enabled = false;
+
+        currentState.enabled = true;
     }
 
     // Update is called once per frame

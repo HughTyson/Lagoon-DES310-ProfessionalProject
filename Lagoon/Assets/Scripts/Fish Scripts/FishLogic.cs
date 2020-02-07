@@ -22,12 +22,15 @@ public class FishLogic : MonoBehaviour
     [SerializeField]  float TerminalForceDuration_max = 5;       // maximum terminal force time chosen in RandomRange before changing the terminal force
 
 
-
     [Header("Fishing Properties")]
     [Tooltip("success rate of a lure attraction pulse attracting the fish to go to it")]
     [Range(0.0f,1.0f)]
     [SerializeField] float lureAttractionSuccessRate = 1.0f;          //success rate of a lure attraction pulse attracting the fish to go to it
-
+    [Range(0, 1)]
+    [Tooltip("chance of the fish bite attempt succeeding")]
+    [SerializeField] float fishbiteChance = 0.2f;           // chance of the fish bite attempt succeeding
+    [Tooltip("how long the fish holds the bite before escaping")]
+    [SerializeField] float fishHoldBiteTime = 2.0f;         // how long the fish holds the bite before escaping
 
 
     [Header("Required Pointers")]
@@ -55,7 +58,7 @@ public class FishLogic : MonoBehaviour
 
     const float wanderingTargetRadius = 0.75f;  // used for wandering algorithm
     const float wanderingTargetDistance = 1.0f; // used for wandering algorithm
-    const float targetRadius = 4.0f;            // used for arrival algorith
+    const float targetRadius = 3.0f;            // used for arrival algorith
 
 
     List<Collider> avoidingObjects = new List<Collider>(); // list of objects the fish sees and is avoinding
@@ -145,15 +148,15 @@ public class FishLogic : MonoBehaviour
                     }
                     else
                     {
-                        if (attractorLogic.GetState() != FishingBobLogic.STATE.FISH_INTERACTING) 
+                        if (attractorLogic.GetState() != FishingBobLogic.STATE.FISH_INTERACTING)
                         {
                             GetComponentInParent<MeshRenderer>().material.color = new Color(0.5f, 0.5f, 0.2f); // used for debgging
 
-                            Arrive(headVectorXZ ,new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z)); // move towards the fishing bob, stopping when it's been reached
+                            Arrive(headVectorXZ, new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z)); // move towards the fishing bob, stopping when it's been reached
 
-                            if (Vector2.Distance(headVectorXZ, new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z)) < 0.1f) // the bob has been reached
+                            if (Vector2.Distance(headVectorXZ, new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z)) < 0.5f) // the bob has been reached
                             {
-                                attractorLogic.FishStartsInteracting(gameObject);
+                                attractorLogic.FishStartsInteracting(this);
                                 avoidingObjects.Clear();
                                 current_state = STATE.INTERACTING;
 
@@ -208,7 +211,11 @@ public class FishLogic : MonoBehaviour
 
         // Rotate the fish on the y axis dependant on the velocity on the XZ plane, so it faces the direction of its velocity
         Vector2 velocityUnitXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z).normalized;
+
+        if (velocityUnitXZ.magnitude > 0.0001)
+        {
         transform.parent.transform.rotation = Quaternion.LookRotation(new Vector3(velocityUnitXZ.x, 0, velocityUnitXZ.y), Vector3.up);
+        }
 
     }
 
@@ -404,5 +411,21 @@ public class FishLogic : MonoBehaviour
     {
         current_state = STATE.WANDERING;
         NotInterestedInBobTime = duration;
+    }
+
+    public bool IsInStateInteracting()
+    {
+        return (current_state == STATE.INTERACTING);
+    }
+
+    public bool BiteAttempt()
+    {
+        return (Random.value <= fishbiteChance);
+    }
+
+
+    public float GetFishBiteHoldTime()
+    {
+        return fishHoldBiteTime;
     }
 }

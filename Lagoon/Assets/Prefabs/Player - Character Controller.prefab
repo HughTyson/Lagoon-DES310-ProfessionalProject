@@ -144,11 +144,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultRotationXZ: {x: 17.76, y: -8.18}
-  RotationXMaxUp: 42
-  RotationXMaxDown: -42
-  RotationZMaxLeft: 20
-  RotationZMaxRight: -30
-  analogMovementRodSpeed: 10
+  FishFightingLeftRotation: {x: 12, y: 0, z: 28}
+  FishFightingMiddleRotation: {x: 12, y: 0, z: -8.12}
+  FishFightingRightRotation: {x: 12, y: 0, z: -40}
 --- !u!95 &742496304976092426
 Animator:
   serializedVersion: 3
@@ -275,6 +273,7 @@ GameObject:
   - component: {fileID: 6160413944266683236}
   - component: {fileID: 2428279469275129610}
   - component: {fileID: 4994201600233756953}
+  - component: {fileID: 1781338289793398869}
   m_Layer: 0
   m_Name: Player - Character Controller
   m_TagString: Untagged
@@ -394,23 +393,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c34c63f2a4ea72c4c956f5d9de8b24a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fishingCastVelocity: 20
   fishingCastVelocityDampener: 1
-  fishingReelInSpeed: 15
-  prefabFishingBob: {fileID: 4170572976050226227, guid: fb2949a98a2ca8f4fbb0075b058c5a0f,
-    type: 3}
-  prefabFishingCastIndicator: {fileID: 8694833267455261335, guid: a62254f9eb652ba47b5ff9ba7ac68ce1,
-    type: 3}
+  fishingReelInSpeed: 12
+  fishbiteTimerMin: 2
+  fishbiteTimerMax: 4
   textFishingCastPower: {fileID: 0}
   textFishingFishCaught: {fileID: 0}
   cameraTransform: {fileID: 0}
   fishingRodTip: {fileID: 0}
-  flexibleFishingRod: {fileID: 0}
   fishingLineLogic: {fileID: 0}
   fishingRodMesh: {fileID: 4580078603987145739}
   characterControllerMovement: {fileID: 6160413944266683236}
   thirdPersonCamera: {fileID: 0}
   staticFishingRodLogic: {fileID: 6301241936874654446}
   fishingRodLogic: {fileID: 0}
+  fishingProjectileIndicator: {fileID: 0}
+  TODO: {fileID: 0}
+  fishingBob: {fileID: 0}
 --- !u!114 &4994201600233756953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,6 +424,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tags: 0200000003000000
+--- !u!114 &1781338289793398869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6160413944266683237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 737941dd70c450747b9d6723b65e4ae9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movement_: {fileID: 6160413944266683236}
+  camera_: {fileID: 0}
 --- !u!1 &6186341015964039332
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,7 +518,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.385
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
@@ -519,12 +533,12 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 9.313226e-10
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00000001618173
+      value: -0.000000023865141
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
@@ -554,17 +568,17 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.34482756
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: -2235245789278775237, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
