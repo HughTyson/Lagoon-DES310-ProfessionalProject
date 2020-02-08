@@ -22,7 +22,7 @@ public class StaticFishingRodLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        transform.localRotation = Quaternion.Euler(DefaultRotationXZ.x, 0, DefaultRotationXZ.y);
     }
 
     public enum STATE
@@ -107,7 +107,7 @@ public class StaticFishingRodLogic : MonoBehaviour
         {
             case STATE.GO_TO_DEFAULT_POSITION:
                 {
-              //      transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(DefaultRotationXZ.x, 0, DefaultRotationXZ.y), Time.deltaTime);
+                    transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(DefaultRotationXZ.x, 0, DefaultRotationXZ.y), Time.deltaTime);
                     break;
                 }
             //case STATE.ANALOG_CONTROL:

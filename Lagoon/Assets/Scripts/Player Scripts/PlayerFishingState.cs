@@ -30,8 +30,8 @@ public class PlayerFishingState : BaseState
     [Header("Debugging Text")]
     [Tooltip("text for showing fishing cast power")]
     [SerializeField] Text textFishingCastPower;
-    [Tooltip("text for showing if a fish was caught")]
-    [SerializeField] Text textFishingFishCaught;
+    [SerializeField] Text DEBUG_FISH_UNHOOK;
+    [SerializeField] Text DEBUG_FISH_LINE_SNAP;
 
     [Header("Pointers")]
     [Tooltip("the transform of the camera")]
@@ -57,8 +57,9 @@ public class PlayerFishingState : BaseState
     [Tooltip("the fishing bob logic script")]
     [SerializeField] GameObject fishingBob;
 
+    [SerializeField] Collider islandCollider;
 
- 
+
 
     enum FISHING_STATE
     {
@@ -115,7 +116,7 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.IDLE:  // not fishing
                 {
-                  
+
 
 
                     if (Input.GetButtonDown("PlayerRB")) // begin powering up the cast
@@ -166,7 +167,10 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.BOB_IS_FLYING:
                 {
-                    if (fishingBob.GetComponentInChildren<BuoyancyPhysics>().IsInEquilibrium()) // bob has settled
+                    DEBUG_FISH_UNHOOK.text = ""; // DEBUG STUFF
+
+
+                    if (fishingBob.GetComponentInChildren<BuoyancyPhysics>().GetCurrentState() == BuoyancyPhysics.STATE.IN_WATER) // bob has settled
                     {
                         fishingLineLogic.BeganFishing();
                         fishingBob.GetComponentInChildren<FishingBobLogic>().BeganFishing();
@@ -255,6 +259,29 @@ public class PlayerFishingState : BaseState
                     {
                         staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.MIDDLE);
                     }
+
+                    if (islandCollider.bounds.Contains(interactingFish.transform.position))
+                    {
+                        // fish caught
+                        DEBUG_FISH_UNHOOK.text = "Fish Caught!";
+                        FishFightSuccess();
+                    }
+                    else if (interactingFish.GetLineStrengthPercentageLeft() <= 0)
+                    {
+                        FishFightLineSnapped();
+                    }
+                    else if (Input.GetButtonDown("PlayerB"))
+                    {
+                        FishFightLineSnapped();
+                    }
+                    else if (Input.GetButton("PlayerRB"))
+                    {
+                        interactingFish.ReelingIn();
+                    }
+                    
+                     
+
+
                     break;
                 }
         }
@@ -268,7 +295,6 @@ public class PlayerFishingState : BaseState
     {
         fishing_state = FISHING_STATE.POWERING_UP;     
         castingTime = 0.0f;
-        textFishingFishCaught.text = "";
         fishingProjectileIndicator.SetActive(true);
         TransformIndicator();
     }
@@ -393,6 +419,15 @@ public class PlayerFishingState : BaseState
         fishing_state = FISHING_STATE.IDLE;
         staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
+
+        if (interactingFish != null)
+        {
+            if (interactingFish.IsInStateInteracting())
+            {
+                interactingFish.LostInterestInFishingBob(1.0f);
+            }
+            interactingFish = null;
+        }
     }
 
 
@@ -489,14 +524,25 @@ public class PlayerFishingState : BaseState
     {
         fishing_state = FISHING_STATE.FISH_FIGHTING;
         fishingBob.GetComponentInChildren<FishingBobLogic>().BeganFighting();
-        fishingLineLogic.BeganFighting();
+        fishingLineLogic.BeganFighting(interactingFish);
         staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.MIDDLE);
-        
-        //Destroy(istantanceFishingBob);
-        //fishing_state = FISHING_STATE.FISH_FIGHTING;
-        //textFishingFishCaught.color = Color.green;
-        textFishingFishCaught.text = "FISH CAUGHT!";
-        //staticFishingRodLogic.ChangeState(StaticFishingRodLogic.STATE.ANALOG_CONTROL_H_ONLY);
+        interactingFish.BeginFighting(new Vector2(transform.position.x, transform.position.z), staticFishingRodLogic, DEBUG_FISH_UNHOOK,DEBUG_FISH_LINE_SNAP);
+    }
+
+    void FishFightLineSnapped()
+    {
+        interactingFish.LostInterestInFishingBob(20.0f);
+
+        interactingFish = null;
+        CancelCasted();
+
+    }
+
+    void FishFightSuccess()
+    {
+        Destroy(interactingFish.transform.parent.gameObject);
+        interactingFish = null;
+        CancelCasted();
     }
 
     // -- // 

@@ -41,12 +41,7 @@ public class FishingBobLogic : MonoBehaviour
 
 
     List<GameObject> nearbyFish = new List<GameObject>(); // list of nearby fish
-    FishLogic interactingFish;                           // the current interacting fish
-
-
-    int fishbiteFailCounter = 0;                          
-    float fishbiteTimer = 0.0f;                                                                                                                    
-    float currentFishHoldBitTime = 0.0f;                  
+    FishLogic interactingFish;                           // the current interacting fish            
 
 
     private void Start()
@@ -56,12 +51,16 @@ public class FishingBobLogic : MonoBehaviour
 
     private void OnEnable()
     {
-        
+        GetComponentInParent<Rigidbody>().isKinematic = false;
+        GetComponentInParent<Rigidbody>().useGravity = true;
     }
 
     private void OnDisable()
     {
+        ScareNearbyFish();
         current_state = STATE.NOT_ACTIVE;
+        interactingFish = null;
+        nearbyFish.Clear();
     }
 
 
@@ -111,7 +110,11 @@ public class FishingBobLogic : MonoBehaviour
 
                     // GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.GetEndOfLine() - transform.position) / precievedLineMass, ForceMode.VelocityChange);
                   //  GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineVelocity()) / precievedLineMass, ForceMode.VelocityChange);
-                  GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineVelocity()) / precievedLineMass, ForceMode.VelocityChange);
+                  if ((fishingLineLogic.EndOfLineVelocity() / precievedLineMass).magnitude > 0.15f)
+                  {
+                     GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineVelocity()) / precievedLineMass, ForceMode.VelocityChange);
+                  }
+
                  //   GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineForce()) / 1.0f, ForceMode.VelocityChange);
                     //  GetComponentInParent<Rigidbody>().velocity = Vector3.ClampMagnitude(GetComponentInParent<Rigidbody>().velocity, 40);
 
@@ -125,8 +128,11 @@ public class FishingBobLogic : MonoBehaviour
             case STATE.FISH_INTERACTING: // a fish is interacting with the bob
                 {
 
-                    GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineVelocity()) / precievedLineMass, ForceMode.VelocityChange);
-                    
+                    if ((fishingLineLogic.EndOfLineVelocity() / precievedLineMass).magnitude > 0.15f)
+                    {
+                        GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineVelocity()) / precievedLineMass, ForceMode.VelocityChange);
+                    }
+
                     if (!interactingFish.IsInStateInteracting())
                     {
                         current_state = STATE.CASTED;
@@ -143,6 +149,9 @@ public class FishingBobLogic : MonoBehaviour
             case STATE.FIGHTING_FISH:
                 {
                     transform.parent.transform.position = interactingFish.transform.position;
+
+                    GetComponentInParent<Rigidbody>().isKinematic = true;
+                    GetComponentInParent<Rigidbody>().useGravity = false;
                     break;
                 }
 

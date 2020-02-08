@@ -13,7 +13,8 @@ public class FishingLineLogic : MonoBehaviour
     [SerializeField] int accuracyItirations = 5;
 
 
-    [SerializeField] float hooksLawLineConstant = 1.0f;
+    [SerializeField] Color normal_colour;
+    [SerializeField] Color snapping_colour;
 
     float normal_line_length = 0;
     public enum STATE
@@ -26,24 +27,34 @@ public class FishingLineLogic : MonoBehaviour
     STATE current_state = STATE.NOT_ACTIVE;
 
 
-    
+    FishLogic fightingFish;
 
 
     void Start()
     {
-        //for (int i = 0; i < particleAmmount; i++)
-        //{
-        //    LineParticles.Add(new LineParticle());
-       
-        //}
+        LineParticles.Clear();
 
-        //LineParticles[LineParticles.Count - 2].dragPercentage = 0.5f;
+        LineParticle new_particle = new LineParticle();
+        new_particle.position = FishingLineTip.position;
+        new_particle.oldPosition = FishingLineTip.position;
+
+        LineParticle new_particle2 = new LineParticle();
+        new_particle2.position = FishingLineTip.position;
+        new_particle2.oldPosition = FishingLineTip.position;
+
+        LineParticles.AddFirst(new_particle);
+        LineParticles.AddFirst(new_particle2);
+
+        GetComponent<LineRenderer>().positionCount = 2;
     }
 
-    
+
+
+    float test = 0;
     public void CastLine()
     {
         current_state = STATE.CASTING;
+        test = 0;
         //for (int i = 0; i < LineParticles.Count; i++)
         //{
         //    LineParticles[i].position = FishingLineTip.position;
@@ -56,7 +67,7 @@ public class FishingLineLogic : MonoBehaviour
        
         public Vector3 oldPosition = Vector3.zero;
         public Vector3 position = Vector3.zero;
-        public Vector3 accelleration = Physics.gravity;
+        public Vector3 accelleration = Physics.gravity * 0.2f;
         public float dragPercentage = 0.0f;
     }
 
@@ -64,11 +75,7 @@ public class FishingLineLogic : MonoBehaviour
 
     private void OnEnable()
     {
-        //for (int i = 0; i < LineParticles.Count; i++)
-        //{
-        //    LineParticles[i].position = FishingLineTip.position;
-        //    LineParticles[i].oldPosition = FishingLineTip.position;
-        //}
+        GetComponent<LineRenderer>().material.color = normal_colour;
 
         LineParticles.Clear();
 
@@ -96,8 +103,6 @@ public class FishingLineLogic : MonoBehaviour
         {
             LineParticles.RemoveFirst();
             GetComponent<LineRenderer>().positionCount = LineParticles.Count;
-
-
         }
     }
     public bool IsFullyReeledIn()
@@ -108,7 +113,6 @@ public class FishingLineLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        FishingLineTip.GetComponent<FishingRodLogic>().SafetyUpdate();
 
 
         // Collisions
@@ -131,18 +135,19 @@ public class FishingLineLogic : MonoBehaviour
                 }
                 if (in_water)
                 {
-                    it.Value.accelleration = Physics.gravity * -0.2f;
+                    it.Value.accelleration = Physics.gravity * -0.02f;
+                    //it.Value.accelleration.x = ((Mathf.PerlinNoise(it.Value.position.x * 8.0f, Time.time) * 2.0f) - 1.0f) * 5.0f;
+                    //it.Value.accelleration.z = ((Mathf.PerlinNoise(it.Value.position.z * 8.0f, Time.time) * 2.0f) - 1.0f) * 5.0f;
 
-                    it.Value.accelleration.x = ((Mathf.PerlinNoise(it.Value.position.x*8.0f, Time.time) * 2.0f) - 1.0f) * 5.0f;
-                    it.Value.accelleration.z = ((Mathf.PerlinNoise(it.Value.position.z*8.0f, Time.time) * 2.0f) -1.0f) * 5.0f;
-
-                    it.Value.dragPercentage = 0.02f;
+                it.Value.dragPercentage = 0.1f;
                 }
                 else
                 {
-                    it.Value.accelleration = Physics.gravity;
-                it.Value.dragPercentage = 0.0f;
-            }
+                    it.Value.accelleration = Physics.gravity * 0.2f;
+
+
+                it.Value.dragPercentage = 0.01f;
+                }
             }
 
             switch (current_state)
@@ -153,13 +158,14 @@ public class FishingLineLogic : MonoBehaviour
                     LineParticles.First.Value.position = FishingLineTip.position;
                     LineParticles.Last.Value.position = fishingBob.transform.position;
                     LineParticles.Last.Value.oldPosition = fishingBob.transform.position;
-                    if (Vector3.Distance(LineParticles.First.Value.position, LineParticles.First.Next.Value.position) > 0.3f)
+
+                    if (Vector3.Distance(LineParticles.First.Value.position, LineParticles.First.Next.Value.position) > 0.26f)
                     {
                         LineParticle new_particle = new LineParticle();
                         new_particle.position = FishingLineTip.position;
                         new_particle.oldPosition = FishingLineTip.position;
                         LineParticles.AddFirst(new_particle);
-                        GetComponent<LineRenderer>().positionCount = GetComponent<LineRenderer>().positionCount + 1;
+                        GetComponent<LineRenderer>().positionCount = LineParticles.Count;
                     }
 
                     for (LinkedListNode<LineParticle> it = LineParticles.First; it != null; it = it.Next)
@@ -193,10 +199,10 @@ public class FishingLineLogic : MonoBehaviour
                     {
 
                     LineParticles.First.Value.position = FishingLineTip.position;
+                    LineParticles.Last.Value.oldPosition = LineParticles.First.Value.position;
 
-
-                     LineParticles.Last.Value.position = fishingBob.transform.position;
-                     LineParticles.Last.Value.oldPosition = fishingBob.transform.position;
+                    LineParticles.Last.Value.position = fishingBob.transform.position;
+                    LineParticles.Last.Value.oldPosition = fishingBob.transform.position;
 
 
 
@@ -252,7 +258,6 @@ public class FishingLineLogic : MonoBehaviour
                             LineParticles.First.Value.position = FishingLineTip.position;
                             LineParticles.Last.Value.position = fishingBob.transform.position;
                             LineParticles.Last.Value.oldPosition = fishingBob.transform.position;
-
                             PoleConstraint(it.Value, it.Previous.Value, 0.25f);
 
                         }
@@ -264,18 +269,29 @@ public class FishingLineLogic : MonoBehaviour
                         normal_line_length += Vector3.Distance(it.Value.position, it.Next.Value.position);
                     }
 
-                    float line_distance = 0;
-                    for (LinkedListNode<LineParticle> it = LineParticles.First; it.Next != null; it = it.Next)
+                    while(true)
                     {
-                        line_distance += Vector3.Distance(it.Value.position, it.Next.Value.position);
+                        float line_distance = 0;
+                        for (LinkedListNode<LineParticle> it = LineParticles.First; it.Next != null; it = it.Next)
+                        {
+                            line_distance += Vector3.Distance(it.Value.position, it.Next.Value.position);
+                        }
+
+                        if (line_distance > (Vector3.Distance(fishingBob.transform.position, FishingLineTip.position) - 0.01f))
+                        {
+                            LineParticles.RemoveLast();
+                            GetComponent<LineRenderer>().positionCount = LineParticles.Count;
+                            
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
 
-                    if (line_distance > (Vector3.Distance(fishingBob.transform.position, FishingLineTip.position) + 0.4f))
-                    {
-                        LineParticles.RemoveFirst();
-                        GetComponent<LineRenderer>().positionCount = LineParticles.Count;
-                        LineParticles.First.Value.position = FishingLineTip.position;
-                    }
+
+                    GetComponent<LineRenderer>().material.color = Color.Lerp(snapping_colour, normal_colour, fightingFish.GetLineStrengthPercentageLeft());
+
                     break;
                     }
 
@@ -315,9 +331,10 @@ public class FishingLineLogic : MonoBehaviour
         normal_line_length += Vector3.Distance(LineParticles.Last.Value.position, fishingBob.transform.position);
     }
 
-    public void BeganFighting()
+    public void BeganFighting(FishLogic fishLogic)
     {
         current_state = STATE.FIGHTING;
+        fightingFish = fishLogic;
     }
     // -- Read Functions -- //
     public Vector3 GetEndOfLine()
@@ -345,14 +362,24 @@ public class FishingLineLogic : MonoBehaviour
             float extra_length = Mathf.Max(current_rope_length - normal_line_length, 0);
 
 
-            if (current_state == STATE.FIGHTING)
+            switch(current_state)
             {
-                return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * 5.0f;
+                case STATE.CASTING:
+                    {
+                        return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * 5.0f;
+                    }
+                case STATE.FISHING:
+                    {
+                        test += Time.deltaTime;
+                        return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * Mathf.Lerp(5.0f,0.1f,test);
+                    }
+                case STATE.FIGHTING:
+                    {
+                        return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * 10.0f;
+
+                    }
             }
-            else
-            {
-            return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * 1.0f;
-            }
+
         }
 
 
