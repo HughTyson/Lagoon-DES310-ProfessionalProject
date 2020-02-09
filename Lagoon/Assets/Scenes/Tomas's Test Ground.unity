@@ -313,7 +313,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 105033325}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.94, z: 0}
+  m_LocalPosition: {x: 0, y: -5.03, z: 0}
   m_LocalScale: {x: 9, y: 9.64, z: 9}
   m_Children: []
   m_Father: {fileID: 0}
@@ -993,7 +993,7 @@ PrefabInstance:
     - target: {fileID: 4002937522456851497, guid: 3680711aa9202934a931214217847522,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.16
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 4002937522456851497, guid: 3680711aa9202934a931214217847522,
         type: 3}
@@ -1573,7 +1573,7 @@ PrefabInstance:
     - target: {fileID: 4617798955488152022, guid: 31b401bc4e04cce489203e5dd170fc64,
         type: 3}
       propertyPath: m_Name
-      value: FishManager
+      value: FishGenerator
       objectReference: {fileID: 0}
     - target: {fileID: 3461400804761589040, guid: 31b401bc4e04cce489203e5dd170fc64,
         type: 3}
@@ -1642,13 +1642,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4383612614141788679, guid: 31b401bc4e04cce489203e5dd170fc64,
         type: 3}
-      propertyPath: maxFish
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4383612614141788679, guid: 31b401bc4e04cce489203e5dd170fc64,
-        type: 3}
       propertyPath: islandCollider
       value: 
       objectReference: {fileID: 105033326}
+    - target: {fileID: 4383612614141788679, guid: 31b401bc4e04cce489203e5dd170fc64,
+        type: 3}
+      propertyPath: NoSpawnColliders.Array.data[0]
+      value: 
+      objectReference: {fileID: 811060558}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31b401bc4e04cce489203e5dd170fc64, type: 3}

@@ -718,4 +718,39 @@ public class FishLogic : MonoBehaviour
     {
         return (fightingStateVars.currentLineTensionTime / fightingInitialLineTensionTime);
     }
+
+
+    public bool IsInDespawnableState()
+    {
+        switch (current_state)
+        {
+            case STATE.ATTRACTED:
+                {
+                    return false;
+                }
+            case STATE.AVOIDANCE_SETTLE:
+                {
+                    return true;
+                }
+            case STATE.AVOIDING:
+                {
+                    return true;
+                }
+            case STATE.FIGHTING:
+                {
+                    return false;
+                }
+            case STATE.INTERACTING:
+                {
+                    return false;
+                }
+            case STATE.WANDERING:
+                {
+                    return true;
+                }
+
+        }
+        return false;
+
+    }
 }
