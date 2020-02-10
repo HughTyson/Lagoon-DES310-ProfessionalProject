@@ -210,6 +210,14 @@ public class FishLogic : MonoBehaviour
 
     void FixedUpdate()
     {
+        for (int i = 0; i < avoidingObjects.Count; i++)
+        {
+            if (avoidingObjects[i] == null)
+            {
+                avoidingObjects.Remove(avoidingObjects[i]);
+            }
+        }
+
         if (current_state != STATE.FIGHTING)
         {
             StateTick(); // update state
@@ -228,6 +236,14 @@ public class FishLogic : MonoBehaviour
 
     void Update()
     {
+        for (int i = 0; i < avoidingObjects.Count; i++)
+        {
+            if (avoidingObjects[i] == null)
+            {
+                avoidingObjects.Remove(avoidingObjects[i]);
+            }
+        }
+
         headVectorXZ.x = fishheadTransform.position.x;
         headVectorXZ.y = fishheadTransform.position.z;
 
