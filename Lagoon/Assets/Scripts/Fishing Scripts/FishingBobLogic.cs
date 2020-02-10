@@ -85,9 +85,21 @@ public class FishingBobLogic : MonoBehaviour
     {
         current_state = STATE.FIGHTING_FISH;
     }
+
+    void SafelyRemoveNull()
+    {
+        for (int i = 0; i < nearbyFish.Count; i++)
+        {
+            if (nearbyFish[i] == null)
+            {
+                nearbyFish.Remove(nearbyFish[i]);
+            }
+        }
+    }
     public void ScareNearbyFish()
     {
         current_attration_time = attractionPulseTimeInterval;
+        SafelyRemoveNull();
         for (int i = 0; i < nearbyFish.Count; i++)
         {
             nearbyFish[i].GetComponentInChildren<FishLogic>().LostInterestInFishingBob(5.0f);
@@ -160,6 +172,7 @@ public class FishingBobLogic : MonoBehaviour
     // called at a periodic interval to nearby fish
     void AttractionPulse()
     {
+        SafelyRemoveNull();
         for (int i = 0; i < nearbyFish.Count; i++)
         {
             nearbyFish[i].GetComponentInChildren<FishLogic>().AttractionAttempt(physicsCollider,this);

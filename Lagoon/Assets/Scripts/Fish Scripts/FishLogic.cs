@@ -447,13 +447,15 @@ public class FishLogic : MonoBehaviour
 
     // -- Fighting State -- //
 
-    enum FIGHTING_STATE
+    public enum FIGHTING_STATE
     {
         BEGIN_FIGHTING,
         RIGHT,
         LEFT,
         TRANSITIONING
     }
+
+
     struct FightingStateVars
     {
 
@@ -752,5 +754,10 @@ public class FishLogic : MonoBehaviour
         }
         return false;
 
+    }
+
+    public FIGHTING_STATE GetFightingState()
+    {
+        return fightingStateVars.state;
     }
 }

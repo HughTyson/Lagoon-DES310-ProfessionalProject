@@ -53,7 +53,7 @@ public class PlayerFishingState : BaseState
     [Tooltip("the fishing indicator")]
     [SerializeField] GameObject fishingProjectileIndicator;
     [Tooltip("the fishing fish indicator")]
-    [SerializeField] GameObject TODO;
+    [SerializeField] FishingIndicators fishingIndicatorLogic;
     [Tooltip("the fishing bob logic script")]
     [SerializeField] GameObject fishingBob;
 
@@ -89,6 +89,9 @@ public class PlayerFishingState : BaseState
         GetComponentInChildren<Animator>().enabled = false;
         staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
         thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FREE;
+
+        fishingIndicatorLogic.gameObject.SetActive(true);
+        fishingIndicatorLogic.AttachLookAtTransform(cameraTransform);
     }
 
     private void OnDisable()
@@ -96,7 +99,8 @@ public class PlayerFishingState : BaseState
         fishingRodMesh.SetActive(false);
         fishingLineLogic.gameObject.SetActive(false);
         fishingBob.SetActive(false);
-        TODO.gameObject.SetActive(false);
+
+        fishingIndicatorLogic.gameObject.SetActive(false);
         fishingProjectileIndicator.gameObject.SetActive(false);
 
         thirdPersonCamera.look_at_target = transform; // set target back to player
@@ -247,6 +251,30 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.FISH_FIGHTING:
                 {
+
+
+
+                    switch(interactingFish.GetFightingState())
+                    {
+                        case FishLogic.FIGHTING_STATE.LEFT:
+                            {
+                                fishingIndicatorLogic.SetIndicator(FishingIndicators.ANIMATION_STATE.FISH_LEFT);
+                                fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x,GlobalVariables.WATER_LEVEL + 1.0f , interactingFish.transform.position.z));
+                                break;
+                            }
+                        case FishLogic.FIGHTING_STATE.RIGHT:
+                            {
+                                fishingIndicatorLogic.SetIndicator(FishingIndicators.ANIMATION_STATE.FISH_RIGHT);
+                                fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x, GlobalVariables.WATER_LEVEL + 1.0f, interactingFish.transform.position.z));
+                                break;
+                            }
+                        default:
+                            {
+                                fishingIndicatorLogic.SetIndicator(FishingIndicators.ANIMATION_STATE.NOT_ACTIVE);
+                                break;
+                            }
+                    }
+
                     if (Input.GetAxis("PlayerLH") < -0.5f)
                     {
                         staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.LEFT);
@@ -472,6 +500,9 @@ public class PlayerFishingState : BaseState
                     else
                     {
                         fishingBob.GetComponentInChildren<FishingBobLogic>().FishTestedLure();
+                        fishingIndicatorLogic.SetIndicator(FishingIndicators.ANIMATION_STATE.FISH_TEST);
+                        fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x, GlobalVariables.WATER_LEVEL + 1.0f, interactingFish.transform.position.z));
+
                         interactingFish.LostInterestInFishingBob(5.0f);
                         FishInteractingFailed();
                     }
@@ -479,6 +510,8 @@ public class PlayerFishingState : BaseState
                 else
                 {
                     fishingBob.GetComponentInChildren<FishingBobLogic>().FishTestedLure();
+                    fishingIndicatorLogic.SetIndicator(FishingIndicators.ANIMATION_STATE.FISH_TEST);
+                    fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x, GlobalVariables.WATER_LEVEL + 1.0f, interactingFish.transform.position.z));
                 }
             }
         }
@@ -500,6 +533,8 @@ public class PlayerFishingState : BaseState
         fishingBob.GetComponentInChildren<FishingBobLogic>().FishBitLure();
         fishing_state = FISHING_STATE.BITING_FISH;
         fishBiteHoldTimeLeft = interactingFish.GetFishBiteHoldTime();
+
+        fishingIndicatorLogic.SetIndicator(FishingIndicators.ANIMATION_STATE.FISH_BITE);
     }
 
     void FishBiteUpdate()
