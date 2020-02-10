@@ -25,7 +25,7 @@ public class PlayerConversationState : BaseState
     private void OnEnable()
     {
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
-        camera_.current_state = ThirdPersonCamera.STATE.FIXED_LOOK_AT;
+        camera_.current_state = ThirdPersonCamera.STATE.FREE;
         state = ConversationState.WATCH_DROP;
     }
 
@@ -55,9 +55,14 @@ public class PlayerConversationState : BaseState
                         //camera_.look_at_target = ;
                     }
                     
-                    if(Input.GetButtonDown("PlayerB"))
+                    if(Input.GetButtonDown("PlayerY"))
                     {
                         test_drop.DestroyBox();
+                    }
+
+                    if (Input.GetButtonDown("PlayerB"))
+                    {
+                        StateManager.ChangeState(PlayerScriptManager.STATE.EXPLORING);
                     }
 
                 }
