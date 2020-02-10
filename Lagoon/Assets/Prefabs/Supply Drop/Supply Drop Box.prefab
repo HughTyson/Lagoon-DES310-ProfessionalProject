@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33bdc07340d2ae248896419f372ea2cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  box_state: 0
 --- !u!54 &-1143502479480511041
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -136,5 +137,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buoyancy: 30
-  waterDrag: 5
-  airDrag: 3
+  defaultWaterDrag: 10
+  defaultAirDrag: 0
+  equilibriumAcceptance: 0.2
