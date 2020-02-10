@@ -57,8 +57,8 @@ public class PlayerFishingState : BaseState
     [Tooltip("the fishing bob logic script")]
     [SerializeField] GameObject fishingBob;
 
+    [SerializeField] Animator fixedRodAnimator;
     [SerializeField] Collider islandCollider;
-
 
 
     enum FISHING_STATE
@@ -86,7 +86,7 @@ public class PlayerFishingState : BaseState
         fishing_state = FISHING_STATE.PREPAIRING_ROD;
         fishingRodMesh.SetActive(true);
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
-        GetComponentInChildren<Animator>().enabled = false;
+        fixedRodAnimator.enabled = false;
         staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
         thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FREE;
 
@@ -146,7 +146,7 @@ public class PlayerFishingState : BaseState
                         TransformIndicator();
                         if (Input.GetButtonUp("PlayerRB")) // release the cast and throw the bob
                         {
-                            GetComponentInChildren<Animator>().enabled = true;
+                            fixedRodAnimator.enabled = true;
                             BeginCastingAnimation();
                         }
                         else if (Input.GetButtonDown("PlayerB"))
@@ -159,10 +159,10 @@ public class PlayerFishingState : BaseState
             case FISHING_STATE.CASTING_ANIMATION: // the bob has been thrown
                 {
                     TransformIndicator();
-                   AnimatorStateInfo test = GetComponentInChildren<Animator>().GetCurrentAnimatorStateInfo(0);
+                   AnimatorStateInfo test = fixedRodAnimator.GetCurrentAnimatorStateInfo(0);
                     if (test.speed == 0)
                     {
-                        GetComponentInChildren<Animator>().enabled = false;
+                        fixedRodAnimator.enabled = false;
                         PowerUpThrow();
                     }
 
@@ -448,10 +448,13 @@ public class PlayerFishingState : BaseState
         staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
 
+        fishingIndicatorLogic.SetIndicator(FishingIndicators.ANIMATION_STATE.NOT_ACTIVE);
+
         if (interactingFish != null)
         {
             if (interactingFish.IsInStateInteracting())
             {
+
                 interactingFish.LostInterestInFishingBob(1.0f);
             }
             interactingFish = null;
@@ -500,8 +503,9 @@ public class PlayerFishingState : BaseState
                     else
                     {
                         fishingBob.GetComponentInChildren<FishingBobLogic>().FishTestedLure();
-                        fishingIndicatorLogic.SetIndicator(FishingIndicators.ANIMATION_STATE.FISH_TEST);
                         fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x, GlobalVariables.WATER_LEVEL + 1.0f, interactingFish.transform.position.z));
+                        fishingIndicatorLogic.SetIndicator(FishingIndicators.ANIMATION_STATE.FISH_TEST);
+                        
 
                         interactingFish.LostInterestInFishingBob(5.0f);
                         FishInteractingFailed();
@@ -510,8 +514,9 @@ public class PlayerFishingState : BaseState
                 else
                 {
                     fishingBob.GetComponentInChildren<FishingBobLogic>().FishTestedLure();
-                    fishingIndicatorLogic.SetIndicator(FishingIndicators.ANIMATION_STATE.FISH_TEST);
                     fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x, GlobalVariables.WATER_LEVEL + 1.0f, interactingFish.transform.position.z));
+                    fishingIndicatorLogic.SetIndicator(FishingIndicators.ANIMATION_STATE.FISH_TEST);
+                    
                 }
             }
         }
@@ -534,7 +539,9 @@ public class PlayerFishingState : BaseState
         fishing_state = FISHING_STATE.BITING_FISH;
         fishBiteHoldTimeLeft = interactingFish.GetFishBiteHoldTime();
 
+        fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x, GlobalVariables.WATER_LEVEL + 1.0f, interactingFish.transform.position.z));
         fishingIndicatorLogic.SetIndicator(FishingIndicators.ANIMATION_STATE.FISH_BITE);
+
     }
 
     void FishBiteUpdate()

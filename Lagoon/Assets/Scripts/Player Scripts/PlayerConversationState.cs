@@ -52,7 +52,7 @@ public class PlayerConversationState : BaseState
 
                         test_drop.Spawn();
 
-                        camera_.look_at_target = ;
+                        //camera_.look_at_target = ;
                     }
                     
                     if(Input.GetButtonDown("PlayerB"))

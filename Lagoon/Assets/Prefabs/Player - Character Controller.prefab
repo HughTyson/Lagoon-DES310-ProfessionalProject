@@ -399,7 +399,8 @@ MonoBehaviour:
   fishbiteTimerMin: 2
   fishbiteTimerMax: 4
   textFishingCastPower: {fileID: 0}
-  textFishingFishCaught: {fileID: 0}
+  DEBUG_FISH_UNHOOK: {fileID: 0}
+  DEBUG_FISH_LINE_SNAP: {fileID: 0}
   cameraTransform: {fileID: 0}
   fishingRodTip: {fileID: 0}
   fishingLineLogic: {fileID: 0}
@@ -409,8 +410,10 @@ MonoBehaviour:
   staticFishingRodLogic: {fileID: 6301241936874654446}
   fishingRodLogic: {fileID: 0}
   fishingProjectileIndicator: {fileID: 0}
-  TODO: {fileID: 0}
+  fishingIndicatorLogic: {fileID: 0}
   fishingBob: {fileID: 0}
+  fixedRodAnimator: {fileID: 742496304976092426}
+  islandCollider: {fileID: 0}
 --- !u!114 &4994201600233756953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,11 +508,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2207740848213092383}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: dacef3d52a5eba14aaff9787188e23a9,
-        type: 3}
-      propertyPath: m_Name
-      value: FIshingRod03
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -579,6 +577,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: dacef3d52a5eba14aaff9787188e23a9,
+        type: 3}
+      propertyPath: m_Name
+      value: FIshingRod03
       objectReference: {fileID: 0}
     - target: {fileID: -2235245789278775237, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}

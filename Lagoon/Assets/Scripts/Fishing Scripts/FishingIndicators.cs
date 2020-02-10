@@ -16,12 +16,16 @@ public class FishingIndicators : MonoBehaviour
     };
 
     int EnumState;
+    int ResetAnim;
 
+    int FishTest;
+    int FishBite;
     Transform LookAt;
 
-    void Start()
+    void Awake()
     {
         EnumState = Animator.StringToHash("EnumState");
+        ResetAnim = Animator.StringToHash("ResetAnim");
     }
 
     private void OnEnable()
@@ -36,40 +40,45 @@ public class FishingIndicators : MonoBehaviour
 
     public void SetIndicator(ANIMATION_STATE state)
     {
-        GetComponent<Animator>().SetInteger(EnumState, (int)state);
+      
 
         switch (state)
         {
             case ANIMATION_STATE.NOT_ACTIVE:
                 {
                     GetComponent<SpriteRenderer>().enabled = false;
+                    GetComponent<Animator>().SetTrigger(ResetAnim);
                     break;
                 }
             case ANIMATION_STATE.FISH_BITE:
                 {
                     GetComponent<SpriteRenderer>().enabled = true;
                     GetComponent<SpriteRenderer>().flipX = false;
+                    GetComponent<Animator>().SetTrigger(ResetAnim);
                     break;
                 }
             case ANIMATION_STATE.FISH_TEST:
                 {
                     GetComponent<SpriteRenderer>().enabled = true;
                     GetComponent<SpriteRenderer>().flipX = false;
+                    GetComponent<Animator>().SetTrigger(ResetAnim);
                     break;
                 }
             case ANIMATION_STATE.FISH_LEFT:
                 {
                     GetComponent<SpriteRenderer>().enabled = true;
-                    GetComponent<SpriteRenderer>().flipX = true;
+                    GetComponent<SpriteRenderer>().flipX = false;
                     break;
                 }
             case ANIMATION_STATE.FISH_RIGHT:
                 {
                     GetComponent<SpriteRenderer>().enabled = true;
-                    GetComponent<SpriteRenderer>().flipX = false;
+                    GetComponent<SpriteRenderer>().flipX = true;
                     break;
                 }
         }
+
+        GetComponent<Animator>().SetInteger(EnumState, (int)state);
     }
 
     public void SetPosition(Vector3 position)

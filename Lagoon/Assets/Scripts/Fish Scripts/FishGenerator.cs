@@ -53,19 +53,26 @@ public class FishGenerator : MonoBehaviour
         
         for (int i = 0; i < fishList.Count; i++)
         {
-            if (fishList[i].fishObject.GetComponentInChildren<FishLogic>().IsInDespawnableState())
+            if (fishList[i].fishObject != null)
             {
-                fishList[i].currentUnactiveDespawnTime -= Time.deltaTime;
-
-                if (fishList[i].currentUnactiveDespawnTime <= 0)
+                if (fishList[i].fishObject.GetComponentInChildren<FishLogic>().IsInDespawnableState())
                 {
-                    Destroy(fishList[i].fishObject);
-                    fishList.Remove(fishList[i]);
+                    fishList[i].currentUnactiveDespawnTime -= Time.deltaTime;
+
+                    if (fishList[i].currentUnactiveDespawnTime <= 0)
+                    {
+                        Destroy(fishList[i].fishObject);
+                        fishList.Remove(fishList[i]);
+                    }
+                }
+                else
+                {
+                    fishList[i].currentUnactiveDespawnTime = fishList[i].initializedUnactiveDespawnTime;
                 }
             }
             else
             {
-                fishList[i].currentUnactiveDespawnTime = fishList[i].initializedUnactiveDespawnTime;
+                fishList.Remove(fishList[i]);
             }
         }
 
