@@ -226,6 +226,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &98661180 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3828947165126405223, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1224722927}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &105033325
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,6 +564,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &987380963 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 47454491030776317, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1224722927}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1107894546 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7745113462265003517, guid: 44c1c3a266e23f84da21ac8855c56dfb,
@@ -571,25 +583,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 26234649313191046, guid: 44c1c3a266e23f84da21ac8855c56dfb,
-        type: 3}
-      propertyPath: drop_points.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 26234649313191046, guid: 44c1c3a266e23f84da21ac8855c56dfb,
-        type: 3}
-      propertyPath: drop_points.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 26234649313191046, guid: 44c1c3a266e23f84da21ac8855c56dfb,
-        type: 3}
-      propertyPath: drop_points.Array.data[2]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7617065909836960056, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: m_Name
       value: FullPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 7745113462265003517, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5354929108403043656, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
@@ -655,7 +657,7 @@ PrefabInstance:
         type: 3}
       propertyPath: islandCollider
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1224722928}
     - target: {fileID: 10071845926602796, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -699,11 +701,6 @@ PrefabInstance:
     - target: {fileID: 4604463600878844369, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: m_Damper
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7745113462265003517, guid: 44c1c3a266e23f84da21ac8855c56dfb,
-        type: 3}
-      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7745113462265003505, guid: 44c1c3a266e23f84da21ac8855c56dfb,
@@ -821,6 +818,21 @@ PrefabInstance:
       propertyPath: m_XDrive.positionSpring
       value: 800
       objectReference: {fileID: 0}
+    - target: {fileID: 1873384339516006093, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: 0.00000059604645
+      objectReference: {fileID: 0}
+    - target: {fileID: 1873384339516006093, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: 0.49999982
+      objectReference: {fileID: 0}
+    - target: {fileID: 1873384339516006093, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: m_ConnectedAnchor.z
+      value: 0.0000017881393
+      objectReference: {fileID: 0}
     - target: {fileID: 3495508657121673897, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -861,6 +873,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 26234649313191046, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: drop_points.Array.data[0]
+      value: 
+      objectReference: {fileID: 98661180}
+    - target: {fileID: 26234649313191046, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: drop_points.Array.data[1]
+      value: 
+      objectReference: {fileID: 987380963}
+    - target: {fileID: 26234649313191046, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: drop_points.Array.data[2]
+      value: 
+      objectReference: {fileID: 2076173467}
+    - target: {fileID: 8020892118707071192, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: field of view
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 7677779852234711532, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: -0.00000037252903
+      objectReference: {fileID: 0}
+    - target: {fileID: 7677779852234711532, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: -0.49999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 7677779852234711532, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: m_ConnectedAnchor.z
+      value: -0.00000059604645
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44c1c3a266e23f84da21ac8855c56dfb, type: 3}
@@ -1046,7 +1093,7 @@ PrefabInstance:
     - target: {fileID: 7681242413175681464, guid: 3680711aa9202934a931214217847522,
         type: 3}
       propertyPath: tags.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7681242413175681464, guid: 3680711aa9202934a931214217847522,
         type: 3}
@@ -1068,6 +1115,11 @@ PrefabInstance:
       propertyPath: physicsCollider
       value: 
       objectReference: {fileID: 1558554212}
+    - target: {fileID: 6990952486476646594, guid: 3680711aa9202934a931214217847522,
+        type: 3}
+      propertyPath: lureAttractionSuccessRate
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 4002937522456851499, guid: 3680711aa9202934a931214217847522,
         type: 3}
       propertyPath: maxSpeed
@@ -1300,6 +1352,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &2076173467 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4943071697211487723, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1224722927}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2102741538
 GameObject:
   m_ObjectHideFlags: 0

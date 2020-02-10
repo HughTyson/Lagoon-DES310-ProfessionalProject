@@ -142,8 +142,6 @@ public class ThirdPersonCamera : MonoBehaviour
 
                     _camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
 
-                    
-
                 }
                 break;
             case STATE.CLAMPED_LOOK_AT:

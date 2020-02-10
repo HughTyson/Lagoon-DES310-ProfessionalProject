@@ -137,12 +137,12 @@ public class PlayerFishingState : BaseState
                 {
                     characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
                     castingTime += Time.deltaTime;
-                    if (castingTime > 2.0f)
-                    {
-                        CancelPowerUpThrow();
-                    }
-                    else
-                    {
+                    //if (castingTime > 2.0f)
+                    //{
+                    //    CancelPowerUpThrow();
+                    //}
+                    //else
+                    //{
                         TransformIndicator();
                         if (Input.GetButtonUp("PlayerRB")) // release the cast and throw the bob
                         {
@@ -153,7 +153,7 @@ public class PlayerFishingState : BaseState
                         {
                             CancelPowerUpThrow();
                         }
-                    }
+                  //  }
                     break;
                 }
             case FISHING_STATE.CASTING_ANIMATION: // the bob has been thrown

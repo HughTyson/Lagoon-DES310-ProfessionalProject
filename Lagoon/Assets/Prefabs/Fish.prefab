@@ -209,11 +209,11 @@ MonoBehaviour:
   lureAttractionSuccessRate: 0.8
   fishbiteChance: 0.5
   fishHoldBiteTime: 2
-  fightingNextStateMinTime: 0.2
-  fightingNextStateMaxTime: 1
+  fightingNextStateMinTime: 0.1
+  fightingNextStateMaxTime: 0.5
   fightingTransitionTime: 0.3
   fightingInitialLineTensionTime: 5
-  fightingInitialHookTensionTime: 1
+  fightingInitialHookTensionTime: -1
   fightingAngleBetweenState: 15
   physicsCollider: {fileID: 3616592645954150662}
   fishheadTransform: {fileID: 630772104567113715}
