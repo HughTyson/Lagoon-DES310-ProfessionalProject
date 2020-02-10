@@ -33,10 +33,13 @@ public class PlayerScriptManager : MonoBehaviour
 
     [SerializeField] PlayerFishingState stateFishing;
     [SerializeField] PlayerExploreState stateExplore;
+    [SerializeField] PlayerConversationState stateConverstation;
+
     public enum STATE
     { 
         EXPLORING,
-        FISHING    
+        FISHING,
+        CONVERSATION
     };
 
 
@@ -46,9 +49,11 @@ public class PlayerScriptManager : MonoBehaviour
 
         stateFishing.SetStateManagerPointer(this);
         stateExplore.SetStateManagerPointer(this);
+        stateConverstation.SetStateManagerPointer(this);
 
         stateFishing.enabled = false;
         stateExplore.enabled = false;
+        stateConverstation.enabled = false;
 
         currentState.enabled = true;
     }
@@ -85,6 +90,11 @@ public class PlayerScriptManager : MonoBehaviour
                     currentState = stateFishing;
                     break;
                 }
+            case STATE.CONVERSATION:
+                {
+                    currentState = stateConverstation;
+                    break;
+                }
         
         }
 
@@ -98,9 +108,8 @@ public class PlayerScriptManager : MonoBehaviour
     public void StateOnTriggerStay(Collider other)
     {
         currentState.StateOnTriggerStay(other);
-
-
     }
+
     public void StateOnTriggerExit( Collider other)
     {
         currentState.StateOnTriggerExit( other);

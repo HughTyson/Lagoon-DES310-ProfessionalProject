@@ -61,8 +61,9 @@ public class ThirdPersonCamera : MonoBehaviour
 
     public enum STATE
     {
-        FREE,       //Camera has free rotation around target
-        CLAMPED_LOOK_AT       //Camera rotates around the player, but will look at the position of the fishing bob
+        FREE,                 //Camera has free rotation around target
+        CLAMPED_LOOK_AT,      //Camera rotates around the player, but will look at the position of the fishing bob
+        FIXED_LOOK_AT
        
     }
     [SerializeField] public STATE current_state;
@@ -106,7 +107,7 @@ public class ThirdPersonCamera : MonoBehaviour
                 break;
             case STATE.CLAMPED_LOOK_AT:
                 {
-                    camera_input.x = Mathf.Clamp(camera_input.x, -50, 50);
+                    //camera_input.x = Mathf.Clamp(camera_input.x, -90, 90);
                 }
                 break;
             default:
@@ -152,15 +153,31 @@ public class ThirdPersonCamera : MonoBehaviour
 
                     destinationUpdate();            //calculate the new poititon of the camera
 
-                    setPosition();                  //set the position based on the new destination
+                    setPosition();                  //set the position based on the new destination#
 
-                    Quaternion new_look = Quaternion.LookRotation(look_at_target.position - _camera.position);
+                    Quaternion new_look = Quaternion.LookRotation(look_at_target.position - _camera.position, Vector3.up);
 
-                    _camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
+                    //method 1
+                    _camera.rotation = Quaternion.RotateTowards(_camera.rotation, new_look, 1);
 
-                    
+                    //method 2
+
+                    //_camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
                 }
                 break;
+            case STATE.FIXED_LOOK_AT:
+                {
+
+                    destination = rot_target.position + Vector3.up * target_offset.y + Vector3.forward * target_offset.z + transform.TransformDirection(Vector3.right * target_offset.x);            //calculate the new poititon of the camera
+
+                    setPosition();                                                                                                          //set the position based on the new destination#
+
+                    Quaternion new_look = Quaternion.LookRotation(look_at_target.position - _camera.position, Vector3.up);
+
+                    _camera.rotation = Quaternion.RotateTowards(_camera.rotation, new_look, 1);
+
+                    break;
+                }
             default:
                 break;
         }
@@ -170,6 +187,8 @@ public class ThirdPersonCamera : MonoBehaviour
     {
 
         collisionUpdate();
+
+        //draw the debug line
 
         for (int i = 0; i < 5; i++)
         {
@@ -193,7 +212,6 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void HandleInput()
     {
-
         camera_input += new Vector2(Input.GetAxisRaw("PlayerRH") * camera_rotation_speed, Input.GetAxisRaw("PlayerRV") * camera_rotation_speed) * Time.deltaTime; //get the input from the left stick
 
         camera_input.y = Mathf.Clamp(camera_input.y, ANGLE_MIN, ANGLE_MAX); //limit the y rotation
@@ -226,15 +244,12 @@ public class ThirdPersonCamera : MonoBehaviour
             adjusted_destination += rot_target.position;
 
             //linear interpolation between the camera's current position and its new destination
-            //_camera.position = Vector3.Lerp(_camera.position, adjusted_destination, camera_movement_speed * Time.deltaTime);
-
+           
             _camera.position = Vector3.SmoothDamp(_camera.position, adjusted_destination, ref cam_velocity, camera_movement_speed * Time.deltaTime);
         }
         else
         {
-            //linear interpolation between the camera's current position and its new destination
-            //_camera.position = Vector3.Lerp(_camera.position, destination, camera_movement_speed * Time.deltaTime);
-
+            //linear interpolation between the camera's current position and its new destination]
             _camera.position = Vector3.SmoothDamp(_camera.position, destination, ref cam_velocity, camera_movement_speed * Time.deltaTime);
         }
     }

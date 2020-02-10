@@ -40,6 +40,8 @@ public class CharacterControllerMovement : MonoBehaviour
 
     float current_velocity;                                     //keeps track of the players current_velocity
 
+    SupplyDrop test_drop;
+
     public enum STATE
     {
         FREE_MOVEMENT,       //Player can move any way they want
@@ -56,13 +58,13 @@ public class CharacterControllerMovement : MonoBehaviour
         controller = GetComponent<CharacterController>();
         current_state = STATE.FREE_MOVEMENT;
 
+        test_drop = GetComponent<SupplyDrop>();
         
     }
 
     // Update is called once per frame
     void Update()
     {
-
         switch (current_state)
         {
             case STATE.FREE_MOVEMENT:
@@ -121,7 +123,6 @@ public class CharacterControllerMovement : MonoBehaviour
         move_direction = transform.forward * current_velocity * Time.deltaTime;
 
         move_direction.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
-
     }
 
     //methods
