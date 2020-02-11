@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using XNode;
+//using XNode;
 
-[CreateAssetMenu]
-public class ConvoGraph : NodeGraph { 
+//[CreateAssetMenu]
+//public class ConvoGraph : NodeGraph { 
 	
-}
+//}
