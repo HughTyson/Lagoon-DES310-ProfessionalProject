@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e22aa7ffc23c8434cae81488f48eef47, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -419,11 +419,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2207740848213092383}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: dacef3d52a5eba14aaff9787188e23a9,
-        type: 3}
-      propertyPath: m_Name
-      value: FIshingRod03
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -494,6 +489,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: dacef3d52a5eba14aaff9787188e23a9,
+        type: 3}
+      propertyPath: m_Name
+      value: FIshingRod03
+      objectReference: {fileID: 0}
     - target: {fileID: -2235245789278775237, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
       propertyPath: m_CastShadows
@@ -504,6 +504,11 @@ PrefabInstance:
       propertyPath: m_ReceiveShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2235245789278775237, guid: dacef3d52a5eba14aaff9787188e23a9,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e22aa7ffc23c8434cae81488f48eef47, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dacef3d52a5eba14aaff9787188e23a9, type: 3}
 --- !u!1 &4580078603987145739 stripped
@@ -525,11 +530,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1948125195584788263}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: 4e75d253784b2814eb427b8d68571292,
-        type: 3}
-      propertyPath: m_Name
-      value: 310_CharacterTest
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 4e75d253784b2814eb427b8d68571292,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -595,6 +595,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 4.8162556
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 4e75d253784b2814eb427b8d68571292,
+        type: 3}
+      propertyPath: m_Name
+      value: 310_CharacterTest
+      objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: 4e75d253784b2814eb427b8d68571292,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e22aa7ffc23c8434cae81488f48eef47, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e75d253784b2814eb427b8d68571292, type: 3}
 --- !u!4 &2571168551428818421 stripped
