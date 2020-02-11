@@ -10,7 +10,7 @@ namespace XNode.Examples.StateGraph {
 		public StateNode current;
 
 		public void Continue() {
-			current.MoveNext();
+		//	current.MoveNext();
 		}
 	}
 }
