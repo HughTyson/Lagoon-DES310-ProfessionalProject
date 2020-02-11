@@ -232,7 +232,7 @@ PrefabInstance:
     - target: {fileID: 5354929108403043656, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.22
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5354929108403043656, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
@@ -379,6 +379,11 @@ PrefabInstance:
       propertyPath: max_velocity
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7745113462265003505, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: gravityScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1091709047621663628, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: distance_from_target
@@ -394,6 +399,16 @@ PrefabInstance:
       propertyPath: look_at_target
       value: 
       objectReference: {fileID: 916406278}
+    - target: {fileID: 1091709047621663628, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: ANGLE_MIN_X
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1091709047621663628, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: ANGLE_MAX_X
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 4059590686770012565, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: m_Parameters.widthMultiplier

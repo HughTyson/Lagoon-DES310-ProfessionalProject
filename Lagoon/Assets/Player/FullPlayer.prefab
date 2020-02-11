@@ -783,8 +783,10 @@ MonoBehaviour:
   camera_offset_right: {x: 0.4, y: 0.5, z: -2}
   camera_offset_left: {x: 0, y: 0, z: 0}
   shoulder_side: 0
-  ANGLE_MIN: -40
-  ANGLE_MAX: 80
+  ANGLE_MIN_Y: -10
+  ANGLE_MAX_Y: 80
+  ANGLE_MIN_X: 50
+  ANGLE_MAX_X: 50
   camera_rotation_speed: 80
   camera_movement_speed: 5
   distance_from_target: 10
@@ -1159,7 +1161,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: -0.5, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.00000037252903, y: -0.49999994, z: -0.00000074505806}
+  m_ConnectedAnchor: {x: -0.00000037252903, y: -0.49999994, z: -0.00000059604645}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1254,7 +1256,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0.5, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.00000059604645, y: 0.49999982, z: 0.0000023841858}
+  m_ConnectedAnchor: {x: 0.00000059604645, y: 0.49999982, z: 0.0000017881393}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 2
@@ -1431,21 +1433,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5354929108403043656}
     m_Modifications:
-    - target: {fileID: 4494363974763604499, guid: d2944652e70498a4aa30ffd9044c0e23,
+    - target: {fileID: 6160413944266683237, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
-      propertyPath: drop_points.Array.data[0]
-      value: 
-      objectReference: {fileID: 3828947165126405223}
-    - target: {fileID: 4494363974763604499, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: drop_points.Array.data[1]
-      value: 
-      objectReference: {fileID: 47454491030776317}
-    - target: {fileID: 4494363974763604499, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: drop_points.Array.data[2]
-      value: 
-      objectReference: {fileID: 4943071697211487723}
+      propertyPath: m_Name
+      value: Player - Character Controller
+      objectReference: {fileID: 0}
     - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: textFishingCastPower
@@ -1541,11 +1533,6 @@ PrefabInstance:
       propertyPath: camera_
       value: 
       objectReference: {fileID: 1091709047621663628}
-    - target: {fileID: 6160413944266683237, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: m_Name
-      value: Player - Character Controller
-      objectReference: {fileID: 0}
     - target: {fileID: 6160413944266683240, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1661,6 +1648,26 @@ PrefabInstance:
       propertyPath: max_velocity
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: gravityScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4494363974763604499, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: drop_points.Array.data[0]
+      value: 
+      objectReference: {fileID: 3828947165126405223}
+    - target: {fileID: 4494363974763604499, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: drop_points.Array.data[1]
+      value: 
+      objectReference: {fileID: 47454491030776317}
+    - target: {fileID: 4494363974763604499, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: drop_points.Array.data[2]
+      value: 
+      objectReference: {fileID: 4943071697211487723}
     - target: {fileID: 708451495562159640, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: m_LocalPosition.x
