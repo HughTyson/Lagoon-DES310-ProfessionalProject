@@ -117,9 +117,12 @@ public class BranchNodeEditor : NodeEditor
 
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("input"));
 
-        NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("DecisionA"));
+        NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("leftCharacter"));
+        NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("rightCharacter"));
+
+        NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("LeftDecision"));
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("outputA"));
-        NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("DecisionB"));
+        NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("RightDecision"));
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("outputB"));
 
 

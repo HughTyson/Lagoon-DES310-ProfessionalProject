@@ -7,11 +7,14 @@ public class PlayerConversationState : BaseState
 
     [SerializeField] CharacterControllerMovement movement_;
     [SerializeField] ThirdPersonCamera camera_;
+    [SerializeField] ConvoUIManager convoUIManager;
+    [SerializeField] ConvoManager convoManager;
 
     SupplyDrop test_drop;
 
     enum ConversationState 
     {
+        STARTUP,
         CONVERSATION,
         WATCH_DROP
     }
@@ -22,15 +25,22 @@ public class PlayerConversationState : BaseState
         test_drop = GetComponent<SupplyDrop>();
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
         camera_.current_state = ThirdPersonCamera.STATE.FREE;
-        state = ConversationState.WATCH_DROP;
+        state = ConversationState.STARTUP;
+
+        convoUIManager.enabled = true;
+
+       
+        convoUIManager.StartupAnimation(convoManager.GetCurrentNode());
+
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
+        convoUIManager.enabled = false;
 
     }
 
