@@ -81,7 +81,7 @@ public class PlayerFishingState : BaseState
 
     float casting_angle = 45.0f; // projectile angle 
 
-    private void OnEnable()
+    public void OnEnable()
     {
         fishing_state = FISHING_STATE.PREPAIRING_ROD;
         fishingRodMesh.SetActive(true);
@@ -94,7 +94,7 @@ public class PlayerFishingState : BaseState
         fishingIndicatorLogic.AttachLookAtTransform(cameraTransform);
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
         fishingRodMesh.SetActive(false);
         fishingLineLogic.gameObject.SetActive(false);

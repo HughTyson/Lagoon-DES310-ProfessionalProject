@@ -10,10 +10,13 @@ public abstract class BaseState : MonoBehaviour
     {
         StateManager = manager;
     }
+
+
     public virtual void StateUpdate() { }
     public virtual void StateFixedUpdate() { }
 
     public virtual void StateLateUpdate() { }
+
 
     public virtual void StateOnTriggerEnter(Collider other) { }
     public virtual void StateOnTriggerStay(Collider other) { }
@@ -54,6 +57,9 @@ public class PlayerScriptManager : MonoBehaviour
         stateFishing.enabled = false;
         stateExplore.enabled = false;
         stateConverstation.enabled = false;
+
+        stateFishing.OnDisable();
+        stateConverstation.OnDisable();
 
         currentState.enabled = true;
     }
