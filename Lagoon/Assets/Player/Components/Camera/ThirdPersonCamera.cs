@@ -25,9 +25,15 @@ public class ThirdPersonCamera : MonoBehaviour
     [Header("Misc")]
     //minimum and maximum angles for the Y axis
     [Tooltip("Minimum angles for the Y axis movement of the camera")]
-    [SerializeField] float ANGLE_MIN = -10.0f;
+    [SerializeField] float ANGLE_MIN_Y = -10.0f;
     [Tooltip("Maximum angles for the Y axis movement of the camera")]
-    [SerializeField] float ANGLE_MAX = 80.0f;
+    [SerializeField] float ANGLE_MAX_Y = 80.0f;
+
+    //minimum and maximum angles for the Y axis
+    [Tooltip("Minimum angles for the X axis movement of the camera")]
+    [SerializeField] float ANGLE_MIN_X = 50.0f;
+    [Tooltip("Maximum angles for the X axis movement of the camera")]
+    [SerializeField] float ANGLE_MAX_X = 50.0f;
 
     [SerializeField] float camera_rotation_speed = 1f; //how fast the rotation of the camera is around the player
     [SerializeField] float camera_movement_speed = 0.3f; //how fast the camera moves to its new position
@@ -58,6 +64,8 @@ public class ThirdPersonCamera : MonoBehaviour
     private Vector3 cam_velocity = Vector3.zero;
 
     private float adjusted_distance = 0f;
+
+    private Vector3 temp_eular;
 
     public enum STATE
     {
@@ -103,11 +111,14 @@ public class ThirdPersonCamera : MonoBehaviour
         switch (current_state)
         {
             case STATE.FREE:
-                { }
+                {
+                    camera_input.y = Mathf.Clamp(camera_input.y, ANGLE_MIN_Y, ANGLE_MAX_Y); //limit the y rotation
+                }
                 break;
             case STATE.CLAMPED_LOOK_AT:
                 {
-                    //camera_input.x = Mathf.Clamp(camera_input.x, -90, 90);
+                    camera_input.y = Mathf.Clamp(camera_input.y, ANGLE_MIN_Y, ANGLE_MAX_Y); //limit the y rotation
+                    camera_input.x = Mathf.Clamp(camera_input.x, rot_target.localRotation.eulerAngles.y - ANGLE_MIN_X, rot_target.localRotation.eulerAngles.y + ANGLE_MAX_X);
                 }
                 break;
             default:
@@ -149,18 +160,18 @@ public class ThirdPersonCamera : MonoBehaviour
 
                     //collisionUpdate();              //update the collisions aorund the camera
 
-                    destinationUpdate();            //calculate the new poititon of the camera
+                    fixedDestinationUpdate();            //calculate the new poititon of the camera
 
                     setPosition();                  //set the position based on the new destination#
 
                     Quaternion new_look = Quaternion.LookRotation(look_at_target.position - _camera.position, Vector3.up);
 
                     //method 1
-                    _camera.rotation = Quaternion.RotateTowards(_camera.rotation, new_look, 1);
+                    //_camera.rotation = Quaternion.RotateTowards(_camera.rotation, new_look, 1);
 
                     //method 2
 
-                    //_camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
+                    _camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
                 }
                 break;
             case STATE.FIXED_LOOK_AT:
@@ -211,8 +222,6 @@ public class ThirdPersonCamera : MonoBehaviour
     private void HandleInput()
     {
         camera_input += new Vector2(Input.GetAxisRaw("PlayerRH") * camera_rotation_speed, Input.GetAxisRaw("PlayerRV") * camera_rotation_speed) * Time.deltaTime; //get the input from the left stick
-
-        camera_input.y = Mathf.Clamp(camera_input.y, ANGLE_MIN, ANGLE_MAX); //limit the y rotation
     }
 
     //updates the clip points for the collision
@@ -228,6 +237,17 @@ public class ThirdPersonCamera : MonoBehaviour
         //the input from the controller and the distance that the player is from the camera
 
         target_pos = rot_target.position + Vector3.up * target_offset.y + Vector3.forward * target_offset.z + transform.TransformDirection(Vector3.right * target_offset.x); 
+        destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
+
+        destination += target_pos;
+    }
+
+    private void fixedDestinationUpdate()
+    {
+        //set the target position based of the targets current position, the offset values,
+        //the input from the controller and the distance that the player is from the camera
+
+        target_pos = rot_target.position + Vector3.up * target_offset.y + Vector3.forward * target_offset.z + transform.TransformDirection(Vector3.right * target_offset.x);
         destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
 
         destination += target_pos;
@@ -250,6 +270,11 @@ public class ThirdPersonCamera : MonoBehaviour
             //linear interpolation between the camera's current position and its new destination]
             _camera.position = Vector3.SmoothDamp(_camera.position, destination, ref cam_velocity, camera_movement_speed * Time.deltaTime);
         }
+    }
+
+    float ClampEular(float angle)
+    {
+        return angle = Mathf.Clamp(angle, ANGLE_MIN_X, ANGLE_MAX_X);
     }
 }
 
