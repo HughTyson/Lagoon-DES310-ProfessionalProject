@@ -778,12 +778,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22ca5552553a61542a10d892a4a8826f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rot_target: {fileID: 0}
-  look_at_target: {fileID: 0}
+  rot_target: {fileID: 7745113462265003517}
+  look_at_target: {fileID: 7745113462265003517}
   camera_offset_right: {x: 0.4, y: 0.5, z: -2}
   camera_offset_left: {x: 0, y: 0, z: 0}
   shoulder_side: 0
-  ANGLE_MIN_Y: -10
+  ANGLE_MIN_Y: -80
   ANGLE_MAX_Y: 80
   ANGLE_MIN_X: 50
   ANGLE_MAX_X: 50
@@ -1352,6 +1352,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FishBob
       objectReference: {fileID: 0}
+    - target: {fileID: 5330855679669067928, guid: fb2949a98a2ca8f4fbb0075b058c5a0f,
+        type: 3}
+      propertyPath: fishingLineLogic
+      value: 
+      objectReference: {fileID: 4074023804289180387}
     - target: {fileID: 5644179146787942554, guid: fb2949a98a2ca8f4fbb0075b058c5a0f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1407,11 +1412,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5330855679669067928, guid: fb2949a98a2ca8f4fbb0075b058c5a0f,
-        type: 3}
-      propertyPath: fishingLineLogic
-      value: 
-      objectReference: {fileID: 4074023804289180387}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb2949a98a2ca8f4fbb0075b058c5a0f, type: 3}
 --- !u!1 &2725162193633497536 stripped
@@ -1433,11 +1433,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5354929108403043656}
     m_Modifications:
-    - target: {fileID: 6160413944266683237, guid: d2944652e70498a4aa30ffd9044c0e23,
+    - target: {fileID: 708451495562159640, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
-      propertyPath: m_Name
-      value: Player - Character Controller
+      propertyPath: m_LocalPosition.x
+      value: 0.33
       objectReference: {fileID: 0}
+    - target: {fileID: 708451495562159640, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 708451495562159640, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 1781338289793398869, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: camera_
+      value: 
+      objectReference: {fileID: 1091709047621663628}
     - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: textFishingCastPower
@@ -1528,11 +1543,41 @@ PrefabInstance:
       propertyPath: fishingIndicatorLogic
       value: 
       objectReference: {fileID: 1606106126171679710}
-    - target: {fileID: 1781338289793398869, guid: d2944652e70498a4aa30ffd9044c0e23,
+    - target: {fileID: 3055954728931745731, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
-      propertyPath: camera_
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3194345037401150777, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: _camera
       value: 
-      objectReference: {fileID: 1091709047621663628}
+      objectReference: {fileID: 5549753304947937101}
+    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: acceleration
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: max_velocity
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: gravityScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6160413944266683237, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: m_Name
+      value: Player - Character Controller
+      objectReference: {fileID: 0}
     - target: {fileID: 6160413944266683240, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1633,26 +1678,6 @@ PrefabInstance:
       propertyPath: FishFightingRightRotation.z
       value: -40
       objectReference: {fileID: 0}
-    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: _camera
-      value: 
-      objectReference: {fileID: 5549753304947937101}
-    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: acceleration
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: max_velocity
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: gravityScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4494363974763604499, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: drop_points.Array.data[0]
@@ -1668,31 +1693,6 @@ PrefabInstance:
       propertyPath: drop_points.Array.data[2]
       value: 
       objectReference: {fileID: 4943071697211487723}
-    - target: {fileID: 708451495562159640, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 708451495562159640, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.16
-      objectReference: {fileID: 0}
-    - target: {fileID: 708451495562159640, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 3055954728931745731, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3194345037401150777, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7004398143321458557, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -1980,11 +1980,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5354929108403043656}
     m_Modifications:
-    - target: {fileID: 8694833267455261335, guid: a62254f9eb652ba47b5ff9ba7ac68ce1,
-        type: 3}
-      propertyPath: m_Name
-      value: FishingCastIndicator
-      objectReference: {fileID: 0}
     - target: {fileID: 8694833267455261328, guid: a62254f9eb652ba47b5ff9ba7ac68ce1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2039,6 +2034,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8694833267455261335, guid: a62254f9eb652ba47b5ff9ba7ac68ce1,
+        type: 3}
+      propertyPath: m_Name
+      value: FishingCastIndicator
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a62254f9eb652ba47b5ff9ba7ac68ce1, type: 3}
