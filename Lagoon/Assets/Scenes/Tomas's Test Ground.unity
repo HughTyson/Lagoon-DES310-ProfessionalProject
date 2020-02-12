@@ -1175,7 +1175,7 @@ PrefabInstance:
         type: 3}
       propertyPath: islandCollider
       value: 
-      objectReference: {fileID: 1224722928}
+      objectReference: {fileID: 0}
     - target: {fileID: 2283605595040967071, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: m_Enabled
@@ -1249,7 +1249,7 @@ PrefabInstance:
     - target: {fileID: 1471246466514194774, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2181157896855092540, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
@@ -1304,7 +1304,7 @@ PrefabInstance:
     - target: {fileID: 9046747687356383041, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8828376646174350885, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
@@ -1449,12 +1449,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44c1c3a266e23f84da21ac8855c56dfb, type: 3}
---- !u!65 &1224722928 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2304933911096941557, guid: 44c1c3a266e23f84da21ac8855c56dfb,
-    type: 3}
-  m_PrefabInstance: {fileID: 1224722927}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1267129495
 GameObject:
   m_ObjectHideFlags: 0
@@ -2521,6 +2515,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4383612614141788679, guid: 31b401bc4e04cce489203e5dd170fc64,
         type: 3}
+      propertyPath: NoSpawnColliders.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383612614141788679, guid: 31b401bc4e04cce489203e5dd170fc64,
+        type: 3}
       propertyPath: spawnRadius
       value: 10
       objectReference: {fileID: 0}
@@ -2538,7 +2537,7 @@ PrefabInstance:
         type: 3}
       propertyPath: NoSpawnColliders.Array.data[0]
       value: 
-      objectReference: {fileID: 1224722928}
+      objectReference: {fileID: 0}
     - target: {fileID: 4383612614141788679, guid: 31b401bc4e04cce489203e5dd170fc64,
         type: 3}
       propertyPath: fishSpawnDepth

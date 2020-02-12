@@ -390,6 +390,10 @@ public class FishingLineLogic : MonoBehaviour
         var temp = p.position;
         p.position += ((p.position - p.oldPosition)*(1.0f - p.dragPercentage)) + (p.accelleration * Time.deltaTime * Time.deltaTime);
         p.oldPosition = temp;
+
+
+        // default Verlet
+        // particle.position +=  (particle.position - particle.oldPosition) + (particle.accelleration * Time.deltaTime * Time.deltaTime);
     }
 
     private void PoleConstraint(LineParticle p1, LineParticle p2, float restLength)

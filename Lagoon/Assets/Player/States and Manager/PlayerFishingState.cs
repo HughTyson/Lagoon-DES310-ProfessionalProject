@@ -27,11 +27,6 @@ public class PlayerFishingState : BaseState
     [Tooltip("max time for time between bite attempts")]
     [SerializeField] float fishbiteTimerMax = 4.0f;         // max time for time between bite attempts
 
-    [Header("Debugging Text")]
-    [Tooltip("text for showing fishing cast power")]
-    [SerializeField] Text textFishingCastPower;
-    [SerializeField] Text DEBUG_FISH_UNHOOK;
-    [SerializeField] Text DEBUG_FISH_LINE_SNAP;
 
     [Header("Pointers")]
     [Tooltip("the transform of the camera")]
@@ -171,7 +166,6 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.BOB_IS_FLYING:
                 {
-                    DEBUG_FISH_UNHOOK.text = ""; // DEBUG STUFF
 
 
                     if (fishingBob.GetComponentInChildren<BuoyancyPhysics>().GetCurrentState() == BuoyancyPhysics.STATE.IN_WATER) // bob has settled
@@ -291,7 +285,6 @@ public class PlayerFishingState : BaseState
                     if (islandCollider.bounds.Contains(interactingFish.transform.position))
                     {
                         // fish caught
-                        DEBUG_FISH_UNHOOK.text = "Fish Caught!";
                         FishFightSuccess();
                     }
                     else if (interactingFish.GetLineStrengthPercentageLeft() <= 0)
@@ -568,7 +561,7 @@ public class PlayerFishingState : BaseState
         fishingBob.GetComponentInChildren<FishingBobLogic>().BeganFighting();
         fishingLineLogic.BeganFighting(interactingFish);
         staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.MIDDLE);
-        interactingFish.BeginFighting(new Vector2(transform.position.x, transform.position.z), staticFishingRodLogic, DEBUG_FISH_UNHOOK,DEBUG_FISH_LINE_SNAP);
+        interactingFish.BeginFighting(new Vector2(transform.position.x, transform.position.z), staticFishingRodLogic);
     }
 
     void FishFightLineSnapped()

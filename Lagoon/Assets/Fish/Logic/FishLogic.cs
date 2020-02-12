@@ -498,13 +498,9 @@ public class FishLogic : MonoBehaviour
     }
     FightingStateVars fightingStateVars = new FightingStateVars();
 
-    Text DEBUG_TEXT_TIME_OF_STRING;
-    Text DEBUG_TEXT_TIME_OF_UNHOOK;
 
-    public void BeginFighting(Vector2 ReelInPosition_, StaticFishingRodLogic static_fishing_rod, Text unhook_, Text string_)
+    public void BeginFighting(Vector2 ReelInPosition_, StaticFishingRodLogic static_fishing_rod)
     {
-        DEBUG_TEXT_TIME_OF_STRING = string_;
-        DEBUG_TEXT_TIME_OF_UNHOOK = unhook_;
 
         fightingStateVars.distanceOfAngleCentre = 10.0f;
 
@@ -585,14 +581,9 @@ public class FishLogic : MonoBehaviour
         fightingStateVars.currentLineTensionTime -= Time.deltaTime;
     }
 
-    //void UnhookALittle()
-    //{
-    //    fightingStateVars.currentHookedTensionTIme -= Time.deltaTime;
-    //}
+
     public void FightingStateUpdate()
     {
-        DEBUG_TEXT_TIME_OF_STRING.text = "Time Till Line Snap: " + fightingStateVars.currentLineTensionTime.ToString();
-      //  DEBUG_TEXT_TIME_OF_UNHOOK.text = "Time Till Fish Unhooked: " + fightingStateVars.currentHookedTensionTIme.ToString();
 
         switch (fightingStateVars.state)
         {
