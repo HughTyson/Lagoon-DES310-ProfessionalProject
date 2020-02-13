@@ -16,7 +16,7 @@ public class ConvoManager : MonoBehaviour
     void Start()
     {
 
-        current_node = convoGraph.Init();
+       // current_node = convoGraph.Init();
     }
 
     // Update is called once per frame

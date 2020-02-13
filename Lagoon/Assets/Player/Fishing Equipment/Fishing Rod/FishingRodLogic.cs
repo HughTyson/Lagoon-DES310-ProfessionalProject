@@ -10,6 +10,8 @@ public class FishingRodLogic : MonoBehaviour
     [SerializeField] Transform FixedFishingTip;
     [SerializeField] Transform FixedFishingBottom;
 
+    [SerializeField] Transform FixedFishingRodTransform;
+
     [SerializeField] Transform[] FishingRodJoints;
 
 
@@ -24,15 +26,22 @@ public class FishingRodLogic : MonoBehaviour
     }
 
 
-   //public void SafetyUpdate()
-   // {
-   //     float distanceForFlex = Vector3.Distance(FixedFishingBottom.position, FlexibleFishingTip.position);
-   //     float distanceForFixed = Vector3.Distance(FixedFishingBottom.position, FixedFishingTip.position);
-   //     if (distanceForFlex > distanceForFixed)
-   //     {
-   //         FlexibleFishingTip.position = FixedFishingBottom.position + ((FlexibleFishingTip.position - FixedFishingBottom.position).normalized * distanceForFixed);
-   //     }
-   // }
+    //public void SafetyUpdate()
+    // {
+    //     float distanceForFlex = Vector3.Distance(FixedFishingBottom.position, FlexibleFishingTip.position);
+    //     float distanceForFixed = Vector3.Distance(FixedFishingBottom.position, FixedFishingTip.position);
+    //     if (distanceForFlex > distanceForFixed)
+    //     {
+    //         FlexibleFishingTip.position = FixedFishingBottom.position + ((FlexibleFishingTip.position - FixedFishingBottom.position).normalized * distanceForFixed);
+    //     }
+    // }
+
+    private void OnEnable()
+    {
+        transform.position = FixedFishingRodTransform.position;
+        transform.rotation = FixedFishingRodTransform.rotation;
+    }
+
     private void Update()
     {
 
