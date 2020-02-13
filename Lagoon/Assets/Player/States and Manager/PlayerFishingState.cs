@@ -88,7 +88,7 @@ public class PlayerFishingState : BaseState
 
         staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
        
-        characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
+        characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
         fixedRodAnimator.enabled = true;
 
         thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FREE;
@@ -142,7 +142,7 @@ public class PlayerFishingState : BaseState
 
 
 
-                    if (Input.GetButtonDown("PlayerRB")) // begin powering up the cast
+                    if (Input.GetAxis("PlayerLV") < -0.8f) // begin powering up the cast
                     {
                         BeginPowerUpThrow();
                     }
@@ -156,28 +156,30 @@ public class PlayerFishingState : BaseState
                 {
                     characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
                     castingTime += Time.deltaTime;
-                    //if (castingTime > 2.0f)
-                    //{
-                    //    CancelPowerUpThrow();
-                    //}
-                    //else
-                    //{
-                        TransformIndicator();
-                        if (Input.GetButtonUp("PlayerRB")) // release the cast and throw the bob
-                        {
-                            fixedRodAnimator.enabled = true;
-                            BeginCastingAnimation();
-                        }
-                        else if (Input.GetButtonDown("PlayerB"))
-                        {
-                            CancelPowerUpThrow();
-                        }
-                  //  }
+                    TransformIndicator();
+
+                    if (Input.GetButtonDown("PlayerB") || castingTimeout >= 0.3f)
+                    {
+                        CancelPowerUpThrow();
+                    }
+                    else if (Input.GetAxis("PlayerLV") < -0.9f)
+                    {
+                        castingTimeout = 0.0f;
+                    }
+                    else if (Input.GetAxis("PlayerLV") > 0.9f) // release the cast and throw the bob
+                    {
+                        fixedRodAnimator.enabled = true;
+                        BeginCastingAnimation();
+                    }
+                    else
+                    {
+                        castingTimeout += Time.deltaTime;
+                    }
+
                     break;
                 }
             case FISHING_STATE.CASTING_ANIMATION: // the bob has been thrown
                 {
-                    TransformIndicator();
                    AnimatorStateInfo test = fixedRodAnimator.GetCurrentAnimatorStateInfo(0);
                     if (test.speed == 0)
                     {
@@ -336,10 +338,12 @@ public class PlayerFishingState : BaseState
 
 
     float castingTime = 0.0f;
+    float castingTimeout = 0.0f;
     void BeginPowerUpThrow()
     {
         fishing_state = FISHING_STATE.POWERING_UP;     
         castingTime = 0.0f;
+        castingTimeout = 0.0f;
         fishingProjectileIndicator.SetActive(true);
         TransformIndicator();
     }
@@ -349,7 +353,7 @@ public class PlayerFishingState : BaseState
         fishingBob.SetActive(false);
         fishingProjectileIndicator.SetActive(false);
 
-        characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
+        characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
         staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
         fishing_state = FISHING_STATE.IDLE;
     }
@@ -357,6 +361,7 @@ public class PlayerFishingState : BaseState
     void BeginCastingAnimation()
     {
         fishing_state = FISHING_STATE.CASTING_ANIMATION;
+        characterControllerMovement.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
         GetComponentInChildren<Animator>().Play("Rod Flick");
     }
 
@@ -463,7 +468,7 @@ public class PlayerFishingState : BaseState
 
         fishing_state = FISHING_STATE.IDLE;
         staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
-        characterControllerMovement.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
+        characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
 
         fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.NOT_ACTIVE);
 
