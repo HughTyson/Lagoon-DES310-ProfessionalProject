@@ -34,7 +34,7 @@ public class PlayerConversationState : BaseState
         convoUIManager.enabled = true;
 
        
-        convoUIManager.StartupAnimation(convoManager.GetCurrentNode());
+  //      convoUIManager.StartupAnimation(convoManager.GetCurrentNode());
 
     }
 
