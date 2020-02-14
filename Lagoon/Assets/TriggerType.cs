@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class TriggerType : MonoBehaviour
 {
-    enum TRIGGER_TYPE
+
+    public enum TRIGGER_TYPE
     {
         FISHING,
-        RADIO
+        RADIO,
+        SLEEP
     }
 
     [SerializeField] TRIGGER_TYPE type;
 
-
-
-    TRIGGER_TYPE GetTrigger()
+    public TRIGGER_TYPE GetTrigger()
     {
         return type;
     }
