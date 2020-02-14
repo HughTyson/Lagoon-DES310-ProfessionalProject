@@ -26,6 +26,7 @@ public class FishingLineLogic : MonoBehaviour
     };
     STATE current_state = STATE.NOT_ACTIVE;
 
+    bool willReelInOnUpdate = false;
 
     FishLogic fightingFish;
 
@@ -51,6 +52,7 @@ public class FishingLineLogic : MonoBehaviour
 
 
     float test = 0;
+    float setDistanceBetweenParticle0And1 = 0.001f;
     public void CastLine()
     {
         current_state = STATE.CASTING;
@@ -67,8 +69,8 @@ public class FishingLineLogic : MonoBehaviour
        
         public Vector3 oldPosition = Vector3.zero;
         public Vector3 position = Vector3.zero;
-        public Vector3 accelleration = Physics.gravity * 0.2f;
-        public float dragPercentage = 0.0f;
+        public Vector3 accelleration = Physics.gravity * 0.01f;
+        public float dragPercentage = 0.01f;
     }
 
     LinkedList<LineParticle> LineParticles = new LinkedList<LineParticle>();
@@ -99,15 +101,11 @@ public class FishingLineLogic : MonoBehaviour
     }
     public void ReelIn()
     {
-        if (LineParticles.Count != 0)
-        {
-            LineParticles.RemoveFirst();
-            GetComponent<LineRenderer>().positionCount = LineParticles.Count;
-        }
+        willReelInOnUpdate = true;
     }
     public bool IsFullyReeledIn()
     {
-        return (LineParticles.Count <= 1);
+        return (LineParticles.Count <= 1 || (willReelInOnUpdate && LineParticles.Count == 2));
     }
 
     // Update is called once per frame
@@ -135,18 +133,16 @@ public class FishingLineLogic : MonoBehaviour
                 }
                 if (in_water)
                 {
-                    it.Value.accelleration = Physics.gravity * -0.02f;
+                    it.Value.accelleration = Physics.gravity * 0.0f;
                     //it.Value.accelleration.x = ((Mathf.PerlinNoise(it.Value.position.x * 8.0f, Time.time) * 2.0f) - 1.0f) * 5.0f;
                     //it.Value.accelleration.z = ((Mathf.PerlinNoise(it.Value.position.z * 8.0f, Time.time) * 2.0f) - 1.0f) * 5.0f;
 
-                it.Value.dragPercentage = 0.1f;
+                     it.Value.dragPercentage = 0.1f;
                 }
                 else
                 {
-                    it.Value.accelleration = Physics.gravity * 0.2f;
-
-
-                it.Value.dragPercentage = 0.01f;
+                    it.Value.accelleration = Physics.gravity * 0.1f;
+                    it.Value.dragPercentage = 0.01f;
                 }
             }
 
@@ -159,8 +155,10 @@ public class FishingLineLogic : MonoBehaviour
                     LineParticles.Last.Value.position = fishingBob.transform.position;
                     LineParticles.Last.Value.oldPosition = fishingBob.transform.position;
 
-                    if (Vector3.Distance(LineParticles.First.Value.position, LineParticles.First.Next.Value.position) > 0.26f)
+                    setDistanceBetweenParticle0And1 = Vector3.Distance(LineParticles.First.Value.position, LineParticles.First.Next.Value.position); // change distance between 
+                    if (Vector3.Distance(LineParticles.First.Value.position, LineParticles.First.Next.Value.position) > 0.1f)
                     {
+                        setDistanceBetweenParticle0And1 = 0.0001f;
                         LineParticle new_particle = new LineParticle();
                         new_particle.position = FishingLineTip.position;
                         new_particle.oldPosition = FishingLineTip.position;
@@ -177,12 +175,14 @@ public class FishingLineLogic : MonoBehaviour
 
                     for (int k = 0; k < accuracyItirations; k++)
                     {
+                        LineParticles.First.Value.position = FishingLineTip.position;
+                        LineParticles.Last.Value.position = fishingBob.transform.position;
+                        PoleConstraint(LineParticles.First.Value, LineParticles.First.Next.Value, setDistanceBetweenParticle0And1); // makes a distance transition between particle 0 and 1
+
                         for (LinkedListNode<LineParticle> it = LineParticles.Last; it.Previous != null; it = it.Previous)
                         {
-                            LineParticles.First.Value.position = FishingLineTip.position;
-                           LineParticles.Last.Value.position = fishingBob.transform.position;
 
-                            PoleConstraint(it.Value, it.Previous.Value, 0.25f);
+                            PoleConstraint(it.Value, it.Previous.Value, 0.1f);
 
                         }
                     }
@@ -198,11 +198,22 @@ public class FishingLineLogic : MonoBehaviour
             case STATE.FISHING:
                     {
 
+                    if (willReelInOnUpdate)
+                    {
+                        if (LineParticles.Count != 0)
+                        {
+                            LineParticles.RemoveFirst();
+                            GetComponent<LineRenderer>().positionCount = LineParticles.Count;
+
+                        }
+                    }
+
+
                     LineParticles.First.Value.position = FishingLineTip.position;
-                    LineParticles.Last.Value.oldPosition = LineParticles.First.Value.position;
+               //     LineParticles.Last.Value.oldPosition = LineParticles.First.Value.position;
 
                     LineParticles.Last.Value.position = fishingBob.transform.position;
-                    LineParticles.Last.Value.oldPosition = fishingBob.transform.position;
+                  //  LineParticles.Last.Value.oldPosition = fishingBob.transform.position;
 
 
 
@@ -217,9 +228,14 @@ public class FishingLineLogic : MonoBehaviour
 
                     for (int k = 0; k < accuracyItirations; k++)
                     {
+                       // PoleConstraint(LineParticles.First.Value, LineParticles.First.Next.Value, setDistanceBetweenParticle0And1); // makes a distance transition between particle 0 and 1
+
                         for (LinkedListNode<LineParticle> it = LineParticles.First; it.Next != null; it = it.Next)
                         {
-                            PoleConstraint(it.Value, it.Next.Value, 0.25f);
+                            LineParticles.First.Value.position = FishingLineTip.position;
+                            LineParticles.Last.Value.position = fishingBob.transform.position;
+
+                            PoleConstraint(it.Value, it.Next.Value, 0.1f);
 
                         }
                     }
@@ -298,18 +314,19 @@ public class FishingLineLogic : MonoBehaviour
 
             }
 
-            Vector3[] linePositions = new Vector3[LineParticles.Count];
-            int index = 0;
-            for (LinkedListNode<LineParticle> it = LineParticles.First; it != null; it = it.Next)
-            {
+        Vector3[] linePositions = new Vector3[LineParticles.Count];
+        int index = 0;
+        for (LinkedListNode<LineParticle> it = LineParticles.First; it != null; it = it.Next)
+        {
 
-                linePositions[index] =  it.Value.position;
-                index++;
-            }
-            linePositions[0] = FishingLineTip.position;
-            linePositions[LineParticles.Count - 1] = fishingBob.transform.position;
-            GetComponent<LineRenderer>().SetPositions(linePositions);
+            linePositions[index] =  it.Value.position;
+            index++;
+        }
+        linePositions[0] = FishingLineTip.position;
+        linePositions[LineParticles.Count - 1] = fishingBob.transform.position;
+        GetComponent<LineRenderer>().SetPositions(linePositions);
 
+        willReelInOnUpdate = false;
     }
 
 
@@ -371,7 +388,7 @@ public class FishingLineLogic : MonoBehaviour
                 case STATE.FISHING:
                     {
                         test += Time.deltaTime;
-                        return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * Mathf.Lerp(5.0f,0.1f,test);
+                        return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * Mathf.Lerp(3.0f,0.1f,test); // lerp force multiple settles the fishing rod rather than making a clear force difference
                     }
                 case STATE.FIGHTING:
                     {

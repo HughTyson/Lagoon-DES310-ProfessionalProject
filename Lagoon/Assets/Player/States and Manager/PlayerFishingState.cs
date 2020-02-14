@@ -17,7 +17,7 @@ public class PlayerFishingState : BaseState
 
     [Header("Fishing Reel In Properties")]
     [Tooltip("speed of reeling in")]
-    [SerializeField] float fishingReelInSpeed = 15;
+    [SerializeField] float fishingReelInMaxSpeed = 15;
 
 
     [Header("Fish Bite Attempt Properties")]
@@ -212,9 +212,9 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.FISHING:
                 {
-                    if (Input.GetButton("PlayerRB")) // bring the bob closer by reeling in
+                    if (Input.GetAxis("PlayerRT") > 0.1f) // bring the bob closer by reeling in
                     {
-                        ReelIn();
+                        ReelIn(Mathf.Lerp(0, fishingReelInMaxSpeed, Input.GetAxis("PlayerRT")));
                     }
                     else if (Input.GetButtonDown("PlayerB"))
                     {
@@ -231,7 +231,7 @@ public class PlayerFishingState : BaseState
                 {
                     if (Input.GetButton("PlayerRB"))
                     {
-                        ReelIn();
+                       // ReelIn();
                     }
 
                     if (Input.GetButtonDown("PlayerB"))
@@ -440,12 +440,12 @@ public class PlayerFishingState : BaseState
 
 
     float currentReelInTime = 0;
-    void ReelIn() // bring the bob closer by reeling in
+    void ReelIn(float reelInSpeed) // bring the bob closer by reeling in
     {
         fishingBob.GetComponentInChildren<FishingBobLogic>().ScareNearbyFish();
-        currentReelInTime += Time.deltaTime;
+        currentReelInTime += Time.deltaTime*reelInSpeed;
 
-        if (currentReelInTime > 1.0f / fishingReelInSpeed)
+        if (currentReelInTime > 1.0f)
         {
             currentReelInTime = 0;
             fishingLineLogic.ReelIn();
