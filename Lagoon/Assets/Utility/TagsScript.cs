@@ -15,7 +15,8 @@ public class TagsScript : MonoBehaviour
     PLAYER,
     ACTION_SCARES_FISH,
     WATER,
-    TRIGGER
+    TRIGGER,
+    INVISIBLE_WALL
     };
 
     

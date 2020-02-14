@@ -286,17 +286,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishingCastVelocity: 20
-  fishingCastVelocityDampener: 1
   fishingReelInSpeed: 12
   fishbiteTimerMin: 2
   fishbiteTimerMax: 4
-  textFishingCastPower: {fileID: 0}
-  DEBUG_FISH_UNHOOK: {fileID: 0}
-  DEBUG_FISH_LINE_SNAP: {fileID: 0}
   cameraTransform: {fileID: 0}
   fishingRodTip: {fileID: 0}
   fishingLineLogic: {fileID: 0}
-  fishingRodMesh: {fileID: 4580078603987145739}
   characterControllerMovement: {fileID: 6160413944266683236}
   thirdPersonCamera: {fileID: 0}
   staticFishingRodLogic: {fileID: 6301241936874654446}
@@ -305,7 +300,6 @@ MonoBehaviour:
   fishingIndicatorLogic: {fileID: 0}
   fishingBob: {fileID: 0}
   fixedRodAnimator: {fileID: 742496304976092426}
-  islandCollider: {fileID: 0}
 --- !u!114 &4994201600233756953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,7 +339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d7e313f61f0cc409aca1fd005849a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  box_prefab: {fileID: -450884807799122149, guid: be79136aeffee394b932b5d28f89be46,
+  box_prefab: {fileID: 7384223150735055443, guid: cdd63edbf4c15cb498edd4ed0d8e8c01,
     type: 3}
   box_list: []
   drop_points:
@@ -419,6 +413,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2207740848213092383}
     m_Modifications:
+    - target: {fileID: -927199367670048503, guid: dacef3d52a5eba14aaff9787188e23a9,
+        type: 3}
+      propertyPath: m_Name
+      value: FIshingRod03
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -489,11 +488,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 15
       objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: dacef3d52a5eba14aaff9787188e23a9,
-        type: 3}
-      propertyPath: m_Name
-      value: FIshingRod03
-      objectReference: {fileID: 0}
     - target: {fileID: -2235245789278775237, guid: dacef3d52a5eba14aaff9787188e23a9,
         type: 3}
       propertyPath: m_CastShadows
@@ -511,12 +505,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: e22aa7ffc23c8434cae81488f48eef47, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dacef3d52a5eba14aaff9787188e23a9, type: 3}
---- !u!1 &4580078603987145739 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: dacef3d52a5eba14aaff9787188e23a9,
-    type: 3}
-  m_PrefabInstance: {fileID: 5525450752589958402}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &708451495562159640 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: dacef3d52a5eba14aaff9787188e23a9,
@@ -530,6 +518,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1948125195584788263}
     m_Modifications:
+    - target: {fileID: -927199367670048503, guid: 4e75d253784b2814eb427b8d68571292,
+        type: 3}
+      propertyPath: m_Name
+      value: 310_CharacterTest
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 4e75d253784b2814eb427b8d68571292,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -594,11 +587,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 4.8162556
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 4e75d253784b2814eb427b8d68571292,
-        type: 3}
-      propertyPath: m_Name
-      value: 310_CharacterTest
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 4e75d253784b2814eb427b8d68571292,
         type: 3}
