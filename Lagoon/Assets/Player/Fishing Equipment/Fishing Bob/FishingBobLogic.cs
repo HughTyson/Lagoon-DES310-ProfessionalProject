@@ -8,8 +8,6 @@ public class FishingBobLogic : MonoBehaviour
     [Header("General Properties")]
     [Tooltip("the mass the line precieves the bob to be (cannot be 0)")]
     [SerializeField] float precievedLineMass = 0.5f;
-    [Tooltip("the maximum velocity of the bob once it's been casted")]
-    [SerializeField] float castedMaxVelocity = 20.0f;
 
     [Header("Attraction Properties")]
     [Tooltip("time between periodic attraction pulses sent to attract fish")]
@@ -121,9 +119,14 @@ public class FishingBobLogic : MonoBehaviour
                     current_attration_time -= Time.fixedDeltaTime;
 
                     // GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.GetEndOfLine() - transform.position) / precievedLineMass, ForceMode.VelocityChange);
-                  //  GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineVelocity()) / precievedLineMass, ForceMode.VelocityChange);
+                    //  GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineVelocity()) / precievedLineMass, ForceMode.VelocityChange);
 
-                    float dampened_magnitude = (fishingLineLogic.EndOfLineVelocity() / precievedLineMass).magnitude;
+
+                    float variable_dampening = Mathf.Lerp(0.1f, 1.0f, (Mathf.Max(Mathf.Min(fishingLineLogic.DistanceFromTipToBob(), 40.0f), 10.0f) - 10.0f) / (40.0f - 10.0f));
+
+                    Debug.Log(fishingLineLogic.DistanceFromTipToBob());
+                    Debug.Log(variable_dampening);
+                    float dampened_magnitude = (fishingLineLogic.EndOfLineVelocity() / precievedLineMass).magnitude - variable_dampening;
                     if (dampened_magnitude > 0)
                     {
                         GetComponentInParent<Rigidbody>().AddForce(fishingLineLogic.EndOfLineVelocity().normalized * dampened_magnitude, ForceMode.VelocityChange);
@@ -131,7 +134,8 @@ public class FishingBobLogic : MonoBehaviour
 
 
 
-                 //   GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineForce()) / 1.0f, ForceMode.VelocityChange);
+
+                    //   GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineForce()) / 1.0f, ForceMode.VelocityChange);
                     //  GetComponentInParent<Rigidbody>().velocity = Vector3.ClampMagnitude(GetComponentInParent<Rigidbody>().velocity, 40);
 
                     if (current_attration_time <= 0.0f) // send attraction pulse
@@ -144,10 +148,16 @@ public class FishingBobLogic : MonoBehaviour
             case STATE.FISH_INTERACTING: // a fish is interacting with the bob
                 {
 
-                    if ((fishingLineLogic.EndOfLineVelocity() / precievedLineMass).magnitude > 0.15f)
+                    float variable_dampening = Mathf.Lerp(0.1f, 1.0f, (Mathf.Max(Mathf.Min(fishingLineLogic.DistanceFromTipToBob(), 40.0f), 10.0f) - 10.0f) / (40.0f - 10.0f));
+
+                    Debug.Log(fishingLineLogic.DistanceFromTipToBob());
+                    Debug.Log(variable_dampening);
+                    float dampened_magnitude = (fishingLineLogic.EndOfLineVelocity() / precievedLineMass).magnitude - variable_dampening;
+                    if (dampened_magnitude > 0)
                     {
-                        GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineVelocity()) / precievedLineMass, ForceMode.VelocityChange);
+                        GetComponentInParent<Rigidbody>().AddForce(fishingLineLogic.EndOfLineVelocity().normalized * dampened_magnitude, ForceMode.VelocityChange);
                     }
+
 
                     if (!interactingFish.IsInStateInteracting())
                     {

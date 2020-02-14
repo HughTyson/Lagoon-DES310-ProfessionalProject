@@ -49,6 +49,7 @@ public class PlayerFishingState : BaseState
     [Tooltip("the fishing bob logic script")]
     [SerializeField] GameObject fishingBob;
 
+    [SerializeField] ButtonUIManager buttonUIManager;
     [SerializeField] Animator fixedRodAnimator;
 
     enum FISHING_STATE
@@ -95,6 +96,9 @@ public class PlayerFishingState : BaseState
 
         fishingIndicatorLogic.gameObject.SetActive(true);
         fishingIndicatorLogic.AttachLookAtTransform(cameraTransform);
+
+        buttonUIManager.DisableAllButtons();
+        buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.B, "Cancel Fishing");
     }
 
     public void OnDisable()
@@ -120,7 +124,8 @@ public class PlayerFishingState : BaseState
         if (fishingProjectileIndicator != null)
             fishingProjectileIndicator.gameObject.SetActive(false);
 
-
+        if (buttonUIManager != null)
+            buttonUIManager.DisableAllButtons();
 
         thirdPersonCamera.look_at_target = transform; // set target back to player
     }
@@ -229,9 +234,12 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.INTERACTING_FISH:
                 {
-                    if (Input.GetButton("PlayerRB"))
+                    if (Input.GetAxis("PlayerRT") > 0.5f)
                     {
-                       // ReelIn();
+                       if (interactingFishWontFrightenTime < 0.0f)
+                        {
+                            FailedHookAttempt();
+                        }
                     }
 
                     if (Input.GetButtonDown("PlayerB"))
@@ -253,7 +261,7 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.BITING_FISH:
                 {
-                    if (Input.GetButton("PlayerRB"))
+                    if (Input.GetAxis("PlayerRT") > 0.5f)
                     {
                         FishFightingBegin();
                     }
@@ -442,7 +450,6 @@ public class PlayerFishingState : BaseState
     float currentReelInTime = 0;
     void ReelIn(float reelInSpeed) // bring the bob closer by reeling in
     {
-        fishingBob.GetComponentInChildren<FishingBobLogic>().ScareNearbyFish();
         currentReelInTime += Time.deltaTime*reelInSpeed;
 
         if (currentReelInTime > 1.0f)
@@ -491,18 +498,33 @@ public class PlayerFishingState : BaseState
     float currenFishBiteAttemptTime = 0;
     int failedFishCounter = 0; // amount of times a fish tried 3x and lost interest
     int biteAttempts = 0;
+    float interactingFishWontFrightenTime;
     void BeginFishInteractingState()
     {
         interactingFish = fishingBob.GetComponentInChildren<FishingBobLogic>().GetInteractingFish();
         currenFishBiteAttemptTime = Random.Range(fishbiteTimerMin, fishbiteTimerMax);
         biteAttempts = 0;
+        interactingFishWontFrightenTime = 0.5f;
         fishing_state = FISHING_STATE.INTERACTING_FISH;
 
+        fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x, GlobalVariables.WATER_LEVEL + 1.0f, interactingFish.transform.position.z));
+        fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.FISH_INTERACTING);
+
+    }
+
+    void FailedHookAttempt()
+    {
+            currentReelInTime = 0;
+            fishingLineLogic.ReelIn();
+            interactingFish.LostInterestInFishingBob(5.0f);
+            FishInteractingFailed();
+            fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.NOT_ACTIVE);
     }
 
     void FishInteractingUpdate()
     {
         currenFishBiteAttemptTime -= Time.deltaTime;
+        interactingFishWontFrightenTime -= Time.deltaTime;
 
         if (currenFishBiteAttemptTime <= 0)
         {
@@ -579,6 +601,7 @@ public class PlayerFishingState : BaseState
     {
         interactingFish.LostInterestInFishingBob(5.0f);
         fishing_state = FISHING_STATE.FISHING;
+        fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.NOT_ACTIVE);
     }
 
     // -- //

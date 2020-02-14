@@ -16,6 +16,9 @@ public class PlayerExploreState : BaseState
     [SerializeField] CharacterControllerMovement movement_;
     [SerializeField] ThirdPersonCamera camera_;
 
+
+    [SerializeField] ButtonUIManager buttonUIManager;
+
     INTERACTION_TYPE interaction_type;
 
     private void OnEnable()
@@ -65,21 +68,32 @@ public class PlayerExploreState : BaseState
                     case TriggerType.TRIGGER_TYPE.FISHING:
                         {
                             interaction_type = INTERACTION_TYPE.FISH;
+
+                            buttonUIManager.DisableAllButtons();
+                            buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "Start Fishing");
                         }
                         break;
                     case TriggerType.TRIGGER_TYPE.RADIO:
                         {
                             interaction_type = INTERACTION_TYPE.RADIO;
+
+                            buttonUIManager.DisableAllButtons();
+                            buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "Talk to Radio");
                         }
                         break;
                     case TriggerType.TRIGGER_TYPE.SLEEP:
                         {
                             interaction_type = INTERACTION_TYPE.SLEEP;
+
+                            buttonUIManager.DisableAllButtons();
+                            buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "Go to Sleep");
                         }
                         break;
                     default:
                         {
                             interaction_type = INTERACTION_TYPE.NONE;
+                            buttonUIManager.DisableAllButtons();
+
                         }
                         break;
                 }
@@ -90,6 +104,7 @@ public class PlayerExploreState : BaseState
     private void OnTriggerExit(Collider other)
     {
         interaction_type = INTERACTION_TYPE.NONE;
+        buttonUIManager.DisableAllButtons();
     }
 
 }
