@@ -29,7 +29,7 @@ public class PlayerConversationState : BaseState
     {
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
         camera_.current_state = ThirdPersonCamera.STATE.FREE;
-        state = ConversationState.STARTUP;
+        state = ConversationState.WATCH_DROP;
 
         convoUIManager.enabled = true;
 
@@ -61,8 +61,6 @@ public class PlayerConversationState : BaseState
                         Debug.Log("HELLO");
 
                         test_drop.Spawn();
-
-                        //camera_.look_at_target = ;
                     }
                     
                     if(Input.GetButtonDown("PlayerY"))

@@ -15,6 +15,7 @@ public class SupplyDrop : MonoBehaviour
     public void Spawn()
     {
         StartCoroutine(SpawnBoxes());
+        Debug.Log("HELLO");
     }
     
     //public void SpawnBoxes()

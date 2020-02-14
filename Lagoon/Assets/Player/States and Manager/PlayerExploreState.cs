@@ -40,10 +40,10 @@ public class PlayerExploreState : BaseState
                     { }
                     break;
                 case INTERACTION_TYPE.FISH:
-                    { StateManager.ChangeState(PlayerScriptManager.STATE.FISHING); }
+                    { StateManager.ChangeState(PlayerScriptManager.STATE.FISHING); Debug.Log("FISHING"); }
                     break;
                 case INTERACTION_TYPE.RADIO:
-                    { StateManager.ChangeState(PlayerScriptManager.STATE.CONVERSATION); }
+                    { StateManager.ChangeState(PlayerScriptManager.STATE.CONVERSATION); Debug.Log("RADIO"); }
                     break;
                 case INTERACTION_TYPE.SLEEP:
                     { }
@@ -88,6 +88,5 @@ public class PlayerExploreState : BaseState
     {
         interaction_type = INTERACTION_TYPE.NONE;
     }
-
 
 }

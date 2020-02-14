@@ -7,6 +7,7 @@ public class TriggerType : MonoBehaviour
 
     public enum TRIGGER_TYPE
     {
+        DEFAULT,
         FISHING,
         RADIO,
         SLEEP
