@@ -123,7 +123,7 @@ public class FishingBobLogic : MonoBehaviour
                     // GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.GetEndOfLine() - transform.position) / precievedLineMass, ForceMode.VelocityChange);
                   //  GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineVelocity()) / precievedLineMass, ForceMode.VelocityChange);
 
-                    float dampened_magnitude = (fishingLineLogic.EndOfLineVelocity() / precievedLineMass).magnitude -0.1f;
+                    float dampened_magnitude = (fishingLineLogic.EndOfLineVelocity() / precievedLineMass).magnitude;
                     if (dampened_magnitude > 0)
                     {
                         GetComponentInParent<Rigidbody>().AddForce(fishingLineLogic.EndOfLineVelocity().normalized * dampened_magnitude, ForceMode.VelocityChange);

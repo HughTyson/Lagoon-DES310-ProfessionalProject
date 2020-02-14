@@ -6,9 +6,13 @@ public class InvisibleWall : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        if(!collision.collider.GetComponent<TagsScript>().ContainsTheTag(TagsScript.TAGS.PLAYER))
+        if (collision.collider.GetComponent<TagsScript>() != null)
         {
-            Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
+            if (!collision.collider.GetComponent<TagsScript>().ContainsTheTag(TagsScript.TAGS.PLAYER))
+            {
+                Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
+            }
         }
+
     }
 }

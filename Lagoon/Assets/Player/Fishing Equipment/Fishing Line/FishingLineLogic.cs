@@ -182,7 +182,7 @@ public class FishingLineLogic : MonoBehaviour
                         for (LinkedListNode<LineParticle> it = LineParticles.Last; it.Previous != null; it = it.Previous)
                         {
 
-                            PoleConstraint(it.Value, it.Previous.Value, 0.1f);
+                            PoleConstraint(it.Value, it.Previous.Value, 0.10f);
 
                         }
                     }
@@ -235,7 +235,7 @@ public class FishingLineLogic : MonoBehaviour
                             LineParticles.First.Value.position = FishingLineTip.position;
                             LineParticles.Last.Value.position = fishingBob.transform.position;
 
-                            PoleConstraint(it.Value, it.Next.Value, 0.1f);
+                            PoleConstraint(it.Value, it.Next.Value, 0.15f);
 
                         }
                     }

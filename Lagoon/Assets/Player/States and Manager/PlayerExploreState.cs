@@ -56,30 +56,33 @@ public class PlayerExploreState : BaseState
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.GetComponent<TagsScript>().ContainsTheTag(TagsScript.TAGS.TRIGGER))        //check if the collider is a trigger
+        if (other.GetComponent<TagsScript>() != null)
         {
-            switch (other.GetComponent<TriggerType>().GetTrigger())                         //if it is a trigger then get type of trigger
+            if (other.GetComponent<TagsScript>().ContainsTheTag(TagsScript.TAGS.TRIGGER))        //check if the collider is a trigger
             {
-                case TriggerType.TRIGGER_TYPE.FISHING:
-                    {
-                        interaction_type = INTERACTION_TYPE.FISH;
-                    }
-                    break;
-                case TriggerType.TRIGGER_TYPE.RADIO:
-                    {
-                        interaction_type = INTERACTION_TYPE.RADIO;
-                    }
-                    break;
-                case TriggerType.TRIGGER_TYPE.SLEEP:
-                    {
-                        interaction_type = INTERACTION_TYPE.SLEEP;
-                    }
-                    break;
-                default:
-                    {
-                        interaction_type = INTERACTION_TYPE.NONE;
-                    }
-                    break;
+                switch (other.GetComponent<TriggerType>().GetTrigger())                         //if it is a trigger then get type of trigger
+                {
+                    case TriggerType.TRIGGER_TYPE.FISHING:
+                        {
+                            interaction_type = INTERACTION_TYPE.FISH;
+                        }
+                        break;
+                    case TriggerType.TRIGGER_TYPE.RADIO:
+                        {
+                            interaction_type = INTERACTION_TYPE.RADIO;
+                        }
+                        break;
+                    case TriggerType.TRIGGER_TYPE.SLEEP:
+                        {
+                            interaction_type = INTERACTION_TYPE.SLEEP;
+                        }
+                        break;
+                    default:
+                        {
+                            interaction_type = INTERACTION_TYPE.NONE;
+                        }
+                        break;
+                }
             }
         }
     }
