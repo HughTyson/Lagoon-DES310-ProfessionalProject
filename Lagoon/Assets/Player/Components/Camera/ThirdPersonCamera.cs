@@ -143,7 +143,6 @@ public class ThirdPersonCamera : MonoBehaviour
         {
             case STATE.FREE:
                 {
-                    //collisionUpdate();              //update the collisions aorund the camera
 
                     destinationUpdate();            //calculate the new poititon of the camera
 
@@ -158,18 +157,11 @@ public class ThirdPersonCamera : MonoBehaviour
             case STATE.CLAMPED_LOOK_AT:
                 {
 
-                    //collisionUpdate();              //update the collisions aorund the camera
-
-                    fixedDestinationUpdate();            //calculate the new poititon of the camera
+                    destinationUpdate();            //calculate the new poititon of the camera
 
                     setPosition();                  //set the position based on the new destination#
 
                     Quaternion new_look = Quaternion.LookRotation(look_at_target.position - _camera.position, Vector3.up);
-
-                    //method 1
-                    //_camera.rotation = Quaternion.RotateTowards(_camera.rotation, new_look, 1);
-
-                    //method 2
 
                     _camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
                 }
@@ -237,17 +229,6 @@ public class ThirdPersonCamera : MonoBehaviour
         //the input from the controller and the distance that the player is from the camera
 
         target_pos = rot_target.position + Vector3.up * target_offset.y + Vector3.forward * target_offset.z + transform.TransformDirection(Vector3.right * target_offset.x); 
-        destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
-
-        destination += target_pos;
-    }
-
-    private void fixedDestinationUpdate()
-    {
-        //set the target position based of the targets current position, the offset values,
-        //the input from the controller and the distance that the player is from the camera
-
-        target_pos = rot_target.position + Vector3.up * target_offset.y + Vector3.forward * target_offset.z + transform.TransformDirection(Vector3.right * target_offset.x);
         destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
 
         destination += target_pos;

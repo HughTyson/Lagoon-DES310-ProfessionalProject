@@ -14,7 +14,8 @@ public class TagsScript : MonoBehaviour
     FISH,
     PLAYER,
     ACTION_SCARES_FISH,
-    WATER
+    WATER,
+    TRIGGER
     };
 
     
