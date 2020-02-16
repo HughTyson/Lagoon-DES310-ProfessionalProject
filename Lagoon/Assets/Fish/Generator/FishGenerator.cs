@@ -5,12 +5,38 @@ public class FishGenerator : MonoBehaviour
 {
 
     [SerializeField] GameObject prefabFish;
-    [SerializeField] int maxFish = 5;
+
     [SerializeField] float fishSpawnDepth;
 
-    [SerializeField] List<Collider> NoSpawnColliders;
 
 
+
+    [SerializeField] Vector2 fishHabitatRingsOriginXZ;
+    [System.Serializable]
+    public class FishGenerationStats
+    {
+        public enum FISH_TEIR
+        { 
+        T1,
+        T2,
+        T3,
+        T4
+        };
+        public FISH_TEIR fishTeirEnum;
+        public List<GameObject> spawnArea;
+        public float habitatRingMin;
+        public float habitatRingMax;
+        public int maxFish = 5;
+        public float fishScaleMultiplier = 1.0f;
+
+        [HideInInspector]
+        public List<Fish> fishList = new List<Fish>();
+
+        [HideInInspector]
+        public List<float> spawnAreaWeighting = new List<float>();
+    }
+
+    [SerializeField] List<FishGenerationStats> fishGenerationStats;
 
     [System.Serializable]
     public class FishType
@@ -18,9 +44,6 @@ public class FishGenerator : MonoBehaviour
         public GameObject fishPrefab;
         public float minRangeTimeUnactiveTillDespawn;
         public float maxRangeTimeUnactiveTillDespawned;
-
-        // add other stuff
-    
     }
 
     [SerializeField] List<FishType> AllowableFishTypes;
@@ -32,83 +55,164 @@ public class FishGenerator : MonoBehaviour
         public float currentUnactiveDespawnTime;
         public GameObject fishObject;
     }
-    List<Fish> fishList = new List<Fish>();
 
 
 
-    
+
+
     // Start is called before the first frame update
     void Start()
     {
-       
+        // create spawner chance weightings based on size of colliders.
+        // This makes sure that if colliders have different sizes, they won't all have the same weighting (e.i collider A is 2x bigger than collider B so A should be 2x more likely to be the chosen spawn collider)
+        for (int i = 0; i < fishGenerationStats.Count; i++)
+        {
+            float total_area = 0.0f;
+
+            for (int k = 0; k < fishGenerationStats[i].spawnArea.Count; k++)
+            {
+                Vector3 size = fishGenerationStats[i].spawnArea[k].transform.lossyScale;
+
+                fishGenerationStats[i].spawnAreaWeighting.Add((size.x * size.z)); 
+                total_area += fishGenerationStats[i].spawnAreaWeighting[k];
+            }
+
+            for (int k = 0; k < fishGenerationStats[i].spawnArea.Count; k++)
+            {
+                fishGenerationStats[i].spawnAreaWeighting[k] /= total_area; 
+            }
+
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (fishList.Count != maxFish)
+        for (int k = 0; k < fishGenerationStats.Count; k++)
         {
-            SpawnFish();
-        }
-        
-        for (int i = 0; i < fishList.Count; i++)
-        {
-            if (fishList[i].fishObject != null)
+            FishGenerationStats fishRing = fishGenerationStats[k];
+            if (fishRing.fishList.Count != fishRing.maxFish)
             {
-                if (fishList[i].fishObject.GetComponentInChildren<FishLogic>().IsInDespawnableState())
-                {
-                    fishList[i].currentUnactiveDespawnTime -= Time.deltaTime;
+                SpawnFish(fishRing);
+            }
 
-                    if (fishList[i].currentUnactiveDespawnTime <= 0)
+            for (int i = 0; i < fishRing.fishList.Count; i++)
+            {
+                Fish fish = fishRing.fishList[i];
+                if (fish.fishObject != null)
+                {
+                    if (fish.fishObject.GetComponentInChildren<FishLogic>().IsInDespawnableState())
                     {
-                        Destroy(fishList[i].fishObject);
-                        fishList.Remove(fishList[i]);
+                        fish.currentUnactiveDespawnTime -= Time.deltaTime;
+
+                        if (fish.currentUnactiveDespawnTime <= 0)
+                        {
+                            Destroy(fish.fishObject);
+                            fishRing.fishList.Remove(fish);
+                        }
+                    }
+                    else
+                    {
+                        fish.currentUnactiveDespawnTime = fish.initializedUnactiveDespawnTime;
                     }
                 }
                 else
                 {
-                    fishList[i].currentUnactiveDespawnTime = fishList[i].initializedUnactiveDespawnTime;
+                    fishRing.fishList.Remove(fish);
                 }
             }
-            else
-            {
-                fishList.Remove(fishList[i]);
-            }
+
         }
 
     }
 
-    void SpawnFish()
+    void SpawnFish(FishGenerationStats fishRing)
     {
+        float spawnerDecider = Random.value;
+        float currentWeighting = 0.0f;
+        int decidedSpawner = 0;
 
-        Vector3 new_position = new Vector3(0,-fishSpawnDepth,0);
-
-        Bounds bounds = GetComponentInChildren<Collider>().bounds;
-        new_position.x = Random.Range(bounds.min.x, bounds.max.x);
-        new_position.z = Random.Range(bounds.min.z, bounds.max.z);
-
-        for (int i = 0; i < NoSpawnColliders.Count; i++) // do only one attempt every frame to prevent multiple failed attempts which could cause lag
+        // decide on which collider to spawn in based on their weighting
+        for (int i = 0; i < fishRing.spawnAreaWeighting.Count; i++)
         {
-            if (NoSpawnColliders[i].bounds.Contains(new_position))
+            currentWeighting += fishRing.spawnAreaWeighting[i];
+            if (spawnerDecider <= currentWeighting)
             {
-                return;
+                decidedSpawner = i;
+                break;
             }
         }
+        Vector3 new_position = Vector3.zero;
 
-            Fish new_fish = new Fish();
-
-            FishType chosen_fish_type = AllowableFishTypes[Random.Range(0, AllowableFishTypes.Count)]; // give rarity later and bell curve distribution
-
-            new_fish.fishObject = Instantiate(chosen_fish_type.fishPrefab);
-            new_fish.initializedUnactiveDespawnTime = Random.Range(chosen_fish_type.minRangeTimeUnactiveTillDespawn, chosen_fish_type.maxRangeTimeUnactiveTillDespawned);
-            new_fish.currentUnactiveDespawnTime = new_fish.initializedUnactiveDespawnTime;
-
-            new_fish.fishObject.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
-            new_fish.fishObject.transform.position = new_position;
+        // get random point in AABB bounds
+        Transform trans = fishRing.spawnArea[decidedSpawner].transform;
+        new_position.x = (Random.value - 0.5f) * trans.lossyScale.x;
+        new_position.z = (Random.value - 0.5f) * trans.lossyScale.z;
 
 
-        fishList.Add(new_fish);
+        // convert point to be OOB
+        new_position = trans.rotation * new_position;
+        new_position += trans.position;
+        new_position.y = -fishSpawnDepth;
 
+        Fish new_fish = new Fish();
+
+        FishType chosen_fish_type = AllowableFishTypes[Random.Range(0, AllowableFishTypes.Count)]; // give rarity later and bell curve distribution
+
+        new_fish.fishObject = Instantiate(chosen_fish_type.fishPrefab);
+        new_fish.initializedUnactiveDespawnTime = Random.Range(chosen_fish_type.minRangeTimeUnactiveTillDespawn, chosen_fish_type.maxRangeTimeUnactiveTillDespawned);
+        new_fish.currentUnactiveDespawnTime = new_fish.initializedUnactiveDespawnTime;
+
+        new_fish.fishObject.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+        new_fish.fishObject.transform.position = new_position;
+        new_fish.fishObject.transform.localScale = Vector3.one * fishRing.fishScaleMultiplier;
+
+        FishLogic.VarsFromFishGenerator fish_vars = new FishLogic.VarsFromFishGenerator();
+        fish_vars.habitatRingOrigin = fishHabitatRingsOriginXZ;
+        fish_vars.habitatRingMin = fishRing.habitatRingMin;
+        fish_vars.habitatRingMax = fishRing.habitatRingMax;
+
+        new_fish.fishObject.GetComponentInChildren<FishLogic>().Init(fish_vars);
+
+        fishRing.fishList.Add(new_fish);
+
+
+    }
+
+
+    void OnDrawGizmos()
+    {
+        Vector3 origin = transform.position;
+        origin.x = fishHabitatRingsOriginXZ.x;
+        origin.z = fishHabitatRingsOriginXZ.y;
+
+        List<Color> colours = new List<Color>();
+        colours.Add(new Color(0.0f, 0.0f, 1.0f));
+        colours.Add(new Color(0.0f, 1.0f, 1.0f));
+        colours.Add(new Color(1.0f, 1.0f, 0));
+        colours.Add(new Color(0.0f, 1.0f, 0));
+
+        for (int i = 0; i < fishGenerationStats.Count; i++)
+        {
+            UnityEditor.Handles.color = colours[i];
+            UnityEditor.Handles.DrawWireDisc(origin, Vector3.down, fishGenerationStats[i].habitatRingMin);
+            UnityEditor.Handles.DrawWireDisc(origin, Vector3.down, fishGenerationStats[i].habitatRingMax);
+        }
+
+        for (int i = 0; i < fishGenerationStats.Count; i++)
+        {
+            for (int k = 0; k < fishGenerationStats[i].spawnArea.Count; k++)
+            {
+                
+                Transform trans = fishGenerationStats[i].spawnArea[k].transform;
+                Matrix4x4 rotationMatrix = Matrix4x4.TRS(trans.position, trans.rotation, trans.lossyScale);
+                Gizmos.matrix = rotationMatrix;
+
+                Gizmos.DrawWireCube(transform.position,Vector3.one);
+            }
+
+        }
 
     }
 }
+

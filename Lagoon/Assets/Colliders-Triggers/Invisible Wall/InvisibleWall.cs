@@ -10,9 +10,14 @@ public class InvisibleWall : MonoBehaviour
         {
             if (!collision.collider.GetComponent<TagsScript>().ContainsTheTag(TagsScript.TAGS.PLAYER))
             {
-                Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
+                Physics.IgnoreCollision(collision.collider, GetComponent<Collider>(), true);
             }
         }
+        else
+        {
+            Physics.IgnoreCollision(collision.collider, GetComponent<Collider>(), true);
+        }
+
 
     }
 }
