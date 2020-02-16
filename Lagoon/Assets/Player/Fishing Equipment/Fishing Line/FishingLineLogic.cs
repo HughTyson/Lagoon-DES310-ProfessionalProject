@@ -16,7 +16,6 @@ public class FishingLineLogic : MonoBehaviour
     [SerializeField] Color normal_colour;
     [SerializeField] Color snapping_colour;
 
-    float normal_line_length = 0;
     public enum STATE
     {
         NOT_ACTIVE,
@@ -66,6 +65,7 @@ public class FishingLineLogic : MonoBehaviour
 
 
     float fishing_constraint_distance = 0.0f;
+
     class LineParticle
     {
        
@@ -95,6 +95,8 @@ public class FishingLineLogic : MonoBehaviour
         LineParticles.AddFirst(new_particle2);
 
         GetComponent<LineRenderer>().positionCount = 2;
+
+        fishing_constraint_distance = 1.0f;
     }
     private void OnDisable()
     {
@@ -135,7 +137,7 @@ public class FishingLineLogic : MonoBehaviour
                 }
                 if (in_water)
                 {
-                    it.Value.accelleration = Physics.gravity * 0.0f;
+                    it.Value.accelleration = Physics.gravity * -0.1f;
                     //it.Value.accelleration.x = ((Mathf.PerlinNoise(it.Value.position.x * 8.0f, Time.time) * 2.0f) - 1.0f) * 5.0f;
                     //it.Value.accelleration.z = ((Mathf.PerlinNoise(it.Value.position.z * 8.0f, Time.time) * 2.0f) - 1.0f) * 5.0f;
 
@@ -158,7 +160,7 @@ public class FishingLineLogic : MonoBehaviour
                     LineParticles.Last.Value.oldPosition = fishingBob.transform.position;
 
                     setDistanceBetweenParticle0And1 = Vector3.Distance(LineParticles.First.Value.position, LineParticles.First.Next.Value.position); // change distance between 
-                    if (Vector3.Distance(LineParticles.First.Value.position, LineParticles.First.Next.Value.position) > 0.05f)
+                    if (Vector3.Distance(LineParticles.First.Value.position, LineParticles.First.Next.Value.position) > 0.1f)
                     {
                         setDistanceBetweenParticle0And1 = 0.0001f;
                         LineParticle new_particle = new LineParticle();
@@ -189,16 +191,13 @@ public class FishingLineLogic : MonoBehaviour
                         }
                     }
 
-                    normal_line_length = 0;
-                    for (LinkedListNode<LineParticle> it = LineParticles.First; it.Next != null; it = it.Next)
-                    {
-                        normal_line_length += Vector3.Distance(it.Value.position, it.Next.Value.position);
-                    }
 
                     break;
                 }
             case STATE.FISHING:
                     {
+
+
 
                     if (willReelInOnUpdate)
                     {
@@ -226,26 +225,20 @@ public class FishingLineLogic : MonoBehaviour
                         Verlet(it.Value);
                     }
 
-
+                    LineParticles.First.Value.position = FishingLineTip.position;
+                    LineParticles.Last.Value.position = fishingBob.transform.position;
 
                     for (int k = 0; k < accuracyItirations; k++)
                     {
-                       // PoleConstraint(LineParticles.First.Value, LineParticles.First.Next.Value, setDistanceBetweenParticle0And1); // makes a distance transition between particle 0 and 1
+                        // PoleConstraint(LineParticles.First.Value, LineParticles.First.Next.Value, setDistanceBetweenParticle0And1); // makes a distance transition between particle 0 and 1
+
+                       
 
                         for (LinkedListNode<LineParticle> it = LineParticles.First; it.Next != null; it = it.Next)
                         {
-                          //  LineParticles.First.Value.position = FishingLineTip.position;
-                           // LineParticles.Last.Value.position = fishingBob.transform.position;
-
                             PoleConstraint(it.Value, it.Next.Value, fishing_constraint_distance);
 
                         }
-                    }
-
-                    normal_line_length = 0;
-                    for (LinkedListNode<LineParticle> it = LineParticles.First; it.Next != null; it = it.Next)
-                    {
-                        normal_line_length += Vector3.Distance(it.Value.position, it.Next.Value.position);
                     }
 
                     break;
@@ -281,11 +274,7 @@ public class FishingLineLogic : MonoBehaviour
                         }
                     }
 
-                    normal_line_length = 0;
-                    for (LinkedListNode<LineParticle> it = LineParticles.First; it.Next != null; it = it.Next)
-                    {
-                        normal_line_length += Vector3.Distance(it.Value.position, it.Next.Value.position);
-                    }
+
 
                     while(true)
                     {
@@ -339,17 +328,21 @@ public class FishingLineLogic : MonoBehaviour
     {
         current_state = STATE.FISHING;
 
+        float normal_line_length = 0;
 
-        normal_line_length = 0;
-
-        for (LinkedListNode<LineParticle> it = LineParticles.First; it.Next != null; it = it.Next)
+        if (LineParticles.Count > 4)
         {
-            normal_line_length += Vector3.Distance(it.Value.position, it.Next.Value.position);
-        }
-        //normal_line_length += Vector3.Distance(FishingLineTip.position, LineParticles.First.Value.position );
-        //normal_line_length += Vector3.Distance(LineParticles.Last.Value.position, fishingBob.transform.position);
+            for (LinkedListNode<LineParticle> it = LineParticles.First.Next; it.Next.Next != null; it = it.Next)
+            {
+                normal_line_length += Vector3.Distance(it.Value.position, it.Next.Value.position);
+            }
 
-        fishing_constraint_distance = (normal_line_length / LineParticles.Count) * 0.9f;
+            fishing_constraint_distance = (normal_line_length / (float)(LineParticles.Count - 3))*0.9f;
+        }
+        else
+        {
+            fishing_constraint_distance = 0.1f;
+        }
     }
 
     public void BeganFighting(FishLogic fishLogic)
@@ -365,59 +358,66 @@ public class FishingLineLogic : MonoBehaviour
 
     public Vector3 EndOfLineVelocity()
     {
-        return (LineParticles.Last.Value.position - LineParticles.Last.Value.oldPosition);
+        float current_rope_length = 0;
+        for (LinkedListNode<LineParticle> it = LineParticles.First; it.Next != null; it = it.Next)
+        {
+            current_rope_length += Vector3.Distance(it.Value.position, it.Next.Value.position);
+        }
+
+        float fromTipToBob = Vector3.Distance(fishingBob.transform.position, FishingLineTip.position);
+
+        float extra_tension_multiplier = 1.01f;
+        float extra_length = Mathf.Max(fromTipToBob - (current_rope_length*extra_tension_multiplier), 0);
+
+        Debug.Log(fromTipToBob);
+        return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length;
     }
-    public float DistanceFromTipToBob()
-    {
-        return (Vector3.Distance(FishingLineTip.position, fishingBob.transform.position));
-    }
+
     public Vector3 EndOfLineForce()
     {
         if (current_state != STATE.NOT_ACTIVE)
         {
-            float current_rope_length = 0;
-            for (LinkedListNode<LineParticle> it = LineParticles.First; it.Next != null; it = it.Next)
+
+            if (Vector3.Distance(FishingLineTip.position, fishingBob.transform.position) > 0.001f)
             {
-                current_rope_length += Vector3.Distance(it.Value.position, it.Next.Value.position);
+
+                 float   extra_length = Vector3.Distance(FishingLineTip.position, LineParticles.First.Value.position);
+   
+                
+
+
+                switch (current_state)
+                {
+                    case STATE.CASTING:
+                        {
+                            return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * 10.0f;
+                        }
+                    case STATE.FISHING:
+                        {
+                            test += Time.deltaTime;
+                            return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * 3.0f; // lerp force multiple settles the fishing rod rather than making a clear force difference
+                        }
+                    case STATE.FIGHTING:
+                        {
+                            return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * 10.0f;
+
+                        }
+                }
             }
-            current_rope_length += Vector3.Distance(FishingLineTip.position, LineParticles.First.Value.position);
-            current_rope_length += Vector3.Distance(LineParticles.Last.Value.position, fishingBob.transform.position);
-
-            float extra_length = Mathf.Max(current_rope_length - normal_line_length, 0);
-
-
-            switch(current_state)
-            {
-                case STATE.CASTING:
-                    {
-                        return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * 5.0f;
-                    }
-                case STATE.FISHING:
-                    {
-                        test += Time.deltaTime;
-                        return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * Mathf.Lerp(3.0f,0.75f,test); // lerp force multiple settles the fishing rod rather than making a clear force difference
-                    }
-                case STATE.FIGHTING:
-                    {
-                        return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * 10.0f;
-
-                    }
-            }
-
         }
 
 
         return Vector3.zero;
+    }
+    public Vector3 StartOfLinePosition()
+    {
+        return LineParticles.First.Value.position;
     }
     private void Verlet(LineParticle p)
     {
         var temp = p.position;
         p.position += ((p.position - p.oldPosition)*(1.0f - p.dragPercentage)) + (p.accelleration * Time.deltaTime * Time.deltaTime);
         p.oldPosition = temp;
-
-
-        // default Verlet
-        // particle.position +=  (particle.position - particle.oldPosition) + (particle.accelleration * Time.deltaTime * Time.deltaTime);
     }
 
     private void PoleConstraint(LineParticle p1, LineParticle p2, float restLength)

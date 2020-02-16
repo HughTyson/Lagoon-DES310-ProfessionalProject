@@ -48,7 +48,8 @@ public class FishingRodLogic : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        GetComponent<Rigidbody>().AddForceAtPosition(-fishingLineLogic.EndOfLineForce()*GetComponent<Rigidbody>().mass*100.0f, FixedFishingTip.position);
+        
+       GetComponent<Rigidbody>().AddForceAtPosition(-fishingLineLogic.EndOfLineForce()*1000.0f, FixedFishingTip.position);
     }
 
     private void LateUpdate()

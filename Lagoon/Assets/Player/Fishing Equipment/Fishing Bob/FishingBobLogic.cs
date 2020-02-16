@@ -122,15 +122,17 @@ public class FishingBobLogic : MonoBehaviour
                     //  GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineVelocity()) / precievedLineMass, ForceMode.VelocityChange);
 
 
-                    float variable_dampening = Mathf.Lerp(0.1f, 1.0f, (Mathf.Max(Mathf.Min(fishingLineLogic.DistanceFromTipToBob(), 40.0f), 10.0f) - 10.0f) / (40.0f - 10.0f));
+                    //    float variable_dampening = Mathf.Lerp(0.1f, 1.0f, (Mathf.Max(Mathf.Min(fishingLineLogic.DistanceFromTipToBob(), 40.0f), 10.0f) - 10.0f) / (40.0f - 10.0f));
 
-                    Debug.Log(fishingLineLogic.DistanceFromTipToBob());
-                    Debug.Log(variable_dampening);
-                    float dampened_magnitude = (fishingLineLogic.EndOfLineVelocity() / precievedLineMass).magnitude - variable_dampening;
-                    if (dampened_magnitude > 0)
-                    {
-                        GetComponentInParent<Rigidbody>().AddForce(fishingLineLogic.EndOfLineVelocity().normalized * dampened_magnitude, ForceMode.VelocityChange);
-                    }
+
+                    //      Debug.Log(variable_dampening);
+                    //      float dampened_magnitude = (fishingLineLogic.EndOfLineVelocity() / precievedLineMass).magnitude - variable_dampening;
+                    //      if (dampened_magnitude > 0)
+                    ///  {
+                    ///  
+                    GetComponentInParent<Rigidbody>().AddForce(fishingLineLogic.EndOfLineVelocity(), ForceMode.VelocityChange);
+                    //   GetComponentInParent<Rigidbody>().AddForce(fishingLineLogic.EndOfLineVelocity().normalized * dampened_magnitude, ForceMode.VelocityChange);
+                    //     }
 
 
 
@@ -148,15 +150,7 @@ public class FishingBobLogic : MonoBehaviour
             case STATE.FISH_INTERACTING: // a fish is interacting with the bob
                 {
 
-                    float variable_dampening = Mathf.Lerp(0.1f, 1.0f, (Mathf.Max(Mathf.Min(fishingLineLogic.DistanceFromTipToBob(), 40.0f), 10.0f) - 10.0f) / (40.0f - 10.0f));
-
-                    Debug.Log(fishingLineLogic.DistanceFromTipToBob());
-                    Debug.Log(variable_dampening);
-                    float dampened_magnitude = (fishingLineLogic.EndOfLineVelocity() / precievedLineMass).magnitude - variable_dampening;
-                    if (dampened_magnitude > 0)
-                    {
-                        GetComponentInParent<Rigidbody>().AddForce(fishingLineLogic.EndOfLineVelocity().normalized * dampened_magnitude, ForceMode.VelocityChange);
-                    }
+                    GetComponentInParent<Rigidbody>().AddForce(fishingLineLogic.EndOfLineVelocity(), ForceMode.VelocityChange);
 
 
                     if (!interactingFish.IsInStateInteracting())
@@ -189,7 +183,7 @@ public class FishingBobLogic : MonoBehaviour
         SafelyRemoveNull();
         for (int i = 0; i < nearbyFish.Count; i++)
         {
-            nearbyFish[i].GetComponentInChildren<FishLogic>().AttractionAttempt(physicsCollider,this);
+  //          nearbyFish[i].GetComponentInChildren<FishLogic>().AttractionAttempt(physicsCollider,this);
         }
     }
 
