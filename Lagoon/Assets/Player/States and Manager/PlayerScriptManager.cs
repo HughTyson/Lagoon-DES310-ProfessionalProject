@@ -23,9 +23,6 @@ public abstract class BaseState : MonoBehaviour
     public virtual void StateOnTriggerExit(Collider other) { }
 
     protected PlayerScriptManager StateManager;
-    
-
-
 }
 
 public class PlayerScriptManager : MonoBehaviour
