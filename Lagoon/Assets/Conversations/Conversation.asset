@@ -1,5 +1,93 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8569614278074901489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Barrier
+  m_EditorClassIdentifier: Assembly-CSharp::BarrierNode
+  graph: {fileID: 11400000}
+  position: {x: 2232, y: 24}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -8569614278074901489}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: -4852461791661802356}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -8569614278074901489}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  input: 0
+  output: 0
+  barrier: 0
+--- !u!114 &-6351913660903853107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
+  m_Name: Dialog
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1448, y: -344}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: -6351913660903853107}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: 2266764471800758223}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -6351913660903853107}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  leftCharacter: {fileID: 0}
+  rightCharacter: {fileID: 0}
+  Dialog: []
+  input: 0
+  output: 0
 --- !u!114 &-5745266696035865318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26,7 +114,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: output
-        node: {fileID: -881888789127943318}
+        node: {fileID: 0}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -38,7 +126,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: input
-        node: {fileID: -5044937031018041771}
+        node: {fileID: 0}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -50,7 +138,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: input
-        node: {fileID: 2091431205884767950}
+        node: {fileID: 0}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -61,7 +149,7 @@ MonoBehaviour:
   outputB: 0
   DecisionA: I'm sorry
   DecisionB: Was meant to be
---- !u!114 &-5044937031018041771
+--- !u!114 &-4852461791661802356
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,47 +158,43 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
-  m_Name: Dialog
-  m_EditorClassIdentifier: 
+  m_Script: {fileID: 0}
+  m_Name: Barrier
+  m_EditorClassIdentifier: Assembly-CSharp::BarrierNode
   graph: {fileID: 11400000}
-  position: {x: 1032, y: -328}
+  position: {x: 1864, y: 56}
   ports:
     keys:
     - input
     - output
     values:
     - _fieldName: input
-      _node: {fileID: -5044937031018041771}
+      _node: {fileID: -4852461791661802356}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: outputA
-        node: {fileID: -5745266696035865318}
+      - fieldName: output
+        node: {fileID: 878126263041485356}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: output
-      _node: {fileID: -5044937031018041771}
+      _node: {fileID: -4852461791661802356}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: input
-        node: {fileID: -4639486768845257884}
+        node: {fileID: -8569614278074901489}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
-  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
-  rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
-  Dialog:
-  - whoIsTalking: 1
-    dialog: Apology Accepted.
   input: 0
   output: 0
+  barrier: 1
 --- !u!114 &-4639486768845257884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,10 +220,10 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: output
-        node: {fileID: 2091431205884767950}
+        node: {fileID: 0}
         reroutePoints: []
       - fieldName: output
-        node: {fileID: -5044937031018041771}
+        node: {fileID: 0}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -157,7 +241,7 @@ MonoBehaviour:
   input: 0
   output: 0
   barrier: 0
---- !u!114 &-881888789127943318
+--- !u!114 &-517373276603817456
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,49 +254,104 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 232, y: -152}
+  position: {x: 1016, y: -120}
   ports:
     keys:
     - input
     - output
     values:
     - _fieldName: input
-      _node: {fileID: -881888789127943318}
+      _node: {fileID: -517373276603817456}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: output
-        node: {fileID: 2344625010101190444}
+      - fieldName: outputB
+        node: {fileID: 8411311375515162800}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: output
-      _node: {fileID: -881888789127943318}
+      _node: {fileID: -517373276603817456}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: input
-        node: {fileID: -5745266696035865318}
+        node: {fileID: -340146394587989824}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
-  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
-  rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
-  Dialog:
-  - whoIsTalking: 1
-    dialog: Hi! I'm the ally
-  - whoIsTalking: 0
-    dialog: Yes, I know you are..
-  - whoIsTalking: 1
-    dialog: 'Wow...
-
-      Rude...'
+  leftCharacter: {fileID: 0}
+  rightCharacter: {fileID: 0}
+  Dialog: []
   input: 0
   output: 0
+--- !u!114 &-340146394587989824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Branching
+  m_EditorClassIdentifier: Assembly-CSharp::BranchingNode
+  graph: {fileID: 11400000}
+  position: {x: 1080, y: 168}
+  ports:
+    keys:
+    - input
+    - outputA
+    - outputB
+    values:
+    - _fieldName: input
+      _node: {fileID: -340146394587989824}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: -517373276603817456}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: outputA
+      _node: {fileID: -340146394587989824}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 8411311375515162800}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: outputB
+      _node: {fileID: -340146394587989824}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 878126263041485356}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  leftCharacter: {fileID: 0}
+  rightCharacter: {fileID: 0}
+  input: 0
+  outputA: 0
+  outputB: 0
+  LeftDecision: 
+  RightDecision: 
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,14 +365,18 @@ MonoBehaviour:
   m_Name: Conversation
   m_EditorClassIdentifier: 
   nodes:
-  - {fileID: 5431731629867886168}
-  - {fileID: 2344625010101190444}
-  - {fileID: -881888789127943318}
-  - {fileID: -5745266696035865318}
-  - {fileID: 2091431205884767950}
-  - {fileID: -5044937031018041771}
-  - {fileID: -4639486768845257884}
---- !u!114 &2091431205884767950
+  - {fileID: 0}
+  - {fileID: 5507203988280819239}
+  - {fileID: 2702870235436686257}
+  - {fileID: 8411311375515162800}
+  - {fileID: 2266764471800758223}
+  - {fileID: -517373276603817456}
+  - {fileID: -6351913660903853107}
+  - {fileID: -340146394587989824}
+  - {fileID: 878126263041485356}
+  - {fileID: -4852461791661802356}
+  - {fileID: -8569614278074901489}
+--- !u!114 &878126263041485356
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -242,48 +385,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
-  m_Name: Dialog
-  m_EditorClassIdentifier: 
+  m_Script: {fileID: 0}
+  m_Name: Event
+  m_EditorClassIdentifier: Assembly-CSharp::EventNode
   graph: {fileID: 11400000}
-  position: {x: 1048, y: 72}
+  position: {x: 1496, y: 40}
   ports:
     keys:
     - input
     - output
     values:
     - _fieldName: input
-      _node: {fileID: 2091431205884767950}
+      _node: {fileID: 878126263041485356}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: outputB
-        node: {fileID: -5745266696035865318}
+        node: {fileID: -340146394587989824}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: output
-      _node: {fileID: 2091431205884767950}
+      _node: {fileID: 878126263041485356}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: input
-        node: {fileID: -4639486768845257884}
+        node: {fileID: -4852461791661802356}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
-  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
-  rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
-  Dialog:
-  - whoIsTalking: 1
-    dialog: "That's it. \nI'm not helping you."
   input: 0
   output: 0
---- !u!114 &2344625010101190444
+  event_occured: 0
+--- !u!114 &2266764471800758223
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -296,31 +435,79 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -168, y: -120}
+  position: {x: 984, y: -520}
   ports:
     keys:
     - input
     - output
     values:
     - _fieldName: input
-      _node: {fileID: 2344625010101190444}
+      _node: {fileID: 2266764471800758223}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: output
-        node: {fileID: 5431731629867886168}
+      - fieldName: outputA
+        node: {fileID: 8411311375515162800}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: output
-      _node: {fileID: 2344625010101190444}
+      _node: {fileID: 2266764471800758223}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: input
-        node: {fileID: -881888789127943318}
+        node: {fileID: -6351913660903853107}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  leftCharacter: {fileID: 0}
+  rightCharacter: {fileID: 0}
+  Dialog: []
+  input: 0
+  output: 0
+--- !u!114 &2702870235436686257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
+  m_Name: Dialog
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 104, y: -296}
+  ports:
+    keys:
+    - input
+    - output
+    values:
+    - _fieldName: input
+      _node: {fileID: 2702870235436686257}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: 5507203988280819239}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 2702870235436686257}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 8411311375515162800}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -330,7 +517,11 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
   - whoIsTalking: 0
-    dialog: Hello! I'm the Player
+    dialog: aierughaoieurgh
+  - whoIsTalking: 1
+    dialog: zaregiuharego
+  - whoIsTalking: 1
+    dialog: sizrpuegjaoieurgh
   input: 0
   output: 0
 --- !u!114 &5431731629867886168
@@ -357,10 +548,107 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: input
-        node: {fileID: 2344625010101190444}
+        node: {fileID: 0}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
   output: 0
+--- !u!114 &5507203988280819239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Root
+  m_EditorClassIdentifier: Assembly-CSharp::RootNode
+  graph: {fileID: 11400000}
+  position: {x: -184, y: -120}
+  ports:
+    keys:
+    - output
+    values:
+    - _fieldName: output
+      _node: {fileID: 5507203988280819239}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 2702870235436686257}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  output: 0
+--- !u!114 &8411311375515162800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Branching
+  m_EditorClassIdentifier: Assembly-CSharp::BranchingNode
+  graph: {fileID: 11400000}
+  position: {x: 536, y: -360}
+  ports:
+    keys:
+    - input
+    - outputA
+    - outputB
+    values:
+    - _fieldName: input
+      _node: {fileID: 8411311375515162800}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: 2702870235436686257}
+        reroutePoints: []
+      - fieldName: outputA
+        node: {fileID: -340146394587989824}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: outputA
+      _node: {fileID: 8411311375515162800}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 2266764471800758223}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: outputB
+      _node: {fileID: 8411311375515162800}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: -517373276603817456}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
+  rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
+  input: 0
+  outputA: 0
+  outputB: 0
+  LeftDecision: afeoirgua
+  RightDecision: aergiuhajrg
