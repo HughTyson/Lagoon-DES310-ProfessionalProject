@@ -7,21 +7,6 @@ public class FishLogic : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    [Header("Movement Properties")]
-    [Tooltip("maximum velocity the fish will reach")]
-    [SerializeField] float maxVelocity = 5;                    // maximum velocity the fish will reach
-
-    [Tooltip("minimum terminal force choosen in RandomRange applied to the fish")]
-    [SerializeField] float TerminalForce_min = 0.1f;            // minimum terminal force choosen in RandomRange applied to the fish
-    [Tooltip("maximum terminal force choosen in RandomRange applied to the fish")]
-    [SerializeField] float TerminalForce_max = 10;              // maximum terminal force applied to the fish
-
-    [Tooltip("minimum terminal force time chosen in RandomRange before changing the terminal force")]
-    [SerializeField] float TerminalForceDuration_min = 0.1f;    // minimum terminal force time chosen in RandomRange before changing the terminal force
-    [Tooltip("maximum terminal force time chosen in RandomRange before changing the terminal force")]
-    [SerializeField] float TerminalForceDuration_max = 5;       // maximum terminal force time chosen in RandomRange before changing the terminal force
-
-
     [Header("Fishing Properties")]
     [Tooltip("success rate of a lure attraction pulse attracting the fish to go to it")]
     [Range(0.0f, 1.0f)]
@@ -41,10 +26,9 @@ public class FishLogic : MonoBehaviour
     [SerializeField] float fightingAngleBetweenState = 15.0f;
 
     [Header("Required Pointers")]
-    [Tooltip("The physics collider of the fish")]
-    [SerializeField] Collider physicsCollider;                        // the physics collider of the fish
     [Tooltip("The transform of the fish head")]
     [SerializeField] Transform fishheadTransform;
+    [SerializeField] Transform MeshTransform;
 
 
 
@@ -53,6 +37,12 @@ public class FishLogic : MonoBehaviour
         public Vector2 habitatRingOrigin;
         public float habitatRingMin;
         public float habitatRingMax;
+        public float size;
+        public float defaultForce;
+        public float maxForce;
+        public float defaultTurnForce;
+        public float maxTurnForce;
+        public float maxVelocity;
     
     }
     VarsFromFishGenerator varsFromFishGenerator;
@@ -62,8 +52,6 @@ public class FishLogic : MonoBehaviour
     {
         WANDERING,           // the fish is wandering aimlessly
         AVOIDING,            // the fish sees a threat and is avoiding it
-        AVOIDANCE_SETTLE,    // the fish doesn't see a threat anymore but is still moving away from it
-        RETURN_HOME,        //  the fish has left its habitat and swims back to it
         ATTRACTED,           // the fish is attracted to a location
         INTERACTING,          // the fish is interacting with a fishing lure
         FIGHTING
@@ -74,22 +62,20 @@ public class FishLogic : MonoBehaviour
 
     const float wanderingTargetRadius = 0.75f;  // used for wandering algorithm
     const float wanderingTargetDistance = 1.0f; // used for wandering algorithm
-    const float targetRadius = 3.0f;            // used for arrival algorith
+    float targetRadius = 1.0f;            // used for arrival algorith
+
 
 
     List<Collider> avoidingObjects = new List<Collider>(); // list of objects the fish sees and is avoinding
 
 
-    // -- Movement Vars -- //
-    float terminalForce = 0;                    // current terminal velocity
-    float terminalForceDuration = 0;            // time until terminal velocity is changed within a RandomRnage
 
     float currentAngle;                         // current angle of the circle used in the wandering algorithm 
     float angleChangeTime = 0;                  // time until the angle is changed
 
     // -- Avoidance Vars -- //
-    float avoidanceSettleTick = 0;              // time until the a 
-    Vector2 avoidanceTarget;                    // 
+    float avoidanceRad;
+    float sizeRad;
 
     // -- Attraction Vars -- //
     Collider attractorCollider;                 // the fishing bob collider pointer
@@ -101,32 +87,40 @@ public class FishLogic : MonoBehaviour
     {
         currentAngle = Random.Range(0, Mathf.PI * 2.0f);
         current_state = STATE.WANDERING;
-        terminalForceDuration = Random.Range(TerminalForceDuration_min, TerminalForceDuration_max);
-        terminalForce = Random.Range(TerminalForce_min, TerminalForce_max);
-
     }
 
     public void Init(VarsFromFishGenerator vars)
     {
         varsFromFishGenerator = vars;
+
+
+        avoidanceRad = GetComponent<SphereCollider>().radius;
+
+        CapsuleCollider capsule = GetComponentInParent<CapsuleCollider>();
+        sizeRad = Mathf.Max(capsule.radius, capsule.height / 2.0f); // gets the radius that will encapsulate the whole fish
+
+        capsule.radius *= vars.size;
+        capsule.height *= vars.size;
+        MeshTransform.localScale *= vars.size;
+        fishheadTransform.localPosition *= vars.size;
+
+
+
     }
 
     void StateTick()
     {
-        terminalForceDuration -= Time.fixedDeltaTime; // update time
-        if (terminalForceDuration <= 0) // change terminal velocity values, changing the fish's turn and swim speed
-        {
-            terminalForceDuration = Random.Range(TerminalForceDuration_min, TerminalForceDuration_max);
-            terminalForce = Random.Range(TerminalForce_min, TerminalForce_max);
-        }
 
-       
+
 
         switch (current_state)
         {
             case STATE.WANDERING:
                 {
-                    GetComponentInParent<MeshRenderer>().material.color = Color.green;      // used for debugging
+                    Vector3 forward = transform.forward;
+                    GetComponentInParent<Rigidbody>().AddForce(new Vector3(forward.x, 0, forward.z) * varsFromFishGenerator.defaultForce);
+
+                 //   GetComponentInParent<MeshRenderer>().material.color = Color.green;      // used for debugging
                     Wander();
 
                     float distanceFromHabitatOrigin = Vector2.Distance(headVectorXZ, varsFromFishGenerator.habitatRingOrigin);
@@ -136,18 +130,16 @@ public class FishLogic : MonoBehaviour
                     }
                     else if (distanceFromHabitatOrigin < varsFromFishGenerator.habitatRingMin || distanceFromHabitatOrigin > varsFromFishGenerator.habitatRingMax)
                     {
-                        current_state = STATE.RETURN_HOME;
+                 //       current_state = STATE.RETURN_HOME;
                     }
                     break;
                 }
             case STATE.AVOIDING:
                 {
-                    GetComponentInParent<MeshRenderer>().material.color = Color.red;      // used for debugging
+                   // GetComponentInParent<MeshRenderer>().material.color = Color.red;      // used for debugging
                     if (avoidingObjects.Count == 0) // cant see the object which was being avoided, but move away from that location for a while longer
                     {
-                        // current_state = STATE.AVOIDANCE_SETTLE;
                         current_state = STATE.WANDERING;
-                        avoidanceSettleTick = Random.Range(0.3f, 0.5f);
 
                     }
                     else
@@ -155,35 +147,6 @@ public class FishLogic : MonoBehaviour
                         Avoid();
                     }
 
-                    break;
-                }
-            case STATE.AVOIDANCE_SETTLE:
-                {
-                    GetComponentInParent<MeshRenderer>().material.color = Color.yellow;    // used for debugging
-                    AvoidanceSettle();
-
-                    if (avoidingObjects.Count != 0) // if there are objects to avoid, start avoiding them
-                    {
-                        current_state = STATE.AVOIDING;
-                    }
-                    break;
-                }
-            case STATE.RETURN_HOME:
-                {
-                    float distanceFromHabitatOrigin = Vector2.Distance(headVectorXZ, varsFromFishGenerator.habitatRingOrigin);
-
-                    SwimHome(distanceFromHabitatOrigin);
-
-                   
-
-                    if (avoidingObjects.Count != 0) // if there are objects to avoid, start avoiding them
-                    {
-                        current_state = STATE.AVOIDING;
-                    }
-                    else if (distanceFromHabitatOrigin >= varsFromFishGenerator.habitatRingMin && distanceFromHabitatOrigin <= varsFromFishGenerator.habitatRingMax)
-                    {
-                        current_state = STATE.WANDERING;
-                    }
                     break;
                 }
             case STATE.ATTRACTED:
@@ -196,16 +159,21 @@ public class FishLogic : MonoBehaviour
                     {
                         if (attractorLogic.GetState() != FishingBobLogic.STATE.FISH_INTERACTING)
                         {
-                            GetComponentInParent<MeshRenderer>().material.color = new Color(0.5f, 0.5f, 0.2f); // used for debgging
-
-                            Arrive(headVectorXZ, new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z)); // move towards the fishing bob, stopping when it's been reached
-
-                            if (Vector2.Distance(headVectorXZ, new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z)) < 0.5f) // the bob has been reached
+                            float distanceFromBobToHabitOrigin = Vector2.Distance(new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z), varsFromFishGenerator.habitatRingOrigin);
+                            if (distanceFromBobToHabitOrigin > varsFromFishGenerator.habitatRingMin && distanceFromBobToHabitOrigin < varsFromFishGenerator.habitatRingMax)
                             {
-                                attractorLogic.FishStartsInteracting(this);
-                                avoidingObjects.Clear();
-                                current_state = STATE.INTERACTING;
+                                Arrive(headVectorXZ, new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z)); // move towards the fishing bob, stopping when it's been reached
 
+                                if (Vector2.Distance(headVectorXZ, new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z)) < 0.5f) // the bob has been reached
+                                {
+                                    attractorLogic.FishStartsInteracting(this);
+                                    avoidingObjects.Clear();
+                                    current_state = STATE.INTERACTING;
+                                }
+                            }
+                            else
+                            {
+                                LostInterestInFishingBob(0.0f);
                             }
                         }
                         else // another fish has started interacting with the bob, so forget about the bob
@@ -217,7 +185,18 @@ public class FishLogic : MonoBehaviour
 
                     if (avoidingObjects.Count != 0)  // if there are objects to avoid, start avoiding them
                     {
-                        current_state = STATE.AVOIDING;
+                        for (int i = 0; i < avoidingObjects.Count; i++)
+                        {
+                            if (avoidingObjects[i].GetComponent<TagsScript>().ContainsTheTag(TagsScript.TAGS.FISH))
+                            {
+                                if (avoidingObjects[i].GetComponentInChildren<FishLogic>().varsFromFishGenerator.size - 0.0001 > varsFromFishGenerator.size) // only get scared if bigger fish is near
+                                {
+                                    current_state = STATE.AVOIDING;
+                                    break;
+                                }
+                            }
+                        }
+
                     }
 
                     break;
@@ -230,14 +209,14 @@ public class FishLogic : MonoBehaviour
                     }
                     else
                     {
-                        GetComponentInParent<MeshRenderer>().material.color = new Color(0.5f, 0.5f, 0.2f); // used for debgging
+                  //      GetComponentInParent<MeshRenderer>().material.color = new Color(0.5f, 0.5f, 0.2f); // used for debgging
 
                         if (Vector2.Distance(headVectorXZ, new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z)) > 1.0f)  // move towards the fishing bob, if drifted away
                         {
                             Arrive(headVectorXZ, new Vector2(attractorCollider.transform.position.x, attractorCollider.transform.position.z));
                         }
                     }
-                    GetComponentInParent<MeshRenderer>().material.color = Color.cyan; // used for debugging
+              //      GetComponentInParent<MeshRenderer>().material.color = Color.cyan; // used for debugging
                     break;
                 }
         }
@@ -258,7 +237,11 @@ public class FishLogic : MonoBehaviour
 
         if (current_state != STATE.FIGHTING)
         {
+
+
             StateTick(); // update state
+
+            GetComponentInParent<Rigidbody>().velocity = Vector3.ClampMagnitude(GetComponentInParent<Rigidbody>().velocity, varsFromFishGenerator.maxVelocity);
 
             NotInterestedInBobTime = Mathf.Max(0, NotInterestedInBobTime - Time.fixedDeltaTime); // countdown time 
 
@@ -310,17 +293,29 @@ public class FishLogic : MonoBehaviour
         Vector2 target = new Vector2(Mathf.Cos(currentAngle) * wanderingTargetRadius, Mathf.Sin(currentAngle) * wanderingTargetRadius);
 
 
+
         if (velocityXZ.magnitude < 0.000001) // no direction vector
         {
             target += new Vector2(transform.position.x, transform.position.z); // orientate the target circle to be on the fish's coordinates
-            Seek(target); // make fish try to reach the ever-changing target
         }
         else
         {
             target += new Vector2(transform.position.x, transform.position.z); // orientate the target circle to be on the fish's coordinates
             target += velocityXZ.normalized * wanderingTargetDistance;         // move the target along the direction of the fish's velocity
-            Seek(target); // make fish try to reach the ever-changing target
         }
+
+        float distanceToHabitOrigin = Vector2.Distance(target, varsFromFishGenerator.habitatRingOrigin);
+
+        if (distanceToHabitOrigin < varsFromFishGenerator.habitatRingMin)
+        {
+            target += (target - varsFromFishGenerator.habitatRingOrigin).normalized * (varsFromFishGenerator.habitatRingMin - distanceToHabitOrigin)*2.0f;
+        }
+        else if (distanceToHabitOrigin > varsFromFishGenerator.habitatRingMax)
+        {
+            target += (varsFromFishGenerator.habitatRingOrigin - target).normalized * (distanceToHabitOrigin - varsFromFishGenerator.habitatRingMax)*2.0f;
+        }
+
+        Seek(target); // make fish try to reach the ever-changing target
     }
 
     // avoid threats
@@ -329,18 +324,42 @@ public class FishLogic : MonoBehaviour
         Vector2 desired_vector = Vector2.zero;
         Vector2 location = new Vector2(transform.position.x, transform.position.z); // XZ location of the fish
 
+        float closestDangerDistance = float.MaxValue;
 
         // find closest points of the threat to the fish and set the desired vector to be the inverse of the vector from the fish to the threat
         for (int i = 0; i < avoidingObjects.Count; i++)
         {
-            Vector3 closet_point = avoidingObjects[i].ClosestPoint(transform.position);
+            Vector3 closet_point =  avoidingObjects[i].ClosestPoint(transform.position);
             Vector2 fleeingFromObject = new Vector2(closet_point.x, closet_point.z);
-            desired_vector += (location - fleeingFromObject).normalized;
+         
+            float distanceFromThis = Vector2.Distance(location, fleeingFromObject);
+
+
+            float lerp_t = 1.0f - ((distanceFromThis - sizeRad) / (avoidanceRad - sizeRad));
+            lerp_t *= lerp_t;
+
+            Vector2 fromTo = (location - fleeingFromObject);
+            desired_vector += fromTo.normalized * lerp_t;
+
+            if (distanceFromThis < closestDangerDistance)
+            {
+                closestDangerDistance = distanceFromThis;
+            }
+
+
 
         }
+
+        float t = 1.0f - ((closestDangerDistance - sizeRad) / (avoidanceRad - sizeRad));
+        t *= t; // change distribution curve to quadratic instead of linear when lerping
+
+        Vector3 forward = transform.forward;
+        GetComponentInParent<Rigidbody>().AddForce(new Vector3(forward.x, 0, forward.z) * Mathf.Lerp(varsFromFishGenerator.defaultForce, varsFromFishGenerator.maxForce, t));
 
         // average escape vector of all the threats
-        desired_vector /= avoidingObjects.Count;
+
+        float test = desired_vector.magnitude;
+        desired_vector = desired_vector.normalized;
 
 
         Vector2 tranformFrowardXZ = new Vector2(transform.forward.x, transform.forward.z); // XZ forward vector of the fish
@@ -359,97 +378,38 @@ public class FishLogic : MonoBehaviour
                 desired_vector = -tranformRightXZ;
             }
         }
-        desired_vector *= maxVelocity; // change magnitude of desired direction vector to have a velocity
-
-        avoidanceTarget = desired_vector;
+        desired_vector *= Mathf.Lerp(0, varsFromFishGenerator.maxTurnForce, t); // change magnitude of desired direction vector based on distance to closest threat
 
 
 
         Vector2 velocityXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z);
-        Vector2 steer = Vector2.ClampMagnitude(desired_vector - velocityXZ, 999999);
-
-        // move in the direction of the desired vector
-        GetComponentInParent<Rigidbody>().AddForce(new Vector3(steer.x, 0, steer.y));
-
-    }
-
-    void SwimHome(float distanceFromHabit)
-    {
-        Vector2 desired_vector = Vector2.zero;
-        Vector2 location = new Vector2(transform.position.x, transform.position.z); // XZ location of the fish
-
-
-        desired_vector = (location - varsFromFishGenerator.habitatRingOrigin).normalized; // went into inner ring
-
-        if (distanceFromHabit > varsFromFishGenerator.habitatRingMax) // went into outer ring
-        {
-            desired_vector = -desired_vector;
-        }
-
-       
-
-
-        Vector2 tranformFrowardXZ = new Vector2(transform.forward.x, transform.forward.z); // XZ forward vector of the fish
-        Vector2 tranformRightXZ = new Vector2(transform.right.x, transform.right.z);       // XZ right vector of the fish
-
-
-        // limit the desired escape vector to only be on the front of the fish, preventint the fish from slowing down and completely turning around
-        if (Vector2.Dot(desired_vector, tranformFrowardXZ) < 0) // the desired vector is on the back half of the fish
-        {
-            if (Vector2.Dot(desired_vector, tranformRightXZ) > 0) // the desired vecotr is on the right side of the fish
-            {
-                desired_vector = tranformRightXZ;
-            }
-            else // the desired vecotor is on the left side of the fish
-            {
-                desired_vector = -tranformRightXZ;
-            }
-        }
-        desired_vector *= maxVelocity; // change magnitude of desired direction vector to have a velocity
-
-        avoidanceTarget = desired_vector;
-
-
-
-        Vector2 velocityXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z);
-        Vector2 steer = Vector2.ClampMagnitude(desired_vector - velocityXZ, terminalForce );
+        Vector2 steer = desired_vector - velocityXZ;
 
         // move in the direction of the desired vector
         GetComponentInParent<Rigidbody>().AddForce(new Vector3(steer.x, 0, steer.y));
 
 
-    }
-    // keep avoiding using the last desired vector for a set amount of time
-    void AvoidanceSettle()
-    {
-        avoidanceSettleTick -= Time.fixedDeltaTime;
 
-        if (avoidanceSettleTick <= 0) // change back to wandering
-        {
-            current_state = STATE.WANDERING;
-            currentAngle = Random.Range(0, Mathf.PI * 2.0f);
-            angleChangeTime = Random.Range(0.2f, 1.0f);
-
-        }
-
-        // move towards the last desired vector
-
-        Vector2 velocityXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z);
-        Vector2 steer = Vector2.ClampMagnitude(avoidanceTarget - velocityXZ, terminalForce);
-
-        GetComponentInParent<Rigidbody>().AddForce(new Vector3(steer.x, 0, steer.y));
     }
 
     // go to a specific location, without caring if it overshoots it
     void Seek(Vector2 target)
+
+
     {
+
+
+        Vector3 forward = transform.forward;
+        GetComponentInParent<Rigidbody>().AddForce(new Vector3(forward.x, 0, forward.z) * varsFromFishGenerator.defaultForce);
+
         Vector2 location = new Vector2(transform.position.x, transform.position.z);
         Vector2 desired = target - location;
         desired = desired.normalized;
-        desired *= maxVelocity;
+        desired *= varsFromFishGenerator.defaultForce;
 
         Vector2 velocityXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z);
-        Vector2 steer = Vector2.ClampMagnitude(desired - velocityXZ, terminalForce);
+        Vector2 steer = desired - velocityXZ;
+
 
 
         GetComponentInParent<Rigidbody>().AddForce(new Vector3(steer.x, 0, steer.y));
@@ -459,17 +419,21 @@ public class FishLogic : MonoBehaviour
     // go to a specific location with care about slowing down and stopping at it
     void Arrive(Vector2 myPos, Vector2 target)
     {
+
+
         Vector2 location = myPos;
         Vector2 desired = target - location;
         float desired_dist = desired.magnitude;
 
         desired = desired.normalized;
 
-        desired *= Mathf.Lerp(0, maxVelocity, desired_dist / targetRadius);
+        desired *= Mathf.Lerp(0, varsFromFishGenerator.defaultForce, desired_dist / targetRadius);
 
+        Vector3 forward = transform.forward;
+        GetComponentInParent<Rigidbody>().AddForce(new Vector3(forward.x, 0, forward.z) * Mathf.Lerp(0, varsFromFishGenerator.defaultForce, desired_dist / targetRadius));
 
         Vector2 velocityXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z);
-        Vector2 steer = Vector2.ClampMagnitude(desired - velocityXZ, terminalForce);
+        Vector2 steer = Vector2.ClampMagnitude(desired - velocityXZ, varsFromFishGenerator.defaultTurnForce);
 
         GetComponentInParent<Rigidbody>().AddForce(new Vector3(steer.x, 0, steer.y));
 
@@ -486,8 +450,20 @@ public class FishLogic : MonoBehaviour
         {
             if (other.GetComponent<TagsScript>().ContainsTheTag(TagsScript.TAGS.ACTION_SCARES_FISH)) // does the thing that the fish sees scare the fish?
             {
-                avoidingObjects.Add(other);
 
+
+                if (other.GetComponent<TagsScript>().ContainsTheTag(TagsScript.TAGS.FISH))
+                {
+                    if (other.GetComponentInChildren<FishLogic>().varsFromFishGenerator.size + 0.0001f > varsFromFishGenerator.size) // only add equal or bigger fish to avoid
+                    {
+                        avoidingObjects.Add(other);
+                    }
+                    Physics.IgnoreCollision(GetComponentInParent<CapsuleCollider>(), other); // fish don't collider with each other but they are scared of each other
+                }
+                else
+                {
+                    avoidingObjects.Add(other);
+                }
 
             }
         }
@@ -510,13 +486,18 @@ public class FishLogic : MonoBehaviour
     {
         if (NotInterestedInBobTime <= 0)
         {
-            if (Random.value <= lureAttractionSuccessRate)
+            float BobDistancFromHabitOrigin = Vector2.Distance(new Vector2(fishBobLogic.transform.position.x, fishBobLogic.transform.position.z),varsFromFishGenerator.habitatRingOrigin);
+            if (BobDistancFromHabitOrigin >= varsFromFishGenerator.habitatRingMin && BobDistancFromHabitOrigin <= varsFromFishGenerator.habitatRingMax) // is bob in fish's habitat
             {
-                // attraction successful
-                current_state = STATE.ATTRACTED;
-                attractorCollider = target;
-                attractorLogic = fishBobLogic;
+                if (Random.value <= lureAttractionSuccessRate)
+                {
+                    // attraction successful
+                    current_state = STATE.ATTRACTED;
+                    attractorCollider = target;
+                    attractorLogic = fishBobLogic;
+                }
             }
+
         }
 
 
@@ -819,10 +800,6 @@ public class FishLogic : MonoBehaviour
             case STATE.ATTRACTED:
                 {
                     return false;
-                }
-            case STATE.AVOIDANCE_SETTLE:
-                {
-                    return true;
                 }
             case STATE.AVOIDING:
                 {

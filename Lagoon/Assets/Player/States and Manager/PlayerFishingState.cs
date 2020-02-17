@@ -602,6 +602,7 @@ public class PlayerFishingState : BaseState
         interactingFish.LostInterestInFishingBob(5.0f);
         fishing_state = FISHING_STATE.FISHING;
         fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.NOT_ACTIVE);
+        fishingBob.GetComponentInChildren<FishingBobLogic>().FishStoppedInteracting();
     }
 
     // -- //

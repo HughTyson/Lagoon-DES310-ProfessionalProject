@@ -183,10 +183,15 @@ public class FishingBobLogic : MonoBehaviour
         SafelyRemoveNull();
         for (int i = 0; i < nearbyFish.Count; i++)
         {
-  //          nearbyFish[i].GetComponentInChildren<FishLogic>().AttractionAttempt(physicsCollider,this);
+            nearbyFish[i].GetComponentInChildren<FishLogic>().AttractionAttempt(physicsCollider,this);
         }
     }
 
+    public void FishStoppedInteracting()
+    {
+        current_state = STATE.CASTED;
+        current_attration_time = attractionPulseTimeInterval;
+    }
     public bool IsFishInteracting()
     {
         return (current_state == STATE.FISH_INTERACTING);

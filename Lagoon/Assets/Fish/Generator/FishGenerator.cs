@@ -15,19 +15,12 @@ public class FishGenerator : MonoBehaviour
     [System.Serializable]
     public class FishGenerationStats
     {
-        public enum FISH_TEIR
-        { 
-        T1,
-        T2,
-        T3,
-        T4
-        };
-        public FISH_TEIR fishTeirEnum;
+
+        public FishType.FISH_TEIR fishTeirEnum;
         public List<GameObject> spawnArea;
         public float habitatRingMin;
         public float habitatRingMax;
         public int maxFish = 5;
-        public float fishScaleMultiplier = 1.0f;
 
         [HideInInspector]
         public List<Fish> fishList = new List<Fish>();
@@ -38,22 +31,17 @@ public class FishGenerator : MonoBehaviour
 
     [SerializeField] List<FishGenerationStats> fishGenerationStats;
 
-    [System.Serializable]
-    public class FishType
-    {
-        public GameObject fishPrefab;
-        public float minRangeTimeUnactiveTillDespawn;
-        public float maxRangeTimeUnactiveTillDespawned;
-    }
-
     [SerializeField] List<FishType> AllowableFishTypes;
 
+    [Header("DEBUG")]
+    [SerializeField] Material DebugMat;
 
     public class Fish
     {
         public float initializedUnactiveDespawnTime;
         public float currentUnactiveDespawnTime;
         public GameObject fishObject;
+
     }
 
 
@@ -165,14 +153,26 @@ public class FishGenerator : MonoBehaviour
 
         new_fish.fishObject.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
         new_fish.fishObject.transform.position = new_position;
-        new_fish.fishObject.transform.localScale = Vector3.one * fishRing.fishScaleMultiplier;
+        new_fish.fishObject.transform.localScale = Vector3.one;
 
         FishLogic.VarsFromFishGenerator fish_vars = new FishLogic.VarsFromFishGenerator();
         fish_vars.habitatRingOrigin = fishHabitatRingsOriginXZ;
         fish_vars.habitatRingMin = fishRing.habitatRingMin;
         fish_vars.habitatRingMax = fishRing.habitatRingMax;
+        fish_vars.defaultForce = chosen_fish_type.StatsList[fishRing.fishTeirEnum].defaultForce;
+        fish_vars.maxForce = chosen_fish_type.StatsList[fishRing.fishTeirEnum].maxForce ;
+        fish_vars.defaultTurnForce = chosen_fish_type.StatsList[fishRing.fishTeirEnum].defaultTurnForce;
+        fish_vars.maxTurnForce = chosen_fish_type.StatsList[fishRing.fishTeirEnum].maxTurnForce;
+        fish_vars.maxVelocity = chosen_fish_type.StatsList[fishRing.fishTeirEnum].maxVelocity;
+        fish_vars.size = chosen_fish_type.StatsList[fishRing.fishTeirEnum].size;
 
         new_fish.fishObject.GetComponentInChildren<FishLogic>().Init(fish_vars);
+
+        //if (fishRing.fishTeirEnum == FishType.FISH_TEIR.T2)
+        //{
+        //    new_fish.fishObject.GetComponentInChildren<MeshRenderer>().material = DebugMat;
+            
+        //}
 
         fishRing.fishList.Add(new_fish);
 
@@ -180,7 +180,7 @@ public class FishGenerator : MonoBehaviour
     }
 
 
-    void OnDrawGizmos()
+    void OnDrawGizmosSelected()
     {
         Vector3 origin = transform.position;
         origin.x = fishHabitatRingsOriginXZ.x;
@@ -199,6 +199,15 @@ public class FishGenerator : MonoBehaviour
             UnityEditor.Handles.DrawWireDisc(origin, Vector3.down, fishGenerationStats[i].habitatRingMax);
         }
 
+
+        //for (int i = 0; i < fishGenerationStats[1].fishList.Count; i++)
+        //{
+        //    Gizmos.color = Color.red;
+        //    Gizmos.DrawSphere(fishGenerationStats[1].fishList[i].fishObject.transform.position,0.5f);
+        //}
+
+        Gizmos.color = Color.white;
+
         for (int i = 0; i < fishGenerationStats.Count; i++)
         {
             for (int k = 0; k < fishGenerationStats[i].spawnArea.Count; k++)
@@ -212,6 +221,9 @@ public class FishGenerator : MonoBehaviour
             }
 
         }
+
+
+
 
     }
 }
