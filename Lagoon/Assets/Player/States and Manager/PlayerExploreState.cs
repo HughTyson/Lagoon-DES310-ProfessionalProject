@@ -21,14 +21,14 @@ public class PlayerExploreState : BaseState
 
     INTERACTION_TYPE interaction_type;
 
-    private void OnEnable()
+    public void OnEnable()
     {
         movement_.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
         camera_.current_state = ThirdPersonCamera.STATE.FREE;
         camera_.look_at_target = transform;
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
     }
 
