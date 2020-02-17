@@ -180,7 +180,7 @@ public class FishGenerator : MonoBehaviour
     }
 
 
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
         Vector3 origin = transform.position;
         origin.x = fishHabitatRingsOriginXZ.x;
