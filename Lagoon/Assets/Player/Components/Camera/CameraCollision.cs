@@ -25,13 +25,11 @@ public class CameraCollision : MonoBehaviour
     //              Hidden Variables
     //===========================================
 
-    Camera camera;
+    Camera cam = null;
 
-    int layer1 = 9;int layer2 = 10; int layer3 = 11; int layer4 = 12; int layer5 = 13;
-
-    public void Initialize(Camera cam)
+    public void Initialize(Camera camera)
     {
-        camera = cam;
+        cam = camera;
         adjusted_cp_pos = new Vector3[5]; //4 clip points and the cameras position
         desired_cp_pos = new Vector3[5];
 
@@ -48,9 +46,9 @@ public class CameraCollision : MonoBehaviour
 
         intoArray = new Vector3[5];
 
-        float z = camera.nearClipPlane; //distance from cameras position to the new clip plane
-        float x = Mathf.Tan(camera.fieldOfView / collision_box_size) * z;
-        float y = x / camera.aspect;
+        float z = cam.nearClipPlane; //distance from cameras position to the new clip plane
+        float x = Mathf.Tan(cam.fieldOfView / collision_box_size) * z;
+        float y = x / cam.aspect;
 
         //top left
         intoArray[0] = (cp_rotation * new Vector3(-x, y, z)) + camera_position;     //add and rotate the collision point based on camera top right
@@ -61,7 +59,7 @@ public class CameraCollision : MonoBehaviour
                                                                                     
         intoArray[3] = (cp_rotation * new Vector3(x, -y, z)) + camera_position;     //add and rotate the collision point based on camera
                                                                                 
-        intoArray[4] = camera_position - camera.transform.forward/2;                  //cam_pos
+        intoArray[4] = camera_position - cam.transform.forward/2;                  //cam_pos
     }
 
     //determines if there is a collision at any of these clip points

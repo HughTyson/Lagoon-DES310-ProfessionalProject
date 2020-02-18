@@ -37,6 +37,9 @@ public class PlaneSegments : MonoBehaviour
     [SerializeField] public SegmentType type;
     [SerializeField] float transition_time;
 
+    [SerializeField] ButtonUIManager buttonUIManager;
+
+
     [SerializeField] List<OnSegment> games;
 
     // ==========================================
@@ -63,10 +66,16 @@ public class PlaneSegments : MonoBehaviour
         {
             case RepairGameBase.GameType.SwitchGame:
                 {
-                
+
+                    buttonUIManager.DisableAllButtons();
+                    Debug.Log("HELLO");
+                    if (!selected)
+                    {
+                        Debug.Log("HELLO");
+                        buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "Switch Game");
+                    }
+
                 }
-
-
                 break;
             default:
                 break;
@@ -89,6 +98,11 @@ public class PlaneSegments : MonoBehaviour
     public void CleanUp()
     {
         games[selected_game].game.GameCleanUp();
+
+        selected = false;
+        needs_init = true;
+
+
     }
 
     void HandelInput()
@@ -97,6 +111,14 @@ public class PlaneSegments : MonoBehaviour
         if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.A))
         {
             selected = true;
+        }
+
+        if(GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
+        {
+            if(selected)
+            {
+                CleanUp();
+            }
         }
 
         if (!selected)
