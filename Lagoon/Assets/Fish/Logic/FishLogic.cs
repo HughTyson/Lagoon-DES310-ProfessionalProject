@@ -451,7 +451,7 @@ public class FishLogic : MonoBehaviour
 
         GetComponentInParent<Rigidbody>().AddForce(new Vector3(steer.x, 0, steer.y));
 
-
+       
 
     }
 
@@ -513,7 +513,7 @@ public class FishLogic : MonoBehaviour
             }
 
         }
-
+        
 
     }
 
