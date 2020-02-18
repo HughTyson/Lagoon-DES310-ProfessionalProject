@@ -27,13 +27,15 @@ public class CameraCollision : MonoBehaviour
 
     Camera camera;
 
+    int layer1 = 9;int layer2 = 10; int layer3 = 11; int layer4 = 12; int layer5 = 13;
+
     public void Initialize(Camera cam)
     {
         camera = cam;
         adjusted_cp_pos = new Vector3[5]; //4 clip points and the cameras position
         desired_cp_pos = new Vector3[5];
 
-        camera_collisison_layer = 1 << 9;
+        camera_collisison_layer = (1 << 9) | (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13);
 
         camera_collisison_layer = ~camera_collisison_layer;
 

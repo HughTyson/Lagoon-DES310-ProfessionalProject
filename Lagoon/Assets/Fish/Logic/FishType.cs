@@ -18,7 +18,8 @@ public class FishType : ScriptableObject
 
     public class Stats
     {
-        public float size = 1;
+        public float sizeMin = 1;
+        public float sizeMax = 1;
         public float maxForce = 1;
         public float defaultForce = 1;
         public float defaultTurnForce = 1;
@@ -51,6 +52,7 @@ public class FishType : ScriptableObject
         StatsList.Add(FISH_TEIR.T2, Teir2);
         StatsList.Add(FISH_TEIR.T3, Teir3);
         StatsList.Add(FISH_TEIR.T4, Teir4);
+       
     }
 
 }

@@ -8,7 +8,7 @@ public class FishGenerator : MonoBehaviour
 
     [SerializeField] float fishSpawnDepth;
 
-
+    public AnimationCurve plot = new AnimationCurve();
 
 
     [SerializeField] Vector2 fishHabitatRingsOriginXZ;
@@ -51,6 +51,11 @@ public class FishGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 0; i < 100; i++)
+        {
+            plot.AddKey(((float)i),RandomnessExtension.GetNormalDistributionValue(((float)i) / 100.0f));
+        }
+
         // create spawner chance weightings based on size of colliders.
         // This makes sure that if colliders have different sizes, they won't all have the same weighting (e.i collider A is 2x bigger than collider B so A should be 2x more likely to be the chosen spawn collider)
         for (int i = 0; i < fishGenerationStats.Count; i++)
@@ -164,7 +169,7 @@ public class FishGenerator : MonoBehaviour
         fish_vars.defaultTurnForce = chosen_fish_type.StatsList[fishRing.fishTeirEnum].defaultTurnForce;
         fish_vars.maxTurnForce = chosen_fish_type.StatsList[fishRing.fishTeirEnum].maxTurnForce;
         fish_vars.maxVelocity = chosen_fish_type.StatsList[fishRing.fishTeirEnum].maxVelocity;
-        fish_vars.size = chosen_fish_type.StatsList[fishRing.fishTeirEnum].size;
+        fish_vars.size = RandomnessExtension.RandomRangeWithNormalDistribution(chosen_fish_type.StatsList[fishRing.fishTeirEnum].sizeMin, chosen_fish_type.StatsList[fishRing.fishTeirEnum].sizeMax);
 
         new_fish.fishObject.GetComponentInChildren<FishLogic>().Init(fish_vars);
 
@@ -176,7 +181,7 @@ public class FishGenerator : MonoBehaviour
 
         fishRing.fishList.Add(new_fish);
 
-
+        
     }
 
 

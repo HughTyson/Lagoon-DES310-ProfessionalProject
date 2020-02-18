@@ -18,12 +18,15 @@ public class FishLogic : MonoBehaviour
     [SerializeField] float fishHoldBiteTime = 2.0f;         // how long the fish holds the bite before escaping
 
     [Header("Fighting Properties")]
-    [SerializeField] float fightingNextStateMinTime = 0.1f;
-    [SerializeField] float fightingNextStateMaxTime = 0.2f;
+    [SerializeField] float fightingNextStateMinTime = 0.5f;
+    [SerializeField] float fightingNextStateMaxTime = 2.0f;
     [SerializeField] float fightingTransitionTime = 0.1f;
     [SerializeField] float fightingInitialLineTensionTime = 2.0f;
     [SerializeField] float fightingInitialHookTensionTime = 2.0f;
     [SerializeField] float fightingAngleBetweenState = 15.0f;
+
+    [SerializeField] Rigidbody fishFightingPhysicsBody;
+
 
     [Header("Required Pointers")]
     [Tooltip("The transform of the fish head")]
@@ -103,7 +106,6 @@ public class FishLogic : MonoBehaviour
         capsule.height *= vars.size;
         MeshTransform.localScale *= vars.size;
         fishheadTransform.localPosition *= vars.size;
-
 
 
     }
@@ -219,6 +221,12 @@ public class FishLogic : MonoBehaviour
               //      GetComponentInParent<MeshRenderer>().material.color = Color.cyan; // used for debugging
                     break;
                 }
+            case STATE.FIGHTING:
+                {
+
+                    FightingStateUpdate();
+                    break;
+                }
         }
 
     }
@@ -235,12 +243,10 @@ public class FishLogic : MonoBehaviour
             }
         }
 
-        if (current_state != STATE.FIGHTING)
-        {
-
-
             StateTick(); // update state
 
+        if (current_state != STATE.FIGHTING)
+        {
             GetComponentInParent<Rigidbody>().velocity = Vector3.ClampMagnitude(GetComponentInParent<Rigidbody>().velocity, varsFromFishGenerator.maxVelocity);
 
             NotInterestedInBobTime = Mathf.Max(0, NotInterestedInBobTime - Time.fixedDeltaTime); // countdown time 
@@ -253,6 +259,19 @@ public class FishLogic : MonoBehaviour
                 transform.parent.transform.rotation = Quaternion.LookRotation(new Vector3(velocityUnitXZ.x, 0, velocityUnitXZ.y), Vector3.up);
             }
         }
+        else
+        {
+       //     GetComponentInParent<Rigidbody>().velocity = Vector3.ClampMagnitude(GetComponentInParent<Rigidbody>().velocity, varsFromFishGenerator.maxVelocity);
+        //    fishFightingPhysicsBody.velocity = Vector3.ClampMagnitude(fishFightingPhysicsBody.velocity, varsFromFishGenerator.maxVelocity);
+
+            Vector2 velocityUnitXZ = new Vector2(fishFightingPhysicsBody.velocity.x, fishFightingPhysicsBody.velocity.z).normalized;
+
+            if (velocityUnitXZ.magnitude > 0.0001)
+            {
+                transform.parent.transform.rotation = Quaternion.LookRotation(new Vector3(velocityUnitXZ.x, 0, velocityUnitXZ.y), Vector3.up);
+            }
+        }
+
     }
 
     void Update()
@@ -267,11 +286,6 @@ public class FishLogic : MonoBehaviour
 
         headVectorXZ.x = fishheadTransform.position.x;
         headVectorXZ.y = fishheadTransform.position.z;
-
-        if (current_state == STATE.FIGHTING)
-        {
-            FightingStateUpdate();
-        }
     }
 
     // Wander aimlessly
@@ -507,6 +521,7 @@ public class FishLogic : MonoBehaviour
     {
         current_state = STATE.WANDERING;
         NotInterestedInBobTime = duration;
+
     }
 
     public bool IsInStateInteracting()
@@ -542,102 +557,54 @@ public class FishLogic : MonoBehaviour
         public float currentNextStateChangeTime;
         public float distanceTillCaught;
         public float currentLineTensionTime;
-        public float currentHookedTensionTIme;
-
-        public Vector2 MiddleDir;
-        public Vector2 LeftDir;
-        public Vector2 RightDir;
+       
         public StaticFishingRodLogic staticFishingRodLogicPointer;
- 
+        public Transform fishing_rod_tip;
+
         public float currentTransitionTime;
-        public Vector2 TransitionFrom;
-        public Vector2 TransitionTo;
-        public FIGHTING_STATE TransitionStateTo;
 
         public FIGHTING_STATE state; 
-        public Vector2 reelInPosition;
 
-        public float distanceOfAngleCentre;
+
+
+        public float currentTurnAngle;
+        public float maxTurnForce;
 
     }
     FightingStateVars fightingStateVars = new FightingStateVars();
 
 
-    public void BeginFighting(Vector2 ReelInPosition_, StaticFishingRodLogic static_fishing_rod)
+    
+    public void BeginFighting(Transform fishing_rod_tip, StaticFishingRodLogic static_fishing_rod)
     {
 
-        fightingStateVars.distanceOfAngleCentre = 10.0f;
+        fightingStateVars.maxTurnForce = 20.0f;
 
-        GetComponentInParent<Rigidbody>().velocity = Vector3.zero;
 
-        fightingStateVars.reelInPosition = ReelInPosition_;
+        fishFightingPhysicsBody.gameObject.SetActive(true);
 
-        fightingStateVars.distanceTillCaught = Vector2.Distance(ReelInPosition_, headVectorXZ) + 3.0f;
+
+        fightingStateVars.distanceTillCaught = Vector2.Distance(fishing_rod_tip.position, headVectorXZ) + 3.0f;
         fightingStateVars.staticFishingRodLogicPointer = static_fishing_rod;
+        fightingStateVars.fishing_rod_tip = fishing_rod_tip;
 
-
-
-
+        fightingStateVars.currentNextStateChangeTime = Random.Range(fightingNextStateMinTime, fightingNextStateMaxTime);
+        fightingStateVars.currentTurnAngle = (Random.value <= 0.5) ? 1 : -1;
         fightingStateVars.state = FIGHTING_STATE.BEGIN_FIGHTING;
 
 
-        fightingStateVars.MiddleDir = (headVectorXZ - ReelInPosition_).normalized;
-        fightingStateVars.LeftDir = fightingStateVars.MiddleDir.Rotate(-fightingAngleBetweenState).normalized;
-        fightingStateVars.RightDir = fightingStateVars.MiddleDir.Rotate(fightingAngleBetweenState).normalized;
-
-
         current_state = STATE.FIGHTING;
-        fightingStateVars.currentTransitionTime = fightingTransitionTime;
-        fightingStateVars.currentLineTensionTime = fightingInitialLineTensionTime;
-        fightingStateVars.currentHookedTensionTIme = fightingInitialHookTensionTime;
-        fightingStateVars.currentNextStateChangeTime = Random.Range(fightingNextStateMinTime, fightingNextStateMaxTime);
+       
     }
 
 
-    public void ReelingIn()
+    public void ReelingIn(float force)
     {
-        switch(fightingStateVars.state)
-        {
-            case FIGHTING_STATE.RIGHT:
-                {
-                   
+      //  Vector3 applied_force = fightingStateVars.fishing_rod_tip.position - transform.position;
+      //  applied_force.y = 0;
 
-                    if (fightingStateVars.staticFishingRodLogicPointer.GetFishFightingState() == StaticFishingRodLogic.FISH_FIGHTING_STATE.LEFT)
-                    {
-                        fightingStateVars.distanceTillCaught -= Time.deltaTime * 2.0f;
-
-                      
-                        Vector2 newXZ_Position = (fightingStateVars.LeftDir * (Mathf.Min(fightingStateVars.distanceOfAngleCentre, fightingStateVars.distanceTillCaught))) + (fightingStateVars.MiddleDir * (fightingStateVars.distanceTillCaught - fightingStateVars.distanceOfAngleCentre)) + fightingStateVars.reelInPosition;
-
-                        transform.parent.transform.position = new Vector3(newXZ_Position.x, transform.parent.transform.position.y, newXZ_Position.y);
-                    }
-                    else
-                    {
-                        DamageLine();
-                    }
-
-                    break;
-                }
-
-            case FIGHTING_STATE.LEFT:
-                {
-
-                    if (fightingStateVars.staticFishingRodLogicPointer.GetFishFightingState() == StaticFishingRodLogic.FISH_FIGHTING_STATE.RIGHT)
-                    {
-                        fightingStateVars.distanceTillCaught -= Time.deltaTime * 2.0f;
-
-                        Vector2 newXZ_Position = (fightingStateVars.RightDir * (Mathf.Min(fightingStateVars.distanceOfAngleCentre, fightingStateVars.distanceTillCaught))) + (fightingStateVars.MiddleDir * (fightingStateVars.distanceTillCaught - fightingStateVars.distanceOfAngleCentre)) + fightingStateVars.reelInPosition;
-
-                        transform.parent.transform.position = new Vector3(newXZ_Position.x, transform.parent.transform.position.y, newXZ_Position.y);
-                    }
-                    else
-                    {
-                        DamageLine();
-                    }
-                    break;
-                }
-
-        }
+      //  GetComponentInParent<Rigidbody>().AddForce((applied_force).normalized * force * 100.0f);
+      ////  fishFightingPhysicsBody.AddForce((applied_force).normalized * force * 20.0f);
     }
 
     void DamageLine()
@@ -648,93 +615,53 @@ public class FishLogic : MonoBehaviour
 
     public void FightingStateUpdate()
     {
+        //   Vector3 applied_force = -(fightingStateVars.fishing_rod_tip.position - transform.position);
 
-        switch (fightingStateVars.state)
+        fightingStateVars.currentNextStateChangeTime -= Time.deltaTime;
+
+        if (fightingStateVars.currentNextStateChangeTime <= 0)
         {
-            case FIGHTING_STATE.BEGIN_FIGHTING:
-                {
-                    Vector2 current_pos = new Vector2(transform.parent.transform.position.x, transform.parent.transform.position.z);
-
-                    Vector2 desiredXZ_Position = (fightingStateVars.MiddleDir * fightingStateVars.distanceTillCaught) + fightingStateVars.reelInPosition;
-
-                    Vector2 newXZ_position = Vector2.Lerp(current_pos, desiredXZ_Position, Time.deltaTime * 5.0f);
-                    transform.parent.transform.position = new Vector3(newXZ_position.x, transform.parent.transform.position.y, newXZ_position.y);
-
-
-                    Vector2 current_forward = new Vector2(transform.forward.x, transform.forward.z);
-
-                    Vector2 new_dir = Vector2Extension.Slerp(current_forward, fightingStateVars.MiddleDir, Time.deltaTime * 7.5f);
-                    transform.parent.transform.rotation = Quaternion.LookRotation(new Vector3(new_dir.x, 0, new_dir.y), Vector3.up);
-
-                    if (Vector2.Distance(desiredXZ_Position, newXZ_position) < 0.1f)
-                    {
-                        BeginFightingStateChange();
-                    }
-                    break;
-                }
-            case FIGHTING_STATE.RIGHT:
-                {
-
-                    fightingStateVars.currentNextStateChangeTime -= Time.deltaTime;
-                    if (fightingStateVars.currentNextStateChangeTime <= 0)
-                    {
-                        BeginFightingStateChange();
-                    }
-
-                    if (fightingStateVars.staticFishingRodLogicPointer.GetFishFightingState() != StaticFishingRodLogic.FISH_FIGHTING_STATE.LEFT)
-                    {
-                        DamageLine();
-                    }
-
-                    break;
-                }
-
-            case FIGHTING_STATE.LEFT:
-                {
-                    fightingStateVars.currentNextStateChangeTime -= Time.deltaTime;
-                    if (fightingStateVars.currentNextStateChangeTime <= 0)
-                    {
-                        BeginFightingStateChange();
-                    }
-
-                    if (fightingStateVars.staticFishingRodLogicPointer.GetFishFightingState() != StaticFishingRodLogic.FISH_FIGHTING_STATE.RIGHT)
-                    {
-                        DamageLine();
-                    }
-                    break;
-                }
-            case FIGHTING_STATE.TRANSITIONING:
-                {
-                    fightingStateVars.currentTransitionTime += Time.deltaTime;
-
-                    float t = fightingStateVars.currentTransitionTime / fightingTransitionTime;
-
-                    Vector2 new_dir = Vector2Extension.Slerp(fightingStateVars.TransitionFrom, fightingStateVars.TransitionTo, t);
-
-
-
-                    Vector2 newXZ_Position = (new_dir * (Mathf.Min(fightingStateVars.distanceOfAngleCentre,fightingStateVars.distanceTillCaught))) + (fightingStateVars.MiddleDir * (fightingStateVars.distanceTillCaught - fightingStateVars.distanceOfAngleCentre)) + fightingStateVars.reelInPosition;
-
-                    transform.parent.transform.position = new Vector3(newXZ_Position.x, transform.parent.transform.position.y, newXZ_Position.y);
-
-                    float rotAngleDeviance = Mathf.Pow(Mathf.Clamp01(Mathf.Sin(t * Mathf.PI)),2); 
-                    if (Vector2.SignedAngle(fightingStateVars.TransitionFrom, fightingStateVars.TransitionTo) < 0)
-                    {
-                        rotAngleDeviance = -rotAngleDeviance;
-                    }
-                    rotAngleDeviance *= 60.0f;
-
-                    new_dir = new_dir.Rotate(rotAngleDeviance);
-                    transform.parent.transform.rotation = Quaternion.LookRotation(new Vector3(new_dir.x, 0, new_dir.y), Vector3.up);
-
-                    if (t >= 1.0f)
-                    {
-                        fightingStateVars.state = fightingStateVars.TransitionStateTo;                        
-                    }
-                    break;
-                }
+            fightingStateVars.currentNextStateChangeTime = Random.Range(fightingNextStateMinTime, fightingNextStateMaxTime);
+            fightingStateVars.currentTurnAngle *= -1;
         }
-       
+
+
+        Vector3 applied_force = transform.forward;
+        applied_force.y = 0;
+
+      //  GetComponentInParent<Rigidbody>().AddForce((applied_force).normalized * 20.0f);
+      //  fishFightingPhysicsBody.AddForce((applied_force).normalized * 20.0f);
+
+
+
+        Vector2 location = new Vector2(transform.position.x, transform.position.z);
+
+
+        Vector2 new_vec = (headVectorXZ - new Vector2(fightingStateVars.fishing_rod_tip.position.x, fightingStateVars.fishing_rod_tip.position.z)).normalized;
+        //  Vector2 desired = Vector2Extension.Rotate(new_vec, 90.0f * -Input.GetAxis("PlayerLH")) * 30.0f;
+        Vector2 desired = Vector2Extension.Rotate(new_vec, 90.0f) * fightingStateVars.maxTurnForce * fightingStateVars.currentTurnAngle;
+
+        if (desired.magnitude > 0.001)
+        {
+            Vector3 desired3d = new Vector3(desired.x, 0, desired.y);
+            GetComponentInParent<Rigidbody>().velocity = desired3d;
+        }
+
+
+
+
+        desired = Vector2Extension.Rotate(new_vec, 90.0f) * fightingStateVars.maxTurnForce *Input.GetAxis("PlayerLH") * 1.5f;
+
+        if (desired.magnitude > 0.001)
+        {
+           Vector3 desired3d = new Vector3(desired.x, 0, desired.y);
+           GetComponentInParent<Rigidbody>().velocity -= desired3d;
+        }
+
+
+
+        fishFightingPhysicsBody.transform.position = transform.position;
+        fishFightingPhysicsBody.rotation = transform.rotation;
     }
 
     void BeginFightingStateChange()
@@ -742,50 +669,50 @@ public class FishLogic : MonoBehaviour
 
 
 
-        List<FIGHTING_STATE> new_state = new List<FIGHTING_STATE>();
-        new_state.Add(FIGHTING_STATE.RIGHT);
-        new_state.Add(FIGHTING_STATE.LEFT);
-        new_state.Remove(fightingStateVars.state);
-        fightingStateVars.TransitionStateTo = new_state[0];
+        //List<FIGHTING_STATE> new_state = new List<FIGHTING_STATE>();
+        //new_state.Add(FIGHTING_STATE.RIGHT);
+        //new_state.Add(FIGHTING_STATE.LEFT);
+        //new_state.Remove(fightingStateVars.state);
+        //fightingStateVars.TransitionStateTo = new_state[0];
 
 
-        switch (fightingStateVars.state)
-        {
-            case FIGHTING_STATE.RIGHT:
-                {
-                    fightingStateVars.TransitionFrom = fightingStateVars.LeftDir;
-                    break;
-                }
-            case FIGHTING_STATE.LEFT:
-                {
-                    fightingStateVars.TransitionFrom = fightingStateVars.RightDir;
-                    break;
-                }
-            case FIGHTING_STATE.BEGIN_FIGHTING:
-                {
-                    fightingStateVars.TransitionFrom = fightingStateVars.MiddleDir;
-                    break;
-                }
-        }
-        switch (fightingStateVars.TransitionStateTo)
-        {
-            case FIGHTING_STATE.RIGHT:
-                {
-                    fightingStateVars.TransitionTo = fightingStateVars.LeftDir;
-                    break;
-                }
-            case FIGHTING_STATE.LEFT:
-                {
-                    fightingStateVars.TransitionTo = fightingStateVars.RightDir;
-                    break;
-                }
-        }
+        //switch (fightingStateVars.state)
+        //{
+        //    case FIGHTING_STATE.RIGHT:
+        //        {
+        //            fightingStateVars.TransitionFrom = fightingStateVars.LeftDir;
+        //            break;
+        //        }
+        //    case FIGHTING_STATE.LEFT:
+        //        {
+        //            fightingStateVars.TransitionFrom = fightingStateVars.RightDir;
+        //            break;
+        //        }
+        //    case FIGHTING_STATE.BEGIN_FIGHTING:
+        //        {
+        //            fightingStateVars.TransitionFrom = fightingStateVars.MiddleDir;
+        //            break;
+        //        }
+        //}
+        //switch (fightingStateVars.TransitionStateTo)
+        //{
+        //    case FIGHTING_STATE.RIGHT:
+        //        {
+        //            fightingStateVars.TransitionTo = fightingStateVars.LeftDir;
+        //            break;
+        //        }
+        //    case FIGHTING_STATE.LEFT:
+        //        {
+        //            fightingStateVars.TransitionTo = fightingStateVars.RightDir;
+        //            break;
+        //        }
+        //}
 
 
-        fightingStateVars.currentNextStateChangeTime = Random.Range(fightingNextStateMinTime, fightingNextStateMaxTime);
+        //fightingStateVars.currentNextStateChangeTime = Random.Range(fightingNextStateMinTime, fightingNextStateMaxTime);
 
-        fightingStateVars.currentTransitionTime = 0;
-        fightingStateVars.state = FIGHTING_STATE.TRANSITIONING;
+        //fightingStateVars.currentTransitionTime = 0;
+        //fightingStateVars.state = FIGHTING_STATE.TRANSITIONING;
     }
     public float GetLineStrengthPercentageLeft()
     {

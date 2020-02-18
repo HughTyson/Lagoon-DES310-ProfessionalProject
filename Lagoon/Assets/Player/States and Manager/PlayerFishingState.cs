@@ -217,13 +217,14 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.FISHING:
                 {
-                    if (Input.GetAxis("PlayerRT") > 0.1f) // bring the bob closer by reeling in
-                    {
-                        ReelIn(Mathf.Lerp(0, fishingReelInMaxSpeed, Input.GetAxis("PlayerRT")));
-                    }
-                    else if (Input.GetButtonDown("PlayerB"))
+
+                    if (Input.GetButtonDown("PlayerB"))
                     {
                         CancelCasted();
+                    }
+                    else if (Input.GetAxis("PlayerRT") > 0.1f) // bring the bob closer by reeling in
+                    {
+                        ReelIn(Mathf.Lerp(0, fishingReelInMaxSpeed, Input.GetAxis("PlayerRT")));
                     }
                     else if (fishingBob.GetComponentInChildren<FishingBobLogic>().GetState() == FishingBobLogic.STATE.FISH_INTERACTING)
                     {
@@ -234,17 +235,18 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.INTERACTING_FISH:
                 {
-                    if (Input.GetAxis("PlayerRT") > 0.5f)
-                    {
-                       if (interactingFishWontFrightenTime < 0.0f)
-                        {
-                            FailedHookAttempt();
-                        }
-                    }
+
 
                     if (Input.GetButtonDown("PlayerB"))
                     {
                         CancelCasted();
+                    }
+                    else if (Input.GetAxis("PlayerRT") > 0.5f)
+                    {
+                        if (interactingFishWontFrightenTime < 0.0f)
+                        {
+                            FailedHookAttempt();
+                        }
                     }
                     else
                     {
@@ -329,12 +331,12 @@ public class PlayerFishingState : BaseState
                     //{
                     //    FishFightLineSnapped();
                     //}
-                    //else if (Input.GetButton("PlayerRB"))
-                    //{
-                    //    interactingFish.ReelingIn();
-                    //}
-                    
-                     
+                     if (Input.GetAxis("PlayerRT") > 0.1f)
+                    {
+                        interactingFish.ReelingIn(Input.GetAxis("PlayerRT"));
+                    }
+
+
 
 
                     break;
@@ -614,7 +616,7 @@ public class PlayerFishingState : BaseState
         fishingBob.GetComponentInChildren<FishingBobLogic>().BeganFighting();
         fishingLineLogic.BeganFighting(interactingFish);
         staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.MIDDLE);
-        interactingFish.BeginFighting(new Vector2(transform.position.x, transform.position.z), staticFishingRodLogic);
+        interactingFish.BeginFighting(fishingRodTip, staticFishingRodLogic);
     }
 
     void FishFightLineSnapped()

@@ -23,3 +23,21 @@ public static class Vector2Extension
         return Rotate(from, angle_between);
     }
 }
+
+
+public static class RandomnessExtension
+{
+
+    public static float RandomRangeWithNormalDistribution(float min_, float max_, float edgeFactor = 1.6f)
+    {
+        float inner_value = (Random.value - 0.5f) * edgeFactor;
+        return Mathf.Lerp(min_,max_,(inner_value* inner_value* inner_value) + 0.5f);
+    }
+
+    public static float GetNormalDistributionValue(float at_t, float edgeFactor = 1.6f )
+    {
+        at_t = Mathf.Clamp01(at_t);
+        float inner_value = (at_t - 0.5f) * edgeFactor;
+        return ((inner_value * inner_value * inner_value) + 0.5f);
+    }
+}
