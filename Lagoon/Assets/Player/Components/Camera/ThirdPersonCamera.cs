@@ -213,7 +213,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void HandleInput()
     {
-        camera_input += new Vector2(Input.GetAxisRaw("PlayerRH") * camera_rotation_speed, Input.GetAxisRaw("PlayerRV") * camera_rotation_speed) * Time.deltaTime; //get the input from the left stick
+        camera_input += new Vector2(GM_.instance.input.GetAxis(InputManager.AXIS.RH) * camera_rotation_speed, GM_.instance.input.GetAxis(InputManager.AXIS.RV) * camera_rotation_speed) * Time.deltaTime; //get the input from the left stick
     }
 
     //updates the clip points for the collision

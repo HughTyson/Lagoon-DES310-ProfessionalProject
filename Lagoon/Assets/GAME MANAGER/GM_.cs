@@ -7,7 +7,7 @@ public class GM_ : MonoBehaviour
 
     public static GM_ instance = null;
 
-    public InputManager inputManager = new InputManager();
+    public InputManager input = new InputManager();
 
     private void Awake()
     {
@@ -34,9 +34,19 @@ public class GM_ : MonoBehaviour
     }
 
 
-    
+    private void FixedUpdate()
+    {
+        input.FixedUpdate();
+    }
+
     void LateUpdate()
     {
-        inputManager.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
+        input.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
+    }
+
+    private void OnDestroy()
+    {
+        input.SetVibration(0, 0);
+        input.FixedUpdate();
     }
 }

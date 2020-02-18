@@ -127,7 +127,7 @@ public class CharacterControllerMovement : MonoBehaviour
     //methods
     private void HandleInput()
     {
-        movement_input = new Vector2(Input.GetAxisRaw("PlayerLH") * joyStick_sensitivity, Input.GetAxisRaw("PlayerLV") * joyStick_sensitivity);
+        movement_input = new Vector2(GM_.instance.input.GetAxis(InputManager.AXIS.LH) * joyStick_sensitivity, GM_.instance.input.GetAxis(InputManager.AXIS.LV) * joyStick_sensitivity);
     }
 
     private void Rotation()

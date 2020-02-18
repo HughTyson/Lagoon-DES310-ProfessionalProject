@@ -147,11 +147,11 @@ public class PlayerFishingState : BaseState
 
 
 
-                    if (Input.GetAxis("PlayerLV") < -0.8f) // begin powering up the cast
+                    if (GM_.instance.input.GetAxis(InputManager.AXIS.LV) < -0.8f) // begin powering up the cast
                     {
                         BeginPowerUpThrow();
                     }
-                    else if (Input.GetButtonDown("PlayerB"))
+                    else if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
                     {
                         StateManager.ChangeState(PlayerScriptManager.STATE.EXPLORING);
                     }
@@ -163,15 +163,15 @@ public class PlayerFishingState : BaseState
                     castingTime += Time.deltaTime;
                     TransformIndicator();
 
-                    if (Input.GetButtonDown("PlayerB") || castingTimeout >= 0.3f)
+                    if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B) || castingTimeout >= 0.3f)
                     {
                         CancelPowerUpThrow();
                     }
-                    else if (Input.GetAxis("PlayerLV") < -0.9f)
+                    else if (GM_.instance.input.GetAxis(InputManager.AXIS.LV) < -0.9f)
                     {
                         castingTimeout = 0.0f;
                     }
-                    else if (Input.GetAxis("PlayerLV") > 0.9f) // release the cast and throw the bob
+                    else if (GM_.instance.input.GetAxis(InputManager.AXIS.LV) > 0.9f) // release the cast and throw the bob
                     {
                         fixedRodAnimator.enabled = true;
                         BeginCastingAnimation();
@@ -208,7 +208,7 @@ public class PlayerFishingState : BaseState
                 }
                     else // bob is moving through the air
                     {
-                        if (Input.GetButtonDown("PlayerB"))
+                        if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
                         {
                             CancelCasted();
                         }
@@ -217,14 +217,16 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.FISHING:
                 {
+                    float reelAxis = GM_.instance.input.GetAxis(InputManager.AXIS.RT);
 
-                    if (Input.GetButtonDown("PlayerB"))
+                    GM_.instance.input.SetVibrationRight(reelAxis);
+                    if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
                     {
                         CancelCasted();
                     }
-                    else if (Input.GetAxis("PlayerRT") > 0.1f) // bring the bob closer by reeling in
+                    else if (GM_.instance.input.GetAxis(InputManager.AXIS.RT) > 0.1f) // bring the bob closer by reeling in
                     {
-                        ReelIn(Mathf.Lerp(0, fishingReelInMaxSpeed, Input.GetAxis("PlayerRT")));
+                        ReelIn(reelAxis);
                     }
                     else if (fishingBob.GetComponentInChildren<FishingBobLogic>().GetState() == FishingBobLogic.STATE.FISH_INTERACTING)
                     {
@@ -237,11 +239,11 @@ public class PlayerFishingState : BaseState
                 {
 
 
-                    if (Input.GetButtonDown("PlayerB"))
+                    if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
                     {
                         CancelCasted();
                     }
-                    else if (Input.GetAxis("PlayerRT") > 0.5f)
+                    else if (GM_.instance.input.GetAxis(InputManager.AXIS.RT) > 0.5f)
                     {
                         if (interactingFishWontFrightenTime < 0.0f)
                         {
@@ -263,7 +265,7 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.BITING_FISH:
                 {
-                    if (Input.GetAxis("PlayerRT") > 0.5f)
+                    if (GM_.instance.input.GetAxis(InputManager.AXIS.RT) > 0.5f)
                     {
                         FishFightingBegin();
                     }
@@ -272,7 +274,7 @@ public class PlayerFishingState : BaseState
                         FishBiteUpdate();
                     }
 
-                    if (Input.GetButtonDown("PlayerB"))
+                    if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
                     {
                         CancelCasted();
                     }
@@ -305,11 +307,11 @@ public class PlayerFishingState : BaseState
                             }
                     }
 
-                    if (Input.GetAxis("PlayerLH") < -0.5f)
+                    if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) < -0.5f)
                     {
                         staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.LEFT);
                     }
-                    else if (Input.GetAxis("PlayerLH") > 0.5f)
+                    else if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) > 0.5f)
                     {
                         staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.RIGHT);
                     }
@@ -331,9 +333,9 @@ public class PlayerFishingState : BaseState
                     //{
                     //    FishFightLineSnapped();
                     //}
-                     if (Input.GetAxis("PlayerRT") > 0.1f)
+                     if (GM_.instance.input.GetAxis(InputManager.AXIS.RT) > 0.1f)
                     {
-                        interactingFish.ReelingIn(Input.GetAxis("PlayerRT"));
+                        interactingFish.ReelingIn(GM_.instance.input.GetAxis(InputManager.AXIS.RT));
                     }
 
 
@@ -450,8 +452,11 @@ public class PlayerFishingState : BaseState
 
 
     float currentReelInTime = 0;
-    void ReelIn(float reelInSpeed) // bring the bob closer by reeling in
+    void ReelIn(float reelAxis) // bring the bob closer by reeling in
     {
+        
+        GM_.instance.input.SetVibrationRight(reelAxis);
+        float reelInSpeed = Mathf.Lerp(0, fishingReelInMaxSpeed, reelAxis);
         currentReelInTime += Time.deltaTime*reelInSpeed;
 
         if (currentReelInTime > 1.0f)
@@ -468,6 +473,8 @@ public class PlayerFishingState : BaseState
 
     void CancelCasted()
     {
+        GM_.instance.input.SetVibration(0, 0);
+
         thirdPersonCamera.look_at_target = transform;
         thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FREE;
 

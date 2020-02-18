@@ -41,10 +41,10 @@ public class InputManager // input manager for a single player controller game
     {
         LT,
         RT,
-        L_STICK_H,
-        L_STICK_V,
-        R_STICK_H,
-        R_STICK_V
+        LH,
+        LV,
+        RH,
+        RV
     }
 
     public InputManager()
@@ -94,10 +94,10 @@ public class InputManager // input manager for a single player controller game
 
         currentAxis[(int)AXIS.LT] = state.Triggers.Left;
         currentAxis[(int)AXIS.RT] = state.Triggers.Right;
-        currentAxis[(int)AXIS.L_STICK_H] = state.ThumbSticks.Left.X;
-        currentAxis[(int)AXIS.L_STICK_V] = state.ThumbSticks.Left.Y;
-        currentAxis[(int)AXIS.R_STICK_H] = state.ThumbSticks.Right.X;
-        currentAxis[(int)AXIS.R_STICK_V] = state.ThumbSticks.Right.Y;
+        currentAxis[(int)AXIS.LH] = state.ThumbSticks.Left.X;
+        currentAxis[(int)AXIS.LV] = state.ThumbSticks.Left.Y;
+        currentAxis[(int)AXIS.RH] = state.ThumbSticks.Right.X;
+        currentAxis[(int)AXIS.RV] = state.ThumbSticks.Right.Y;
 
         currentButtons[(int)BUTTON.X] = (state.Buttons.X == ButtonState.Pressed) ? true : false;
         currentButtons[(int)BUTTON.Y] = (state.Buttons.Y == ButtonState.Pressed) ? true : false;

@@ -35,7 +35,7 @@ public class PlayerExploreState : BaseState
     // Update is called once per frame
     public override void StateUpdate()
     {
-        if (Input.GetButtonDown("PlayerA"))
+        if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.A))
         {
             switch (interaction_type)
             {
