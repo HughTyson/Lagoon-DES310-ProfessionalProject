@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerRepairState : BaseState
 {
 
-    List<PlaneSegments> plane_segments;
+    [SerializeField] float transition_time = 0.3f;
+    [SerializeField] List<PlaneSegments> plane_segments;
 
     PlaneSegments.SegmentType part;
 
@@ -15,7 +16,7 @@ public class PlayerRepairState : BaseState
     bool selected = false;
 
     float counter;
-    [SerializeField] float transition_time = 0.3f;
+
 
     bool just_disabled = false;
     public void OnEnable()
@@ -126,20 +127,25 @@ public class PlayerRepairState : BaseState
     void HandelInput()
     {
 
-        if(Input.GetButtonDown("PlayerA"))
+        if(GM_.instance.input.GetButtonDown(InputManager.BUTTON.A))
         {
             selected = true;
         }
 
-        if(Input.GetButtonDown("PlayerB"))
+        if(GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
         {
             selected = false;
             just_disabled = true;
+
+            if (selected == false)
+            {
+                StateManager.ChangeState(PlayerScriptManager.STATE.EXPLORING);
+            }
         }
 
         if(!selected)
         {
-            if(Input.GetAxisRaw("PlayerLH") > 0.2)
+            if(GM_.instance.input.GetAxis(InputManager.AXIS.LH) > 0.2)
             {
                 if(counter > transition_time)
                 {
@@ -162,7 +168,7 @@ public class PlayerRepairState : BaseState
                 counter = 0;
             }
 
-            if (Input.GetAxisRaw("PlayerLH") < 0.2)
+            if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) < 0.2)
             {
                 if (counter > transition_time)
                 {

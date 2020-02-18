@@ -10,7 +10,8 @@ public class PlayerExploreState : BaseState
         NONE,
         FISH,
         RADIO,
-        SLEEP
+        SLEEP,
+        REPAIR
     }
 
     [SerializeField] CharacterControllerMovement movement_;
@@ -50,6 +51,9 @@ public class PlayerExploreState : BaseState
                     break;
                 case INTERACTION_TYPE.SLEEP:
                     { }
+                    break;
+                case INTERACTION_TYPE.REPAIR:
+                    { StateManager.ChangeState(PlayerScriptManager.STATE.REPAIR); Debug.Log("REPIAR"); }
                     break;
                 default:
                     break;
@@ -91,6 +95,15 @@ public class PlayerExploreState : BaseState
                                 buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "Go to Sleep");
                             }
                             break;
+                        case TriggerType.TRIGGER_TYPE.REPAIR:
+                            {
+                                interaction_type = INTERACTION_TYPE.REPAIR;
+
+                                buttonUIManager.DisableAllButtons();
+                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "Plane Repair");
+
+                                break;
+                            }
                         default:
                             {
                                 interaction_type = INTERACTION_TYPE.NONE;

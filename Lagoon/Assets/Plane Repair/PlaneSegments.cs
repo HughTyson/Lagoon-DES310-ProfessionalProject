@@ -19,6 +19,7 @@ public class PlaneSegments : MonoBehaviour
 
     public enum SegmentType
     {
+        NONE,
         PROPELLER,
         ENGINE_FRONT,
         ENGINE_MID,
@@ -30,23 +31,25 @@ public class PlaneSegments : MonoBehaviour
         FUSELAGE_LEFT_BACK,
         FUSELAGE_RIGHT_FRONT,
         FUSELAGE_RIGHT_MID,
-        FUSELAGE_RIGHT_BACK,
+        FUSELAGE_RIGHT_BACK
     }
 
     [SerializeField] public SegmentType type;
+    [SerializeField] float transition_time;
 
+    [SerializeField] List<OnSegment> games;
 
     // ==========================================
     //              Hidden Variables
     //===========================================
 
 
-    List<OnSegment> games;
+    
 
     int selected_game;
 
     float counter;
-    [SerializeField] float transition_time;
+    
     bool selected = false;
     bool needs_init = true;
 
@@ -60,7 +63,7 @@ public class PlaneSegments : MonoBehaviour
         {
             case RepairGameBase.GameType.SwitchGame:
                 {
-                    //
+                
                 }
 
 
@@ -91,14 +94,14 @@ public class PlaneSegments : MonoBehaviour
     void HandelInput()
     {
 
-        if (Input.GetButtonDown("PlayerA"))
+        if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.A))
         {
             selected = true;
         }
 
         if (!selected)
         {
-            if (Input.GetAxisRaw("PlayerLH") > 0.2)
+            if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) > 0.2)
             {
                 if (counter > transition_time)
                 {
@@ -121,7 +124,7 @@ public class PlaneSegments : MonoBehaviour
                 counter = 0;
             }
 
-            if (Input.GetAxisRaw("PlayerLH") < 0.2)
+            if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) < 0.2)
             {
                 if (counter > transition_time)
                 {

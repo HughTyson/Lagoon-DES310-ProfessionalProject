@@ -103,9 +103,5 @@ public class SwitchGameLogic : RepairGameBase
             lights[i] = null;
 
         }
-
-        
-
-
     }
 }
