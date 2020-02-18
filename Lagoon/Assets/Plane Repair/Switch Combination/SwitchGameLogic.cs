@@ -12,6 +12,8 @@ struct SwitchInformation
 
 public class SwitchGameLogic : RepairGameBase
 {
+    
+    
 
     public Switch switch_prefab;
     private Switch[] switchs = new Switch[4];
@@ -26,10 +28,12 @@ public class SwitchGameLogic : RepairGameBase
     public override void GameInit()
     {
 
+       
+
         for (int i = 0; i < 4; i++)
         {
             //Instantiate the switches
-
+           
             switchs[i] = Instantiate(switch_prefab, this.transform);
             switchs[i].transform.position = switch_info[i].button_position;
 
@@ -85,5 +89,23 @@ public class SwitchGameLogic : RepairGameBase
                 lights[m].SetMatOff();
             }
         }
+    }
+
+    public override void GameCleanUp()
+    {
+        
+        for(int i = 0; i < 4; i++)
+        {
+            Destroy(switchs[i].gameObject);
+            switchs[i] = null;
+
+            Destroy(lights[i].gameObject);
+            lights[i] = null;
+
+        }
+
+        
+
+
     }
 }

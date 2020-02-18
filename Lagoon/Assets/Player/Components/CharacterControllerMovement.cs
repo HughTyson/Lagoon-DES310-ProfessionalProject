@@ -5,7 +5,6 @@ using UnityEngine;
 public class CharacterControllerMovement : MonoBehaviour
 {
 
-
     // ==========================================
     //              Visible Variables
     //===========================================
