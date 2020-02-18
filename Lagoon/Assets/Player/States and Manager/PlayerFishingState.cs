@@ -224,7 +224,7 @@ public class PlayerFishingState : BaseState
                     {
                         CancelCasted();
                     }
-                    else if (GM_.instance.input.GetAxis(InputManager.AXIS.RT) > 0.1f) // bring the bob closer by reeling in
+                    else if (GM_.instance.input.GetAxis(InputManager.AXIS.RT) > 0.01f) // bring the bob closer by reeling in
                     {
                         ReelIn(reelAxis);
                     }
@@ -286,26 +286,26 @@ public class PlayerFishingState : BaseState
 
 
 
-                    switch(interactingFish.GetFightingState())
-                    {
-                        case FishLogic.FIGHTING_STATE.LEFT:
-                            {
-                                fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.FISH_LEFT);
-                                fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x,GlobalVariables.WATER_LEVEL + 1.0f , interactingFish.transform.position.z));
-                                break;
-                            }
-                        case FishLogic.FIGHTING_STATE.RIGHT:
-                            {
-                                fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.FISH_RIGHT);
-                                fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x, GlobalVariables.WATER_LEVEL + 1.0f, interactingFish.transform.position.z));
-                                break;
-                            }
-                        default:
-                            {
-                                fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.NOT_ACTIVE);
-                                break;
-                            }
-                    }
+                    //switch(interactingFish.GetFightingState())
+                    //{
+                    //    case FishLogic.FIGHTING_STATE.LEFT:
+                    //        {
+                    //            fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.FISH_LEFT);
+                    //            fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x,GlobalVariables.WATER_LEVEL + 1.0f , interactingFish.transform.position.z));
+                    //            break;
+                    //        }
+                    //    case FishLogic.FIGHTING_STATE.RIGHT:
+                    //        {
+                    //            fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.FISH_RIGHT);
+                    //            fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x, GlobalVariables.WATER_LEVEL + 1.0f, interactingFish.transform.position.z));
+                    //            break;
+                    //        }
+                    //    default:
+                    //        {
+                    //            fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.NOT_ACTIVE);
+                    //            break;
+                    //        }
+                    //}
 
                     if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) < -0.5f)
                     {
@@ -454,8 +454,6 @@ public class PlayerFishingState : BaseState
     float currentReelInTime = 0;
     void ReelIn(float reelAxis) // bring the bob closer by reeling in
     {
-        
-        GM_.instance.input.SetVibrationRight(reelAxis);
         float reelInSpeed = Mathf.Lerp(0, fishingReelInMaxSpeed, reelAxis);
         currentReelInTime += Time.deltaTime*reelInSpeed;
 
@@ -623,7 +621,7 @@ public class PlayerFishingState : BaseState
         fishingBob.GetComponentInChildren<FishingBobLogic>().BeganFighting();
         fishingLineLogic.BeganFighting(interactingFish);
         staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.MIDDLE);
-        interactingFish.BeginFighting(fishingRodTip, staticFishingRodLogic);
+        interactingFish.BeginFighting(new Vector2(transform.position.x, transform.position.z), staticFishingRodLogic);
     }
 
     void FishFightLineSnapped()

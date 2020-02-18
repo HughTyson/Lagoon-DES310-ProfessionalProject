@@ -86,8 +86,10 @@ public class FishLogic : MonoBehaviour
     float NotInterestedInBobTime = 0.0f;        // time left until able to be interested in fishing bob
     Vector2 headVectorXZ = new Vector2();
 
+
     void Start()
     {
+
         currentAngle = Random.Range(0, Mathf.PI * 2.0f);
         current_state = STATE.WANDERING;
     }
@@ -261,15 +263,17 @@ public class FishLogic : MonoBehaviour
         }
         else
         {
-       //     GetComponentInParent<Rigidbody>().velocity = Vector3.ClampMagnitude(GetComponentInParent<Rigidbody>().velocity, varsFromFishGenerator.maxVelocity);
-        //    fishFightingPhysicsBody.velocity = Vector3.ClampMagnitude(fishFightingPhysicsBody.velocity, varsFromFishGenerator.maxVelocity);
+            //    GetComponentInParent<Rigidbody>().velocity = Vector3.ClampMagnitude(GetComponentInParent<Rigidbody>().velocity, varsFromFishGenerator.maxVelocity);
+            //    fishFightingPhysicsBody.velocity = Vector3.ClampMagnitude(fishFightingPhysicsBody.velocity, varsFromFishGenerator.maxVelocity);
 
-            Vector2 velocityUnitXZ = new Vector2(fishFightingPhysicsBody.velocity.x, fishFightingPhysicsBody.velocity.z).normalized;
+            // Vector2 velocityUnitXZ = new Vector2(fishFightingPhysicsBody.velocity.x, fishFightingPhysicsBody.velocity.z).normalized;
 
-            if (velocityUnitXZ.magnitude > 0.0001)
-            {
-                transform.parent.transform.rotation = Quaternion.LookRotation(new Vector3(velocityUnitXZ.x, 0, velocityUnitXZ.y), Vector3.up);
-            }
+            //Vector2 velocityUnitXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z).normalized;
+
+            //if (velocityUnitXZ.magnitude > 0.0001)
+            //{
+            //    transform.parent.transform.rotation = Quaternion.LookRotation(new Vector3(velocityUnitXZ.x, 0, velocityUnitXZ.y), Vector3.up);
+            //}
         }
 
     }
@@ -284,8 +288,8 @@ public class FishLogic : MonoBehaviour
             }
         }
 
-        headVectorXZ.x = fishheadTransform.position.x;
-        headVectorXZ.y = fishheadTransform.position.z;
+        headVectorXZ.x = transform.parent.transform.position.x;
+        headVectorXZ.y = transform.parent.transform.position.z;
     }
 
     // Wander aimlessly
@@ -544,57 +548,70 @@ public class FishLogic : MonoBehaviour
 
     public enum FIGHTING_STATE
     {
-        BEGIN_FIGHTING,
-        RIGHT,
-        LEFT,
-        TRANSITIONING
+        GO_TO_STARTPOSITION,
+        FIGHTING
     }
 
 
     struct FightingStateVars
     {
 
-        public float currentNextStateChangeTime;
-        public float distanceTillCaught;
-        public float currentLineTensionTime;
+        //public float currentNextStateChangeTime;
+        //public float distanceTillCaught;
+        //public float currentLineTensionTime;
        
-        public StaticFishingRodLogic staticFishingRodLogicPointer;
-        public Transform fishing_rod_tip;
+        //public StaticFishingRodLogic staticFishingRodLogicPointer;
+        //public Transform fishing_rod_tip;
 
-        public float currentTransitionTime;
+        //public float currentTransitionTime;
 
-        public FIGHTING_STATE state; 
+        public FIGHTING_STATE state;
+        public float maxVelocity;
+        public float maxAccelleration;
+        public float dragPercentage;
+
+        public float currentVelocity;
+        public Vector2 playerPosXZ;
+        public float distanceToPlayer;
 
 
-
-        public float currentTurnAngle;
-        public float maxTurnForce;
+        //public float currentTurnAngle;
+        //public float maxTurnForce;
 
     }
     FightingStateVars fightingStateVars = new FightingStateVars();
 
 
     
-    public void BeginFighting(Transform fishing_rod_tip, StaticFishingRodLogic static_fishing_rod)
+    public void BeginFighting(Vector2 playerPosXZ_, StaticFishingRodLogic static_fishing_rod)
     {
 
-        fightingStateVars.maxTurnForce = 20.0f;
+        //fightingStateVars.maxTurnForce = 20.0f;
 
 
-        fishFightingPhysicsBody.gameObject.SetActive(true);
+        //fishFightingPhysicsBody.gameObject.SetActive(true);
 
 
-        fightingStateVars.distanceTillCaught = Vector2.Distance(fishing_rod_tip.position, headVectorXZ) + 3.0f;
-        fightingStateVars.staticFishingRodLogicPointer = static_fishing_rod;
-        fightingStateVars.fishing_rod_tip = fishing_rod_tip;
+        //fightingStateVars.distanceTillCaught = Vector2.Distance(fishing_rod_tip.position, headVectorXZ) + 3.0f;
+        //fightingStateVars.staticFishingRodLogicPointer = static_fishing_rod;
+        //fightingStateVars.fishing_rod_tip = fishing_rod_tip;
 
-        fightingStateVars.currentNextStateChangeTime = Random.Range(fightingNextStateMinTime, fightingNextStateMaxTime);
-        fightingStateVars.currentTurnAngle = (Random.value <= 0.5) ? 1 : -1;
-        fightingStateVars.state = FIGHTING_STATE.BEGIN_FIGHTING;
+        //fightingStateVars.currentNextStateChangeTime = Random.Range(fightingNextStateMinTime, fightingNextStateMaxTime);
+        //fightingStateVars.currentTurnAngle = (Random.value <= 0.5) ? 1 : -1;
 
 
+
+        fightingStateVars.state = FIGHTING_STATE.GO_TO_STARTPOSITION;
         current_state = STATE.FIGHTING;
-       
+        GetComponentInParent<Rigidbody>().isKinematic = true;
+        fightingStateVars.playerPosXZ = playerPosXZ_;
+
+        fightingStateVars.currentVelocity = 0;
+        fightingStateVars.maxVelocity = 8;
+        fightingStateVars.maxAccelleration = 0.2f;
+        fightingStateVars.dragPercentage = 0.0f;
+        fightingStateVars.distanceToPlayer = Vector2.Distance(headVectorXZ, fightingStateVars.playerPosXZ);
+
     }
 
 
@@ -609,59 +626,151 @@ public class FishLogic : MonoBehaviour
 
     void DamageLine()
     {
-        fightingStateVars.currentLineTensionTime -= Time.deltaTime;
+       // fightingStateVars.currentLineTensionTime -= Time.deltaTime;
     }
 
 
     public void FightingStateUpdate()
     {
         //   Vector3 applied_force = -(fightingStateVars.fishing_rod_tip.position - transform.position);
-
-        fightingStateVars.currentNextStateChangeTime -= Time.deltaTime;
-
-        if (fightingStateVars.currentNextStateChangeTime <= 0)
+        
+        switch (fightingStateVars.state)
         {
-            fightingStateVars.currentNextStateChangeTime = Random.Range(fightingNextStateMinTime, fightingNextStateMaxTime);
-            fightingStateVars.currentTurnAngle *= -1;
+
+            case FIGHTING_STATE.GO_TO_STARTPOSITION:
+                {
+                    //Vector2 location = new Vector2(transform.position.x, transform.position.z); // XZ location of the fish
+
+
+
+                    //Vector2 desired_vector = Vector2Extension.Rotate((location -  new Vector2(fightingStateVars.fishing_rod_tip.position.x,fightingStateVars.fishing_rod_tip.position.z)).normalized ,90.0f);
+
+
+
+
+                    //desired_vector = desired_vector.normalized;
+
+
+                    //Vector2 tranformFrowardXZ = new Vector2(transform.forward.x, transform.forward.z); // XZ forward vector of the fish
+                    //Vector2 tranformRightXZ = new Vector2(transform.right.x, transform.right.z);       // XZ right vector of the fish
+
+
+                    //float angle = Vector2.SignedAngle((new Vector2(fightingStateVars.fishing_rod_tip.position.x, fightingStateVars.fishing_rod_tip.position.z) - location).normalized, Vector2.right);
+                    //angle = (Mathf.Clamp(angle, -45, 45) / 45.0f);
+                    //desired_vector *= varsFromFishGenerator.maxTurnForce * angle * 10.0f; // change magnitude of desired direction vector based on distance to closest threat
+
+                    //// limit the desired escape vector to only be on the front of the fish, preventint the fish from slowing down and completely turning around
+                    //if (Vector2.Dot(desired_vector, tranformFrowardXZ) < 0) // the desired vector is on the back half of the fish
+                    //{
+                    //    if (Vector2.Dot(desired_vector, tranformRightXZ) > 0) // the desired vecotr is on the right side of the fish
+                    //    {
+                    //        desired_vector = tranformRightXZ;
+                    //    }
+                    //    else // the desired vecotor is on the left side of the fish
+                    //    {
+                    //        desired_vector = -tranformRightXZ;
+                    //    }
+                    //}
+
+
+                    //Vector3 forward = transform.forward;
+                    //GetComponentInParent<Rigidbody>().AddForce(new Vector3(forward.x, 0, forward.z) * varsFromFishGenerator.maxForce * angle);
+
+
+                    //Vector2 velocityXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z);
+                    //Vector2 steer = desired_vector - velocityXZ;
+
+                    //// move in the direction of the desired vector
+                    //GetComponentInParent<Rigidbody>().AddForce(new Vector3(steer.x, 0, steer.y));
+
+                    float angle = Vector2.SignedAngle((headVectorXZ - fightingStateVars.playerPosXZ).normalized, Vector2.left);
+                    float accelleration = (Mathf.Clamp(angle, -45,45)/ 45.0f)*fightingStateVars.maxAccelleration;
+
+
+                    Vector3 test = Vector3.zero;
+                    test.x = headVectorXZ.x;
+                    test.z = headVectorXZ.y;
+                    Debug.DrawRay(test, new Vector3((headVectorXZ - fightingStateVars.playerPosXZ).normalized.x, 0, (headVectorXZ - fightingStateVars.playerPosXZ).normalized.y)*50.0f,Color.green);
+
+                    Debug.Log((headVectorXZ - fightingStateVars.playerPosXZ).normalized);
+                    Debug.DrawRay(test, new Vector3(Vector2.left.x, 0, Vector2.left.y) *50.0f, Color.green);
+
+                    fightingStateVars.currentVelocity += accelleration;
+                    fightingStateVars.currentVelocity = Mathf.Clamp(fightingStateVars.currentVelocity , -fightingStateVars.maxVelocity, fightingStateVars.maxVelocity);
+
+
+                   
+                   
+
+
+                    Vector2 newPosXZ = fightingStateVars.playerPosXZ + (Vector2Extension.Rotate((headVectorXZ - fightingStateVars.playerPosXZ).normalized, fightingStateVars.currentVelocity * Time.fixedDeltaTime) * fightingStateVars.distanceToPlayer);
+                    Vector3 newPos = Vector3.zero;
+                    newPos.x = newPosXZ.x;
+                    newPos.z = newPosXZ.y;
+
+                    Debug.DrawRay(new Vector3(fightingStateVars.playerPosXZ.x,5, fightingStateVars.playerPosXZ.y), new Vector3((Vector2Extension.Rotate((headVectorXZ - fightingStateVars.playerPosXZ).normalized, -fightingStateVars.currentVelocity * Time.fixedDeltaTime) * fightingStateVars.distanceToPlayer).x, 3, (Vector2Extension.Rotate((headVectorXZ - fightingStateVars.playerPosXZ).normalized, -fightingStateVars.currentVelocity * Time.fixedDeltaTime) * fightingStateVars.distanceToPlayer).y),Color.red);
+
+                    transform.parent.transform.position = newPos;
+
+                    if (Mathf.Abs(angle) < 0.1f)
+                    {
+                        fightingStateVars.state = FIGHTING_STATE.FIGHTING;
+                        fightingStateVars.currentVelocity = 0;
+                    }
+
+                    break;
+                }
+            case FIGHTING_STATE.FIGHTING:
+                {
+                    //fightingStateVars.currentNextStateChangeTime -= Time.deltaTime;
+
+                    //if (fightingStateVars.currentNextStateChangeTime <= 0)
+                    //{
+                    //    fightingStateVars.currentNextStateChangeTime = Random.Range(fightingNextStateMinTime, fightingNextStateMaxTime);
+                    //    fightingStateVars.currentTurnAngle *= -1;
+                    //}
+
+
+                    //Vector3 applied_force = transform.forward;
+                    //applied_force.y = 0;
+
+                    ////  GetComponentInParent<Rigidbody>().AddForce((applied_force).normalized * 20.0f);
+                    ////  fishFightingPhysicsBody.AddForce((applied_force).normalized * 20.0f);
+
+
+
+                    //Vector2 location = new Vector2(transform.position.x, transform.position.z);
+
+
+                    //Vector2 new_vec = (headVectorXZ - new Vector2(fightingStateVars.fishing_rod_tip.position.x, fightingStateVars.fishing_rod_tip.position.z)).normalized;
+                    ////  Vector2 desired = Vector2Extension.Rotate(new_vec, 90.0f * -Input.GetAxis("PlayerLH")) * 30.0f;
+                    //Vector2 desired = Vector2Extension.Rotate(new_vec, 90.0f) * fightingStateVars.maxTurnForce * fightingStateVars.currentTurnAngle;
+
+                    //if (desired.magnitude > 0.001)
+                    //{
+                    //    Vector3 desired3d = new Vector3(desired.x, 0, desired.y);
+                    //    GetComponentInParent<Rigidbody>().velocity = desired3d;
+                    //}
+
+
+
+
+                    //desired = Vector2Extension.Rotate(new_vec, 90.0f) * fightingStateVars.maxTurnForce * GM_.instance.input.GetAxis(InputManager.AXIS.LH) * 1.5f;
+
+                    //if (desired.magnitude > 0.001)
+                    //{
+                    //    Vector3 desired3d = new Vector3(desired.x, 0, desired.y);
+                    //    GetComponentInParent<Rigidbody>().velocity -= desired3d;
+                    //}
+
+
+
+                    //fishFightingPhysicsBody.transform.position = transform.position;
+                    //fishFightingPhysicsBody.rotation = transform.rotation;
+                    break;
+                }
         }
-
-
-        Vector3 applied_force = transform.forward;
-        applied_force.y = 0;
-
-      //  GetComponentInParent<Rigidbody>().AddForce((applied_force).normalized * 20.0f);
-      //  fishFightingPhysicsBody.AddForce((applied_force).normalized * 20.0f);
-
-
-
-        Vector2 location = new Vector2(transform.position.x, transform.position.z);
-
-
-        Vector2 new_vec = (headVectorXZ - new Vector2(fightingStateVars.fishing_rod_tip.position.x, fightingStateVars.fishing_rod_tip.position.z)).normalized;
-        //  Vector2 desired = Vector2Extension.Rotate(new_vec, 90.0f * -Input.GetAxis("PlayerLH")) * 30.0f;
-        Vector2 desired = Vector2Extension.Rotate(new_vec, 90.0f) * fightingStateVars.maxTurnForce * fightingStateVars.currentTurnAngle;
-
-        if (desired.magnitude > 0.001)
-        {
-            Vector3 desired3d = new Vector3(desired.x, 0, desired.y);
-            GetComponentInParent<Rigidbody>().velocity = desired3d;
-        }
-
-
-
-
-        desired = Vector2Extension.Rotate(new_vec, 90.0f) * fightingStateVars.maxTurnForce *Input.GetAxis("PlayerLH") * 1.5f;
-
-        if (desired.magnitude > 0.001)
-        {
-           Vector3 desired3d = new Vector3(desired.x, 0, desired.y);
-           GetComponentInParent<Rigidbody>().velocity -= desired3d;
-        }
-
-
-
-        fishFightingPhysicsBody.transform.position = transform.position;
-        fishFightingPhysicsBody.rotation = transform.rotation;
+       
     }
 
     void BeginFightingStateChange()
@@ -716,7 +825,8 @@ public class FishLogic : MonoBehaviour
     }
     public float GetLineStrengthPercentageLeft()
     {
-        return (fightingStateVars.currentLineTensionTime / fightingInitialLineTensionTime);
+        // return (fightingStateVars.currentLineTensionTime / fightingInitialLineTensionTime);
+        return 1;
     }
 
 

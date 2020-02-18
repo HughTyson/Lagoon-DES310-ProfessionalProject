@@ -46,16 +46,22 @@ public class FishGenerator : MonoBehaviour
 
 
 
+    public AnimationCurve testing = new AnimationCurve();
+    public AnimationCurve testing2 = new AnimationCurve();
+    public AnimationCurve testing3 = new AnimationCurve();
 
 
     // Start is called before the first frame update
     void Start()
-    {
-        for (int i = 0; i < 100; i++)
         {
-            plot.AddKey(((float)i),RandomnessExtension.GetNormalDistributionValue(((float)i) / 100.0f));
-        }
+        for (int i = 0; i < 360; i++)
+        {
+            Vector2 testing4 = Vector2Extension.Rotate(Vector2.left, i);
+            testing.AddKey(i, testing4.x);
+            testing2.AddKey(i, testing4.y);
 
+            testing3.AddKey(i, Vector2.SignedAngle(Vector2.left, testing4));
+        }
         // create spawner chance weightings based on size of colliders.
         // This makes sure that if colliders have different sizes, they won't all have the same weighting (e.i collider A is 2x bigger than collider B so A should be 2x more likely to be the chosen spawn collider)
         for (int i = 0; i < fishGenerationStats.Count; i++)
