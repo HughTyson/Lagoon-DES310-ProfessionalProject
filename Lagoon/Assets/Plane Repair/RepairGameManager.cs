@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class RepairGameBase : MonoBehaviour
 {
-    enum GameType
+    public enum GameType
     {
         SwitchGame
     }
@@ -12,4 +12,9 @@ public abstract class RepairGameBase : MonoBehaviour
     public virtual void GameInit() { }
     public virtual void GameUpdate() { }
 
+    public virtual void GameCleanUp() { }
+
+    [SerializeField] public GameType type;
+
 }
+

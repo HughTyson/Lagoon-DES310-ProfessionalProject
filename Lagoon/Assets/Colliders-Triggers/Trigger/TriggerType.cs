@@ -10,7 +10,8 @@ public class TriggerType : MonoBehaviour
         DEFAULT,
         FISHING,
         RADIO,
-        SLEEP
+        SLEEP,
+        REPAIR
     }
 
     [SerializeField] TRIGGER_TYPE type;
