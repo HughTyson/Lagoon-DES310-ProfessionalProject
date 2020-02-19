@@ -22,12 +22,12 @@ public class SwitchGameLogic : RepairGameBase
 
     private bool[] light_active = new bool[4];
 
-    public override void GameInit()
+    public override void GameInit(Transform segment_transform)
     {
         for (int i = 0; i < 4; i++)
         {
             //Instantiate the switches
-           
+            
             switchs[i] = Instantiate(switch_prefab, this.transform);
             switchs[i].transform.position = new Vector3(i + 1, 0, 0);
 
