@@ -2233,9 +2233,7 @@ MonoBehaviour:
   stateFishing: {fileID: 2283605595040967071}
   stateExplore: {fileID: 2790703189402957504}
   stateConverstation: {fileID: 8536008558245326550}
-
-  stateRepair: {fileID: 765817313243613553}
-
+  stateRepair: {fileID: 6459237568793618279}
 --- !u!1 &7714170665723632590
 GameObject:
   m_ObjectHideFlags: 0
@@ -2266,6 +2264,21 @@ Transform:
   m_Father: {fileID: 1799763313552790356}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6459237568793618279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7745113462265003504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e52bf41998308e40bec26723f28879a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plane_segments: []
+  buttonUIManager: {fileID: 5343870348728116537}
+  movement_: {fileID: 7745113462265003505}
 --- !u!114 &8536008558245326550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2282,27 +2295,6 @@ MonoBehaviour:
   camera_: {fileID: 1091709047621663628}
   convoUIManager: {fileID: 1987904661433372768}
   convoManager: {fileID: 4945114006526336102}
-
---- !u!114 &6459237568793618279
-
-
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7745113462265003504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e52bf41998308e40bec26723f28879a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-
-  transition_time: 0.3
-
-  plane_segments: []
-  buttonUIManager: {fileID: 5343870348728116537}
-  movement_: {fileID: 7745113462265003505}
 --- !u!1 &8046956848925395199
 GameObject:
   m_ObjectHideFlags: 0
