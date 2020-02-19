@@ -2233,7 +2233,9 @@ MonoBehaviour:
   stateFishing: {fileID: 2283605595040967071}
   stateExplore: {fileID: 2790703189402957504}
   stateConverstation: {fileID: 8536008558245326550}
-  stateRepair: {fileID: 6459237568793618279}
+
+  stateRepair: {fileID: 765817313243613553}
+
 --- !u!1 &7714170665723632590
 GameObject:
   m_ObjectHideFlags: 0
@@ -2280,7 +2282,10 @@ MonoBehaviour:
   camera_: {fileID: 1091709047621663628}
   convoUIManager: {fileID: 1987904661433372768}
   convoManager: {fileID: 4945114006526336102}
+
 --- !u!114 &6459237568793618279
+
+
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2292,6 +2297,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e52bf41998308e40bec26723f28879a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+
+  transition_time: 0.3
+
   plane_segments: []
   buttonUIManager: {fileID: 5343870348728116537}
   movement_: {fileID: 7745113462265003505}
@@ -3144,6 +3152,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5354929108403043656}
     m_Modifications:
+    - target: {fileID: 6160413944266683237, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: m_Name
+      value: Player - Character Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 6160413944266683237, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: textFishingCastPower
@@ -3254,16 +3272,6 @@ PrefabInstance:
       propertyPath: buttonUIManager
       value: 
       objectReference: {fileID: 5343870348728116537}
-    - target: {fileID: 6160413944266683237, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: m_Name
-      value: Player - Character Controller
-      objectReference: {fileID: 0}
-    - target: {fileID: 6160413944266683237, guid: d2944652e70498a4aa30ffd9044c0e23,
-        type: 3}
-      propertyPath: m_Layer
-      value: 13
-      objectReference: {fileID: 0}
     - target: {fileID: 6160413944266683240, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: m_LocalPosition.x
