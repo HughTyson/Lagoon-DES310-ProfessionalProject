@@ -675,7 +675,7 @@ public class FishLogic : MonoBehaviour
     {
         if (fightingStateVars.state == FIGHTING_STATE.FIGHTING)
         {
-            return (fightingStateVars.fightingYDistance <= fightingStateVars.leftRighAmplitude);
+            return (fightingStateVars.fightingYDistance <= 2.0f);
         }
         return false;
     }
@@ -757,7 +757,16 @@ public class FishLogic : MonoBehaviour
                         fightingStateVars.currentNextStateChangeTime = Random.Range(fightingStateVars.fightingNextStateMinTime, fightingStateVars.fightingNextStateMaxTime);
                         fightingStateVars.fightingAccelleration = Random.Range(fightingStateVars.fightingAccellerationMin, fightingStateVars.fightingAccellerationMax);
                         fightingStateVars.fishAngleValue = 0.5f;
-                        fightingStateVars.fightingYDistance = Mathf.Sqrt(Mathf.Pow(fightingStateVars.distanceToPlayer, 2) - Mathf.Pow(fightingStateVars.leftRighAmplitude,2 )); 
+
+                        if (fightingStateVars.distanceToPlayer > fightingStateVars.leftRighAmplitude) // Pythagoras: set B^2 based on A^2 and C^2  : B = sqrt(C^2 - A^2)
+                        {
+                            fightingStateVars.fightingYDistance = Mathf.Sqrt(Mathf.Pow(fightingStateVars.distanceToPlayer, 2) - Mathf.Pow(fightingStateVars.leftRighAmplitude,2 ));
+                        }
+                        else // Pythagoras: C^2 is smaller than A^2, so A^2 and B^2 need to be changed based on C^2  : A = B   => A = sqrt(C^2 / 2))
+                        {
+                            fightingStateVars.fightingYDistance = Mathf.Sqrt(Mathf.Pow(fightingStateVars.distanceToPlayer, 2) / 2.0f);
+                            fightingStateVars.leftRighAmplitude = fightingStateVars.fightingYDistance;
+                        }
                     }
 
                     break;
@@ -809,6 +818,12 @@ public class FishLogic : MonoBehaviour
 
                     //fishFightingPhysicsBody.transform.position = transform.position;
                     //fishFightingPhysicsBody.rotation = transform.rotation
+
+                    if (fightingStateVars.fightingYDistance < fightingStateVars.leftRighAmplitude)
+                    {
+                        fightingStateVars.leftRighAmplitude = fightingStateVars.fightingYDistance;
+                    }
+
 
                     fightingStateVars.currentNextStateChangeTime -= Time.fixedDeltaTime;
 
