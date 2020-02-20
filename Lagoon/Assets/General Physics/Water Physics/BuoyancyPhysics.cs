@@ -65,10 +65,18 @@ public class BuoyancyPhysics : MonoBehaviour
     public void SetAirDrag(float drag)
     {
         AirDrag = drag;
+        if (current_state == STATE.IN_AIR)
+        {
+            GetComponentInParent<Rigidbody>().drag = AirDrag;
+        }
     }
     public void SetWaterDrag(float drag)
     {
         WaterDrag = drag;
+        if (current_state == STATE.IN_WATER)
+        {
+            GetComponentInParent<Rigidbody>().drag = WaterDrag;
+        }
     }
 
     public void SetToDefaultAirDrag()
@@ -91,7 +99,11 @@ public class BuoyancyPhysics : MonoBehaviour
         {
             GetComponentInParent<Rigidbody>().drag = WaterDrag;
             current_state = STATE.IN_WATER;
+
+
         }
+
+
     }
 
     void OnTriggerStay(Collider other)
@@ -103,6 +115,7 @@ public class BuoyancyPhysics : MonoBehaviour
                 Vector3 force = new Vector3(0,-Physics.gravity.y + buoyancy,0);
                 GetComponentInParent<Rigidbody>().AddForce(force, ForceMode.Acceleration);
             }
+
         }
 
 
@@ -114,9 +127,10 @@ public class BuoyancyPhysics : MonoBehaviour
             if (currentWater == other.GetComponent<WaterPhysics>())
             {
                 currentWater = null;
-                current_state = STATE.IN_AIR;
             }
+
             GetComponentInParent<Rigidbody>().drag = AirDrag;
+            current_state = STATE.IN_AIR;
         }
 
     }

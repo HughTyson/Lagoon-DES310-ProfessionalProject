@@ -14,15 +14,27 @@ public class FishingRodLogic : MonoBehaviour
 
     [SerializeField] Transform[] FishingRodJoints;
 
+    float[] FishingRodJointTs;
+    
 
-
+    Quaternion[] initalAxis;
     void Start()
     {
+        FishingRodJointTs = new float[FishingRodJoints.Length];
+        initalAxis = new Quaternion[FishingRodJoints.Length];
+
+        float TotalMagnitude = Vector3.Distance(FixedFishingBottom.position, FishingRodJoints[FishingRodJoints.Length - 1].position);
+        for (int i = 0; i < FishingRodJoints.Length; i++)
+        {
+            FishingRodJointTs[i] = Vector3.Distance(FixedFishingBottom.position, FishingRodJoints[i].position) / TotalMagnitude;
+            initalAxis[i] = FishingRodJoints[i].transform.localRotation;
+        }
         //float distanceForFixed = Vector3.Distance(FixedFishingBottom.position, FixedFishingTip.position);
         //SoftJointLimit limit = GetComponent<ConfigurableJoint>().linearLimit;
         //limit.limit = distanceForFixed;
         //limit.contactDistance = 5;
         //GetComponent<ConfigurableJoint>().linearLimit = limit;
+
     }
 
 
@@ -109,16 +121,17 @@ public class FishingRodLogic : MonoBehaviour
 
         for (int i = 0; i < FishingRodJoints.Length; i++)
         {
-            float t = ((float)i / (float)(FishingRodJoints.Length - 1));
+           // float t = FishingRodJoints[i].position;
 
-            Vector3 CorrectDir = Vector3.Slerp(FixedDir, FlexDir, t);
-            FishingRodJoints[i].transform.position = (CorrectDir * (FixedMag * t)) + FixedFishingBottom.position;
+            Vector3 CorrectDir = Vector3.Slerp(FixedDir, FlexDir, FishingRodJointTs[i]);
+            FishingRodJoints[i].transform.position = (CorrectDir * (FixedMag * FishingRodJointTs[i])) + FixedFishingBottom.position;
         }
         for (int i = 0; i < FishingRodJoints.Length - 1; i++)
         {
-
-            //  FishingRodJoints[i].rotation = Quaternion.LookRotation(FishingRodJoints[i + 1].position - FishingRodJoints[i].position, FishingRodJoints[i].up);
+             // FishingRodJoints[i].localRotation = Quaternion.Euler(initalAxis[i].eulerAngles - FishingRodJoints[i].transform.worldToLocalMatrix.MultiplyVector((Quaternion.LookRotation(FishingRodJoints[i + 1].position - FishingRodJoints[i].position)).eulerAngles));
+              
         }
+        
     }
     void Old()
     {

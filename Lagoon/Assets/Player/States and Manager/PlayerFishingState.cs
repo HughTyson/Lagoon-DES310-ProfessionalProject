@@ -73,6 +73,9 @@ public class PlayerFishingState : BaseState
     float casting_angle = 45.0f; // projectile angle 
 
 
+
+    bool previousFrameIncludedAttractedFish = false;
+
     // On Enabled Components set
         // fishingRodMesh
         // static fishing rod origin 
@@ -199,13 +202,13 @@ public class PlayerFishingState : BaseState
                 {
 
 
-                    if (fishingBob.GetComponentInChildren<BuoyancyPhysics>().GetCurrentState() == BuoyancyPhysics.STATE.IN_WATER) // bob has settled
+                    if (fishingBob.GetComponentInChildren<BuoyancyPhysics>().GetCurrentState() == BuoyancyPhysics.STATE.IN_WATER || fishingBob.GetComponentInChildren<BuoyancyPhysics>().IsInEquilibrium()) // bob has settled
                     {
                         fishingLineLogic.BeganFishing();
                         fishingBob.GetComponentInChildren<FishingBobLogic>().BeganFishing();
                         fishingProjectileIndicator.SetActive(false);
                         fishing_state = FISHING_STATE.FISHING;
-                }
+                    }
                     else // bob is moving through the air
                     {
                         if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
@@ -219,7 +222,24 @@ public class PlayerFishingState : BaseState
                 {
                     float reelAxis = GM_.instance.input.GetAxis(InputManager.AXIS.RT);
 
-                    GM_.instance.input.SetVibrationRight(reelAxis);
+                    if (fishingBob.GetComponentInChildren<FishingBobLogic>().HasAttractedFish())
+                    {
+                        if (!previousFrameIncludedAttractedFish)
+                        {
+                            GM_.instance.input.SetVibrationRandomPulsingLeft(0.2f, 0.1f, 1.0f, 0.25f);
+                            previousFrameIncludedAttractedFish = true;
+                        }
+                    }
+                    else
+                    {
+                        if (!fishingBob.GetComponentInChildren<FishingBobLogic>().IsFishInteracting())
+                        {
+                            GM_.instance.input.SetVibrationLeft(0);
+                            previousFrameIncludedAttractedFish = false;
+                        }
+                    }
+
+                    GM_.instance.input.SetVibrationRight(reelAxis*0.1f);
                     if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
                     {
                         CancelCasted();
@@ -306,8 +326,13 @@ public class PlayerFishingState : BaseState
                     //            break;
                     //        }
                     //}
-
-                    if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) < -0.5f)
+                    bool game_over = false;
+                    if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
+                    {
+                        game_over = true;
+                        FishFightLineSnapped();
+                    }
+                    else if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) < -0.5f)
                     {
                         staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.LEFT);
                     }
@@ -320,22 +345,26 @@ public class PlayerFishingState : BaseState
                         staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.MIDDLE);
                     }
 
-                    //if (islandCollider.bounds.Contains(interactingFish.transform.position))
-                    //{
-                    //    // fish caught
-                    //    FishFightSuccess();
-                    //}
-                    //else if (interactingFish.GetLineStrengthPercentageLeft() <= 0)
-                    //{
-                    //    FishFightLineSnapped();
-                    //}
-                    //else if (Input.GetButtonDown("PlayerB"))
-                    //{
-                    //    FishFightLineSnapped();
-                    //}
-                     if (GM_.instance.input.GetAxis(InputManager.AXIS.RT) > 0.1f)
+                    if (game_over != true)
                     {
-                        interactingFish.ReelingIn(GM_.instance.input.GetAxis(InputManager.AXIS.RT));
+                        GM_.instance.input.SetVibrationRight(GM_.instance.input.GetAxis(InputManager.AXIS.RT) * 0.5f);
+                        if (GM_.instance.input.GetAxis(InputManager.AXIS.RT) > 0.1f)
+                        {
+
+                            interactingFish.ReelingIn(GM_.instance.input.GetAxis(InputManager.AXIS.RT) * 2.5f);
+                        }
+
+                        interactingFish.SetPlayerAccelleration(GM_.instance.input.GetAxis(InputManager.AXIS.LH));
+
+                        if (interactingFish.GetLineStrengthPercentageLeft() <= 0.001f)
+                        {
+                            FishFightLineSnapped();
+                        }
+                        else if (interactingFish.FishCaught())
+                        {
+                            //fish caught
+                            FishFightSuccess();
+                        }
                     }
 
 
@@ -617,6 +646,8 @@ public class PlayerFishingState : BaseState
     // -- Fish Fighting State
     void FishFightingBegin()
     {
+        GM_.instance.input.SetVibrationLeft(0);
+
         fishing_state = FISHING_STATE.FISH_FIGHTING;
         fishingBob.GetComponentInChildren<FishingBobLogic>().BeganFighting();
         fishingLineLogic.BeganFighting(interactingFish);
@@ -626,7 +657,9 @@ public class PlayerFishingState : BaseState
 
     void FishFightLineSnapped()
     {
-        interactingFish.LostInterestInFishingBob(20.0f);
+        GM_.instance.input.SetVibrationLeft(0);
+
+        interactingFish.FishEscaped();
 
         interactingFish = null;
         CancelCasted();
@@ -635,6 +668,8 @@ public class PlayerFishingState : BaseState
 
     void FishFightSuccess()
     {
+        GM_.instance.input.SetVibrationLeft(0);
+
         Destroy(interactingFish.transform.parent.gameObject);
         interactingFish = null;
         CancelCasted();

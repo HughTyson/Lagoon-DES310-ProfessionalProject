@@ -55,7 +55,7 @@ public class FishingBobLogic : MonoBehaviour
 
     private void OnDisable()
     {
-        ScareNearbyFish();
+        ScareNearbyFish(0.0f);
         current_state = STATE.NOT_ACTIVE;
         interactingFish = null;
         nearbyFish.Clear();
@@ -74,6 +74,7 @@ public class FishingBobLogic : MonoBehaviour
 
     public void BeganFishing()
     {
+        current_attration_time = attractionPulseTimeInterval;
         current_state = STATE.CASTED;
         physicsBuoyancy.SetAirDrag(1.0f);
         physicsBuoyancy.SetWaterDrag(5.0f);
@@ -94,14 +95,27 @@ public class FishingBobLogic : MonoBehaviour
             }
         }
     }
-    public void ScareNearbyFish()
+    public void ScareNearbyFish(float time)
     {
         current_attration_time = attractionPulseTimeInterval;
         SafelyRemoveNull();
         for (int i = 0; i < nearbyFish.Count; i++)
         {
-            nearbyFish[i].GetComponentInChildren<FishLogic>().LostInterestInFishingBob(5.0f);
+            nearbyFish[i].GetComponentInChildren<FishLogic>().LostInterestInFishingBob(time);
         }
+    }
+
+    public bool HasAttractedFish()
+    {
+        SafelyRemoveNull();
+        for (int i = 0; i < nearbyFish.Count; i++)
+        {
+            if (nearbyFish[i].GetComponentInChildren<FishLogic>().GetState() == FishLogic.STATE.ATTRACTED)
+            {
+                return true;
+            }
+        }
+        return false;
     }
     private void FixedUpdate()
     {
@@ -134,7 +148,11 @@ public class FishingBobLogic : MonoBehaviour
                     //   GetComponentInParent<Rigidbody>().AddForce(fishingLineLogic.EndOfLineVelocity().normalized * dampened_magnitude, ForceMode.VelocityChange);
                     //     }
 
-
+                    if (physicsBuoyancy.GetCurrentState() == BuoyancyPhysics.STATE.IN_AIR)
+                    {
+                        current_attration_time = attractionPulseTimeInterval;
+                        ScareNearbyFish(0.5f);
+                    }
 
 
                     //   GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineForce()) / 1.0f, ForceMode.VelocityChange);
@@ -236,6 +254,10 @@ public class FishingBobLogic : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (nearbyFish.Contains(other.gameObject))
+        {
+            other.gameObject.GetComponentInChildren<FishLogic>().LostInterestInFishingBob(0.0f);
+        }
         nearbyFish.Remove(other.gameObject);
     }
 
