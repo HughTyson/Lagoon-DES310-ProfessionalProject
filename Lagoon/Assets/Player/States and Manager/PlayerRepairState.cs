@@ -10,6 +10,8 @@ public class PlayerRepairState : BaseState
 
     [SerializeField] ButtonUIManager buttonUIManager;
     [SerializeField] CharacterControllerMovement movement_;
+    [SerializeField] ThirdPersonCamera camera_;
+
     PlaneSegments.SegmentType part;
 
 
@@ -39,6 +41,8 @@ public class PlayerRepairState : BaseState
         counter = 0;
 
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
+        camera_.current_state = ThirdPersonCamera.STATE.TRANSITION;
+        camera_.transition_ = ThirdPersonCamera.STATE.FREE;
     }
 
     public void OnDisable()

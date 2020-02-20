@@ -71,10 +71,13 @@ public class ThirdPersonCamera : MonoBehaviour
     {
         FREE,                 //Camera has free rotation around target
         CLAMPED_LOOK_AT,      //Camera rotates around the player, but will look at the position of the fishing bob
-        FIXED_LOOK_AT
+        FIXED_LOOK_AT,
+        TRANSITION
        
     }
     [SerializeField] public STATE current_state;
+
+    public STATE transition_;
 
     void Start()
     {
@@ -138,7 +141,6 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-
         switch (current_state)
         {
             case STATE.FREE:
@@ -179,6 +181,30 @@ public class ThirdPersonCamera : MonoBehaviour
 
                     break;
                 }
+            case STATE.TRANSITION:
+                {
+                    target_pos = rot_target.position + Vector3.up * target_offset.y + Vector3.forward * target_offset.z + transform.TransformDirection(Vector3.right * target_offset.x);
+                    destination = Quaternion.Euler(rot_target.eulerAngles) * -Vector3.forward * distance_from_target;
+
+                    destination += target_pos;
+
+                    setPosition();
+
+                    Quaternion new_look = Quaternion.LookRotation(rot_target.position - _camera.position);
+
+                    _camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
+
+                    Debug.Log("Camera: " + _camera.rotation.eulerAngles + "    Player: " + rot_target.eulerAngles);
+
+                    if(transform.eulerAngles == rot_target.eulerAngles)
+                    {
+                        current_state = transition_;
+                        camera_input.Set(0.0f, 0.0f);
+                    }
+
+                    
+                }
+                break;
             default:
                 break;
         }

@@ -194,6 +194,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 0}
+--- !u!114 &330368921 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1091709047621663628, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1210893326}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22ca5552553a61542a10d892a4a8826f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &434454765 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4943071697211487723, guid: 44c1c3a266e23f84da21ac8855c56dfb,
@@ -272,6 +284,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane Segment (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: games.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: buttonUIManager
+      value: 
+      objectReference: {fileID: 1878797227}
     - target: {fileID: 3773239116418840071, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -327,21 +354,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: games.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: type
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: buttonUIManager
-      value: 
-      objectReference: {fileID: 1878797227}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a, type: 3}
 --- !u!1 &636015983 stripped
@@ -448,6 +460,7 @@ MonoBehaviour:
   - {fileID: 978097140}
   buttonUIManager: {fileID: 1878797227}
   movement_: {fileID: 708367049}
+  camera_: {fileID: 330368921}
 --- !u!4 &789079930 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4389019162022499603, guid: c807d76876a26e2458b7de852b89cb3a,
@@ -758,6 +771,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane Segment
       objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: games.Array.data[0].game
+      value: 
+      objectReference: {fileID: 890248998}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: buttonUIManager
+      value: 
+      objectReference: {fileID: 1878797227}
     - target: {fileID: 3773239116418840071, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -813,21 +841,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: games.Array.data[0].game
-      value: 
-      objectReference: {fileID: 890248998}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: buttonUIManager
-      value: 
-      objectReference: {fileID: 1878797227}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a, type: 3}
 --- !u!1001 &965763484
@@ -842,6 +855,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane Segment (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: games.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: type
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: buttonUIManager
+      value: 
+      objectReference: {fileID: 1878797227}
     - target: {fileID: 3773239116418840071, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -897,21 +925,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: games.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: type
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: buttonUIManager
-      value: 
-      objectReference: {fileID: 1878797227}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a, type: 3}
 --- !u!4 &978097139 stripped
@@ -1594,6 +1607,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane Segment (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: games.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: type
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: buttonUIManager
+      value: 
+      objectReference: {fileID: 1878797227}
     - target: {fileID: 3773239116418840071, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1649,21 +1677,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: games.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: type
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: buttonUIManager
-      value: 
-      objectReference: {fileID: 1878797227}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a, type: 3}
 --- !u!1001 &1210893326
@@ -1677,6 +1690,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FullPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 1091709047621663628, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: distance_from_target
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7745113462265003504, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
@@ -2004,11 +2022,6 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 7.18
       objectReference: {fileID: 0}
-    - target: {fileID: 1091709047621663628, guid: 44c1c3a266e23f84da21ac8855c56dfb,
-        type: 3}
-      propertyPath: distance_from_target
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 8020892118707071192, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: field of view
@@ -2249,6 +2262,11 @@ PrefabInstance:
       propertyPath: stateRepair
       value: 
       objectReference: {fileID: 708367055}
+    - target: {fileID: 6459237568793618279, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: camera_
+      value: 
+      objectReference: {fileID: 330368921}
     m_RemovedComponents:
     - {fileID: 26234649313191046, guid: 44c1c3a266e23f84da21ac8855c56dfb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 44c1c3a266e23f84da21ac8855c56dfb, type: 3}
@@ -2361,6 +2379,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane Segment (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: games.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: type
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: buttonUIManager
+      value: 
+      objectReference: {fileID: 1878797227}
     - target: {fileID: 3773239116418840071, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2416,21 +2449,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: games.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: type
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: buttonUIManager
-      value: 
-      objectReference: {fileID: 1878797227}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a, type: 3}
 --- !u!1001 &1400579468
@@ -2618,6 +2636,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane Segment (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: games.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: type
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3773239116418840071, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2672,16 +2700,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: games.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: type
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a, type: 3}
@@ -2794,6 +2812,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane Segment (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: games.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: type
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: buttonUIManager
+      value: 
+      objectReference: {fileID: 1878797227}
     - target: {fileID: 3773239116418840071, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2849,21 +2882,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: games.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: type
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: buttonUIManager
-      value: 
-      objectReference: {fileID: 1878797227}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a, type: 3}
 --- !u!1001 &1696881598
@@ -2952,6 +2970,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane Segment (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: games.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: type
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: buttonUIManager
+      value: 
+      objectReference: {fileID: 1878797227}
     - target: {fileID: 3773239116418840071, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3007,21 +3040,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: games.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: type
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: buttonUIManager
-      value: 
-      objectReference: {fileID: 1878797227}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a, type: 3}
 --- !u!114 &1722593496 stripped
@@ -3054,6 +3072,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane Segment (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: games.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: type
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: buttonUIManager
+      value: 
+      objectReference: {fileID: 1878797227}
     - target: {fileID: 3773239116418840071, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3109,21 +3142,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: games.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: type
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: buttonUIManager
-      value: 
-      objectReference: {fileID: 1878797227}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a, type: 3}
 --- !u!1001 &1778334785
@@ -3138,6 +3156,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane Segment (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: games.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: type
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: buttonUIManager
+      value: 
+      objectReference: {fileID: 1878797227}
     - target: {fileID: 3773239116418840071, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3193,21 +3226,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: games.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: type
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: buttonUIManager
-      value: 
-      objectReference: {fileID: 1878797227}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a, type: 3}
 --- !u!1001 &1783392982
@@ -3444,6 +3462,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane Segment (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: games.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: type
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: buttonUIManager
+      value: 
+      objectReference: {fileID: 1878797227}
     - target: {fileID: 3773239116418840071, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3499,21 +3532,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: games.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: type
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: buttonUIManager
-      value: 
-      objectReference: {fileID: 1878797227}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a, type: 3}
 --- !u!1001 &2139910001
@@ -3528,6 +3546,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane Segment (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: games.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: type
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
+        type: 3}
+      propertyPath: buttonUIManager
+      value: 
+      objectReference: {fileID: 1878797227}
     - target: {fileID: 3773239116418840071, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3583,21 +3616,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: games.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: type
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 8145044121346507776, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a,
-        type: 3}
-      propertyPath: buttonUIManager
-      value: 
-      objectReference: {fileID: 1878797227}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c7ed0ffe204e2e49a52ef6fe8ea793a, type: 3}
 --- !u!1001 &5637909556948965059
