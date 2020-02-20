@@ -262,6 +262,10 @@ public class FishLogic : MonoBehaviour
             {
                 transform.parent.transform.rotation = Quaternion.LookRotation(new Vector3(velocityUnitXZ.x, 0, velocityUnitXZ.y), Vector3.up);
             }
+
+          //  Vector3 currentPosition = transform.parent.transform.position;
+
+
         }
         else
         {
