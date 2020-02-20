@@ -17,17 +17,20 @@ public class FishingRodLogic : MonoBehaviour
     float[] FishingRodJointTs;
     
 
-    Quaternion[] initalAxis;
+    Quaternion[] initialLocalRotation;
+    Vector3[] initalLocalPositions;
     void Start()
     {
         FishingRodJointTs = new float[FishingRodJoints.Length];
-        initalAxis = new Quaternion[FishingRodJoints.Length];
+        initialLocalRotation = new Quaternion[FishingRodJoints.Length];
+        initalLocalPositions = new Vector3[FishingRodJoints.Length];
 
         float TotalMagnitude = Vector3.Distance(FixedFishingBottom.position, FishingRodJoints[FishingRodJoints.Length - 1].position);
         for (int i = 0; i < FishingRodJoints.Length; i++)
         {
             FishingRodJointTs[i] = Vector3.Distance(FixedFishingBottom.position, FishingRodJoints[i].position) / TotalMagnitude;
-            initalAxis[i] = FishingRodJoints[i].transform.localRotation;
+            initialLocalRotation[i] = FishingRodJoints[i].transform.localRotation;
+            initalLocalPositions[i] = FishingRodJoints[i].localPosition;
         }
         //float distanceForFixed = Vector3.Distance(FixedFishingBottom.position, FixedFishingTip.position);
         //SoftJointLimit limit = GetComponent<ConfigurableJoint>().linearLimit;
@@ -66,106 +69,34 @@ public class FishingRodLogic : MonoBehaviour
 
     private void LateUpdate()
     {
-        Test();
-
-        //float distanceForFixed = Vector3.Distance(FixedFishingBottom.position, FixedFishingTip.position);
-        // SafetyUpdate();
-
-
-        //for (int i = 0; i < FishingRodJoints.Length; i++)
-        //{
-        //    float t = 1.0f - ((float)i / (float)(FishingRodJoints.Length - 1));
-        //    //Vector3 valueFixed = Vector3.Lerp(FixedFishingBottom.position, FixedFishingTip.position, t);
-        //    //Vector3 valueFlexible = Vector3.Lerp(FixedFishingBottom.position, FlexibleFishingTip.position, t);
-
-        //    //Vector3 middle = Vector3.Lerp(valueFixed, valueFlexible, 0.5f);
-
-
-        //    //// Vector3 perpendicular = Vector3.Cross((valueFlexible - valueFixed).normalized, Vector3.up).normalized;
-        //    //float delta = 0.01f;
-        //    //Vector3 direction = Vector3.Slerp((Vector3.Lerp(FixedFishingBottom.position, FixedFishingTip.position, t - delta) - middle).normalized, (Vector3.Lerp(FixedFishingBottom.position, FlexibleFishingTip.position, t - delta) - middle).normalized, t);
-        //    //float mag = Vector3.Distance(middle, valueFixed);
-
-
-        //    ////  Vector3 sphere_centre = middle + perpendicular*distanceForFixed;
-        //    //FishingRodJoints[i].transform.position = direction * mag + middle;
-
-        //    // Vector3 correct_direction = Vector3.Slerp((valueFixed - sphere_centre).normalized, (valueFlexible - sphere_centre).normalized, t);
-        //    //FishingRodJoints[i].transform.position = correct_direction*Vector3.Distance(sphere_centre, valueFixed) + sphere_centre;
-
-        //    Vector3 v2 = FixedFishingBottom.position;
-        //    Vector3 v3 = FixedFishingBottom.position;
-        //    Vector3 v0 = FlexibleFishingTip.position;
-
-        //    Vector3 v1 = FixedFishingTip.position;
-
-
-        //    Vector3 newPos = new Vector3(
-        //        (1.0f - t) * ((1.0f - t) * ((1.0f - t) * v0.x + t * v1.x) + t * ((1.0f - t) * v1.x + t * v2.x)) + t * ((1.0f - t) * ((1.0f - t) * v1.x + t * v2.x) + t * ((1.0f - t) * v2.x + t * v3.x)),
-        //        (1.0f - t) * ((1.0f - t) * ((1.0f - t) * v0.y + t * v1.y) + t * ((1.0f - t) * v1.y + t * v2.y)) + t * ((1.0f - t) * ((1.0f - t) * v1.y + t * v2.y) + t * ((1.0f - t) * v2.y + t * v3.y)),
-        //        (1.0f - t) * ((1.0f - t) * ((1.0f - t) * v0.z + t * v1.z) + t * ((1.0f - t) * v1.z + t * v2.z)) + t * ((1.0f - t) * ((1.0f - t) * v1.z + t * v2.z) + t * ((1.0f - t) * v2.z + t * v3.z)));
-
-        //  FishingRodJoints[i].transform.position = newPos;
-        //}
-    }
-
-
-    void Test()
-    {
-
         Vector3 FixedDir = (FixedFishingTip.position - FixedFishingBottom.position).normalized;
         Vector3 FlexDir = (FlexibleFishingTip.position - FixedFishingBottom.position).normalized;
 
 
         float FixedMag = Vector3.Distance(FixedFishingTip.position, FixedFishingBottom.position);
 
+
+        // Set position of the joints
         for (int i = 0; i < FishingRodJoints.Length; i++)
         {
-           // float t = FishingRodJoints[i].position;
+            // float t = FishingRodJoints[i].position;
 
             Vector3 CorrectDir = Vector3.Slerp(FixedDir, FlexDir, FishingRodJointTs[i]);
-            FishingRodJoints[i].transform.position = (CorrectDir * (FixedMag * FishingRodJointTs[i])) + FixedFishingBottom.position;
+            FishingRodJoints[i].position = (CorrectDir * (FixedMag * FishingRodJointTs[i])) + FixedFishingBottom.position;
         }
+
+
+        // Set rotaiton of the joints
         for (int i = 0; i < FishingRodJoints.Length - 1; i++)
         {
-             // FishingRodJoints[i].localRotation = Quaternion.Euler(initalAxis[i].eulerAngles - FishingRodJoints[i].transform.worldToLocalMatrix.MultiplyVector((Quaternion.LookRotation(FishingRodJoints[i + 1].position - FishingRodJoints[i].position)).eulerAngles));
-              
+            Quaternion rot = Quaternion.FromToRotation((initalLocalPositions[i + 1] - initalLocalPositions[i]).normalized, (FishingRodJoints[i + 1].localPosition - FishingRodJoints[i].localPosition).normalized);
+            FishingRodJoints[i].localRotation = rot * initialLocalRotation[i];
         }
-        
+
+        Quaternion finalRot = Quaternion.FromToRotation((initalLocalPositions[initalLocalPositions.Length - 1] - initalLocalPositions[initalLocalPositions.Length - 2]).normalized, (FishingRodJoints[initalLocalPositions.Length - 1].localPosition - FishingRodJoints[initalLocalPositions.Length - 2].localPosition).normalized);
+        FishingRodJoints[initalLocalPositions.Length - 1].localRotation = finalRot * initialLocalRotation[initalLocalPositions.Length - 1];
     }
-    void Old()
-    {
 
-        float distanceForFixed = Vector3.Distance(FixedFishingBottom.position, FixedFishingTip.position);
-
-
-        for (int i = 0; i < FishingRodJoints.Length; i++)
-        {
-            float t = ((float)i / (float)(FishingRodJoints.Length - 1));
-            Vector3 valueFixed = Vector3.Lerp(FixedFishingBottom.position, FixedFishingTip.position, t);
-            Vector3 valueFlexible = Vector3.Lerp(FixedFishingBottom.position, FlexibleFishingTip.position, t);
-
-            Vector3 middle = Vector3.Lerp(valueFixed, valueFlexible, 0.5f);
-
-
-             Vector3 perpendicular = Vector3.Cross((valueFlexible - valueFixed).normalized, Vector3.up).normalized;
-            float delta = 0.01f;
-            Vector3 direction = Vector3.Slerp((Vector3.Lerp(FixedFishingBottom.position, FixedFishingTip.position, t - delta) - middle).normalized, (Vector3.Lerp(FixedFishingBottom.position, FlexibleFishingTip.position, t - delta) - middle).normalized, t);
-            float mag = Vector3.Distance(middle, valueFixed);
-
-
-              Vector3 sphere_centre = middle + perpendicular*distanceForFixed;
-           //  FishingRodJoints[i].transform.position = direction * mag + middle;
-
-             Vector3 correct_direction = Vector3.Slerp((valueFixed - sphere_centre).normalized, (valueFlexible - sphere_centre).normalized, t);
-            FishingRodJoints[i].transform.position = correct_direction*Vector3.Distance(sphere_centre, valueFixed) + sphere_centre;
-        }
-        for (int i = 0; i < FishingRodJoints.Length - 1; i++)
-        {
-
-            //  FishingRodJoints[i].rotation = Quaternion.LookRotation(FishingRodJoints[i + 1].position - FishingRodJoints[i].position, FishingRodJoints[i].up);
-        }
-    }
 
 
 }

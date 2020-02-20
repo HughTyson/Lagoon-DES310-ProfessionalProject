@@ -844,24 +844,27 @@ public class FishLogic : MonoBehaviour
 
                     Vector2 fishPosition = fightingStateVars.playerPosXZ + Vector2Extension.Slerp((sideCirclePointLeft - circle_centre).normalized, (sideCirclePointRight - circle_centre).normalized, fightingStateVars.fishAngleValue) * (sideCirclePointLeft - circle_centre).magnitude;
 
-                    transform.parent.transform.position = new Vector3(fishPosition.x,transform.parent.transform.position.y , fishPosition.y);
-
-
-                    Vector2 fishFromCentreDir = (circle_centre - fishPosition).normalized;
-
-                    Vector2 lookatXZ = Vector2.zero;
-                    if (fightingStateVars.currentVelocity <= 0)
+                    if (!float.IsNaN(fishPosition.x) && !float.IsNaN(fishPosition.y))
                     {
-                        Vector2 lookAtLeft = Vector2Extension.Rotate(fishFromCentreDir,-90.0f);
-                        lookatXZ = Vector2Extension.Slerp(lookAtLeft, fishFromCentreDir, fightingStateVars.currentVelocity + 1.0f);
-                    }
-                    else
-                    {
-                        Vector2 lookAtRight = Vector2Extension.Rotate(fishFromCentreDir, 90.0f);
-                        lookatXZ = Vector2Extension.Slerp(fishFromCentreDir, lookAtRight, fightingStateVars.currentVelocity);
-                    }
+                        transform.parent.transform.position = new Vector3(fishPosition.x,transform.parent.transform.position.y , fishPosition.y);
+
+
+                        Vector2 fishFromCentreDir = (circle_centre - fishPosition).normalized;
+
+                        Vector2 lookatXZ = Vector2.zero;
+                        if (fightingStateVars.currentVelocity <= 0)
+                        {
+                            Vector2 lookAtLeft = Vector2Extension.Rotate(fishFromCentreDir,-90.0f);
+                            lookatXZ = Vector2Extension.Slerp(lookAtLeft, fishFromCentreDir, fightingStateVars.currentVelocity + 1.0f);
+                        }
+                        else
+                        {
+                            Vector2 lookAtRight = Vector2Extension.Rotate(fishFromCentreDir, 90.0f);
+                            lookatXZ = Vector2Extension.Slerp(fishFromCentreDir, lookAtRight, fightingStateVars.currentVelocity);
+                        }
                     
-                    transform.parent.transform.rotation = Quaternion.LookRotation(new Vector3(lookatXZ.x,0, lookatXZ.y), Vector3.up);
+                        transform.parent.transform.rotation = Quaternion.LookRotation(new Vector3(lookatXZ.x,0, lookatXZ.y), Vector3.up);
+                    }
 
                     float near_edge = Mathf.Abs((fightingStateVars.fishAngleValue - 0.5f) * 2.0f);
                     float min = 0.1f;

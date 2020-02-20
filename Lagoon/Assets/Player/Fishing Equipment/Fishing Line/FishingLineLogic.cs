@@ -97,6 +97,7 @@ public class FishingLineLogic : MonoBehaviour
     private void OnEnable()
     {
         fishingLineRenderer.material.SetColor("_UnlitColor", normal_colour);
+        fishingRodDecoratorLineRenderer.material.SetColor("_UnlitColor", normal_colour);
 
         LineParticles.Clear();
 
@@ -303,57 +304,56 @@ public class FishingLineLogic : MonoBehaviour
 
                     LineParticles.First.Value.position = FishingLineTip.position;
                     LineParticles.Last.Value.position = fishingBob.transform.position;
-                    LineParticles.Last.Value.oldPosition = fishingBob.transform.position;
+                    //LineParticles.Last.Value.oldPosition = fishingBob.transform.position;
 
 
 
 
-                    for (LinkedListNode<LineParticle> it = LineParticles.First; it != null; it = it.Next)
-                    {
-                        Verlet(it.Value);
-                    }
+                    //for (LinkedListNode<LineParticle> it = LineParticles.First; it != null; it = it.Next)
+                    //{
+                    //    Verlet(it.Value);
+                    //}
 
 
 
-                    for (int k = 0; k < accuracyItirations; k++)
-                    {
-                        for (LinkedListNode<LineParticle> it = LineParticles.Last; it.Previous != null; it = it.Previous)
-                        {
+                    //for (int k = 0; k < accuracyItirations; k++)
+                    //{
+                    //    for (LinkedListNode<LineParticle> it = LineParticles.Last; it.Previous != null; it = it.Previous)
+                    //    {
 
-                            LineParticles.First.Value.position = FishingLineTip.position;
-                            LineParticles.Last.Value.position = fishingBob.transform.position;
-                            LineParticles.Last.Value.oldPosition = fishingBob.transform.position;
-                            PoleConstraint(it.Value, it.Previous.Value, fishing_constraint_distance);
+                    //        LineParticles.First.Value.position = FishingLineTip.position;
+                    //        LineParticles.Last.Value.position = fishingBob.transform.position;
+                    //        LineParticles.Last.Value.oldPosition = fishingBob.transform.position;
+                    //        PoleConstraint(it.Value, it.Previous.Value, fishing_constraint_distance);
 
-                        }
-                    }
+                    //    }
+                    //}
 
 
 
-                    while(true)
-                    {
-                        float line_distance = 0;
-                        for (LinkedListNode<LineParticle> it = LineParticles.First; it.Next != null; it = it.Next)
-                        {
-                            line_distance += Vector3.Distance(it.Value.position, it.Next.Value.position);
-                        }
+                    //while(true)
+                    //{
+                    //    float line_distance = 0;
+                    //    for (LinkedListNode<LineParticle> it = LineParticles.First; it.Next != null; it = it.Next)
+                    //    {
+                    //        line_distance += Vector3.Distance(it.Value.position, it.Next.Value.position);
+                    //    }
 
-                        if (line_distance > (Vector3.Distance(fishingBob.transform.position, FishingLineTip.position) - 0.01f))
-                        {
-                            LineParticles.RemoveLast();
-                            fishingLineRenderer.positionCount = LineParticles.Count;
+                    //    if (line_distance > (Vector3.Distance(fishingBob.transform.position, FishingLineTip.position) - 0.01f))
+                    //    {
+                    //        LineParticles.RemoveLast();
+                    //        fishingLineRenderer.positionCount = LineParticles.Count;
                             
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
+                    //    }
+                    //    else
+                    //    {
+                    //        break;
+                    //    }
+                    //}
 
 
                     fishingLineRenderer.material.SetColor("_UnlitColor", Color.Lerp(snapping_colour, normal_colour, fightingFish.GetLineStrengthPercentageLeft()));
-
-                    
+                    fishingRodDecoratorLineRenderer.material.SetColor("_UnlitColor", Color.Lerp(snapping_colour, normal_colour, fightingFish.GetLineStrengthPercentageLeft()));
                     break;
                     }
 
@@ -458,6 +458,37 @@ public class FishingLineLogic : MonoBehaviour
     {
         current_state = STATE.FIGHTING;
         fightingFish = fishLogic;
+
+        LineParticles.Clear();
+
+        LineParticle firstParticle = new LineParticle();
+        LineParticle lastParticle = new LineParticle();
+        LineParticles.AddFirst(firstParticle);
+        LineParticles.AddLast(lastParticle);
+
+        fishingLineRenderer.positionCount = LineParticles.Count;
+
+
+        RodLineParticles.Clear();
+
+        for (int joint = 0; joint < FlexibleRodRings.Count - 1; joint++)
+        {
+            RodJointParticles new_joint_particle = new RodJointParticles();
+
+            new_joint_particle.particle.position = FlexibleRodRings[joint].transform.position;
+           
+            new_joint_particle.connected_joint = FlexibleRodRings[joint];
+
+            RodLineParticles.AddLast(new_joint_particle);
+
+            RodJointParticles new_joint_particle_back = new RodJointParticles();
+
+            new_joint_particle_back.particle.position = FlexibleRodRings[joint + 1].transform.position;
+            new_joint_particle_back.connected_joint = FlexibleRodRings[joint + 1];
+            RodLineParticles.AddLast(new_joint_particle_back);
+        }
+
+        fishingRodDecoratorLineRenderer.positionCount = RodLineParticles.Count;
     }
     // -- Read Functions -- //
     public Vector3 GetEndOfLine()
@@ -507,7 +538,7 @@ public class FishingLineLogic : MonoBehaviour
                         }
                     case STATE.FIGHTING:
                         {
-                            return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * 10.0f;
+                            return (FishingLineTip.position - fishingBob.transform.position).normalized * 5.0f;
 
                         }
                 }
