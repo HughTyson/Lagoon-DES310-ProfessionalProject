@@ -154,6 +154,9 @@ public class ThirdPersonCamera : MonoBehaviour
 
                     _camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
 
+                    Debug.Log(camera_input);
+                    Debug.Log(transform.rotation.eulerAngles);
+
                 }
                 break;
             case STATE.CLAMPED_LOOK_AT:
@@ -165,6 +168,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
                     Quaternion new_look = Quaternion.LookRotation(look_at_target.position - _camera.position, Vector3.up);
 
+                    
                     _camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
                 }
                 break;
@@ -194,12 +198,14 @@ public class ThirdPersonCamera : MonoBehaviour
 
                     _camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
 
-                    Debug.Log("Camera: " + _camera.rotation.eulerAngles + "    Player: " + rot_target.eulerAngles);
+                    //Debug.Log("Camera: " + _camera.rotation.eulerAngles + "    Player: " + rot_target.eulerAngles);
+
+                    
 
                     if(transform.eulerAngles == rot_target.eulerAngles)
                     {
                         current_state = transition_;
-                        camera_input.Set(0.0f, 0.0f);
+                        camera_input.Set(rot_target.eulerAngles.y, 0.0f);
                     }
 
                     
@@ -213,7 +219,7 @@ public class ThirdPersonCamera : MonoBehaviour
     private void FixedUpdate()
     {
 
-        collisionUpdate();
+        //collisionUpdate();
 
         //draw the debug line
 
@@ -254,7 +260,7 @@ public class ThirdPersonCamera : MonoBehaviour
         //set the target position based of the targets current position, the offset values,
         //the input from the controller and the distance that the player is from the camera
 
-        target_pos = rot_target.position + Vector3.up * target_offset.y + Vector3.forward * target_offset.z + transform.TransformDirection(Vector3.right * target_offset.x); 
+        target_pos = rot_target.position + rot_target.up * target_offset.y + rot_target.forward * target_offset.z + transform.TransformDirection(rot_target.right * target_offset.x); 
         destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
 
         destination += target_pos;
@@ -277,11 +283,6 @@ public class ThirdPersonCamera : MonoBehaviour
             //linear interpolation between the camera's current position and its new destination]
             _camera.position = Vector3.SmoothDamp(_camera.position, destination, ref cam_velocity, camera_movement_speed * Time.deltaTime);
         }
-    }
-
-    float ClampEular(float angle)
-    {
-        return angle = Mathf.Clamp(angle, ANGLE_MIN_X, ANGLE_MAX_X);
     }
 }
 

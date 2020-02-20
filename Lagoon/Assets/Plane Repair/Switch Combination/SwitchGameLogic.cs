@@ -20,7 +20,7 @@ public class SwitchGameLogic : RepairGameBase
 
     [SerializeField] SwitchInformation[] switch_info = new SwitchInformation[4];
 
-    private bool[] light_active = new bool[4];
+    [SerializeField] bool[] light_active = new bool[4];
 
     public override void GameInit(Transform segment_transform)
     {
@@ -39,7 +39,7 @@ public class SwitchGameLogic : RepairGameBase
             lights[i] = Instantiate(light_prefab, this.transform);
             lights[i].SetMatOff();
             lights[i].transform.position = new Vector3(i + 1, 1, 0);
-            light_active[i] = false;
+            
         }
     }
 

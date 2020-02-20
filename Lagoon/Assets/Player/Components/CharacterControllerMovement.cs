@@ -119,7 +119,7 @@ public class CharacterControllerMovement : MonoBehaviour
                 current_velocity -= acceleration;
         }
 
-        move_direction = transform.forward * current_velocity * Time.deltaTime;
+        move_direction = transform.forward * current_velocity * Time.fixedDeltaTime;
 
         move_direction.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
     }
