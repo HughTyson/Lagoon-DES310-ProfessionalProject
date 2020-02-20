@@ -7,13 +7,10 @@ struct SwitchInformation
 {
     [SerializeField] public List<int> activates;
     [SerializeField] public List<int> deactivates;
-    [SerializeField] public Vector3 button_position;
 }
 
 public class SwitchGameLogic : RepairGameBase
 {
-    
-    
 
     public Switch switch_prefab;
     private Switch[] switchs = new Switch[4];
@@ -25,17 +22,14 @@ public class SwitchGameLogic : RepairGameBase
 
     private bool[] light_active = new bool[4];
 
-    public override void GameInit()
+    public override void GameInit(Transform segment_transform)
     {
-
-       
-
         for (int i = 0; i < 4; i++)
         {
             //Instantiate the switches
-           
+            
             switchs[i] = Instantiate(switch_prefab, this.transform);
-            switchs[i].transform.position = switch_info[i].button_position;
+            switchs[i].transform.position = new Vector3(i + 1, 0, 0);
 
             switchs[i].activate = switch_info[i].activates;
             switchs[i].deactivate = switch_info[i].deactivates;

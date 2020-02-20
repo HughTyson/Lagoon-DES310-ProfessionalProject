@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class RepairGameBase : MonoBehaviour
+public class RepairGameBase : MonoBehaviour
 {
     public enum GameType
     {
         SwitchGame
     }
 
-    public virtual void GameInit() { }
+    public virtual void GameInit(Transform transform) { }
     public virtual void GameUpdate() { }
 
     public virtual void GameCleanUp() { }

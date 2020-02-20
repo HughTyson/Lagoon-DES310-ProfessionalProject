@@ -5,16 +5,15 @@ using UnityEngine;
 [System.Serializable]
 struct OnSegment
 {
-    [SerializeField] public  RepairGameBase game;
+    [SerializeField] public RepairGameBase game;
     [SerializeField] public Vector3 position;
 }
 
 
 public class PlaneSegments : MonoBehaviour
 {
-
     // ==========================================
-    //              Visible Variables
+    //                    Enums
     //===========================================
 
     public enum SegmentType
@@ -34,6 +33,18 @@ public class PlaneSegments : MonoBehaviour
         FUSELAGE_RIGHT_BACK
     }
 
+    enum State
+    {
+        PANEL,
+        GAME_SELECTION
+    }
+
+    // ==========================================
+    //              Visible Variables
+    //===========================================
+
+
+
     [SerializeField] public SegmentType type;
     [SerializeField] float transition_time;
 
@@ -47,32 +58,69 @@ public class PlaneSegments : MonoBehaviour
     //===========================================
 
 
-    
-
+    State segment_state;
     int selected_game;
-
     float counter;
-    
-    bool selected = false;
-    bool needs_init = true;
+    bool game_selected;
+    bool needs_init;
+    public bool segment_complete;
 
+    private void Start()
+    {
+        selected_game = 0;
+        segment_state = State.PANEL;
+        segment_complete = false;
+        game_selected = false;
+        needs_init = true;
+    }
 
+    //update the segment
     public void SegmentUpdate()
     {
 
-        HandelInput();
-
-        switch (games[selected_game].game.type)
+        switch (segment_state)
         {
-            case RepairGameBase.GameType.SwitchGame:
+            case State.PANEL:
+                { segment_state = State.GAME_SELECTION; Debug.Log("Panel"); }
+                break;
+            case State.GAME_SELECTION:
                 {
 
-                    buttonUIManager.DisableAllButtons();
-                    Debug.Log("HELLO");
-                    if (!selected)
+                    HandelInputGame();
+
+                    if (games.Count > 0)    //check that there are games available in this segment
                     {
-                        Debug.Log("HELLO");
-                        buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "Switch Game");
+                        switch (games[selected_game].game.type) //Get the type of game that could be selected
+                        {
+                            case RepairGameBase.GameType.SwitchGame:    //if the game is of type switch
+                                {
+                                    //change the button ui
+                                    buttonUIManager.DisableAllButtons();
+                                    if (!game_selected)
+                                    {
+                                        buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "Switch Game");
+                                    }
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (game_selected && needs_init) //initilise the game 
+                        {
+                            games[selected_game].game.GameInit(this.transform);   //call the init function
+                            needs_init = false;
+                            return;
+                        }
+
+                        if (game_selected) //if the game has been selected then update the game
+                        {
+                            games[selected_game].game.GameUpdate();
+                        }
+                    }
+                    else
+                    {
+                        segment_complete = true;
                     }
 
                 }
@@ -80,59 +128,56 @@ public class PlaneSegments : MonoBehaviour
             default:
                 break;
         }
-
-        if(selected && needs_init)
-        {
-            games[selected_game].game.GameInit();
-            needs_init = false;
-            return;
-        }
-
-        if(selected)
-        {
-            games[selected_game].game.GameUpdate();
-        }
-
     }
 
-    public void CleanUp()
+    public void CleanUp() //whne the game has been closed then clean up
     {
-        games[selected_game].game.GameCleanUp();
+        games[selected_game].game.GameCleanUp(); //call the cleanup function
 
-        selected = false;
+        //reset variables in the segment for selectign what mini game
+        game_selected = false;
         needs_init = true;
 
-
+        segment_state = State.GAME_SELECTION;
     }
 
-    void HandelInput()
+    void HandelInputGame()
     {
-
-        if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.A))
+        if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.A)) //check if the A button is down to check for an interaction
         {
-            selected = true;
+            game_selected = true;
         }
 
-        if(GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
+        if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B)) //when b button is selcted then leave the segment
         {
-            if(selected)
+            if (game_selected)
             {
-                CleanUp();
+                CleanUp(); //call the cleanup function for the plane segment
             }
         }
 
-        if (!selected)
+        JoyStickUpdate(selected_game);
+    }
+
+    void HandelInputPanel()
+    {
+
+    }
+
+    void JoyStickUpdate(int selection_change)
+    {
+        if (!game_selected)
         {
             if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) > 0.2)
             {
                 if (counter > transition_time)
                 {
                     counter = 0;
-                    selected_game++;
+                    selection_change++;
 
-                    if (selected_game > games.Count)
+                    if (selection_change > games.Count)
                     {
-                        selected_game = 0;
+                        selection_change = 0;
                     }
 
                 }
@@ -151,11 +196,11 @@ public class PlaneSegments : MonoBehaviour
                 if (counter > transition_time)
                 {
                     counter = 0;
-                    selected_game--;
+                    selection_change--;
 
                     if (selected_game < 0)
                     {
-                        selected_game = games.Count;
+                        selection_change = games.Count;
                     }
                 }
                 else
@@ -169,6 +214,4 @@ public class PlaneSegments : MonoBehaviour
             }
         }
     }
-
-    
 }

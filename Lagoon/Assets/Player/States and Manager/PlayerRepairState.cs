@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerRepairState : BaseState
 {
 
-    [SerializeField] float transition_time = 0.3f;
+    float transition_time = 0.2f;
     [SerializeField] List<PlaneSegments> plane_segments;
 
     [SerializeField] ButtonUIManager buttonUIManager;
@@ -38,7 +38,7 @@ public class PlayerRepairState : BaseState
 
         counter = 0;
 
-       
+        movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
     }
 
     public void OnDisable()
@@ -48,10 +48,6 @@ public class PlayerRepairState : BaseState
 
     public override void StateUpdate()
     {
-
-
-        
-
         switch (state)
         {
             case RepairState.FULLPLANE:
@@ -78,47 +74,56 @@ public class PlayerRepairState : BaseState
                             break;
                         case PlaneSegments.SegmentType.ENGINE_MID:
                             {
-
+                                buttonUIManager.DisableAllButtons();
+                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "ENGINE_MID");
                             }
                             break;
                         case PlaneSegments.SegmentType.COCKPIT:
                             {
-
+                                buttonUIManager.DisableAllButtons();
+                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "COCKPIT");
                             }
                             break;
                         case PlaneSegments.SegmentType.LEFTWING:
                             {
-
+                                buttonUIManager.DisableAllButtons();
+                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "LEFTWING");
                             }
                             break;
                         case PlaneSegments.SegmentType.RIGHTWING:
                             {
-
+                                buttonUIManager.DisableAllButtons();
+                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "RIGHTWING");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_LEFT_FRONT:
                             {
-
+                                buttonUIManager.DisableAllButtons();
+                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "FUSELAGE_LEFT_FRONT");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_LEFT_MID:
                             {
-
+                                buttonUIManager.DisableAllButtons();
+                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "FUSELAGE_LEFT_MID");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_LEFT_BACK:
                             {
-
+                                buttonUIManager.DisableAllButtons();
+                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "FUSELAGE_LEFT_BACK");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_RIGHT_FRONT:
                             {
-
+                                buttonUIManager.DisableAllButtons();
+                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "FUSELAGE_RIGHT_FRONT");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_RIGHT_MID:
                             {
-
+                                buttonUIManager.DisableAllButtons();
+                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "FUSELAGE_RIGHT_MID");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_RIGHT_BACK:
@@ -126,7 +131,6 @@ public class PlayerRepairState : BaseState
                         default:
                             break;
                     }
-
                 }
                 break;
             case RepairState.SEGMENT:
@@ -135,20 +139,20 @@ public class PlayerRepairState : BaseState
 
                     //set the cameras new distance from the segment.
 
+                    //update the segment that has been selected by the player
                     plane_segments[selected_part].SegmentUpdate();
+
+                    //if this segment has already been completed then change back to the plane
+                    if(plane_segments[selected_part].segment_complete)
+                    {
+                        state = RepairState.FULLPLANE;
+                    }
                     
                 }
                 break;
             default:
                 break;
         }
-
-        
-
-
-        //check if the segment has been selected by the player
-        //if it has then update the segments
-
 
 
 
@@ -157,13 +161,15 @@ public class PlayerRepairState : BaseState
     void HandelInput()
     {
 
-        if(GM_.instance.input.GetButtonDown(InputManager.BUTTON.A))
+        if(GM_.instance.input.GetButtonDown(InputManager.BUTTON.A)) //if the a button is pressed then updaate the segment that is currently selected
         {
-           
-            state = RepairState.SEGMENT;
+            if(!plane_segments[selected_part].segment_complete)
+            {
+                state = RepairState.SEGMENT;
+            }
         }
 
-        if(GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
+        if(GM_.instance.input.GetButtonDown(InputManager.BUTTON.B)) //if the B button is pressed then either change the state to the explore state, or if in a segment then move back to segment selector
         {
             if (state == RepairState.FULLPLANE)
             {
@@ -182,7 +188,7 @@ public class PlayerRepairState : BaseState
                     counter = 0;
                     selected_part++;
 
-                    if(selected_part > 12)
+                    if(selected_part > 11)
                     {
                         selected_part = 0;
                     }
@@ -193,12 +199,8 @@ public class PlayerRepairState : BaseState
                     counter += Time.deltaTime;
                 }
             }
-            else
-            {
-                counter = 0;
-            }
 
-            if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) < 0.2)
+            if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) < -0.2)
             {
                 if (counter > transition_time)
                 {
@@ -207,17 +209,13 @@ public class PlayerRepairState : BaseState
 
                     if (selected_part < 0)
                     {
-                        selected_part = 12;
+                        selected_part = 11;
                     }
                 }
                 else
                 {
                     counter += Time.deltaTime;
                 }
-            }
-            else
-            {
-                counter = 0;
             }
         }
 
