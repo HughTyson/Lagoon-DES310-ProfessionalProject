@@ -11,9 +11,6 @@ public class InputManager // input manager for a single player controller game
     PlayerIndex playerIndex;
     GamePadState state;
 
-    float leftVibration = 0;
-    float rightVibration = 0;
-
     bool[] prevButtons = new bool[15];
     bool[] currentButtons = new bool[15];
 
@@ -47,13 +44,52 @@ public class InputManager // input manager for a single player controller game
         RV
     }
 
+
+    class VibrationMotor
+    {
+        public enum VIBRATION_STATE
+        {
+            MANUAL,
+            RANDOM_PULSE
+        };
+        public VIBRATION_STATE vibration_state;
+
+        public float currentAmplitude;
+
+        public float timer;
+        public float minTimer;
+        public float maxTimer;
+
+        public float minAmplitude;
+        public float maxAmplitude;
+
+        public float pulseDuration;
+        
+        public void ResetToDefault()
+        {
+            timer = 0;
+            currentAmplitude = 0;
+            vibration_state = VIBRATION_STATE.MANUAL;
+            minAmplitude = 0;
+            maxAmplitude = 1;
+        }
+    }
+    VibrationMotor leftMotor = new VibrationMotor();
+    VibrationMotor rightMotor = new VibrationMotor();
+
+
+
+
     public InputManager()
     {
     }
 
     public void FixedUpdate()
     {
-        GamePad.SetVibration(playerIndex, leftVibration, rightVibration); // set in fixed update to keep consistent vibration
+        UpdateMotor(leftMotor);
+        UpdateMotor(rightMotor);
+
+        GamePad.SetVibration(playerIndex, leftMotor.currentAmplitude, rightMotor.currentAmplitude); // set in fixed update to keep consistent vibration
     }
     public void Update()
     {
@@ -141,16 +177,65 @@ public class InputManager // input manager for a single player controller game
 
     public void SetVibrationLeft(float leftValue)
     {
-        leftVibration = Mathf.Clamp01(leftValue);
+        leftMotor.ResetToDefault();
+        leftMotor.currentAmplitude = Mathf.Clamp01(leftValue);
     }
     public void SetVibrationRight(float rightValue)
     {
-        rightVibration = Mathf.Clamp01(rightValue);
+        rightMotor.ResetToDefault();
+        rightMotor.currentAmplitude = Mathf.Clamp01(rightValue);
     }
 
     public void SetVibration(float leftValue, float rightValue)
     {
-        leftVibration = Mathf.Clamp01(leftValue);
-        rightVibration = Mathf.Clamp01(rightValue);
+        leftMotor.ResetToDefault();
+        leftMotor.currentAmplitude = Mathf.Clamp01(leftValue);
+        rightMotor.ResetToDefault();
+        rightMotor.currentAmplitude = Mathf.Clamp01(rightValue);
+    }
+
+    public void SetVibrationRandomPulsingLeft(float pulseDuration_, float minTimer_, float maxTimer_, float amplitude_)
+    {
+        leftMotor.ResetToDefault();
+        leftMotor.vibration_state = VibrationMotor.VIBRATION_STATE.RANDOM_PULSE;
+        leftMotor.pulseDuration = pulseDuration_;
+        leftMotor.minAmplitude = amplitude_;
+        leftMotor.maxAmplitude = amplitude_;
+        leftMotor.minTimer = minTimer_;
+        leftMotor.maxTimer = maxTimer_;
+        leftMotor.timer = 0;
+    }
+
+
+    void UpdateMotor(VibrationMotor motor)
+    {
+        switch(motor.vibration_state)
+        {
+
+            case VibrationMotor.VIBRATION_STATE.MANUAL:
+                {
+
+                    break;
+                }
+            case VibrationMotor.VIBRATION_STATE.RANDOM_PULSE:
+                {
+
+                    motor.timer -= Time.fixedDeltaTime;
+                    
+                    if (motor.timer <= 0)
+                    {
+                        motor.currentAmplitude = motor.minAmplitude;
+                        if (motor.timer <= -motor.pulseDuration)
+                        {
+                            motor.timer = Random.Range(motor.minTimer, motor.maxTimer);
+                        }
+                    }
+                    else
+                    {
+                        motor.currentAmplitude = 0;
+                    }
+                    break;
+                }
+        }
     }
 }

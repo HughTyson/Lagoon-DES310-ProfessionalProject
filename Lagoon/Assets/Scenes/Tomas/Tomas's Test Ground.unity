@@ -189,6 +189,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af2e161c94b09b34d98bb5b6124fbd3e, type: 3}
+--- !u!114 &106394300 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5343870348728116537, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1861933732}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18eafea4179ed1d4ca0eef4f1477a822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &130803150 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 6f4a073611956f74b950e68e404c09e8,
@@ -288,6 +300,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1861933732}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &222959301 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7745113462265003505, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1861933732}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222959298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06ef265127d9386498d3c6e954907ca8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &222959302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,6 +331,22 @@ MonoBehaviour:
   - {fileID: 791321678}
   - {fileID: 2102881630}
   - {fileID: 865475205}
+--- !u!114 &222959307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222959298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e52bf41998308e40bec26723f28879a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transition_time: 0.3
+  plane_segments: []
+  buttonUIManager: {fileID: 106394300}
+  movement_: {fileID: 222959301}
 --- !u!1001 &238943132
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1169,6 +1209,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tags: 
+--- !u!1 &668911397 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7714170665723632590, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1861933732}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &696772741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3797,7 +3843,7 @@ PrefabInstance:
     - target: {fileID: 7745113462265003517, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.91
       objectReference: {fileID: 0}
     - target: {fileID: 1799763313552790356, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
@@ -4065,6 +4111,11 @@ PrefabInstance:
       propertyPath: castedMaxVelocity
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 6181861649918752107, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: attractionPulseTimeInterval
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4666861678892010725, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -4289,6 +4340,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3795168968999275959, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: stateRepair
+      value: 
+      objectReference: {fileID: 222959307}
+    - target: {fileID: 4074023804289180387, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: FlexibleRodRings.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074023804289180387, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: FlexibleRodRings.Array.data[8]
+      value: 
+      objectReference: {fileID: 668911397}
+    - target: {fileID: 9214171205328549895, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 26234649313191046, guid: 44c1c3a266e23f84da21ac8855c56dfb, type: 3}
