@@ -104,40 +104,42 @@ public class ThirdPersonCamera : MonoBehaviour
 
     //update function
 
+    //private void Update()
+    //{
+    //    HandleInput();
+
+    //    //switch (current_state)
+    //    //{
+    //    //    case STATE.FREE:
+    //    //        {
+    //    //            camera_input.y = Mathf.Clamp(camera_input.y, ANGLE_MIN_Y, ANGLE_MAX_Y); //limit the y rotation
+    //    //        }
+    //    //        break;
+    //    //    case STATE.CLAMPED_LOOK_AT:
+    //    //        {
+    //    //            camera_input.y = Mathf.Clamp(camera_input.y, ANGLE_MIN_Y, ANGLE_MAX_Y); //limit the y rotation
+    //    //            camera_input.x = Mathf.Clamp(camera_input.x, rot_target.localRotation.eulerAngles.y - ANGLE_MIN_X, rot_target.localRotation.eulerAngles.y + ANGLE_MAX_X);
+    //    //        }
+    //    //        break;
+    //    //    default:
+    //    //        break;
+    //    //}
+
+
+    //    if (shoulder_side)
+    //    {
+    //        target_offset = camera_offset_right;
+    //    }
+    //    else
+    //    {
+    //        target_offset = camera_offset_left;
+    //    }
+    //}
+
     private void Update()
     {
         HandleInput();
-
-        switch (current_state)
-        {
-            case STATE.FREE:
-                {
-                    camera_input.y = Mathf.Clamp(camera_input.y, ANGLE_MIN_Y, ANGLE_MAX_Y); //limit the y rotation
-                }
-                break;
-            case STATE.CLAMPED_LOOK_AT:
-                {
-                    camera_input.y = Mathf.Clamp(camera_input.y, ANGLE_MIN_Y, ANGLE_MAX_Y); //limit the y rotation
-                    camera_input.x = Mathf.Clamp(camera_input.x, rot_target.localRotation.eulerAngles.y - ANGLE_MIN_X, rot_target.localRotation.eulerAngles.y + ANGLE_MAX_X);
-                }
-                break;
-            default:
-                break;
-        }
-
-
-        if (shoulder_side)
-        {
-            target_offset = camera_offset_right;
-        }
-        else
-        {
-            target_offset = camera_offset_left;
-        }
-    }
-
-    private void LateUpdate()
-    {
+        camera_input.y = Mathf.Clamp(camera_input.y, ANGLE_MIN_Y, ANGLE_MAX_Y); //limit the y rotation
 
         switch (current_state)
         {
@@ -149,6 +151,8 @@ public class ThirdPersonCamera : MonoBehaviour
                     setPosition();                  //set the position based on the new destination
 
                     Quaternion new_look = Quaternion.LookRotation(rot_target.position - _camera.position);
+
+                    new_look.Normalize();
 
                     _camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
 

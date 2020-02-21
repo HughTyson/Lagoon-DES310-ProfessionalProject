@@ -72,13 +72,13 @@ public class FishGenerator : MonoBehaviour
             {
                 Vector3 size = fishGenerationStats[i].spawnArea[k].transform.lossyScale;
 
-                fishGenerationStats[i].spawnAreaWeighting.Add((size.x * size.z)); 
+                fishGenerationStats[i].spawnAreaWeighting.Add((size.x * size.z));
                 total_area += fishGenerationStats[i].spawnAreaWeighting[k];
             }
 
             for (int k = 0; k < fishGenerationStats[i].spawnArea.Count; k++)
             {
-                fishGenerationStats[i].spawnAreaWeighting[k] /= total_area; 
+                fishGenerationStats[i].spawnAreaWeighting[k] /= total_area;
             }
 
         }
@@ -182,12 +182,12 @@ public class FishGenerator : MonoBehaviour
         //if (fishRing.fishTeirEnum == FishType.FISH_TEIR.T2)
         //{
         //    new_fish.fishObject.GetComponentInChildren<MeshRenderer>().material = DebugMat;
-            
+
         //}
 
         fishRing.fishList.Add(new_fish);
 
-        
+
     }
 
 
@@ -200,12 +200,13 @@ public class FishGenerator : MonoBehaviour
         //List<Color> colours = new List<Color>();
         //colours.Add(new Color(0.0f, 0.0f, 1.0f));
         //colours.Ad
-        
-        
-        
-        
-        
+
+
+
+
+
        //(new Color(0.0f, 1.0f, 1.0f));
+
         //colours.Add(new Color(1.0f, 1.0f, 0));
         //colours.Add(new Color(0.0f, 1.0f, 0));
 
@@ -223,7 +224,7 @@ public class FishGenerator : MonoBehaviour
         //{
         //    for (int k = 0; k < fishGenerationStats[i].spawnArea.Count; k++)
         //    {
-                
+
         //        Transform trans = fishGenerationStats[i].spawnArea[k].transform;
         //        Matrix4x4 rotationMatrix = Matrix4x4.TRS(trans.position, trans.rotation, trans.lossyScale);
         //        Gizmos.matrix = rotationMatrix;
@@ -238,4 +239,3 @@ public class FishGenerator : MonoBehaviour
 
     }
 }
-
