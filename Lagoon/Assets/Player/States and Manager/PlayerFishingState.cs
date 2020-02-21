@@ -166,7 +166,11 @@ public class PlayerFishingState : BaseState
                     castingTime += Time.deltaTime;
                     TransformIndicator();
 
-                    if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B) || castingTimeout >= 0.3f)
+                    if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
+                    {
+                        StateManager.ChangeState(PlayerScriptManager.STATE.EXPLORING);
+                    }
+                    else if (castingTimeout >= 0.3f)
                     {
                         CancelPowerUpThrow();
                     }
@@ -326,33 +330,22 @@ public class PlayerFishingState : BaseState
                     //            break;
                     //        }
                     //}
+
+                    GM_.instance.input.SetVibrationLeft(1.0f - interactingFish.GetLineStrengthPercentageLeft());
+
                     bool game_over = false;
                     if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
                     {
                         game_over = true;
                         FishFightLineSnapped();
                     }
-                    else if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) < -0.5f)
-                    {
-                        staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.LEFT);
-                    }
-                    else if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) > 0.5f)
-                    {
-                        staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.RIGHT);
-                    }
-                    else
-                    {
-                        staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.MIDDLE);
-                    }
+
+                    staticFishingRodLogic.SetFishFightingState(GM_.instance.input.GetAxis(InputManager.AXIS.LH));
 
                     if (game_over != true)
                     {
                         GM_.instance.input.SetVibrationRight(GM_.instance.input.GetAxis(InputManager.AXIS.RT) * 0.5f);
-                        if (GM_.instance.input.GetAxis(InputManager.AXIS.RT) > 0.1f)
-                        {
 
-                            interactingFish.ReelingIn(GM_.instance.input.GetAxis(InputManager.AXIS.RT) * 2.5f);
-                        }
 
                         interactingFish.SetPlayerAccelleration(GM_.instance.input.GetAxis(InputManager.AXIS.LH));
 
@@ -376,7 +369,20 @@ public class PlayerFishingState : BaseState
     }
 
 
-
+    public override void StateFixedUpdate()
+    {
+        switch(fishing_state)
+        {
+            case FISHING_STATE.FISH_FIGHTING:
+                {
+                    if (GM_.instance.input.GetAxis(InputManager.AXIS.RT) > 0.1f)
+                    {
+                        interactingFish.ReelingIn(GM_.instance.input.GetAxis(InputManager.AXIS.RT) * 2.5f);
+                    }
+                    break;
+                }
+        }
+    }
 
     float castingTime = 0.0f;
     float castingTimeout = 0.0f;
@@ -432,7 +438,7 @@ public class PlayerFishingState : BaseState
 
 
         fishing_state = FISHING_STATE.BOB_IS_FLYING;
-        characterControllerMovement.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
+        characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
         thirdPersonCamera.look_at_target = fishingBob.transform;
         thirdPersonCamera.current_state = ThirdPersonCamera.STATE.CLAMPED_LOOK_AT;
     }
@@ -481,6 +487,8 @@ public class PlayerFishingState : BaseState
 
 
     float currentReelInTime = 0;
+
+
     void ReelIn(float reelAxis) // bring the bob closer by reeling in
     {
         float reelInSpeed = Mathf.Lerp(0, fishingReelInMaxSpeed, reelAxis);
@@ -650,8 +658,10 @@ public class PlayerFishingState : BaseState
 
         fishing_state = FISHING_STATE.FISH_FIGHTING;
         fishingBob.GetComponentInChildren<FishingBobLogic>().BeganFighting();
+
+        thirdPersonCamera.look_at_target = interactingFish.gameObject.transform;
+        
         fishingLineLogic.BeganFighting(interactingFish);
-        staticFishingRodLogic.SetFishFightingState(StaticFishingRodLogic.FISH_FIGHTING_STATE.MIDDLE);
         interactingFish.BeginFighting(new Vector2(transform.position.x, transform.position.z), staticFishingRodLogic);
     }
 

@@ -22,6 +22,7 @@ public class FishingBobLogic : MonoBehaviour
     [Tooltip("fishing line logic script component")]
     [SerializeField] FishingLineLogic fishingLineLogic;
 
+    [SerializeField] GameObject meshObject;
     public enum STATE
     {
         NOT_ACTIVE,
@@ -51,6 +52,7 @@ public class FishingBobLogic : MonoBehaviour
     {
         GetComponentInParent<Rigidbody>().isKinematic = false;
         GetComponentInParent<Rigidbody>().useGravity = true;
+        meshObject.SetActive(true);
     }
 
     private void OnDisable()
@@ -68,6 +70,8 @@ public class FishingBobLogic : MonoBehaviour
         physicsBuoyancy.SetToDefaultWaterDrag();
 
         current_state = STATE.CASTING;
+
+
         transform.parent.transform.position = initialPosition;
         GetComponentInParent<Rigidbody>().velocity = initialVelocity;
     }
@@ -83,11 +87,17 @@ public class FishingBobLogic : MonoBehaviour
     public void BeganFighting()
     {
         current_state = STATE.FIGHTING_FISH;
+        transform.parent.transform.position = interactingFish.GetComponent<FishLogic>().GetHeadPosition();
+        GetComponentInParent<Rigidbody>().isKinematic = true;
+        GetComponentInParent<Rigidbody>().useGravity = false;
+
+        meshObject.SetActive(false);
+
     }
 
     void SafelyRemoveNull()
     {
-        for (int i = 0; i < nearbyFish.Count; i++)
+        for (int i = nearbyFish.Count - 1; i >= 0 ; i--) // iterate back to front to allow removing while iterating
         {
             if (nearbyFish[i] == null)
             {
@@ -101,7 +111,10 @@ public class FishingBobLogic : MonoBehaviour
         SafelyRemoveNull();
         for (int i = 0; i < nearbyFish.Count; i++)
         {
-            nearbyFish[i].GetComponentInChildren<FishLogic>().LostInterestInFishingBob(time);
+            if (nearbyFish[i].GetComponentInChildren<FishLogic>() != null)
+            {
+                nearbyFish[i].GetComponentInChildren<FishLogic>().LostInterestInFishingBob(time);
+            }
         }
     }
 
@@ -178,23 +191,14 @@ public class FishingBobLogic : MonoBehaviour
                     }
                     break;
                 }
-        }
-    }
-    private void Update()
-    {
-        switch (current_state)
-        {
             case STATE.FIGHTING_FISH:
                 {
-                    transform.parent.transform.position = interactingFish.transform.position;
-
-                    GetComponentInParent<Rigidbody>().isKinematic = true;
-                    GetComponentInParent<Rigidbody>().useGravity = false;
+                    transform.parent.transform.position = interactingFish.GetComponent<FishLogic>().GetHeadPosition();
                     break;
                 }
-
         }
     }
+
     // called at a periodic interval to nearby fish
     void AttractionPulse()
     {

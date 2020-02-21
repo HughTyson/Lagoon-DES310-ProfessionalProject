@@ -382,11 +382,12 @@ public class FishingLineLogic : MonoBehaviour
 
 
 
-        float second_line_constraint = 0.06f;//Mathf.Lerp(0.06f,0.03f, Mathf.Clamp(EndOfLineVelocity().magnitude,0,0.1f)/0.1f);
+        float second_line_constraint = 0.03f;//Mathf.Lerp(0.06f,0.03f, Mathf.Clamp(EndOfLineVelocity().magnitude,0,0.1f)/0.1f);
         if (current_state == STATE.FIGHTING)
         {
-            second_line_constraint = 0.01f;
+            second_line_constraint = 0.03f;
         }
+
         for (int k = 0; k < 5; k++)
         {
             for (LinkedListNode<RodJointParticles> it = RodLineParticles.First; it.Next != null; it = it.Next)

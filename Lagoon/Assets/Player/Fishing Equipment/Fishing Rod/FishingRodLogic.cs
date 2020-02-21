@@ -57,10 +57,6 @@ public class FishingRodLogic : MonoBehaviour
         transform.rotation = FixedFishingRodTransform.rotation;
     }
 
-    private void Update()
-    {
-
-    }
     private void FixedUpdate()
     {
         

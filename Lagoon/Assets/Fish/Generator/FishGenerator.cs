@@ -205,7 +205,7 @@ public class FishGenerator : MonoBehaviour
         
         
         
-       d(new Color(0.0f, 1.0f, 1.0f));
+       //(new Color(0.0f, 1.0f, 1.0f));
         //colours.Add(new Color(1.0f, 1.0f, 0));
         //colours.Add(new Color(0.0f, 1.0f, 0));
 
