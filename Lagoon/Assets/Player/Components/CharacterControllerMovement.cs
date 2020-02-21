@@ -41,6 +41,8 @@ public class CharacterControllerMovement : MonoBehaviour
 
     SupplyDrop test_drop;
 
+    float g;
+
     public enum STATE
     {
         FREE_MOVEMENT,       //Player can move any way they want
@@ -64,6 +66,19 @@ public class CharacterControllerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        current_velocity += acceleration * movement_input.magnitude;
+        current_velocity = Mathf.Clamp(current_velocity, 0, max_velocity);
+
+        if (movement_input.x == 0 && movement_input.y == 0)
+        {
+            if (current_velocity > 0)
+                current_velocity -= acceleration;
+        }
+
+        move_direction = transform.forward * current_velocity * Time.deltaTime;
+
+        move_direction.y = g;
+
         switch (current_state)
         {
             case STATE.FREE_MOVEMENT:
@@ -110,18 +125,10 @@ public class CharacterControllerMovement : MonoBehaviour
      //this function is called every fixed framerate frame
     private void FixedUpdate()
     {
-        current_velocity += acceleration * movement_input.magnitude;
-        current_velocity = Mathf.Clamp(current_velocity, 0, max_velocity);
-
-        if (movement_input.x == 0 && movement_input.y == 0)
-        {
-            if (current_velocity > 0)
-                current_velocity -= acceleration;
-        }
-
-        move_direction = transform.forward * current_velocity * Time.fixedDeltaTime;
 
         move_direction.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
+         g = move_direction.y;
+
     }
 
     //methods
