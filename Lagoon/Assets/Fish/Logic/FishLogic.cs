@@ -286,13 +286,7 @@ public class FishLogic : MonoBehaviour
 
     void Update()
     {
-        for (int i = 0; i < avoidingObjects.Count; i++)
-        {
-            if (avoidingObjects[i] == null)
-            {
-                avoidingObjects.Remove(avoidingObjects[i]);
-            }
-        }
+        avoidingObjects.RemoveNullReferences();
 
         headVectorXZ.x = transform.parent.transform.position.x;
         headVectorXZ.y = transform.parent.transform.position.z;
@@ -549,6 +543,11 @@ public class FishLogic : MonoBehaviour
     }
 
 
+    public Vector3 GetHeadPosition()
+    {
+        return fishheadTransform.position;
+    }
+
     public float GetFishBiteHoldTime()
     {
         return fishHoldBiteTime;
@@ -584,6 +583,8 @@ public class FishLogic : MonoBehaviour
         public float fightingVelocityMax;
         public Vector2 playerPosXZ;
         public float distanceToPlayer;
+
+        public float initLeftRighAmplitude;
         public float leftRighAmplitude;
 
         public float fightingAccellerationMin;
@@ -598,6 +599,9 @@ public class FishLogic : MonoBehaviour
         public float fightingNextStateMinTime;
         public float fightingNextStateMaxTime;
 
+        public float fleeingDriveForce;
+
+        public float maxDistance;
 
         public float playerAccelleration;
         public float playerAccellerationMax;
@@ -636,7 +640,10 @@ public class FishLogic : MonoBehaviour
        
         fightingStateVars.dragPercentage = 0.0f;
         fightingStateVars.distanceToPlayer = Vector2.Distance(headVectorXZ, fightingStateVars.playerPosXZ);
-        fightingStateVars.leftRighAmplitude = 10.0f;
+
+
+        fightingStateVars.initLeftRighAmplitude = 10.0f;
+        fightingStateVars.leftRighAmplitude = fightingStateVars.initLeftRighAmplitude;
 
         fightingStateVars.fightingAccellerationMin = 0.02f;
         fightingStateVars.fightingAccellerationMax = 0.04f;
@@ -650,20 +657,33 @@ public class FishLogic : MonoBehaviour
         fightingStateVars.fightingNextStateMinTime = 0.1f;
         fightingStateVars.fightingNextStateMinTime = 0.5f;
 
-        fightingStateVars.initial_dot = Vector2.Dot((headVectorXZ - fightingStateVars.playerPosXZ).normalized, Vector2.left); ;
+        fightingStateVars.maxDistance = 50.0f;
+
+        fightingStateVars.initial_dot = Vector2.Dot((headVectorXZ - fightingStateVars.playerPosXZ).normalized, Vector2.left);
+
+
+        fightingStateVars.fleeingDriveForce = 5.0f;
+
     }
 
 
     public void ReelingIn(float force)
     {
+        if (fightingStateVars.state == FIGHTING_STATE.FIGHTING)
+        {
 
-        float near_edge = Mathf.Abs((fightingStateVars.fishAngleValue - 0.5f) * 2.0f);
-        float min = 0.1f;
+                float near_edge = Mathf.Abs((fightingStateVars.fishAngleValue - 0.5f) * 2.0f);
+                float min = 0.1f;
 
-        force *= (1.0f - ((near_edge - min) / (1.0f - min))); // apply less force on real depending on how close to the edge
-      
+                float t = (1.0f - ((near_edge - min) / (1.0f - min)));
 
-        fightingStateVars.fightingYDistance -= force * Time.fixedDeltaTime;
+                float final_force = force * t + fightingStateVars.fleeingDriveForce * t; // applies fleeing drive force * t because that is a constant force of the fish fleeing
+
+
+                fightingStateVars.fightingYDistance -= (final_force) * Time.fixedDeltaTime;
+
+        }
+
     }
 
     public void SetPlayerAccelleration(float acc)
@@ -823,11 +843,16 @@ public class FishLogic : MonoBehaviour
                     //fishFightingPhysicsBody.transform.position = transform.position;
                     //fishFightingPhysicsBody.rotation = transform.rotation
 
+                    fightingStateVars.fightingYDistance += fightingStateVars.fleeingDriveForce * Time.fixedDeltaTime;
+
                     if (fightingStateVars.fightingYDistance < fightingStateVars.leftRighAmplitude)
                     {
                         fightingStateVars.leftRighAmplitude = fightingStateVars.fightingYDistance;
                     }
-
+                    else
+                    {
+                        fightingStateVars.leftRighAmplitude = fightingStateVars.initLeftRighAmplitude;
+                    }
 
                     fightingStateVars.currentNextStateChangeTime -= Time.fixedDeltaTime;
 
@@ -868,7 +893,7 @@ public class FishLogic : MonoBehaviour
                         transform.parent.transform.position = new Vector3(fishPosition.x,transform.parent.transform.position.y , fishPosition.y);
 
 
-                        Vector2 fishFromCentreDir = (circle_centre - fishPosition).normalized;
+                        Vector2 fishFromCentreDir = (fishPosition - circle_centre).normalized;
 
                         Vector2 lookatXZ = Vector2.zero;
                         if (fightingStateVars.currentVelocity <= 0)
@@ -888,13 +913,14 @@ public class FishLogic : MonoBehaviour
                     float near_edge = Mathf.Abs((fightingStateVars.fishAngleValue - 0.5f) * 2.0f);
                     float min = 0.1f;
 
-                    GM_.instance.input.SetVibrationLeft((near_edge - min) / (1.0f - min));
                     break;
                 }
         }
        
     }
 
+
+    
     void BeginFightingStateChange()
     {
 
@@ -950,7 +976,12 @@ public class FishLogic : MonoBehaviour
         float near_edge = Mathf.Abs((fightingStateVars.fishAngleValue - 0.5f) * 2.0f);
         float min = 0.1f;
 
-        return 1.0f - ((near_edge - min) / (1.0f - min));
+        float line_t = 1.0f - ((near_edge - min) / (1.0f - min));
+
+        float distance_t = 1.0f - (fightingStateVars.fightingYDistance - (fightingStateVars.maxDistance - 5.0f)) / (fightingStateVars.maxDistance - (fightingStateVars.maxDistance - 5.0f));
+
+
+        return Mathf.Min(line_t, distance_t);
 
     }
 

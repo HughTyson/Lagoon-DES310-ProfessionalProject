@@ -41,3 +41,16 @@ public static class RandomnessExtension
         return ((inner_value * inner_value * inner_value) + 0.5f);
     }
 }
+
+public static class ListExtension
+{ 
+    public static void RemoveNullReferences<T>(this List<T> list)
+    {
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            if (list[i] == null)
+                list.Remove(list[i]);
+        }
+    }
+
+}

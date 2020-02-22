@@ -31,51 +31,31 @@ public class StaticFishingRodLogic : MonoBehaviour
     FREEZE
     };
 
-    public enum FISH_FIGHTING_STATE
-    { 
-    MIDDLE,
-    RIGHT,
-    LEFT
-    }
-
 
 
     STATE current_state = STATE.GO_TO_DEFAULT_POSITION;
-
-    FISH_FIGHTING_STATE fish_fighting_state = FISH_FIGHTING_STATE.MIDDLE;
     public void SetState(STATE state)
     {
         current_state = state;
     }
 
-    public void SetFishFightingState(FISH_FIGHTING_STATE state)
+    public void SetFishFightingState(float analog_value)
     {
-        fish_fighting_state = state;
+      //  fish_fighting_state = state;
         current_state = STATE.FREEZE;
 
-        switch(fish_fighting_state)
+        Vector3 eulerRotations;
+
+        if (analog_value < 0)
         {
-            case FISH_FIGHTING_STATE.LEFT:
-                {
-                    transform.localRotation = Quaternion.Euler(FishFightingLeftRotation);
-                    break;
-                }
-            case FISH_FIGHTING_STATE.MIDDLE:
-                {
-                    transform.localRotation = Quaternion.Euler(FishFightingMiddleRotation);
-                    break;
-                }
-            case FISH_FIGHTING_STATE.RIGHT:
-                {
-                    transform.localRotation = Quaternion.Euler(FishFightingRightRotation);
-                    break;
-                }
-           
+            eulerRotations = Vector3.Lerp(FishFightingLeftRotation, FishFightingMiddleRotation, analog_value + 1.0f);
         }
-    }
-    public FISH_FIGHTING_STATE GetFishFightingState()
-    {
-        return fish_fighting_state;
+        else
+        {
+            eulerRotations = Vector3.Lerp(FishFightingMiddleRotation, FishFightingRightRotation, analog_value);
+        }
+
+        transform.localRotation = Quaternion.Euler(eulerRotations);
     }
 
     public void SetRodRotation(float percentageX, float percentageZ)
@@ -107,7 +87,7 @@ public class StaticFishingRodLogic : MonoBehaviour
         {
             case STATE.GO_TO_DEFAULT_POSITION:
                 {
-                    transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(DefaultRotationXZ.x, 0, DefaultRotationXZ.y), Time.deltaTime);
+                    transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(DefaultRotationXZ.x, 0, DefaultRotationXZ.y), 1);
                     break;
                 }
             //case STATE.ANALOG_CONTROL:
