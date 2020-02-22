@@ -8,7 +8,7 @@ public class GM_ : MonoBehaviour
     public static GM_ instance = null;
 
     public InputManager input = new InputManager();
-
+    public PauseManager pause = new PauseManager();
     private void Awake()
     {
         if (instance == null)
@@ -30,7 +30,7 @@ public class GM_ : MonoBehaviour
 
     private void Update()
     {
-        
+
     }
 
 
@@ -41,12 +41,13 @@ public class GM_ : MonoBehaviour
 
     void LateUpdate()
     {
-        input.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
+        input.LateUpdate(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
+        pause.LateUpdate(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
     }
 
     private void OnDestroy()
     {
-        input.SetVibration(0, 0);
+        input.SetVibrationBoth(0, 0); // prevents controller vibrating even if Unity game closes
         input.FixedUpdate();
     }
 }

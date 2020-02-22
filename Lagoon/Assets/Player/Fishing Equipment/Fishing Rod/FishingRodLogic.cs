@@ -14,6 +14,8 @@ public class FishingRodLogic : MonoBehaviour
 
     [SerializeField] Transform[] FishingRodJoints;
 
+
+
     float[] FishingRodJointTs;
     
 
@@ -32,29 +34,16 @@ public class FishingRodLogic : MonoBehaviour
             initialLocalRotation[i] = FishingRodJoints[i].transform.localRotation;
             initalLocalPositions[i] = FishingRodJoints[i].localPosition;
         }
-        //float distanceForFixed = Vector3.Distance(FixedFishingBottom.position, FixedFishingTip.position);
-        //SoftJointLimit limit = GetComponent<ConfigurableJoint>().linearLimit;
-        //limit.limit = distanceForFixed;
-        //limit.contactDistance = 5;
-        //GetComponent<ConfigurableJoint>().linearLimit = limit;
 
     }
-
-
-    //public void SafetyUpdate()
-    // {
-    //     float distanceForFlex = Vector3.Distance(FixedFishingBottom.position, FlexibleFishingTip.position);
-    //     float distanceForFixed = Vector3.Distance(FixedFishingBottom.position, FixedFishingTip.position);
-    //     if (distanceForFlex > distanceForFixed)
-    //     {
-    //         FlexibleFishingTip.position = FixedFishingBottom.position + ((FlexibleFishingTip.position - FixedFishingBottom.position).normalized * distanceForFixed);
-    //     }
-    // }
 
     private void OnEnable()
     {
         transform.position = FixedFishingRodTransform.position;
         transform.rotation = FixedFishingRodTransform.rotation;
+
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+
     }
 
     private void FixedUpdate()

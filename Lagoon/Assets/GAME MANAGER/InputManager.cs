@@ -44,13 +44,25 @@ public class InputManager // input manager for a single player controller game
         RV
     }
 
+    public enum VIBRATION_MOTOR
+    { 
+    LEFT,
+    RIGHT
+    };
+
+    public enum VIBRATION_PRESET
+    { 
+    MENU_BUTTON_PRESSED  
+    };
+
 
     class VibrationMotor
     {
         public enum VIBRATION_STATE
         {
             MANUAL,
-            RANDOM_PULSE
+            RANDOM_PULSE,
+            SINGLE_PULSE
         };
         public VIBRATION_STATE vibration_state;
 
@@ -91,7 +103,7 @@ public class InputManager // input manager for a single player controller game
 
         GamePad.SetVibration(playerIndex, leftMotor.currentAmplitude, rightMotor.currentAmplitude); // set in fixed update to keep consistent vibration
     }
-    public void Update()
+    public void LateUpdate()
     {
         ConnectController();
         UpdateControllerValues();
@@ -175,35 +187,101 @@ public class InputManager // input manager for a single player controller game
         return currentAxis[(int)axis];
     }
 
-    public void SetVibrationLeft(float leftValue)
+
+    public void SetVibrationWithPreset(VIBRATION_PRESET preset)
+    {
+        switch(preset)
+        {
+            case VIBRATION_PRESET.MENU_BUTTON_PRESSED:
+                {
+                    SetVibrationPulse(VIBRATION_MOTOR.LEFT, 0.1f, 1.0f);
+                    SetVibrationPulse(VIBRATION_MOTOR.RIGHT, 0.1f, 1.0f);
+
+                    break;
+                }
+        }
+    }
+
+
+    public void SetVibration(VIBRATION_MOTOR motor, float vibration_amm)
+    {
+        switch(motor)
+        {
+            case VIBRATION_MOTOR.LEFT:
+                {
+                    leftMotor.ResetToDefault();
+                    leftMotor.currentAmplitude = Mathf.Clamp01(vibration_amm);
+                    break;
+                }
+            case VIBRATION_MOTOR.RIGHT:
+                {
+                    rightMotor.ResetToDefault();
+                    rightMotor.currentAmplitude = Mathf.Clamp01(vibration_amm);
+                    break;
+                }
+        }
+
+    }
+    public void SetVibrationBoth(float leftValue, float rightValue)
     {
         leftMotor.ResetToDefault();
         leftMotor.currentAmplitude = Mathf.Clamp01(leftValue);
-    }
-    public void SetVibrationRight(float rightValue)
-    {
         rightMotor.ResetToDefault();
         rightMotor.currentAmplitude = Mathf.Clamp01(rightValue);
     }
 
-    public void SetVibration(float leftValue, float rightValue)
+    public void SetVibrationPulse(VIBRATION_MOTOR motor, float pulseDuration_, float amplitude)
     {
-        leftMotor.ResetToDefault();
-        leftMotor.currentAmplitude = Mathf.Clamp01(leftValue);
-        rightMotor.ResetToDefault();
-        rightMotor.currentAmplitude = Mathf.Clamp01(rightValue);
-    }
+        switch (motor)
+        {
+            case VIBRATION_MOTOR.LEFT:
+                {
+                    leftMotor.ResetToDefault();
+                    leftMotor.vibration_state = VibrationMotor.VIBRATION_STATE.SINGLE_PULSE;
+                    leftMotor.pulseDuration = pulseDuration_;
+                    leftMotor.currentAmplitude = amplitude;
+                    break;
+                }
+            case VIBRATION_MOTOR.RIGHT:
+                {
+                    rightMotor.ResetToDefault();
+                    rightMotor.vibration_state = VibrationMotor.VIBRATION_STATE.SINGLE_PULSE;
+                    rightMotor.pulseDuration = pulseDuration_;
+                    rightMotor.currentAmplitude = amplitude;
+                    break;
+                }
+        }
 
-    public void SetVibrationRandomPulsingLeft(float pulseDuration_, float minTimer_, float maxTimer_, float amplitude_)
+    }
+    public void SetVibrationRandomPulsing(VIBRATION_MOTOR motor, float pulseDuration_, float minTimer_, float maxTimer_, float amplitude_)
     {
-        leftMotor.ResetToDefault();
-        leftMotor.vibration_state = VibrationMotor.VIBRATION_STATE.RANDOM_PULSE;
-        leftMotor.pulseDuration = pulseDuration_;
-        leftMotor.minAmplitude = amplitude_;
-        leftMotor.maxAmplitude = amplitude_;
-        leftMotor.minTimer = minTimer_;
-        leftMotor.maxTimer = maxTimer_;
-        leftMotor.timer = 0;
+        switch (motor)
+        {
+            case VIBRATION_MOTOR.LEFT:
+                {
+                    leftMotor.ResetToDefault();
+                    leftMotor.vibration_state = VibrationMotor.VIBRATION_STATE.RANDOM_PULSE;
+                    leftMotor.pulseDuration = pulseDuration_;
+                    leftMotor.minAmplitude = amplitude_;
+                    leftMotor.maxAmplitude = amplitude_;
+                    leftMotor.minTimer = minTimer_;
+                    leftMotor.maxTimer = maxTimer_;
+                    leftMotor.timer = 0;
+                    break;
+                }
+            case VIBRATION_MOTOR.RIGHT:
+                {
+                    rightMotor.ResetToDefault();
+                    rightMotor.vibration_state = VibrationMotor.VIBRATION_STATE.RANDOM_PULSE;
+                    rightMotor.pulseDuration = pulseDuration_;
+                    rightMotor.minAmplitude = amplitude_;
+                    rightMotor.maxAmplitude = amplitude_;
+                    rightMotor.minTimer = minTimer_;
+                    rightMotor.maxTimer = maxTimer_;
+                    rightMotor.timer = 0;
+                    break;
+                }
+        }
     }
 
 
@@ -236,6 +314,17 @@ public class InputManager // input manager for a single player controller game
                     }
                     break;
                 }
+            case VibrationMotor.VIBRATION_STATE.SINGLE_PULSE:
+                {
+                    motor.pulseDuration -= Time.fixedDeltaTime;
+                    if (motor.pulseDuration < 0)
+                    {
+                        motor.currentAmplitude = 0;
+                    }
+
+                    break;
+                }
         }
     }
+
 }

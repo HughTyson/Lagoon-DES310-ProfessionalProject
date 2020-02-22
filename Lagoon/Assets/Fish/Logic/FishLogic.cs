@@ -286,13 +286,7 @@ public class FishLogic : MonoBehaviour
 
     void Update()
     {
-        for (int i = 0; i < avoidingObjects.Count; i++)
-        {
-            if (avoidingObjects[i] == null)
-            {
-                avoidingObjects.Remove(avoidingObjects[i]);
-            }
-        }
+        avoidingObjects.RemoveNullReferences();
 
         headVectorXZ.x = transform.parent.transform.position.x;
         headVectorXZ.y = transform.parent.transform.position.z;
