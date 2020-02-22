@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 6355119670516248510}
   m_Layer: 12
   m_Name: Fish
-  m_TagString: Untagged
+  m_TagString: fishing
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -236,13 +236,6 @@ MonoBehaviour:
   lureAttractionSuccessRate: 1
   fishbiteChance: 0.5
   fishHoldBiteTime: 2
-  fightingNextStateMinTime: 0.1
-  fightingNextStateMaxTime: 2
-  fightingTransitionTime: 0.3
-  fightingInitialLineTensionTime: 5
-  fightingInitialHookTensionTime: -1
-  fightingAngleBetweenState: 15
-  fishFightingPhysicsBody: {fileID: 2988810494661601376}
   fishheadTransform: {fileID: 630772104567113715}
   MeshTransform: {fileID: 2589560245026570847}
 --- !u!135 &1477399331999179196

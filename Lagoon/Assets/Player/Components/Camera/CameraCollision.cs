@@ -19,7 +19,7 @@ public class CameraCollision : MonoBehaviour
     [SerializeField] public Vector3[] desired_cp_pos;
 
     [Range(0.1f, 4.0f)]
-    [SerializeField] float collision_box_size = 3.41f;
+    float collision_box_size = 1.0f;
 
     // ==========================================
     //              Hidden Variables
@@ -33,7 +33,7 @@ public class CameraCollision : MonoBehaviour
         adjusted_cp_pos = new Vector3[5]; //4 clip points and the cameras position
         desired_cp_pos = new Vector3[5];
 
-        camera_collisison_layer = (1 << 9) | (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13);
+        camera_collisison_layer = (1 << 5) |(1 << 9) | (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13) | (1 << 14);
 
         camera_collisison_layer = ~camera_collisison_layer;
 
@@ -44,7 +44,7 @@ public class CameraCollision : MonoBehaviour
     {
         //clear intoArray 
 
-        intoArray = new Vector3[5];
+        intoArray = new Vector3[4];
 
         float z = cam.nearClipPlane; //distance from cameras position to the new clip plane
         float x = Mathf.Tan(cam.fieldOfView / collision_box_size) * z;
@@ -59,7 +59,7 @@ public class CameraCollision : MonoBehaviour
                                                                                     
         intoArray[3] = (cp_rotation * new Vector3(x, -y, z)) + camera_position;     //add and rotate the collision point based on camera
                                                                                 
-        intoArray[4] = camera_position - cam.transform.forward/2;                  //cam_pos
+        //intoArray[4] = camera_position - cam.transform.forward/2;                  //cam_pos
     }
 
     //determines if there is a collision at any of these clip points
@@ -69,6 +69,7 @@ public class CameraCollision : MonoBehaviour
         for (int i = 0; i < clip_points.Length; i++)
         {
             Ray ray = new Ray(target_position, clip_points[i] - target_position); //cast ray at targets poisiton for the distance between clip point and target
+            
             float distance = Vector3.Distance(clip_points[i], target_position); //set distance that the ray will be 
             RaycastHit hit;
 
@@ -76,6 +77,16 @@ public class CameraCollision : MonoBehaviour
             
             if(Physics.Raycast(ray, out hit, distance, camera_collisison_layer))
             {
+
+                //hit.collider.GetComponent<TagsScript>().outputTags();
+                //Debug.DrawRay(target_position, clip_points[i] - target_position);
+                Debug.Log( hit.collider.gameObject.layer);
+
+                //hit.collider.enabled = false;
+
+
+                //Debug.DrawLine(transform.position, hit.transform.position);
+
                 return true;
             }
         }

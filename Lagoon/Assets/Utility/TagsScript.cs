@@ -16,7 +16,8 @@ public class TagsScript : MonoBehaviour
     ACTION_SCARES_FISH,
     WATER,
     TRIGGER,
-    INVISIBLE_WALL
+    INVISIBLE_WALL,
+    CAMERA
     };
 
     
@@ -26,6 +27,14 @@ public class TagsScript : MonoBehaviour
     public bool ContainsTheTag(TAGS tag)
     {
         return tags.Contains(tag);
+    }
+
+    public void outputTags()
+    {
+        for(int i = 0; i < tags.Count; i++)
+        {
+            Debug.Log(tags[i]);
+        }
     }
 
 
