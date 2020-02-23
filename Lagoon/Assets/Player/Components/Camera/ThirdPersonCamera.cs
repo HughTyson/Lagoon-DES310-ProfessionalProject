@@ -42,8 +42,8 @@ public class ThirdPersonCamera : MonoBehaviour
 
     [Header("TEST")]
 
-    [SerializeField] float player_max_angle = 1.0f;
-    [SerializeField] float bob_max_angle = 1.0f;
+    [SerializeField] float player_step = 1.0f;
+    [SerializeField] float bob_step = 1.0f;
 
     // ==========================================
     //              Hidden Variables
@@ -71,9 +71,6 @@ public class ThirdPersonCamera : MonoBehaviour
     {
         FREE,                 //Camera has free rotation around target
         CLAMPED_LOOK_AT,      //Camera rotates around the player, but will look at the position of the fishing bob
-        FIXED_LOOK_AT,
-        TRANSITION
-       
     }
     [SerializeField] public STATE current_state;
 
@@ -102,6 +99,7 @@ public class ThirdPersonCamera : MonoBehaviour
     {
         HandleInput();
 
+        Debug.Log(camera_input.y);
         switch (current_state)
         {
             case STATE.FREE:
@@ -131,66 +129,22 @@ public class ThirdPersonCamera : MonoBehaviour
             case STATE.FREE:
                 {
 
-                    destinationUpdate();            //calculate the new poititon of the camera
+                    destinationUpdate();                                 //calculate the new poititon of the camera
 
-                    setPosition();                  //set the position based on the new destination
+                    setPosition();                                      //set the position based on the new destination
 
-                    Quaternion new_look = Quaternion.LookRotation((rot_target.position + target_offset) - _camera.position);
-
-                    //new_look.Normalize();
-
-                    _camera.rotation = Quaternion.RotateTowards(_camera.rotation, new_look, player_max_angle);
-                    //_camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
-
-
+                    SetLookAt((rot_target.position + target_offset));   //set the direction that the camera will face
                 }
                 break;
             case STATE.CLAMPED_LOOK_AT:
                 {
 
-                    destinationUpdate();            //calculate the new poititon of the camera
+                    destinationUpdate();                //calculate the new poititon of the camera
 
-                    setPosition();                  //set the position based on the new destination#
+                    setPosition();                      //set the position based on the new destination
 
-                    Quaternion new_look = Quaternion.LookRotation(look_at_target.position - _camera.position);
+                    SetLookAt(look_at_target.position); //set the direction that the camera will face
 
-                    _camera.rotation = Quaternion.RotateTowards(_camera.rotation, new_look, bob_max_angle);
-                    //_camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
-                }
-                break;
-            case STATE.FIXED_LOOK_AT:
-                {
-
-                    destination = rot_target.position + Vector3.up * target_offset.y + Vector3.forward * target_offset.z + transform.TransformDirection(Vector3.right * target_offset.x);            //calculate the new poititon of the camera
-
-                    setPosition();                                                                                                          //set the position based on the new destination#
-
-                    Quaternion new_look = Quaternion.LookRotation(look_at_target.position - _camera.position);
-                    
-                    _camera.rotation = Quaternion.RotateTowards(_camera.rotation, new_look, 1);
-
-                    break;
-                }
-            case STATE.TRANSITION:
-                {
-                    target_pos = rot_target.position + Vector3.up * target_offset.y + Vector3.forward * target_offset.z + transform.TransformDirection(Vector3.right * target_offset.x);
-                    destination = Quaternion.Euler(rot_target.eulerAngles) * -Vector3.forward * distance_from_target;
-
-                    destination += target_pos;
-
-                    setPosition();
-
-                    Quaternion new_look = Quaternion.LookRotation(rot_target.position - _camera.position);
-
-                    _camera.rotation = Quaternion.Slerp(transform.rotation, new_look, camera_rotation_speed * Time.deltaTime);
-
-                    if(transform.eulerAngles == rot_target.eulerAngles)
-                    {
-                        current_state = transition_;
-                        camera_input.Set(rot_target.eulerAngles.y, 0.0f);
-                    }
-
-                    
                 }
                 break;
             default:
@@ -218,7 +172,7 @@ public class ThirdPersonCamera : MonoBehaviour
             }
         }
 
-        collision.CheckColliding((rot_target.position + target_offset)); //using raycasts here
+        collision.CheckColliding((rot_target.position + target_offset));
         adjusted_distance = collision.GetAdjustedDistanceWithRay((rot_target.position + target_offset));
 
     }
@@ -228,12 +182,24 @@ public class ThirdPersonCamera : MonoBehaviour
     private void HandleInput()
     {
         camera_input += new Vector2(GM_.instance.input.GetAxis(InputManager.AXIS.RH) * camera_rotation_speed, GM_.instance.input.GetAxis(InputManager.AXIS.RV) * camera_rotation_speed) * Time.deltaTime; //get the input from the left stick
+
+        //limit the camera between 0 and 360 - this is to stop the camera jumping when fixing
+        //use .01 to combat floating point problems that may arise
+        if(camera_input.x > 360.01)
+        {
+            camera_input.x -= 360;
+        }
+        
+        if(camera_input.x < 0.01)
+        {
+            camera_input.x += 360;
+        }
     }
 
-    //updates the clip points for the collision
+   //updates the clip points for the collision
     private void collisionUpdate()
     {
-        collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjusted_cp_pos); 
+        collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjusted_cp_pos);        
         collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desired_cp_pos);
     }
 
@@ -242,7 +208,6 @@ public class ThirdPersonCamera : MonoBehaviour
         //set the target position based of the targets current position, the offset values,
         //the input from the controller and the distance that the player is from the camera
 
-        //target_pos = rot_target.position + target_offset;
         target_pos = rot_target.position + rot_target.up * target_offset.y + rot_target.forward * target_offset.z + transform.TransformDirection(rot_target.right * target_offset.x); 
         destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
 
@@ -253,9 +218,6 @@ public class ThirdPersonCamera : MonoBehaviour
     {
         if (collision.collision) //check if there has been a collision
         {
-
-            //Debug.Log("COLLISION");
-
             //calculated an adjusted destination based on the collision
             adjusted_destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * (-Vector3.forward * adjusted_distance);
             adjusted_destination += (rot_target.position + target_offset);
@@ -269,6 +231,13 @@ public class ThirdPersonCamera : MonoBehaviour
             //linear interpolation between the camera's current position and its new destination]
             _camera.position = Vector3.SmoothDamp(_camera.position, destination, ref cam_velocity, camera_movement_speed * Time.deltaTime);
         }
+    }
+
+    private void SetLookAt(Vector3 look_target)
+    {
+        Quaternion new_look = Quaternion.LookRotation(look_target - _camera.position);                                     //create a new look at rotation based on the position of the camera and the position of the target
+
+        _camera.rotation = Quaternion.RotateTowards(_camera.rotation, new_look, player_step * Time.deltaTime);             //use unity rotate twoards to rotate the camera from the current rotation to the new rotation
     }
 }
 

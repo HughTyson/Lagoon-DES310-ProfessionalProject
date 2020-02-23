@@ -44,7 +44,7 @@ public class CameraCollision : MonoBehaviour
     {
         //clear intoArray 
 
-        intoArray = new Vector3[4];
+        intoArray = new Vector3[5];
 
         float z = cam.nearClipPlane; //distance from cameras position to the new clip plane
         float x = Mathf.Tan(cam.fieldOfView / collision_box_size) * z;
@@ -59,7 +59,7 @@ public class CameraCollision : MonoBehaviour
                                                                                     
         intoArray[3] = (cp_rotation * new Vector3(x, -y, z)) + camera_position;     //add and rotate the collision point based on camera
                                                                                 
-        //intoArray[4] = camera_position - cam.transform.forward/2;                  //cam_pos
+        intoArray[4] = camera_position - cam.transform.forward/2;                  //cam_pos
     }
 
     //determines if there is a collision at any of these clip points
@@ -72,22 +72,10 @@ public class CameraCollision : MonoBehaviour
             
             float distance = Vector3.Distance(clip_points[i], target_position); //set distance that the ray will be 
             RaycastHit hit;
-
-            //Physics.Raycast(clip_points[i], Vector3.Distance(clip_points[i], target_position), hit, distance)
             
             if(Physics.Raycast(ray, out hit, distance, camera_collisison_layer))
             {
-
-                //hit.collider.GetComponent<TagsScript>().outputTags();
-                //Debug.DrawRay(target_position, clip_points[i] - target_position);
-                Debug.Log( hit.collider.gameObject.layer);
-
-                //hit.collider.enabled = false;
-
-
-                //Debug.DrawLine(transform.position, hit.transform.position);
-
-                return true;
+                return true;    //a collision has been detected
             }
         }
 
@@ -100,7 +88,7 @@ public class CameraCollision : MonoBehaviour
 
         for (int i = 0; i < desired_cp_pos.Length; i++)
         {
-            Ray ray = new Ray(target_position, desired_cp_pos[i] - target_position);
+            Ray ray = new Ray(target_position, desired_cp_pos[i] - target_position);    //define a new ray starting from the target with a direction towards the clip point
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))
