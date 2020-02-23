@@ -64,7 +64,7 @@ public class PauseManager
     }
 
 
-    public void LateUpdate() 
+    public void Update() 
     {
         paused_event = PAUSED_EVENTS.NONE;
 

@@ -49,7 +49,8 @@ public class PlayerFishingState : BaseState
     [Tooltip("the fishing bob logic script")]
     [SerializeField] GameObject fishingBob;
 
-    [SerializeField] ButtonUIManager buttonUIManager;
+    [SerializeField] Transform handTransform;
+
     [SerializeField] Animator fixedRodAnimator;
 
     enum FISHING_STATE
@@ -62,7 +63,8 @@ public class PlayerFishingState : BaseState
         FISHING,
         INTERACTING_FISH,
         BITING_FISH,
-        FISH_FIGHTING
+        FISH_FIGHTING,
+        FISHING_VICTORY
     };
 
 
@@ -100,8 +102,8 @@ public class PlayerFishingState : BaseState
         fishingIndicatorLogic.gameObject.SetActive(true);
         fishingIndicatorLogic.AttachLookAtTransform(cameraTransform);
 
-        buttonUIManager.DisableAllButtons();
-        buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.B, "Cancel Fishing");
+        GM_.instance.ui.helperButtons.DisableAllButtons();
+        GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.B, "Cancel Fishing");
     }
 
     public void OnDisable()
@@ -127,8 +129,7 @@ public class PlayerFishingState : BaseState
         if (fishingProjectileIndicator != null)
             fishingProjectileIndicator.gameObject.SetActive(false);
 
-        if (buttonUIManager != null)
-            buttonUIManager.DisableAllButtons();
+        GM_.instance.ui.helperButtons.DisableAllButtons();
 
         thirdPersonCamera.look_at_target = transform; // set target back to player
     }
@@ -220,8 +221,8 @@ public class PlayerFishingState : BaseState
                     {
                         if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
                         {
-                            GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                             CancelCasted();
+                            GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                         }
                     }
                     break;
@@ -250,8 +251,8 @@ public class PlayerFishingState : BaseState
                     GM_.instance.input.SetVibration(InputManager.VIBRATION_MOTOR.RIGHT, reelAxis *0.1f);
                     if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
                     {
-                        GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                         CancelCasted();
+                        GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                     }
                     else if (GM_.instance.input.GetAxis(InputManager.AXIS.RT) > 0.01f) // bring the bob closer by reeling in
                     {
@@ -270,8 +271,8 @@ public class PlayerFishingState : BaseState
 
                     if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
                     {
-                        GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                         CancelCasted();
+                        GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                     }
                     else if (GM_.instance.input.GetAxis(InputManager.AXIS.RT) > 0.5f)
                     {
@@ -306,38 +307,14 @@ public class PlayerFishingState : BaseState
 
                     if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
                     {
-                        GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                         CancelCasted();
+                        GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                     }
 
                     break;
                 }
             case FISHING_STATE.FISH_FIGHTING:
                 {
-
-
-
-                    //switch(interactingFish.GetFightingState())
-                    //{
-                    //    case FishLogic.FIGHTING_STATE.LEFT:
-                    //        {
-                    //            fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.FISH_LEFT);
-                    //            fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x,GlobalVariables.WATER_LEVEL + 1.0f , interactingFish.transform.position.z));
-                    //            break;
-                    //        }
-                    //    case FishLogic.FIGHTING_STATE.RIGHT:
-                    //        {
-                    //            fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.FISH_RIGHT);
-                    //            fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x, GlobalVariables.WATER_LEVEL + 1.0f, interactingFish.transform.position.z));
-                    //            break;
-                    //        }
-                    //    default:
-                    //        {
-                    //            fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.NOT_ACTIVE);
-                    //            break;
-                    //        }
-                    //}
-
                     GM_.instance.input.SetVibration(InputManager.VIBRATION_MOTOR.LEFT, 1.0f - interactingFish.GetLineStrengthPercentageLeft());
 
                     bool game_over = false;
@@ -362,17 +339,18 @@ public class PlayerFishingState : BaseState
                             GM_.instance.input.SetVibrationBoth(0, 0);
                             FishFightLineSnapped();
                         }
-                        else if (interactingFish.FishCaught())
+                        else if (interactingFish.IsFishCaught())
                         {
                             //fish caught
                             GM_.instance.input.SetVibrationBoth(0,0);
                             FishFightSuccess();
                         }
                     }
-
-
-
-
+                    break;
+                }
+            case FISHING_STATE.FISHING_VICTORY:
+                {
+                    FishingVictoryUpdate();
                     break;
                 }
         }
@@ -466,7 +444,7 @@ public class PlayerFishingState : BaseState
 
         cast_position.x += XZVelocity.normalized.x * range;
         cast_position.z += XZVelocity.normalized.y * range;
-        cast_position.y = GlobalVariables.WATER_LEVEL + 0.01f;
+        cast_position.y = GlobalVariables.WATER_LEVEL;
 
         fishingProjectileIndicator.transform.position = cast_position;
     }
@@ -529,6 +507,8 @@ public class PlayerFishingState : BaseState
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
 
         fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.NOT_ACTIVE);
+
+        GM_.instance.input.SetVibrationBoth(0, 0);
 
         if (interactingFish != null)
         {
@@ -669,13 +649,12 @@ public class PlayerFishingState : BaseState
         thirdPersonCamera.look_at_target = interactingFish.gameObject.transform;
         
         fishingLineLogic.BeganFighting(interactingFish);
-        interactingFish.BeginFighting(new Vector2(transform.position.x, transform.position.z), staticFishingRodLogic);
+        interactingFish.BeginFighting(new Vector2(transform.position.x, transform.position.z));
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
     }
 
     void FishFightLineSnapped()
     {
-        GM_.instance.input.SetVibration(InputManager.VIBRATION_MOTOR.LEFT, 0);
 
         interactingFish.FishEscaped();
 
@@ -684,15 +663,47 @@ public class PlayerFishingState : BaseState
 
     }
 
+
+
+    bool call_waiting_transition_once = false;
     void FishFightSuccess()
     {
-        GM_.instance.input.SetVibration(InputManager.VIBRATION_MOTOR.LEFT, 0);
+        fishing_state = FISHING_STATE.FISHING_VICTORY;
+        interactingFish.FishCaught();
+        GM_.instance.ui.transition.FadePreset(UITransition.FADE_PRESET.DEFAULT);
+        characterControllerMovement.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
 
-        Destroy(interactingFish.transform.parent.gameObject);
-        interactingFish = null;
-        CancelCasted();
+        call_waiting_transition_once = false;
+      //  Destroy(interactingFish.transform.parent.gameObject);
+      //  interactingFish = null;
+      //   CancelCasted();
+
+        
     }
 
+
+    void FishingVictoryUpdate()
+    {
+        if (call_waiting_transition_once)
+        {
+
+        }
+        else
+        {
+            if (GM_.instance.ui.transition.IsInWaitingTransition())
+            {
+                call_waiting_transition_once = true;
+
+                interactingFish.SetCaughtPosition(handTransform.position);
+                staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
+                fishingLineLogic.gameObject.SetActive(false);
+                fishingBob.SetActive(false);
+                fishingProjectileIndicator.SetActive(false);
+
+            }
+        }
+
+    }
     // -- // 
     // -- Public Functions -- //
 

@@ -19,7 +19,6 @@ public class PlayerExploreState : BaseState
     [SerializeField] CelebrationCamera camera_celebration;
 
 
-    [SerializeField] ButtonUIManager buttonUIManager;
 
     INTERACTION_TYPE interaction_type;
 
@@ -27,6 +26,7 @@ public class PlayerExploreState : BaseState
     {
         movement_.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
         camera_third_person.current_state = ThirdPersonCamera.STATE.FREE;
+        camera_celebration.enabled = false;
         camera_third_person.look_at_target = transform;
     }
 
@@ -77,39 +77,39 @@ public class PlayerExploreState : BaseState
                             {
                                 interaction_type = INTERACTION_TYPE.FISH;
 
-                                buttonUIManager.DisableAllButtons();
-                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "Start Fishing");
+                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Start Fishing");
                             }
                             break;
                         case TriggerType.TRIGGER_TYPE.RADIO:
                             {
                                 interaction_type = INTERACTION_TYPE.RADIO;
 
-                                buttonUIManager.DisableAllButtons();
-                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "Talk to Radio");
+                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Talk to Radio");
                             }
                             break;
                         case TriggerType.TRIGGER_TYPE.SLEEP:
                             {
                                 interaction_type = INTERACTION_TYPE.SLEEP;
 
-                                buttonUIManager.DisableAllButtons();
-                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "Go to Sleep");
+                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Go to Sleep");
                             }
                             break;
                         case TriggerType.TRIGGER_TYPE.REPAIR:
                             {
                                 interaction_type = INTERACTION_TYPE.REPAIR;
 
-                                buttonUIManager.DisableAllButtons();
-                                buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "Plane Repair");
+                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Plane Repair");
 
                                 break;
                             }
                         default:
                             {
                                 interaction_type = INTERACTION_TYPE.NONE;
-                                buttonUIManager.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.DisableAllButtons();
 
                             }
                             break;
@@ -122,7 +122,7 @@ public class PlayerExploreState : BaseState
     private void OnTriggerExit(Collider other)
     {
         interaction_type = INTERACTION_TYPE.NONE;
-        buttonUIManager.DisableAllButtons();
+        GM_.instance.ui.helperButtons.DisableAllButtons();
     }
 
 }
