@@ -2437,7 +2437,7 @@ MonoBehaviour:
   plane_segments: []
   buttonUIManager: {fileID: 5343870348728116537}
   movement_: {fileID: 7745113462265003505}
-  camera_: {fileID: 0}
+  camera_: {fileID: 1091709047621663628}
 --- !u!114 &8536008558245326550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3495,6 +3495,16 @@ PrefabInstance:
       propertyPath: buttonUIManager
       value: 
       objectReference: {fileID: 5343870348728116537}
+    - target: {fileID: 1781338289793398869, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: camera_third_person
+      value: 
+      objectReference: {fileID: 1091709047621663628}
+    - target: {fileID: 1781338289793398869, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: camera_celebration
+      value: 
+      objectReference: {fileID: 9060266867019946317}
     - target: {fileID: 6160413944266683236, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: _camera

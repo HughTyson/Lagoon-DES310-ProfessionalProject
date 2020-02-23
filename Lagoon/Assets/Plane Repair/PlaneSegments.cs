@@ -108,7 +108,7 @@ public class PlaneSegments : MonoBehaviour
 
                         if (game_selected && needs_init) //initilise the game 
                         {
-                            games[selected_game].game.GameInit(this.transform);   //call the init function
+                            games[selected_game].game.GameInit(transform);   //call the init function
                             needs_init = false;
                             return;
                         }

@@ -28,8 +28,9 @@ public class SwitchGameLogic : RepairGameBase
         {
             //Instantiate the switches
             
-            switchs[i] = Instantiate(switch_prefab, this.transform);
-            switchs[i].transform.position = new Vector3(i + 1, 0, 0);
+            switchs[i] = Instantiate(switch_prefab, segment_transform);
+            //switchs[i].transform.position = new Vector3(segment_transform.position.x + i, segment_transform.position.y, segment_transform.position.z);
+            switchs[i].transform.position = new Vector3(1 + i, 2, 0);
 
             switchs[i].activate = switch_info[i].activates;
             switchs[i].deactivate = switch_info[i].deactivates;
@@ -38,8 +39,10 @@ public class SwitchGameLogic : RepairGameBase
 
             lights[i] = Instantiate(light_prefab, this.transform);
             lights[i].SetMatOff();
-            lights[i].transform.position = new Vector3(i + 1, 1, 0);
-            
+            // lights[i].transform.position = new Vector3(segment_transform.position.x + i, segment_transform.position.y +  1, segment_transform.position.z);
+            lights[i].transform.position = new Vector3(1 + i, 3, 0);
+
+        
         }
     }
 
@@ -63,11 +66,6 @@ public class SwitchGameLogic : RepairGameBase
                 for (int j = 0; j < switchs[i].activate.Count; j++)
                 {
                     light_active[switchs[i].activate[j]] = true;
-                }
-
-                for (int k = 0; k < switchs[i].deactivate.Count; k++)
-                {
-                    light_active[switchs[i].deactivate[k]] = false;
                 }
             }
         }
