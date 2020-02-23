@@ -14,14 +14,9 @@ public class ThirdPersonCamera : MonoBehaviour
     [SerializeField] Transform rot_target; //what the camera rotates around
     [Tooltip("The game object that the camera will look at as it rotates")]
     [SerializeField] public Transform look_at_target; // what the camera looks at
-
-    [Header("Variables used to determine what shoulder camera looks over")]
-
-    [SerializeField] Vector3 camera_offset_right = new Vector3(0.4f ,0.5f, -2.0f);
-    [SerializeField] Vector3 camera_offset_left = new Vector3(0f, 0f, 0f);
-    [Tooltip("False looks over left shoulder, true looks over right shoulder")]
-    [SerializeField] bool shoulder_side = false; // false is for left   |  true is for right
-
+    [Tooltip("The offset from the origin of the target")]
+    [SerializeField] Vector3 target_offset = new Vector3(0.0f ,3.5f, 0.0f);
+    
     [Header("Misc")]
     //minimum and maximum angles for the Y axis
     [Tooltip("Minimum angles for the Y axis movement of the camera")]
@@ -64,7 +59,7 @@ public class ThirdPersonCamera : MonoBehaviour
     private Vector3 destination;
     private Vector3 adjusted_destination;
     private Vector3 target_pos;
-    private Vector3 target_offset;
+    
 
     private Vector3 cam_velocity = Vector3.zero;
 
@@ -98,15 +93,6 @@ public class ThirdPersonCamera : MonoBehaviour
         collision.UpdateCameraClipPoints(transform.position, transform.rotation, ref collision.adjusted_cp_pos);
         collision.UpdateCameraClipPoints(destination, transform.rotation, ref collision.desired_cp_pos);
 
-        if(shoulder_side)
-        {
-            target_offset = camera_offset_right;
-        }
-        else
-        {
-            target_offset = camera_offset_left;
-        }
-
         current_state = STATE.FREE;
     }
 
@@ -132,16 +118,6 @@ public class ThirdPersonCamera : MonoBehaviour
             default:
                 break;
         }
-
-
-        if (shoulder_side)
-        {
-            target_offset = camera_offset_right;
-        }
-        else
-        {
-            target_offset = camera_offset_left;
-        }
     }
 
     private void LateUpdate()
@@ -159,7 +135,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
                     setPosition();                  //set the position based on the new destination
 
-                    Quaternion new_look = Quaternion.LookRotation(rot_target.position - _camera.position);
+                    Quaternion new_look = Quaternion.LookRotation((rot_target.position + target_offset) - _camera.position);
 
                     //new_look.Normalize();
 
@@ -233,17 +209,17 @@ public class ThirdPersonCamera : MonoBehaviour
         {
             if (drawDesiredCollisionLines)
             {
-                Debug.DrawLine(rot_target.position, collision.desired_cp_pos[i], Color.white);
+                Debug.DrawLine((rot_target.position + target_offset), collision.desired_cp_pos[i], Color.white);
             }
 
             if (drawAdjustedCollisionLines)
             {
-                Debug.DrawLine(rot_target.position, collision.adjusted_cp_pos[i], Color.green);
+                Debug.DrawLine((rot_target.position + target_offset), collision.adjusted_cp_pos[i], Color.green);
             }
         }
 
-        collision.CheckColliding(rot_target.position); //using raycasts here
-        adjusted_distance = collision.GetAdjustedDistanceWithRay(rot_target.position);
+        collision.CheckColliding((rot_target.position + target_offset)); //using raycasts here
+        adjusted_distance = collision.GetAdjustedDistanceWithRay((rot_target.position + target_offset));
 
     }
 
@@ -266,6 +242,7 @@ public class ThirdPersonCamera : MonoBehaviour
         //set the target position based of the targets current position, the offset values,
         //the input from the controller and the distance that the player is from the camera
 
+        //target_pos = rot_target.position + target_offset;
         target_pos = rot_target.position + rot_target.up * target_offset.y + rot_target.forward * target_offset.z + transform.TransformDirection(rot_target.right * target_offset.x); 
         destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
 
@@ -281,7 +258,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
             //calculated an adjusted destination based on the collision
             adjusted_destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * (-Vector3.forward * adjusted_distance);
-            adjusted_destination += rot_target.position;
+            adjusted_destination += (rot_target.position + target_offset);
 
             //linear interpolation between the camera's current position and its new destination
            

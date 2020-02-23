@@ -2399,6 +2399,26 @@ PrefabInstance:
       propertyPath: player_max_angle
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1091709047621663628, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: rot_target
+      value: 
+      objectReference: {fileID: 1368874755}
+    - target: {fileID: 1091709047621663628, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: camera_offset_right.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1091709047621663628, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: camera_offset_right.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1091709047621663628, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+        type: 3}
+      propertyPath: camera_offset_right.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4074348667892296029, guid: 44c1c3a266e23f84da21ac8855c56dfb,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -4217,6 +4237,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ef265127d9386498d3c6e954907ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1368874755 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7745113462265003517, guid: 44c1c3a266e23f84da21ac8855c56dfb,
+    type: 3}
+  m_PrefabInstance: {fileID: 830541826}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1368874756
 MonoBehaviour:
   m_ObjectHideFlags: 0
