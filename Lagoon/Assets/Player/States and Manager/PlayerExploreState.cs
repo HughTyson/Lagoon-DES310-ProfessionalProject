@@ -15,7 +15,8 @@ public class PlayerExploreState : BaseState
     }
 
     [SerializeField] CharacterControllerMovement movement_;
-    [SerializeField] ThirdPersonCamera camera_;
+    [SerializeField] ThirdPersonCamera camera_third_person;
+    [SerializeField] CelebrationCamera camera_celebration;
 
 
 
@@ -24,8 +25,8 @@ public class PlayerExploreState : BaseState
     public void OnEnable()
     {
         movement_.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
-        camera_.current_state = ThirdPersonCamera.STATE.FREE;
-        camera_.look_at_target = transform;
+        camera_third_person.current_state = ThirdPersonCamera.STATE.FREE;
+        camera_third_person.look_at_target = transform;
     }
 
     public void OnDisable()
@@ -43,21 +44,22 @@ public class PlayerExploreState : BaseState
                     { }
                     break;
                 case INTERACTION_TYPE.FISH:
-                    { StateManager.ChangeState(PlayerScriptManager.STATE.FISHING); Debug.Log("FISHING"); }
+                    { StateManager.ChangeState(PlayerScriptManager.STATE.FISHING); Debug.Log("FISHING"); GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED); }
                     break;
                 case INTERACTION_TYPE.RADIO:
-                    { StateManager.ChangeState(PlayerScriptManager.STATE.CONVERSATION); Debug.Log("RADIO"); }
+                    { StateManager.ChangeState(PlayerScriptManager.STATE.CONVERSATION); Debug.Log("RADIO"); GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED); }
                     break;
                 case INTERACTION_TYPE.SLEEP:
                     { }
                     break;
                 case INTERACTION_TYPE.REPAIR:
-                    { StateManager.ChangeState(PlayerScriptManager.STATE.REPAIR); Debug.Log("REPIAR"); }
+                    { StateManager.ChangeState(PlayerScriptManager.STATE.REPAIR); Debug.Log("REPIAR");GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED); }
                     break;
                 default:
                     break;
             }
         }
+
     }
 
     private void OnTriggerStay(Collider other)
