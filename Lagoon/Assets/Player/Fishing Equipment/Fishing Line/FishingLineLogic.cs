@@ -152,6 +152,8 @@ public class FishingLineLogic : MonoBehaviour
         }
 
         fishingRodDecoratorLineRenderer.positionCount = RodLineParticles.Count;
+
+        current_state = STATE.NOT_ACTIVE;
     }
     private void OnDisable()
     {
@@ -168,7 +170,7 @@ public class FishingLineLogic : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate() // in late update to prevent rendering line faster than fishing rod mesh
     {
 
 

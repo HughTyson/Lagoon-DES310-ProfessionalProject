@@ -48,7 +48,6 @@ public class PlaneSegments : MonoBehaviour
     [SerializeField] public SegmentType type;
     [SerializeField] float transition_time;
 
-    [SerializeField] ButtonUIManager buttonUIManager;
 
 
     [SerializeField] List<OnSegment> games;
@@ -95,10 +94,10 @@ public class PlaneSegments : MonoBehaviour
                             case RepairGameBase.GameType.SwitchGame:    //if the game is of type switch
                                 {
                                     //change the button ui
-                                    buttonUIManager.DisableAllButtons();
+                                    GM_.instance.ui.helperButtons.DisableAllButtons();
                                     if (!game_selected)
                                     {
-                                        buttonUIManager.EnableButton(ButtonUIManager.BUTTON_TYPE.A, "Switch Game");
+                                        GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Switch Game");
                                     }
                                 }
                                 break;

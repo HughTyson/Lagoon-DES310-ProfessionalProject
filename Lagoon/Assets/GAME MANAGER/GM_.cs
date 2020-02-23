@@ -9,6 +9,11 @@ public class GM_ : MonoBehaviour
 
     public InputManager input = new InputManager();
     public PauseManager pause = new PauseManager();
+    public StatsManager stats = new StatsManager();
+
+    // [Header("Self Pointers")]
+    //  [SerializeField] UIManager ui;
+    public UIManager ui;
     private void Awake()
     {
         if (instance == null)
@@ -28,21 +33,17 @@ public class GM_ : MonoBehaviour
         
     }
 
-    private void Update()
-    {
-
-    }
-
 
     private void FixedUpdate()
     {
         input.FixedUpdate();
     }
 
-    void LateUpdate()
+    void Update() // the execution order of this is set to first so it will call before any other game objects
     {
-        input.LateUpdate(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
-        pause.LateUpdate(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
+        input.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
+        pause.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
+        ui.ManagerUpdate();
     }
 
     private void OnDestroy()

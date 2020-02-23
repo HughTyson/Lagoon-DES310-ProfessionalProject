@@ -103,7 +103,7 @@ public class InputManager // input manager for a single player controller game
 
         GamePad.SetVibration(playerIndex, leftMotor.currentAmplitude, rightMotor.currentAmplitude); // set in fixed update to keep consistent vibration
     }
-    public void LateUpdate()
+    public void Update()
     {
         ConnectController();
         UpdateControllerValues();

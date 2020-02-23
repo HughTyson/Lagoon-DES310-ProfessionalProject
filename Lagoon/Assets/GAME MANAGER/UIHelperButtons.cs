@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class ButtonUIManager : MonoBehaviour
+public class UIHelperButtons : MonoBehaviour
 {
     // Start is called before the first frame update
 
@@ -27,17 +27,16 @@ public class ButtonUIManager : MonoBehaviour
     [SerializeField]
     List<ButtonBundle> buttonList;
 
-    void Start()
+
+    public void HideButtons()
     {
-        
+        enabled = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShowButtons()
     {
-        
+        enabled = true;
     }
-
 
     public void DisableAllButtons()
     {

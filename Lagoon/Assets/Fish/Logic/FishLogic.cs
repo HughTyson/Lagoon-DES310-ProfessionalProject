@@ -48,7 +48,8 @@ public class FishLogic : MonoBehaviour
         AVOIDING,            // the fish sees a threat and is avoiding it
         ATTRACTED,           // the fish is attracted to a location
         INTERACTING,          // the fish is interacting with a fishing lure
-        FIGHTING
+        FIGHTING,
+        CAUGHT
     }
     STATE current_state;     // The current state of the fish
 
@@ -228,6 +229,11 @@ public class FishLogic : MonoBehaviour
                     FightingStateUpdate();
                     break;
                 }
+            case STATE.CAUGHT:
+                {
+
+                    break;
+                }
         }
 
     }
@@ -249,7 +255,16 @@ public class FishLogic : MonoBehaviour
 
             StateTick(); // update state
 
-        if (current_state != STATE.FIGHTING)
+
+        if (current_state == STATE.FIGHTING)
+        {
+
+        }
+        else if (current_state == STATE.CAUGHT)
+        {
+
+        }
+        else
         {
             GetComponentInParent<Rigidbody>().velocity = Vector3.ClampMagnitude(GetComponentInParent<Rigidbody>().velocity, varsFromFishGenerator.maxVelocity);
 
@@ -267,20 +282,7 @@ public class FishLogic : MonoBehaviour
 
 
         }
-        else
-        {
-            //    GetComponentInParent<Rigidbody>().velocity = Vector3.ClampMagnitude(GetComponentInParent<Rigidbody>().velocity, varsFromFishGenerator.maxVelocity);
-            //    fishFightingPhysicsBody.velocity = Vector3.ClampMagnitude(fishFightingPhysicsBody.velocity, varsFromFishGenerator.maxVelocity);
-
-            // Vector2 velocityUnitXZ = new Vector2(fishFightingPhysicsBody.velocity.x, fishFightingPhysicsBody.velocity.z).normalized;
-
-            //Vector2 velocityUnitXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z).normalized;
-
-            //if (velocityUnitXZ.magnitude > 0.0001)
-            //{
-            //    transform.parent.transform.rotation = Quaternion.LookRotation(new Vector3(velocityUnitXZ.x, 0, velocityUnitXZ.y), Vector3.up);
-            //}
-        }
+        
 
     }
 
@@ -553,6 +555,12 @@ public class FishLogic : MonoBehaviour
         return fishHoldBiteTime;
     }
 
+
+    public void FishCaught()
+    {
+        current_state = STATE.CAUGHT;
+    }
+
     // -- Fighting State -- //
 
     public enum FIGHTING_STATE
@@ -564,27 +572,15 @@ public class FishLogic : MonoBehaviour
 
     struct FightingStateVars
     {
-
-        //public float currentNextStateChangeTime;
-        //public float distanceTillCaught;
-        //public float currentLineTensionTime;
-
-        //public StaticFishingRodLogic staticFishingRodLogicPointer;
-        //public Transform fishing_rod_tip;
-
-        //public float currentTransitionTime;
-        public float initial_dot;
-
         public FIGHTING_STATE state;
         public float maxVelocity;
-        public float dragPercentage;
 
         public float currentVelocity;
         public float fightingVelocityMax;
         public Vector2 playerPosXZ;
         public float distanceToPlayer;
 
-        public float initLeftRighAmplitude;
+        public float maxLeftRighAmplitude;
         public float leftRighAmplitude;
 
         public float fightingAccellerationMin;
@@ -594,8 +590,7 @@ public class FishLogic : MonoBehaviour
 
         public float fishAngleValue;
         public float fightingYDistance;
-        //public float currentTurnAngle;
-        //public float maxTurnForce;
+
         public float fightingNextStateMinTime;
         public float fightingNextStateMaxTime;
 
@@ -611,24 +606,8 @@ public class FishLogic : MonoBehaviour
 
 
     
-    public void BeginFighting(Vector2 playerPosXZ_, StaticFishingRodLogic static_fishing_rod)
+    public void BeginFighting(Vector2 playerPosXZ_)
     {
-
-        //fightingStateVars.maxTurnForce = 20.0f;
-
-
-        //fishFightingPhysicsBody.gameObject.SetActive(true);
-
-
-        //fightingStateVars.distanceTillCaught = Vector2.Distance(fishing_rod_tip.position, headVectorXZ) + 3.0f;
-        //fightingStateVars.staticFishingRodLogicPointer = static_fishing_rod;
-        //fightingStateVars.fishing_rod_tip = fishing_rod_tip;
-
-        //fightingStateVars.currentNextStateChangeTime = Random.Range(fightingNextStateMinTime, fightingNextStateMaxTime);
-        //fightingStateVars.currentTurnAngle = (Random.value <= 0.5) ? 1 : -1;
-
-       
-
 
         fightingStateVars.state = FIGHTING_STATE.GO_TO_STARTPOSITION;
         current_state = STATE.FIGHTING;
@@ -638,12 +617,11 @@ public class FishLogic : MonoBehaviour
         fightingStateVars.currentVelocity = 0;
         fightingStateVars.maxVelocity = 16;
        
-        fightingStateVars.dragPercentage = 0.0f;
         fightingStateVars.distanceToPlayer = Vector2.Distance(headVectorXZ, fightingStateVars.playerPosXZ);
 
 
-        fightingStateVars.initLeftRighAmplitude = 10.0f;
-        fightingStateVars.leftRighAmplitude = fightingStateVars.initLeftRighAmplitude;
+        fightingStateVars.maxLeftRighAmplitude = 10.0f;
+        fightingStateVars.leftRighAmplitude = fightingStateVars.maxLeftRighAmplitude;
 
         fightingStateVars.fightingAccellerationMin = 0.02f;
         fightingStateVars.fightingAccellerationMax = 0.04f;
@@ -659,10 +637,10 @@ public class FishLogic : MonoBehaviour
 
         fightingStateVars.maxDistance = 50.0f;
 
-        fightingStateVars.initial_dot = Vector2.Dot((headVectorXZ - fightingStateVars.playerPosXZ).normalized, Vector2.left);
-
 
         fightingStateVars.fleeingDriveForce = 5.0f;
+
+        Debug.Log("Init Player Distance: " + fightingStateVars.distanceToPlayer);
 
     }
 
@@ -690,12 +668,8 @@ public class FishLogic : MonoBehaviour
     {
         fightingStateVars.playerAccelleration = -(acc * fightingStateVars.playerAccellerationMax);
     }
-    void DamageLine()
-    {
-       // fightingStateVars.currentLineTensionTime -= Time.deltaTime;
-    }
 
-    public bool FishCaught()
+    public bool IsFishCaught()
     {
         if (fightingStateVars.state == FIGHTING_STATE.FIGHTING)
         {
@@ -710,13 +684,13 @@ public class FishLogic : MonoBehaviour
     }
     public void FightingStateUpdate()
     {
-        
+
         switch (fightingStateVars.state)
         {
 
             case FIGHTING_STATE.GO_TO_STARTPOSITION:
                 {
-
+                    
 
                     Debug.DrawRay(transform.parent.transform.position, transform.parent.transform.forward * 20.0f, Color.green);
 
@@ -755,23 +729,12 @@ public class FishLogic : MonoBehaviour
                         newPosXZ = fightingStateVars.playerPosXZ + (Vector2Extension.Rotate((headVectorXZ - fightingStateVars.playerPosXZ).normalized, adding_angle) * fightingStateVars.distanceToPlayer);
                     }
 
-                    float dot = Vector2.Dot((headVectorXZ - fightingStateVars.playerPosXZ).normalized, Vector2.left);
-
-                  
-
-
-                      
-                  //  Vector2 newPosXZ = fightingStateVars.playerPosXZ + (Vector2Extension.Slerp((headVectorXZ - fightingStateVars.playerPosXZ).normalized, Vector2.left, Mathf.Sqrt(Time.fixedDeltaTime))* fightingStateVars.distanceToPlayer);
-
-
                     Vector3 newPos = Vector3.zero;
                     newPos.x = newPosXZ.x;
                     newPos.y = transform.parent.transform.position.y;
                     newPos.z = newPosXZ.y;
                     
                     
-                 //   Debug.DrawRay(new Vector3(fightingStateVars.playerPosXZ.x,5, fightingStateVars.playerPosXZ.y), new Vector3((Vector2Extension.Rotate((headVectorXZ - fightingStateVars.playerPosXZ).normalized, -fightingStateVars.currentVelocity * Time.fixedDeltaTime) * fightingStateVars.distanceToPlayer).x, 3, (Vector2Extension.Rotate((headVectorXZ - fightingStateVars.playerPosXZ).normalized, -fightingStateVars.currentVelocity * Time.fixedDeltaTime) * fightingStateVars.distanceToPlayer).y),Color.red);
-
                     transform.parent.transform.position = newPos;
 
                     if (circumference < 0.1f)
@@ -782,9 +745,10 @@ public class FishLogic : MonoBehaviour
                         fightingStateVars.fightingAccelleration = Random.Range(fightingStateVars.fightingAccellerationMin, fightingStateVars.fightingAccellerationMax);
                         fightingStateVars.fishAngleValue = 0.5f;
 
-                        if (fightingStateVars.distanceToPlayer > fightingStateVars.leftRighAmplitude) // Pythagoras: set B^2 based on A^2 and C^2  : B = sqrt(C^2 - A^2)
+                        if (fightingStateVars.distanceToPlayer > Mathf.Sqrt(2.0f * (fightingStateVars.maxLeftRighAmplitude* fightingStateVars.maxLeftRighAmplitude)))  
                         {
-                            fightingStateVars.fightingYDistance = Mathf.Sqrt(Mathf.Pow(fightingStateVars.distanceToPlayer, 2) - Mathf.Pow(fightingStateVars.leftRighAmplitude,2 ));
+                            // Pythagoras: set B^2 based on A^2 and C^2  : B = sqrt(C^2 - A^2)
+                            fightingStateVars.fightingYDistance = Mathf.Sqrt(Mathf.Pow(fightingStateVars.distanceToPlayer, 2) - Mathf.Pow(fightingStateVars.maxLeftRighAmplitude, 2 ));
                         }
                         else // Pythagoras: C^2 is smaller than A^2, so A^2 and B^2 need to be changed based on C^2  : A = B   => A = sqrt(C^2 / 2))
                         {
@@ -792,66 +756,19 @@ public class FishLogic : MonoBehaviour
                             fightingStateVars.leftRighAmplitude = fightingStateVars.fightingYDistance;
                         }
                     }
-
                     break;
                 }
             case FIGHTING_STATE.FIGHTING:
                 {
-                    //fightingStateVars.currentNextStateChangeTime -= Time.deltaTime;
-
-                    //if (fightingStateVars.currentNextStateChangeTime <= 0)
-                    //{
-                    //    fightingStateVars.currentNextStateChangeTime = Random.Range(fightingNextStateMinTime, fightingNextStateMaxTime);
-                    //    fightingStateVars.currentTurnAngle *= -1;
-                    //}
-
-
-                    //Vector3 applied_force = transform.forward;
-                    //applied_force.y = 0;
-
-                    ////  GetComponentInParent<Rigidbody>().AddForce((applied_force).normalized * 20.0f);
-                    ////  fishFightingPhysicsBody.AddForce((applied_force).normalized * 20.0f);
-
-
-
-                    //Vector2 location = new Vector2(transform.position.x, transform.position.z);
-
-
-                    //Vector2 new_vec = (headVectorXZ - new Vector2(fightingStateVars.fishing_rod_tip.position.x, fightingStateVars.fishing_rod_tip.position.z)).normalized;
-                    ////  Vector2 desired = Vector2Extension.Rotate(new_vec, 90.0f * -Input.GetAxis("PlayerLH")) * 30.0f;
-                    //Vector2 desired = Vector2Extension.Rotate(new_vec, 90.0f) * fightingStateVars.maxTurnForce * fightingStateVars.currentTurnAngle;
-
-                    //if (desired.magnitude > 0.001)
-                    //{
-                    //    Vector3 desired3d = new Vector3(desired.x, 0, desired.y);
-                    //    GetComponentInParent<Rigidbody>().velocity = desired3d;
-                    //}
-
-
-
-
-                    //desired = Vector2Extension.Rotate(new_vec, 90.0f) * fightingStateVars.maxTurnForce * GM_.instance.input.GetAxis(InputManager.AXIS.LH) * 1.5f;
-
-                    //if (desired.magnitude > 0.001)
-                    //{
-                    //    Vector3 desired3d = new Vector3(desired.x, 0, desired.y);
-                    //    GetComponentInParent<Rigidbody>().velocity -= desired3d;
-                    //}
-
-
-
-                    //fishFightingPhysicsBody.transform.position = transform.position;
-                    //fishFightingPhysicsBody.rotation = transform.rotation
-
                     fightingStateVars.fightingYDistance += fightingStateVars.fleeingDriveForce * Time.fixedDeltaTime;
 
-                    if (fightingStateVars.fightingYDistance < fightingStateVars.leftRighAmplitude)
+                    if (fightingStateVars.fightingYDistance < fightingStateVars.maxLeftRighAmplitude)
                     {
                         fightingStateVars.leftRighAmplitude = fightingStateVars.fightingYDistance;
                     }
                     else
                     {
-                        fightingStateVars.leftRighAmplitude = fightingStateVars.initLeftRighAmplitude;
+                        fightingStateVars.leftRighAmplitude = fightingStateVars.maxLeftRighAmplitude;
                     }
 
                     fightingStateVars.currentNextStateChangeTime -= Time.fixedDeltaTime;
@@ -861,15 +778,6 @@ public class FishLogic : MonoBehaviour
                         fightingStateVars.currentNextStateChangeTime = Random.Range(fightingStateVars.fightingNextStateMinTime, fightingStateVars.fightingNextStateMaxTime);
                         fightingStateVars.fightingAccelleration = Random.Range(fightingStateVars.fightingAccellerationMin, fightingStateVars.fightingAccellerationMax) * -Mathf.Sign(fightingStateVars.fightingAccelleration);
                     }
-
-                   //+ Mathf.Abs((GM_.instance.input.GetAxis(InputManager.AXIS.LH)* fightingStateVars.currentVelocity)));
-
-
-                    //if (Mathf.Approximately(Mathf.Sign(player_accelleration), Mathf.Sign(fightingStateVars.currentVelocity)))
-                    //{
-                    //    player_accelleration = 0;
-                    //}
-                    
 
                     float output_accelleration = (fightingStateVars.fightingAccelleration + fightingStateVars.playerAccelleration);
 
@@ -910,9 +818,6 @@ public class FishLogic : MonoBehaviour
                         transform.parent.transform.rotation = Quaternion.LookRotation(new Vector3(lookatXZ.x,0, lookatXZ.y), Vector3.up);
                     }
 
-                    float near_edge = Mathf.Abs((fightingStateVars.fishAngleValue - 0.5f) * 2.0f);
-                    float min = 0.1f;
-
                     break;
                 }
         }
@@ -920,57 +825,7 @@ public class FishLogic : MonoBehaviour
     }
 
 
-    
-    void BeginFightingStateChange()
-    {
-
-
-
-        //List<FIGHTING_STATE> new_state = new List<FIGHTING_STATE>();
-        //new_state.Add(FIGHTING_STATE.RIGHT);
-        //new_state.Add(FIGHTING_STATE.LEFT);
-        //new_state.Remove(fightingStateVars.state);
-        //fightingStateVars.TransitionStateTo = new_state[0];
-
-
-        //switch (fightingStateVars.state)
-        //{
-        //    case FIGHTING_STATE.RIGHT:
-        //        {
-        //            fightingStateVars.TransitionFrom = fightingStateVars.LeftDir;
-        //            break;
-        //        }
-        //    case FIGHTING_STATE.LEFT:
-        //        {
-        //            fightingStateVars.TransitionFrom = fightingStateVars.RightDir;
-        //            break;
-        //        }
-        //    case FIGHTING_STATE.BEGIN_FIGHTING:
-        //        {
-        //            fightingStateVars.TransitionFrom = fightingStateVars.MiddleDir;
-        //            break;
-        //        }
-        //}
-        //switch (fightingStateVars.TransitionStateTo)
-        //{
-        //    case FIGHTING_STATE.RIGHT:
-        //        {
-        //            fightingStateVars.TransitionTo = fightingStateVars.LeftDir;
-        //            break;
-        //        }
-        //    case FIGHTING_STATE.LEFT:
-        //        {
-        //            fightingStateVars.TransitionTo = fightingStateVars.RightDir;
-        //            break;
-        //        }
-        //}
-
-
-        //fightingStateVars.currentNextStateChangeTime = Random.Range(fightingNextStateMinTime, fightingNextStateMaxTime);
-
-        //fightingStateVars.currentTransitionTime = 0;
-        //fightingStateVars.state = FIGHTING_STATE.TRANSITIONING;
-    }
+   
     public float GetLineStrengthPercentageLeft()
     {
         float near_edge = Mathf.Abs((fightingStateVars.fishAngleValue - 0.5f) * 2.0f);
@@ -985,6 +840,11 @@ public class FishLogic : MonoBehaviour
 
     }
 
+    public void SetCaughtPosition(Vector3 pos)
+    {
+        transform.parent.transform.rotation = Quaternion.LookRotation(Vector3.up, -Vector3.right);
+        transform.parent.transform.position = pos + (transform.parent.transform.position - fishheadTransform.position);
+    }
 
     public bool IsInDespawnableState()
     {
@@ -1010,14 +870,15 @@ public class FishLogic : MonoBehaviour
                 {
                     return true;
                 }
+            case STATE.CAUGHT:
+                {
+                    return false;
+                }
 
         }
         return false;
 
     }
 
-    public FIGHTING_STATE GetFightingState()
-    {
-        return fightingStateVars.state;
-    }
+    
 }
