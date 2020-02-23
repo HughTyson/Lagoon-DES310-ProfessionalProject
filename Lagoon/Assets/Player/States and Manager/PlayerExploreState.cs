@@ -26,6 +26,7 @@ public class PlayerExploreState : BaseState
     {
         movement_.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
         camera_third_person.current_state = ThirdPersonCamera.STATE.FREE;
+        camera_celebration.enabled = false;
         camera_third_person.look_at_target = transform;
     }
 
