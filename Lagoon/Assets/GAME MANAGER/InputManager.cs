@@ -194,8 +194,8 @@ public class InputManager // input manager for a single player controller game
         {
             case VIBRATION_PRESET.MENU_BUTTON_PRESSED:
                 {
-                    SetVibrationPulse(VIBRATION_MOTOR.LEFT, 0.1f, 1.0f);
-                    SetVibrationPulse(VIBRATION_MOTOR.RIGHT, 0.1f, 1.0f);
+                    SetVibrationPulse(VIBRATION_MOTOR.LEFT, 0.1f, 0.5f);
+                    SetVibrationPulse(VIBRATION_MOTOR.RIGHT, 0.1f, 0.5f);
 
                     break;
                 }

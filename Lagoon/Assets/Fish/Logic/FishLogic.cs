@@ -28,6 +28,9 @@ public class FishLogic : MonoBehaviour
 
     public struct VarsFromFishGenerator
     {
+        public FishType.FISH_TEIR teir;
+
+        public string fishTypeName;
         public Vector2 habitatRingOrigin;
         public float habitatRingMin;
         public float habitatRingMax;
@@ -39,7 +42,7 @@ public class FishLogic : MonoBehaviour
         public float maxVelocity;
     
     }
-    VarsFromFishGenerator varsFromFishGenerator;
+    public VarsFromFishGenerator varsFromFishGenerator;
 
     // -- Fish States -- //
     public enum STATE

@@ -15,7 +15,6 @@ public class FishGenerator : MonoBehaviour
     [System.Serializable]
     public class FishGenerationStats
     {
-
         public FishType.FISH_TEIR fishTeirEnum;
         public List<GameObject> spawnArea;
         public float habitatRingMin;
@@ -176,6 +175,8 @@ public class FishGenerator : MonoBehaviour
         fish_vars.maxTurnForce = chosen_fish_type.StatsList[fishRing.fishTeirEnum].maxTurnForce;
         fish_vars.maxVelocity = chosen_fish_type.StatsList[fishRing.fishTeirEnum].maxVelocity;
         fish_vars.size = RandomnessExtension.RandomRangeWithNormalDistribution(chosen_fish_type.StatsList[fishRing.fishTeirEnum].sizeMin, chosen_fish_type.StatsList[fishRing.fishTeirEnum].sizeMax);
+        fish_vars.fishTypeName = chosen_fish_type.fishTypeName;
+        fish_vars.teir = fishRing.fishTeirEnum;
 
         new_fish.fishObject.GetComponentInChildren<FishLogic>().Init(fish_vars);
 

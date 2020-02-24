@@ -50,6 +50,7 @@ public class PlayerFishingState : BaseState
     [SerializeField] GameObject fishingBob;
 
     [SerializeField] Transform handTransform;
+    [SerializeField] CelebrationCamera celebrationCamera;
 
     [SerializeField] Animator fixedRodAnimator;
 
@@ -673,12 +674,7 @@ public class PlayerFishingState : BaseState
         GM_.instance.ui.transition.FadePreset(UITransition.FADE_PRESET.DEFAULT);
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
 
-        call_waiting_transition_once = false;
-      //  Destroy(interactingFish.transform.parent.gameObject);
-      //  interactingFish = null;
-      //   CancelCasted();
-
-        
+        call_waiting_transition_once = false;      
     }
 
 
@@ -686,7 +682,15 @@ public class PlayerFishingState : BaseState
     {
         if (call_waiting_transition_once)
         {
-
+            if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
+            {
+                thirdPersonCamera.enabled = true;
+                celebrationCamera.enabled = false;
+                Destroy(interactingFish.transform.parent.gameObject);
+                interactingFish = null;
+                GM_.instance.ui.state_fishVictory.Hide();
+                CancelCasted();
+            }
         }
         else
         {
@@ -694,11 +698,17 @@ public class PlayerFishingState : BaseState
             {
                 call_waiting_transition_once = true;
 
+
+                GM_.instance.ui.state_fishVictory.SetVictoryStats(interactingFish.varsFromFishGenerator.fishTypeName, interactingFish.varsFromFishGenerator.teir, interactingFish.varsFromFishGenerator.size);
+                GM_.instance.ui.state_fishVictory.Show();
+                
                 interactingFish.SetCaughtPosition(handTransform.position);
                 staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
                 fishingLineLogic.gameObject.SetActive(false);
                 fishingBob.SetActive(false);
                 fishingProjectileIndicator.SetActive(false);
+                thirdPersonCamera.enabled = false;
+                celebrationCamera.enabled = true;
 
             }
         }
