@@ -712,12 +712,15 @@ public class PlayerFishingState : BaseState
         {
             if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.A))
             {
+              
+
                 thirdPersonCamera.enabled = true;
                 celebrationCamera.enabled = false;
                 Destroy(interactingFish.transform.parent.gameObject);
                 interactingFish = null;
                 GM_.instance.ui.state_fishVictory.Hide();
                 CancelCasted();
+                GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
             }
         }
         else
