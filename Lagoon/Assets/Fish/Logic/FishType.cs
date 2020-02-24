@@ -27,6 +27,9 @@ public class FishType : ScriptableObject
         public float maxVelocity = 3;
 
     }
+    public string fishTypeName;
+
+
     [SerializeField]
     public GameObject fishPrefab;
     public float minRangeTimeUnactiveTillDespawn;

@@ -1120,8 +1120,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 7745113462265003517}
   target_offset: {x: 0, y: 1.3, z: 0}
-  distance: 2.5
-  camera_rotation_speed: 5
+  distance: 3.5
+  camera_rotation_speed: 30
   camera_step_size: 150
 --- !u!114 &5714017189736757802
 MonoBehaviour:
@@ -1441,7 +1441,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8513665449561871327}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1525,7 +1525,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: -0.5, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 0
-  m_ConnectedAnchor: {x: 0, y: 0.5, z: 0}
+  m_ConnectedAnchor: {x: 0, y: -0.5, z: 0}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -2216,6 +2216,11 @@ PrefabInstance:
       propertyPath: buttonUIManager
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2428279469275129610, guid: d2944652e70498a4aa30ffd9044c0e23,
+        type: 3}
+      propertyPath: celebrationCamera
+      value: 
+      objectReference: {fileID: 9060266867019946317}
     - target: {fileID: 1781338289793398869, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: camera_
@@ -2289,7 +2294,7 @@ PrefabInstance:
     - target: {fileID: 3055954728931745731, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2767125828681196219, guid: d2944652e70498a4aa30ffd9044c0e23,
         type: 3}
