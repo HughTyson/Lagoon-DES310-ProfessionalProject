@@ -6,7 +6,7 @@ using UnityEngine;
 struct OnSegment
 {
     [SerializeField] public RepairGameBase game;
-    [SerializeField] public Vector3 position;
+    
 }
 
 
@@ -71,6 +71,7 @@ public class PlaneSegments : MonoBehaviour
         segment_complete = false;
         game_selected = false;
         needs_init = true;
+        
     }
 
     //update the segment
@@ -94,11 +95,15 @@ public class PlaneSegments : MonoBehaviour
                             case RepairGameBase.GameType.SwitchGame:    //if the game is of type switch
                                 {
                                     //change the button ui
-                                    GM_.instance.ui.helperButtons.DisableAllButtons();
-                                    if (!game_selected)
+                                    if(!games[selected_game].game.game_complete)
                                     {
-                                        GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Switch Game");
+                                        GM_.instance.ui.helperButtons.DisableAllButtons();
+                                        if (!game_selected)
+                                        {
+                                            GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Switch Game");
+                                        }
                                     }
+
                                 }
                                 break;
                             default:
@@ -107,7 +112,7 @@ public class PlaneSegments : MonoBehaviour
 
                         if (game_selected && needs_init) //initilise the game 
                         {
-                            games[selected_game].game.GameInit(transform);   //call the init function
+                            games[selected_game].game.GameInit(games[selected_game].game.transform.position);   //call the init function
                             needs_init = false;
                             return;
                         }
@@ -115,6 +120,12 @@ public class PlaneSegments : MonoBehaviour
                         if (game_selected) //if the game has been selected then update the game
                         {
                             games[selected_game].game.GameUpdate();
+
+                            if(games[selected_game].game.game_complete)
+                            {
+                                segment_complete = true;
+                                games[selected_game].game.GameCleanUp();
+                            }
                         }
                     }
                     else
@@ -169,14 +180,14 @@ public class PlaneSegments : MonoBehaviour
         {
             if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) > 0.2)
             {
-                if (counter > transition_time)
+                if (counter >= transition_time)
                 {
                     counter = 0;
-                    selection_change++;
+                    selected_game++;
 
-                    if (selection_change > games.Count)
+                    if (selected_game > games.Count - 1)
                     {
-                        selection_change = 0;
+                        selected_game = 0;
                     }
 
                 }
@@ -185,21 +196,16 @@ public class PlaneSegments : MonoBehaviour
                     counter += Time.deltaTime;
                 }
             }
-            else
+            else if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) < -0.2)
             {
-                counter = 0;
-            }
-
-            if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) < 0.2)
-            {
-                if (counter > transition_time)
+                if (counter >= transition_time)
                 {
                     counter = 0;
-                    selection_change--;
+                    selected_game--;
 
                     if (selected_game < 0)
                     {
-                        selection_change = games.Count;
+                        selected_game = games.Count - 1;
                     }
                 }
                 else
@@ -209,7 +215,7 @@ public class PlaneSegments : MonoBehaviour
             }
             else
             {
-                counter = 0;
+                counter = transition_time;
             }
         }
     }

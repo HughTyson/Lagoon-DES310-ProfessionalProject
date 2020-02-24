@@ -99,7 +99,7 @@ public class ThirdPersonCamera : MonoBehaviour
     {
         HandleInput();
 
-        Debug.Log(camera_input.y);
+
         switch (current_state)
         {
             case STATE.FREE:

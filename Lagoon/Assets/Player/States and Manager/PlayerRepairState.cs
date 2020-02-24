@@ -39,9 +39,8 @@ public class PlayerRepairState : BaseState
 
         counter = 0;
 
-        //movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
-       // camera_.current_state = ThirdPersonCamera.STATE.TRANSITION;
-        //camera_.transition_ = ThirdPersonCamera.STATE.FREE;
+        movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
+     
     }
 
     public void OnDisable()
@@ -186,12 +185,12 @@ public class PlayerRepairState : BaseState
         {
             if(GM_.instance.input.GetAxis(InputManager.AXIS.LH) > 0.2)
             {
-                if(counter > transition_time)
+                if(counter >= transition_time)
                 {
                     counter = 0;
                     selected_part++;
 
-                    if(selected_part > 11)
+                    if(selected_part > 11 -1)
                     {
                         selected_part = 0;
                     }
@@ -201,24 +200,26 @@ public class PlayerRepairState : BaseState
                 {
                     counter += Time.deltaTime;
                 }
-            }
-
-            if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) < -0.2)
+            } else if (GM_.instance.input.GetAxis(InputManager.AXIS.LH) < -0.2)
             {
-                if (counter > transition_time)
+                if (counter >= transition_time)
                 {
                     counter = 0;
                     selected_part--;
 
                     if (selected_part < 0)
                     {
-                        selected_part = 11;
+                        selected_part = 11 -1;
                     }
                 }
                 else
                 {
                     counter += Time.deltaTime;
                 }
+            }
+            else
+            {
+                counter = transition_time;
             }
         }
 

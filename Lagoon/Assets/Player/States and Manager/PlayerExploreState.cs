@@ -54,13 +54,12 @@ public class PlayerExploreState : BaseState
                     { }
                     break;
                 case INTERACTION_TYPE.REPAIR:
-                    { StateManager.ChangeState(PlayerScriptManager.STATE.REPAIR); Debug.Log("REPIAR");GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED); }
+                    { StateManager.ChangeState(PlayerScriptManager.STATE.REPAIR); Debug.Log("REPIAR"); GM_.instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED); }
                     break;
                 default:
                     break;
             }
         }
-
     }
 
     private void OnTriggerStay(Collider other)

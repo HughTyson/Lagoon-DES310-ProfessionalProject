@@ -10,24 +10,41 @@ public class Switch : MonoBehaviour
 
     public bool on;
 
-    public bool just_changed;//MIGHT DELETE
+    public bool just_changed;
+
+    public Material mat_on = null;
+    public Material mat_off = null;
 
     public bool IsActive()
     {
         return on;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void selectedSwitch()
     {
-        if(on)
+        Debug.Log(just_changed);
+
+        just_changed = true;
+
+        if (on)
         {
-            just_changed = true;
+            on = false;
         }
-        else if(!on)
+        else if (!on)
         {
             on = true;
         }
 
+        
     }
 
+    public void SetMatOff()
+    {
+        GetComponent<MeshRenderer>().sharedMaterial = mat_off;
+    }
+
+    public void SetMatOn()
+    {
+        GetComponent<MeshRenderer>().sharedMaterial = mat_on;
+    }
 }

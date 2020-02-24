@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 1617614607228358775}
   - component: {fileID: 8623707418241362735}
   - component: {fileID: 6809977668509618900}
-  - component: {fileID: 5254808698222324362}
   - component: {fileID: 7426628862212724721}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Switch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 6973556625332323635}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.12720945, y: 0.12720945, z: 0.12720945}
+  m_LocalScale: {x: 0.06216853, y: 0.06216853, z: 0.06216853}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -80,19 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &5254808698222324362
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6973556625332323635}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.8486155, y: 1, z: 1.6596154}
-  m_Center: {x: 0.037554372, y: 0, z: -0.07365786}
 --- !u!114 &7426628862212724721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,3 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activate: 
   deactivate: 
+  on: 0
+  just_changed: 0
+  mat_on: {fileID: 2100000, guid: 6bd727aaa0b25184d91a7807898564f5, type: 2}
+  mat_off: {fileID: 2100000, guid: 7eec7dd24f8ab9a419c95737401d8c9d, type: 2}
