@@ -643,7 +643,7 @@ public class FishLogic : MonoBehaviour
 
         fightingStateVars.fleeingDriveForce = 5.0f;
 
-        Debug.Log("Init Player Distance: " + fightingStateVars.distanceToPlayer);
+       // Debug.Log("Init Player Distance: " + fightingStateVars.distanceToPlayer);
 
     }
 

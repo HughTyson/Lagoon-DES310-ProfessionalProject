@@ -97,7 +97,7 @@ public class PlaneSegments : MonoBehaviour
                                     //change the button ui
                                     if(!games[selected_game].game.game_complete)
                                     {
-                                        GM_.instance.ui.helperButtons.DisableAllButtons();
+                                        GM_.instance.ui.helperButtons.DisableAll();
                                         if (!game_selected)
                                         {
                                             GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Switch Game");

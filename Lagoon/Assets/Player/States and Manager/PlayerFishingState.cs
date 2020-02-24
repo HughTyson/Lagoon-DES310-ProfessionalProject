@@ -103,8 +103,9 @@ public class PlayerFishingState : BaseState
         fishingIndicatorLogic.gameObject.SetActive(true);
         fishingIndicatorLogic.AttachLookAtTransform(cameraTransform);
 
-        GM_.instance.ui.helperButtons.DisableAllButtons();
+        GM_.instance.ui.helperButtons.DisableAll();
         GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.B, "Cancel Fishing");
+        GM_.instance.ui.helperButtons.EnableLeftStick(false, false, false, true, "Begin Cast");
     }
 
     public void OnDisable()
@@ -130,7 +131,7 @@ public class PlayerFishingState : BaseState
         if (fishingProjectileIndicator != null)
             fishingProjectileIndicator.gameObject.SetActive(false);
 
-        GM_.instance.ui.helperButtons.DisableAllButtons();
+        GM_.instance.ui.helperButtons.DisableAll();
 
         thirdPersonCamera.look_at_target = transform; // set target back to player
     }
@@ -217,6 +218,10 @@ public class PlayerFishingState : BaseState
                         fishingBob.GetComponentInChildren<FishingBobLogic>().BeganFishing();
                         fishingProjectileIndicator.SetActive(false);
                         fishing_state = FISHING_STATE.FISHING;
+
+                        GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.RT, "Reel In / Hook Fish");
+
+
                     }
                     else // bob is moving through the air
                     {
@@ -377,6 +382,7 @@ public class PlayerFishingState : BaseState
     float castingTimeout = 0.0f;
     void BeginPowerUpThrow()
     {
+        GM_.instance.ui.helperButtons.EnableLeftStick(false, false, true, false, "Cast");
         fishing_state = FISHING_STATE.POWERING_UP;     
         castingTime = 0.0f;
         castingTimeout = 0.0f;
@@ -389,6 +395,11 @@ public class PlayerFishingState : BaseState
         fishingBob.SetActive(false);
         fishingProjectileIndicator.SetActive(false);
 
+        GM_.instance.ui.helperButtons.DisableAll();
+        GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.B, "Cancel Fishing");
+        GM_.instance.ui.helperButtons.EnableLeftStick(false, false, false, true, "Begin Cast");
+
+
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
         staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
         fishing_state = FISHING_STATE.IDLE;
@@ -396,6 +407,8 @@ public class PlayerFishingState : BaseState
 
     void BeginCastingAnimation()
     {
+        GM_.instance.ui.helperButtons.DisableAll();
+
         fishing_state = FISHING_STATE.CASTING_ANIMATION;
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
         GetComponentInChildren<Animator>().Play("Rod Flick");
@@ -404,6 +417,8 @@ public class PlayerFishingState : BaseState
 
     void PowerUpThrow()
     {
+        GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.B, "Cancel Cast");
+
         Vector3 cast_direction = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
 
         cast_direction = Vector3.RotateTowards(cast_direction, Vector3.up, Mathf.Deg2Rad * casting_angle, 0);
@@ -496,6 +511,10 @@ public class PlayerFishingState : BaseState
 
     void CancelCasted()
     {
+        GM_.instance.ui.helperButtons.DisableAll();
+        GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.B, "Cancel Fishing");
+        GM_.instance.ui.helperButtons.EnableLeftStick(false, false, false, true, "Begin Cast");
+
         thirdPersonCamera.look_at_target = transform;
         thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FREE;
 
@@ -642,6 +661,13 @@ public class PlayerFishingState : BaseState
     // -- Fish Fighting State
     void FishFightingBegin()
     {
+
+        GM_.instance.ui.helperButtons.DisableAll();
+        GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.RT, "Reel In");
+        GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.B, "Cancel Fight");
+        GM_.instance.ui.helperButtons.EnableLeftStick(true, true, false, false, "Fight Fish");
+
+
         GM_.instance.input.SetVibration(InputManager.VIBRATION_MOTOR.LEFT ,0);
 
         fishing_state = FISHING_STATE.FISH_FIGHTING;
@@ -669,6 +695,8 @@ public class PlayerFishingState : BaseState
     bool call_waiting_transition_once = false;
     void FishFightSuccess()
     {
+        GM_.instance.ui.helperButtons.DisableAll();
+
         fishing_state = FISHING_STATE.FISHING_VICTORY;
         interactingFish.FishCaught();
         GM_.instance.ui.transition.FadePreset(UITransition.FADE_PRESET.DEFAULT);
@@ -682,7 +710,7 @@ public class PlayerFishingState : BaseState
     {
         if (call_waiting_transition_once)
         {
-            if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.B))
+            if (GM_.instance.input.GetButtonDown(InputManager.BUTTON.A))
             {
                 thirdPersonCamera.enabled = true;
                 celebrationCamera.enabled = false;
@@ -697,6 +725,10 @@ public class PlayerFishingState : BaseState
             if (GM_.instance.ui.transition.IsInWaitingTransition())
             {
                 call_waiting_transition_once = true;
+
+
+                GM_.instance.ui.helperButtons.DisableAll();
+                GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Continue");
 
 
                 GM_.instance.ui.state_fishVictory.SetVictoryStats(interactingFish.varsFromFishGenerator.fishTypeName, interactingFish.varsFromFishGenerator.teir, interactingFish.varsFromFishGenerator.size);

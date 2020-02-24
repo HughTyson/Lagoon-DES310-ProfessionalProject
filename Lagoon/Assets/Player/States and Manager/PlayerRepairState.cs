@@ -61,7 +61,7 @@ public class PlayerRepairState : BaseState
                         case PlaneSegments.SegmentType.PROPELLER:
                             {
 
-                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.DisableAll();
                                 GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Access Propeller");
 
                                 //set the camera's new position and look at based on the segment that has been selected
@@ -70,61 +70,61 @@ public class PlayerRepairState : BaseState
                             break;
                         case PlaneSegments.SegmentType.ENGINE_FRONT:
                             {
-                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.DisableAll();
                                 GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Engine Front");
                             }
                             break;
                         case PlaneSegments.SegmentType.ENGINE_MID:
                             {
-                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.DisableAll();
                                 GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "ENGINE_MID");
                             }
                             break;
                         case PlaneSegments.SegmentType.COCKPIT:
                             {
-                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.DisableAll();
                                 GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "COCKPIT");
                             }
                             break;
                         case PlaneSegments.SegmentType.LEFTWING:
                             {
-                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.DisableAll();
                                 GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "LEFTWING");
                             }
                             break;
                         case PlaneSegments.SegmentType.RIGHTWING:
                             {
-                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.DisableAll();
                                 GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "RIGHTWING");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_LEFT_FRONT:
                             {
-                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.DisableAll();
                                 GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FUSELAGE_LEFT_FRONT");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_LEFT_MID:
                             {
-                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.DisableAll();
                                 GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FUSELAGE_LEFT_MID");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_LEFT_BACK:
                             {
-                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.DisableAll();
                                 GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FUSELAGE_LEFT_BACK");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_RIGHT_FRONT:
                             {
-                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.DisableAll();
                                 GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FUSELAGE_RIGHT_FRONT");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_RIGHT_MID:
                             {
-                                GM_.instance.ui.helperButtons.DisableAllButtons();
+                                GM_.instance.ui.helperButtons.DisableAll();
                                 GM_.instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FUSELAGE_RIGHT_MID");
                             }
                             break;
