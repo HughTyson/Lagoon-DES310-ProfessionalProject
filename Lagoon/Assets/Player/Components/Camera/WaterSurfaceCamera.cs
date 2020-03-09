@@ -67,9 +67,9 @@ public class WaterSurfaceCamera : MonoBehaviour
 
     private void OnPostRender()
     {
-        waterMat.SetTexture(renderTextureID, renderTexture);
-        waterMat.SetFloat(farPlane, thisCamera.farClipPlane);
-        waterMat.SetFloat(mearPlane, thisCamera.nearClipPlane);
+      //   waterMat.SetTexture(renderTextureID, renderTexture);
+        // waterMat.SetFloat(farPlane, thisCamera.farClipPlane);
+        // waterMat.SetFloat(mearPlane, thisCamera.nearClipPlane);
 
     }
 }
