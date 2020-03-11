@@ -21,15 +21,23 @@ Material:
   - MOTIONVECTORS
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _Texture_SurfaceDepth:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_169D6C2A: 1
-    - Vector1_25845054: 48
+    - Vector1_25845054: 8
     - Vector1_2F09FFDD: 2
     - Vector1_8272D09D: 40
     - Vector1_C1006D34: 0.01
-    - Vector1_E02339BD: 13
+    - Vector1_E02339BD: 0.1
+    - _FarPlane: 0
+    - _NearPlane: 0
     m_Colors:
     - Color_8743D023: {r: 0.21176471, g: 0.9529412, b: 1, a: 0}
     - Color_D0CBF810: {r: 0.047058824, g: 0.40392157, b: 0.5294118, a: 0}
+    - Vector2_302AD00D: {r: 0, g: 3, b: 0, a: 0}
+    - Vector2_90FB582C: {r: 0, g: 0.3, b: 0, a: 0}
     - Vector2_BDBB87C: {r: 0.01, g: 0.01, b: 0, a: 0}

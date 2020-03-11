@@ -358,7 +358,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 200
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -488,7 +488,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 142027410e8033a45820e188387c01fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderTextureReferenceName: _Texture_SurfaceDepth
   waterRenderer: {fileID: 0}
   playerCamera: {fileID: 8020892118707071192}
 --- !u!1 &3828947165126405223
@@ -783,7 +782,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 200
   field of view: 60
   orthographic: 0
   orthographic size: 5
