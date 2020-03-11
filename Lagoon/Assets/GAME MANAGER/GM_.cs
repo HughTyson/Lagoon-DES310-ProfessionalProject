@@ -11,6 +11,9 @@ public class GM_ : MonoBehaviour
     public PauseManager pause = new PauseManager();
     public StatsManager stats = new StatsManager();
 
+
+
+
     // [Header("Self Pointers")]
     //  [SerializeField] UIManager ui;
     public UIManager ui;
@@ -30,7 +33,6 @@ public class GM_ : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
 

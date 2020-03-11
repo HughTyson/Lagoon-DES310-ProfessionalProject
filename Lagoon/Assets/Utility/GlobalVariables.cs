@@ -4,6 +4,6 @@ using UnityEngine;
 
 public static class GlobalVariables
 {
-    public const float WATER_LEVEL = 0.35f; // the base y water level
+    public const float WATER_LEVEL = -0.15f; // the base y water level
 }
 
