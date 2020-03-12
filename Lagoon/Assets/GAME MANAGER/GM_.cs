@@ -5,7 +5,25 @@ using UnityEngine;
 public class GM_ : MonoBehaviour
 {
     [SerializeField] ConvoGraph convoGraph;
-    public static GM_ instance = null;
+    [SerializeField] GameObject selfPrefab;
+    public static GM_ instance_ = null;
+
+    public static GM_ Instance
+    {
+        get
+        {
+            if (instance_ == null)
+            {
+                instance_ = FindObjectOfType<GM_>();
+                if (instance_ == null && Application.isPlaying)
+                {
+                    Object test = Resources.Load("GAME_MANAGER");
+                    instance_ = Instantiate((GameObject)test).GetComponent<GM_>();
+                }
+            }
+            return instance_;
+        }
+    }
 
     public InputManager input;
     public PauseManager pause;
@@ -14,24 +32,18 @@ public class GM_ : MonoBehaviour
     public StoryObjectiveHandler story_objective;
 
 
+
     // [Header("Self Pointers")]
     //  [SerializeField] UIManager ui;
     public UIManager ui;
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            input = new InputManager();
-            pause = new PauseManager();
-            stats = new StatsManager();
-            story = new StoryManager(((RootNode)convoGraph.FindRootNode()).NextNode()); // should be barrier node.);
-            story_objective = new StoryObjectiveHandler();
-        }
-        else if (instance != this)
-        {
-            Destroy(instance);
-        }
+        instance_ = this;
+        input = new InputManager();
+        pause = new PauseManager();
+        stats = new StatsManager();
+        story = new StoryManager(((RootNode)convoGraph.FindRootNode()).NextNode()); // should be barrier node.);
+        story_objective = new StoryObjectiveHandler();
     }
 
 
