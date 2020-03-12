@@ -187,7 +187,6 @@ public class BarrierNode : BaseNodeType
 
     public enum BARRIER_STATE
     {
-        GO_TO_HUT,
         NEXT_DAY,
         CATCH_A_FISH
     }
@@ -195,7 +194,8 @@ public class BarrierNode : BaseNodeType
     [Input(ShowBackingValue.Never, ConnectionType.Multiple)] public int input;
     [Output(ShowBackingValue.Never, ConnectionType.Override)] public int output;
 
+
     [NodeEnum]
-    public BARRIER_STATE barrier;
+    public List<BARRIER_STATE> barriers;
 
 }

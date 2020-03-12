@@ -9,6 +9,8 @@ public class StatsManager
         float size;
     };
 
-
+    public int fishCaught = 0;
     public BiggestFishStats bigestFishStats = new BiggestFishStats();
+    public int dayNumber = 0;
+
 }

@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class GM_ : MonoBehaviour
 {
-
+    [SerializeField] ConvoGraph convoGraph;
     public static GM_ instance = null;
 
-    public InputManager input = new InputManager();
-    public PauseManager pause = new PauseManager();
-    public StatsManager stats = new StatsManager();
-
-
+    public InputManager input;
+    public PauseManager pause;
+    public StatsManager stats;
+    public StoryManager story;
+    public StoryObjectiveHandler story_objective;
 
 
     // [Header("Self Pointers")]
@@ -22,6 +22,11 @@ public class GM_ : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            input = new InputManager();
+            pause = new PauseManager();
+            stats = new StatsManager();
+            story = new StoryManager(((RootNode)convoGraph.FindRootNode()).NextNode()); // should be barrier node.);
+            story_objective = new StoryObjectiveHandler();
         }
         else if (instance != this)
         {
@@ -33,6 +38,7 @@ public class GM_ : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        story.Begin();
     }
 
 
@@ -44,8 +50,9 @@ public class GM_ : MonoBehaviour
     void Update() // the execution order of this is set to first so it will call before any other game objects
     {
         input.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
-        pause.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
         ui.ManagerUpdate();
+        story.Update();
+        pause.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
     }
 
     private void OnDestroy()

@@ -16,106 +16,50 @@ public class ConvoUIManager : MonoBehaviour
     [SerializeField] Text txtRightOption;
 
 
-    struct AnimHash
-    {
-        public int Default;
-        public int startupDialog;
-        public int startupBranch;
-    }
 
-    ConversationCharacter characterLeft;
-    ConversationCharacter characterRight;
+    bool isTransitioning = false;
 
-    DialogStruct.Talking whosTalking;
-    enum STATE
+    public enum ACTION
     { 
-    NOT_ACTIVE,
-    ANIMATING,
-    FINISHED // used multiple times to other classes that a transition has finished
+        ACTIVATE_DIALOG,
+        ACTIVATE_BRANCH,
+        ACTIVATE_EVENT,
+        DEACTIVATE_DIALOG,
+        DEACTIVATE_BRANCH,
+        DEACTIVATE_EVENT,
+        TRANSITION_TO_DIALOG,
+        TRANSITION_TO_BRANCH,
+        TRANSITION_TO_EVENT,
+        BRANCH_SELECT_OTHER
     }
 
-    STATE current_state;
-
-    AnimHash animHash = new AnimHash();
     private void Start()
     {
-        animHash.Default = Animator.StringToHash("Default");
-        animHash.startupDialog = Animator.StringToHash("Startup_Dialog");
-        animHash.startupBranch = Animator.StringToHash("Startup_Branch");
+        
     }
 
-    public void StartupAnimation(BaseNodeType node)
+
+
+
+    private void Update()
     {
+        
+    }
 
-
-        switch (node.GetNodeType())
+    class Action_ActivateDialog
+    { 
+        public void OnEnter()
         {
-            case BaseNodeType.NODE_TYPE.BRANCH:
-                {
-                    characterLeft = ((BranchingNode)node).leftCharacter;
-                    characterRight = ((BranchingNode)node).rightCharacter;
 
-                    txtLeftOption.text = ((BranchingNode)node).LeftDecision;
-                    txtRightOption.text = ((BranchingNode)node).RightDecision;
-
-                    sprLeftCharacter = characterLeft.characterIcon;
-                    sprRightCharacter = characterRight.characterIcon;
-
-                    current_state = STATE.ANIMATING;
-                    GetComponent<Animator>().Play(animHash.startupBranch, 0);
-                    break;
-                }
-            case BaseNodeType.NODE_TYPE.DIALOG:
-                {
-                    characterLeft = ((DialogNode)node).leftCharacter;
-                    characterRight = ((DialogNode)node).rightCharacter;
-
-                    txtDialog.text = ((DialogNode)node).Dialog[0].dialog;
-                    whosTalking = ((DialogNode)node).Dialog[0].whoIsTalking;
-
-                    sprLeftCharacter = characterLeft.characterIcon;
-                    sprRightCharacter = characterRight.characterIcon;
-
-                    current_state = STATE.ANIMATING;
-                    GetComponent<Animator>().Play(animHash.startupDialog,0);
-                    break;
-                }
-            default:
-                {
-                    Debug.LogError("Convo UI Manager was given an unknown node type for the start up animation");
-                    break;
-                }
         }
-
-    }
-
-
-
-    public bool IsAnimationFinished()
-    {
-        return current_state == STATE.FINISHED;
-    }
-
-    private void OnEnable()
-    {
-        current_state = STATE.NOT_ACTIVE;
-        GetComponent<Animator>().Play(animHash.Default);
-    }
-
-    private void OnDisable()
-    {
-        current_state = STATE.NOT_ACTIVE;
-        GetComponent<Animator>().Play(animHash.Default);
-    }
-
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f)
+        public void Update()
         {
-            current_state = STATE.FINISHED;
+
         }
+        public void OnExit()
+        {
+
+        }    
     }
+
 }
