@@ -269,7 +269,7 @@ MonoBehaviour:
         node: {fileID: 0}
         reroutePoints: []
       - fieldName: outputB
-        node: {fileID: 8411311375515162800}
+        node: {fileID: 0}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -369,14 +369,14 @@ MonoBehaviour:
   - {fileID: 2266764471800758223}
   - {fileID: -517373276603817456}
   - {fileID: -6351913660903853107}
-  - {fileID: -8569614278074901489}
-  - {fileID: -4852461791661802356}
   - {fileID: 0}
-  - {fileID: -340146394587989824}
+  - {fileID: -4852461791661802356}
+  - {fileID: -8569614278074901489}
+  - {fileID: 4839421331971080263}
   - {fileID: 8411311375515162800}
+  - {fileID: -340146394587989824}
   - {fileID: 878126263041485356}
   - {fileID: 5507203988280819239}
-  - {fileID: 4839421331971080263}
 --- !u!114 &878126263041485356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,7 +451,7 @@ MonoBehaviour:
         node: {fileID: 0}
         reroutePoints: []
       - fieldName: outputA
-        node: {fileID: 8411311375515162800}
+        node: {fileID: 0}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -502,6 +502,9 @@ MonoBehaviour:
         node: {fileID: 0}
         reroutePoints: []
       - fieldName: output
+        node: {fileID: 0}
+        reroutePoints: []
+      - fieldName: output
         node: {fileID: 4839421331971080263}
         reroutePoints: []
       _direction: 0
@@ -512,10 +515,7 @@ MonoBehaviour:
       _node: {fileID: 2702870235436686257}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: input
-        node: {fileID: 8411311375515162800}
-        reroutePoints: []
+      connections: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0

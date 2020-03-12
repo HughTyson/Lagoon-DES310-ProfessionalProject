@@ -18,8 +18,8 @@ public class CameraCollision : MonoBehaviour
     [SerializeField] public Vector3[] adjusted_cp_pos;
     [SerializeField] public Vector3[] desired_cp_pos;
 
-    [Range(0.1f, 4.0f)]
-    float collision_box_size = 1.0f;
+
+    float collision_box_size = 0.4f;
 
     // ==========================================
     //              Hidden Variables
