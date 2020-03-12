@@ -31,5 +31,6 @@ public class TypeRef
         {
             value = val;
         }
+        public Bool() { }
     }
 }
