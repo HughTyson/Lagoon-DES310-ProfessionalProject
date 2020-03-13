@@ -15,6 +15,7 @@ public class RuleBasedDialog : RuleBasedSystem
     }
 
     List<Rule> arbiterChoiceRules = new List<Rule>();
+
     public override void Update()
     {
         int arbiterConditions = 0;

@@ -26,6 +26,7 @@ public class DebugGUI : MonoBehaviour
         }
     }
 
+
     const int graphWidth = 300;
     const int graphHeight = 100;
     const float temporaryLogLifetime = 5f;

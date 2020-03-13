@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     public UIHelperButtons helperButtons;
     public UITransition transition;
     public UIStateFishVictory state_fishVictory;
+    public UIStateConversation state_conversation;
     // Start is called before the first frame update
     
 

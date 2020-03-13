@@ -13,10 +13,10 @@ public static class Conditioners
     public class Float : BaseC
     {
 
-        TypeRef.Float ValRef;
+        TypeRef<float> ValRef;
         float greaterAndEqualTo;
         float lessAndEqualTo;
-        public Float(TypeRef.Float valRef_, float greaterAndEqualTo_, float lessAndEqualTo_ )
+        public Float(TypeRef<float> valRef_, float greaterAndEqualTo_, float lessAndEqualTo_ )
         {
             ValRef = valRef_;
             lessAndEqualTo = lessAndEqualTo_;
@@ -29,10 +29,10 @@ public static class Conditioners
     }
     public class Int : BaseC
     {
-        TypeRef.Int ValRef;
+        TypeRef<int> ValRef;
         int greaterAndEqualTo;
         int lessAndEqualTo;
-        public Int(TypeRef.Int valRef_, int greaterAndEqualTo_, int lessAndEqualTo_)
+        public Int(TypeRef<int> valRef_, int greaterAndEqualTo_, int lessAndEqualTo_)
         {
             ValRef = valRef_;
             lessAndEqualTo = lessAndEqualTo_;
@@ -45,9 +45,9 @@ public static class Conditioners
     }
     public class Bool : BaseC
     {
-        TypeRef.Bool ValRef;
+        TypeRef<bool> ValRef;
         bool whenTrue;
-        public Bool(TypeRef.Bool valRef_, bool whenTrue_)
+        public Bool(TypeRef<bool> valRef_, bool whenTrue_)
         {
             ValRef = valRef_;
             whenTrue = whenTrue_;

@@ -75,9 +75,12 @@ public class PlayerExploreState : BaseState
         }
     }
 
+
+    
+
     private void OnTriggerStay(Collider other)
     {
-        if(enabled)
+        if (enabled)
         {
             if (other.GetComponent<TagsScript>() != null)
             {

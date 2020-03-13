@@ -2,35 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TypeRef
+public class TypeRef<T>
 {
-    public class Float
+    public T value;
+    public TypeRef(T val)
     {
-        public float value;
-        public Float(float val)
-        {
-            value = val;
-        }
-        public Float() { }
-
+        value = val;
     }
-    public class Int
+    public TypeRef()
     {
-        public int value;
-        public Int(int val)
-        {
-            value = val;
-        }
-        public Int() { }
-
-    }
-    public class Bool
-    {
-        public bool value;
-        public Bool(bool val)
-        {
-            value = val;
-        }
-        public Bool() { }
     }
 }
