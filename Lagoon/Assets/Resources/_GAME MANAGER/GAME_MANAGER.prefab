@@ -426,7 +426,7 @@ MonoBehaviour:
   helperButtons: {fileID: 168555509446330265}
   transition: {fileID: 5321276164441690768}
   state_fishVictory: {fileID: 7161817866172478893}
-  state_conversation: {fileID: 0}
+  state_conversation: {fileID: 4244282100598166510}
 --- !u!1 &1548711617311294328
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,7 +672,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19cc0c95e29d9f64d8c4f1f81608dfb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visiblePosition: {x: 0, y: -200, z: 0}
 --- !u!1 &2455785374642448886
 GameObject:
   m_ObjectHideFlags: 0
@@ -2847,6 +2846,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   convoGraph: {fileID: 11400000, guid: e4868114116570542959a584ef637cc6, type: 2}
+  curveLibrary: {fileID: 11400000, guid: 0d00829d18788c149b622379d5b2733b, type: 2}
   uiManager: {fileID: 5273871260055037157}
 --- !u!1 &6791852377375833879
 GameObject:
@@ -2936,7 +2936,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19cc0c95e29d9f64d8c4f1f81608dfb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visiblePosition: {x: 0, y: 200, z: 0}
 --- !u!1 &6803733920481026550
 GameObject:
   m_ObjectHideFlags: 0
@@ -3398,7 +3397,7 @@ GameObject:
   - component: {fileID: 2052548265234713469}
   - component: {fileID: 117781338492558112}
   - component: {fileID: 5429924834534221902}
-  - component: {fileID: 3617222510483030821}
+  - component: {fileID: 4244282100598166510}
   m_Layer: 5
   m_Name: UIState_Conversation
   m_TagString: Untagged
@@ -3468,7 +3467,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3617222510483030821
+--- !u!114 &4244282100598166510
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3477,17 +3476,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8721263934176485331}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 013678443bc7fe144a86be308dfe82b3, type: 3}
+  m_Script: {fileID: 11500000, guid: 83efc2a56759a5945b03b7755f4ed2c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprLeftCharacter: {fileID: 21300000, guid: 687c2049b0be571438281408febdbb04, type: 3}
-  sprRightCharacter: {fileID: 21300000, guid: 687c2049b0be571438281408febdbb04, type: 3}
-  sprLeftOption: {fileID: 21300000, guid: 687c2049b0be571438281408febdbb04, type: 3}
-  sprRightOption: {fileID: 21300000, guid: 687c2049b0be571438281408febdbb04, type: 3}
-  sprDialog: {fileID: 21300000, guid: 687c2049b0be571438281408febdbb04, type: 3}
-  txtDialog: {fileID: 0}
-  txtLeftOption: {fileID: 0}
-  txtRightOption: {fileID: 0}
+  leftPortrait: {fileID: 1145265410209098200}
+  rightPortrait: {fileID: 7070160098510515941}
 --- !u!1 &8920785502107687319
 GameObject:
   m_ObjectHideFlags: 0

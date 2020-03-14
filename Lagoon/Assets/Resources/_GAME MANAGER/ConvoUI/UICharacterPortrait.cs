@@ -4,49 +4,64 @@ using UnityEngine;
 using UnityEngine.UI;
 public class UICharacterPortrait : MonoBehaviour
 {
+    ConversationCharacter character;
 
-    Vector2 hiddenPosition;
-
-    [SerializeField]
     Vector2 showingPosition;
-  
-
+    Vector2 positionOffset = Vector2.zero;
     RectTransform rectTransform;
     Image image;
+
+    TweenManager.TweenPathBundle dissapearTween;
+
+    Color imageColour;
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         image = GetComponent<Image>();
         showingPosition = rectTransform.anchoredPosition;
-        rectTransform.anchoredPosition = hiddenPosition;
         image.enabled = false;
+        imageColour = image.color;
+
+        dissapearTween = new TweenManager.TweenPathBundle(
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(1, 0, 2, TweenManager.CURVE_PRESET.LINEAR)             // ALPHA
+            ),
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(0, 0, 2, TweenManager.CURVE_PRESET.LINEAR)             // X POS
+            ),
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(0, -400, 2, TweenManager.CURVE_PRESET.EASE_INOUT)      // Y POS
+            )
+        );
     }
 
     TypeRef<float> alphaVal = new TypeRef<float>();
-    TypeRef<Vector2> positionVal = new TypeRef<Vector2>();
-    public void Appear(Sprite characterArt)
-    {
-        image.sprite = characterArt;
+    TypeRef<float> positionValX = new TypeRef<float>();
+    TypeRef<float> positionValY = new TypeRef<float>();
 
-        GM_.Instance.tween_manager.CreateTween(
-            new TweenManager.FullTween(
-                settledIn,
-                new TweenManager.CompositeTween<TweenManager.BaseTween>(
-                    new TweenManager.Tween1D(alphaVal, 0, 0.5f, 0.3f, TweenManager.TRANSF.LINEAR),
-                    new TweenManager.Tween1D(alphaVal, 0.5f, 1, 0.6f, TweenManager.TRANSF.LINEAR)
-                    ),
-                new TweenManager.CompositeTween<TweenManager.BaseTween>(
-                    new TweenManager.Tween2D(positionVal, hiddenPosition, showingPosition, new Vector2(1, 1), new System.Tuple<TweenManager.TRANSF, TweenManager.TRANSF>(TweenManager.TRANSF.LINEAR, TweenManager.TRANSF.LINEAR))
-                    )
-                )
-            );
+    public void Appear(ConversationCharacter character_)
+    {
+        character = character_;
+        image.sprite = character_.characterIcon;
+        image.enabled = true;
 
         state = STATE.APPEARING;
+        GM_.Instance.tween_manager.StartTweenInstance(
+            dissapearTween, 
+            new TypeRef<float>[] { alphaVal, positionValX, positionValY }, 
+            tweenCompleteDelegate_: settledIn, 
+            startingDirection_: TweenManager.DIRECTION.END_TO_START
+            );
     }
 
     public void Disappear()
     {        
         state = STATE.DISSAPEARING;
+        GM_.Instance.tween_manager.StartTweenInstance(
+            dissapearTween, 
+            new TypeRef<float>[] { alphaVal, positionValX, positionValY }, 
+            tweenCompleteDelegate_: settledIn
+            );
     }
 
     public void StartTalking()
@@ -83,7 +98,14 @@ public class UICharacterPortrait : MonoBehaviour
 
     public void Update()
     {
-        switch(state)
+        imageColour.a = alphaVal.value;
+        positionOffset.x = positionValX.value;
+        positionOffset.y = positionValY.value;
+
+        image.color = imageColour;
+        rectTransform.anchoredPosition = positionOffset + showingPosition;
+
+        switch (state)
         {
             case STATE.UNACIVE:
                 {

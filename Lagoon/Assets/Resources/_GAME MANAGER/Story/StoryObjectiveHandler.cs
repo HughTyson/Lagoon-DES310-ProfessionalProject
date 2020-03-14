@@ -6,18 +6,22 @@ public class StoryObjectiveHandler
 {
     List<BaseObjective> objectives = new List<BaseObjective>();
 
+    public event System.Action Event_BarrierObjectiveComplete;
+
+
     public StoryObjectiveHandler()
     {
-        GM_.Instance.story.actionHandler.AddAction(StoryManager.ACTION.BARRIER_OPENED, OnBarrierOpened);
-        GM_.Instance.story.actionHandler.AddAction(StoryManager.ACTION.BARRIER_BLOCKING_UPDATE, BarrierBlockingUpdate);
+        GM_.Instance.story.Event_BarrierStart += BarrierStart;
     }
 
-    public void OnBarrierOpened()
+    void BarrierStart(StoryManager.BarrierStartArgs args)
     {
+        GM_.Instance.update_events.UpdateEvent += BarrierBlockingUpdate;
+
         objectives.Clear();
-        for (int i = 0; i < ((BarrierNode)GM_.Instance.story.current_node).barriers.Count; i++)
+        for (int i = 0; i < args.Barriers.Count; i++)
         {
-            switch (((BarrierNode)GM_.Instance.story.current_node).barriers[i])
+            switch (args.Barriers[i])
             {
                 case BarrierNode.BARRIER_STATE.CATCH_A_FISH:
                     {
@@ -32,15 +36,17 @@ public class StoryObjectiveHandler
             }
         }
     }
+
+
     public void BarrierBlockingUpdate()
     {
         objectives.RemoveAll(y => y.ObjectiveComplete());
         if (objectives.Count == 0)
         {
-            GM_.Instance.story.actionHandler.InvokeActions(StoryManager.ACTION.BARRIER_EXIT);
+            GM_.Instance.update_events.UpdateEvent -= BarrierBlockingUpdate;
+            Event_BarrierObjectiveComplete?.Invoke();
         }
     }
-
 
 
 
@@ -55,6 +61,7 @@ public class StoryObjectiveHandler
 
         public override bool ObjectiveComplete()
         {
+            return true;
             return GM_.Instance.stats.fishCaught > initFishCaught;
         }
 
@@ -65,6 +72,7 @@ public class StoryObjectiveHandler
 
         public override bool ObjectiveComplete()
         {
+            return true;
             return GM_.Instance.stats.dayNumber > initDayNumber;
         }
     }

@@ -20,6 +20,7 @@ public class PlayerConversationState : BaseState
     }
     ConversationState state;
 
+
     private void Start()
     {
         test_drop = GetComponent<SupplyDrop>();
@@ -29,18 +30,15 @@ public class PlayerConversationState : BaseState
     {
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
         camera_.current_state = ThirdPersonCamera.STATE.FREE;
-        state = ConversationState.WATCH_DROP;
+        state = ConversationState.CONVERSATION;
 
- //       convoUIManager.enabled = true;
-
-       
-  //      convoUIManager.StartupAnimation(convoManager.GetCurrentNode());
 
     }
 
+
+
     public void OnDisable()
     {
-    //    convoUIManager.enabled = false;
 
     }
 
@@ -74,8 +72,6 @@ public class PlayerConversationState : BaseState
                     }
 
                 }
-
-
 
 
                 break;

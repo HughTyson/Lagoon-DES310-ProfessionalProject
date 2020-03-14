@@ -8,31 +8,89 @@ public class StoryManager
 
     [SerializeField] ConvoGraph convoGraph;
 
-    public BaseNodeType current_node;
-    public enum ACTION
-    { 
-        BARRIER_START,
-        BARRIER_EXIT,
-        BARRIER_OPENED,
-        BARRIER_OPEN_UPDATE,
-        BARRIER_BLOCKING_UPDATE,
-        DIALOG_STARTED,
-        BRANCH_STARTED,
-        BRANCH_CHOICE_CHANGE,
-        BRANCH_SELECT,
-        EVENT_STARTED,
+    BaseNodeType current_node;
 
-        DIALOG_UPDATE,
-        BRANCH_UPDATE,
-        EVENT_UPDATE    
+
+    public event System.Action<BarrierStartArgs> Event_BarrierStart;                        // 
+    public event System.Action Event_BarrierOpened;                       //
+                                                                          //
+    public event System.Action Event_ConvoEnter;                          //
+    public event System.Action Event_ConvoExit;                           //
+
+    public event System.Action<ConvoCharactersShowArgs> Event_ConvoCharactersShow;
+    public event System.Action<DialogEnterArgs> Event_DialogStart;                         //
+    public event System.Action<DialogNewTextArgs> Event_DialogNewText;                       //                                                                          //
+    public event System.Action<ConvoCharacterChangeArgs> Event_ConvoCharacterChange;                //
+                                                                          //
+    public event System.Action<BranchEnterArgs> Event_BranchStart;                         //
+    public event System.Action Event_BranchChoiceMade;                    //
+
+    public class BarrierStartArgs
+    {      
+        public IReadOnlyList<BarrierNode.BARRIER_STATE> Barriers {get {return barriers;} }
+        List<BarrierNode.BARRIER_STATE> barriers;
+        public BarrierStartArgs(List<BarrierNode.BARRIER_STATE> barriers_)
+        {
+            barriers = barriers_;
+        }
     }
 
 
-    public ActionHandler<ACTION> actionHandler = new ActionHandler<ACTION>();
+    public class DialogEnterArgs
+    {
+        public readonly DialogStruct dialogVars;
+        public DialogEnterArgs(DialogStruct dialogVars_)
+        {
+            dialogVars = dialogVars_;
+        }
+    }
+    public class DialogNewTextArgs
+    {
+        public readonly DialogStruct dialogVars;
+        public DialogNewTextArgs(DialogStruct dialogVars_)
+        {
+            dialogVars = dialogVars_;
+        }
+    }
+    public class ConvoCharacterChangeArgs
+    {
+        public enum WHO { LEFT, RIGHT};
+        public readonly WHO who;
+        public readonly  ConversationCharacter character;
+        public ConvoCharacterChangeArgs(ConversationCharacter character_, WHO who_)
+        {
+            character = character_;
+            who = who_;
+        }
+    }
+    public class ConvoCharactersShowArgs
+    {
+        public readonly ConversationCharacter leftCharacter;
+        public readonly ConversationCharacter rightCharacter;
+        public ConvoCharactersShowArgs(ConversationCharacter leftCharacter_, ConversationCharacter rightCharacter_ )
+        {
+            leftCharacter = leftCharacter_;
+            rightCharacter = rightCharacter_;
+        }
+
+    }
+
+    public class BranchEnterArgs
+    {
+        public readonly string leftChoice;
+        public readonly string rightChoice;
+        public BranchEnterArgs(string leftChoice_, string rightChoice_)
+        {
+            leftChoice = leftChoice_;
+            rightChoice = rightChoice_;
+        }
+    }
+
 
     enum STATES
     {
         BARRIER_NODE,
+        WAITING_FOR_CONVO,
         DIALOG_NODE,
         BRANCH_NODE,
         EVENT_NODE,
@@ -40,68 +98,72 @@ public class StoryManager
     public StoryManager(BaseNodeType current_node_)
     {
         current_node = current_node_;
-
-        if (current_node.GetNodeType() != BaseNodeType.NODE_TYPE.BARRIER)
-        {
-            Debug.LogError("Error, ConvoGraph Node after 'Root Node' has to be 'Barrier Node'!");
-            Debug.Break();
-        }
-
-        actionHandler.AddAction(ACTION.BARRIER_START, Barrier_Started);
-        actionHandler.AddAction(ACTION.BARRIER_OPENED, Barrier_Opened);
+    
     }
 
     // called after other objects had a chance to setup actions
     public void Begin()
     {
-        actionHandler.InvokeActions(ACTION.BARRIER_START);
+        GM_.Instance.story_objective.Event_BarrierObjectiveComplete += BarrierObjectivesComplete;
+        Event_BarrierOpened += BarrierOpened;
+
+        Event_BarrierStart?.Invoke(new BarrierStartArgs(((RootNode)current_node).barriers));
     }
 
-    public void Update()
+
+    public bool RequestConversationEnter()
     {
-        switch (current_node.GetNodeType())
+        if (barrierIsOpen)
         {
-            case BaseNodeType.NODE_TYPE.BARRIER:
-                {
-                    if (barrierOpen)
-                    {
-                        actionHandler.InvokeActions(ACTION.BARRIER_OPEN_UPDATE);
-                    }
-                    else
-                    {
-                        actionHandler.InvokeActions(ACTION.BARRIER_BLOCKING_UPDATE);
-                    }
+            barrierIsOpen = false;
 
-                    break;
-                }
-            case BaseNodeType.NODE_TYPE.BRANCH:
-                {
-                    actionHandler.InvokeActions(ACTION.BRANCH_UPDATE);
-                    break;
-                }
-            case BaseNodeType.NODE_TYPE.DIALOG:
-                {
-                    actionHandler.InvokeActions(ACTION.DIALOG_UPDATE);
-                    break;
-                }
-            case BaseNodeType.NODE_TYPE.EVENT:
-                {
-                    actionHandler.InvokeActions(ACTION.EVENT_UPDATE);
-                    break;
-                }        
+            Event_ConvoEnter?.Invoke();
+            BaseNodeType.NODE_TYPE node_type = current_node.GetNodeType();
+
+            switch (node_type)
+            {
+                case BaseNodeType.NODE_TYPE.DIALOG:
+                    {
+                        DialogNode node = (DialogNode)current_node;
+                        Event_ConvoCharactersShow?.Invoke(new ConvoCharactersShowArgs(node.leftCharacter, node.rightCharacter));
+                        node.ResetDialogIndex();
+                        Event_DialogStart?.Invoke(new DialogEnterArgs(node.GetCurrentDialog()));
+                        break;
+                    }
+                case BaseNodeType.NODE_TYPE.BRANCH:
+                    {
+                        BranchingNode node = (BranchingNode)current_node;
+                        Event_ConvoCharactersShow?.Invoke(new ConvoCharactersShowArgs(node.leftCharacter, node.rightCharacter));
+                        Event_BranchStart?.Invoke(new BranchEnterArgs(node.LeftDecision, node.RightDecision));
+                        break;
+                    }
+            }
+
+            return true;
         }
+        return false;
     }
 
+    bool barrierIsOpen = false;
+    void BarrierOpened()
+    {
+        barrierIsOpen = true;
+    }
 
-    bool barrierOpen = false;
-    void Barrier_Started()
+    void BarrierObjectivesComplete()
     {
-        barrierOpen = false;
+        current_node = ((RootNode)current_node).NextNode();
+        if (current_node.GetNodeType() != BaseNodeType.NODE_TYPE.BARRIER)
+        {
+            Event_BarrierOpened?.Invoke();
+        }
+        else
+        {
+            Event_BarrierStart?.Invoke(new BarrierStartArgs(((BarrierNode)current_node).barriers));
+        }
+
     }
-    void Barrier_Opened()
-    {
-        barrierOpen = true;
-    }
+
 
 }
 

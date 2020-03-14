@@ -6,6 +6,7 @@ using UnityEngine;
 public class GM_ : MonoBehaviour
 {
     [SerializeField] ConvoGraph convoGraph;
+    [SerializeField] TweenCurveLibrary curveLibrary;
     [SerializeField] UIManager uiManager;
 
     static GM_ instance_ = null;
@@ -40,6 +41,8 @@ public class GM_ : MonoBehaviour
         public StoryEventHandler story_events;
         public UIManager ui;
         public TweenManager tween_manager;
+        public TweenCurveLibrary tween_curve_library;
+        public UpdateEventSystem update_events;        
     };
 
     private void Awake()
@@ -51,12 +54,16 @@ public class GM_ : MonoBehaviour
         }
 
         instance_ = this;
+        curveLibrary.Init();
+
         members = new Members();
+        members.update_events = gameObject.AddComponent<UpdateEventSystem>();
+        members.tween_curve_library = curveLibrary;
         members.tween_manager = new TweenManager();
         members.input = new InputManager();
         members.pause = new PauseManager();
         members.stats = new StatsManager();
-        members.story = new StoryManager(((RootNode)convoGraph.FindRootNode()).NextNode()); // should be barrier node.);
+        members.story = new StoryManager(((RootNode)convoGraph.FindRootNode())); // should be barrier node.);
         members.story_objective = new StoryObjectiveHandler();
         members.story_events = new StoryEventHandler();
         members.ui = uiManager;
@@ -81,7 +88,7 @@ public class GM_ : MonoBehaviour
         members.tween_manager.Update();
         members.input.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
         members.ui.ManagerUpdate();
-        members.story.Update();
+       // members.story.Update();
         members.pause.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
     }
 

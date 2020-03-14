@@ -5,7 +5,6 @@ public class ActionHandler<T> where T : System.Enum
 {
     System.Action[] actions;
 
-
     public ActionHandler()
     {
         actions = new System.Action[System.Enum.GetValues(typeof(T)).Length];

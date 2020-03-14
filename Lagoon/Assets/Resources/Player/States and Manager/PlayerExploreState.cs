@@ -18,10 +18,15 @@ public class PlayerExploreState : BaseState
     [SerializeField] ThirdPersonCamera camera_third_person;
     [SerializeField] CelebrationCamera camera_celebration;
 
-
+    bool radioIsAvailable = false;
 
     INTERACTION_TYPE interaction_type;
 
+    public void Start()
+    {
+        GM_.Instance.story.Event_BarrierOpened += ConversationStateAvailable;
+        GM_.Instance.story.Event_ConvoEnter += ConversationStateUnavailalble;
+    }
     public void OnEnable()
     {
         movement_.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
@@ -33,6 +38,16 @@ public class PlayerExploreState : BaseState
     public void OnDisable()
     {
     }
+
+    void ConversationStateAvailable()
+    {
+        radioIsAvailable = true;
+    }
+    void ConversationStateUnavailalble()
+    {
+        radioIsAvailable = false;
+    }
+    
 
     // Update is called once per frame
     public override void StateUpdate()
@@ -53,10 +68,17 @@ public class PlayerExploreState : BaseState
                     }
 
                 case INTERACTION_TYPE.RADIO:
-                    { 
-                        StateManager.ChangeState(PlayerScriptManager.STATE.CONVERSATION); 
-                      //  Debug.Log("RADIO"); 
-                        GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED); 
+                    {
+                        if (GM_.Instance.story.RequestConversationEnter())
+                        {
+                            StateManager.ChangeState(PlayerScriptManager.STATE.CONVERSATION);
+                            GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
+                        }
+                        else
+                        {
+                            Debug.LogError("Error in PlayerExploreState. Request for ConversationEnter was denied!");
+                            Debug.Break();
+                        }
                         break;
                     }
                 case INTERACTION_TYPE.SLEEP:
@@ -98,10 +120,12 @@ public class PlayerExploreState : BaseState
                             break;
                         case TriggerType.TRIGGER_TYPE.RADIO:
                             {
-                                interaction_type = INTERACTION_TYPE.RADIO;
-
-                                GM_.Instance.ui.helperButtons.DisableAll();
-                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Talk to Radio");
+                                if (radioIsAvailable)
+                                {
+                                    interaction_type = INTERACTION_TYPE.RADIO;
+                                    GM_.Instance.ui.helperButtons.DisableAll();
+                                    GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Talk to Radio");
+                                }
                             }
                             break;
                         case TriggerType.TRIGGER_TYPE.SLEEP:

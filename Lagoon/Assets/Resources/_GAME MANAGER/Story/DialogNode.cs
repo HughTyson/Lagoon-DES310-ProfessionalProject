@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-public class BaseNodeType : XNode.Node
+public abstract class BaseNodeType : XNode.Node
 {
     public enum NODE_TYPE
     {
@@ -22,16 +22,6 @@ public class BaseNodeType : XNode.Node
     protected override void Init()
     {
         node_type = NODE_TYPE.BASE;
-    }
-
-    public virtual void LeftNode()
-    {
-
-    }
-
-    public virtual void EnteredNode()
-    {
-
     }
 
 }
@@ -55,33 +45,22 @@ public struct DialogStruct
 
 
 
-public class RootNode : BaseNodeType
+
+[NodeWidth(304)]
+public abstract class CharacterHolderNode : BaseNodeType
 {
-    protected override void Init()
-    {
-        node_type = NODE_TYPE.ROOT;
-    }
-
-    [Output(ShowBackingValue.Never, ConnectionType.Override)] public int output;
-
-    public BaseNodeType NextNode()
-    {
-        return (BaseNodeType)GetPort("output").Connection.node;
-    }
+    public ConversationCharacter leftCharacter;
+    public ConversationCharacter rightCharacter;
 }
 
 
-
 [NodeWidth(304)]
-public class DialogNode : BaseNodeType
+public class DialogNode : CharacterHolderNode
 {
     protected override void Init()
     {
         node_type = NODE_TYPE.DIALOG;
     }
-
-    public ConversationCharacter leftCharacter;
-    public ConversationCharacter rightCharacter;
 
     public List<DialogStruct> Dialog = new List<DialogStruct>();
     [Input(ShowBackingValue.Never,ConnectionType.Multiple)] public int input;
@@ -100,46 +79,29 @@ public class DialogNode : BaseNodeType
         Dialog[from_index] = temp;
     }
 
-
-    private int current_dialog_index = -1;
-    public override void EnteredNode()
+    int index;
+    public void ResetDialogIndex()
     {
-        current_dialog_index = 0;
+        index = 0;
+    }
+    public DialogStruct GetCurrentDialog()
+    {
+        return Dialog[index];
     }
 
-    public override void LeftNode()
-    {
-        current_dialog_index = 0;
-    }
-
-    public DialogStruct GetDialog()
-    {
-        return Dialog[current_dialog_index];
-    }
-    public bool HasMoreDialog()
-    {
-        return current_dialog_index != Dialog.Count - 1;
-    }
-    public void IterateDialog()
-    {
-        current_dialog_index++;
-    }
 }
 
 
 
 
 [NodeWidth(304)]
-public class BranchingNode : BaseNodeType
+public class BranchingNode : CharacterHolderNode
 {
 
     protected override void Init()
     {
         node_type = NODE_TYPE.BRANCH;
     }
-
-    public ConversationCharacter leftCharacter;
-    public ConversationCharacter rightCharacter;
 
     [Input(ShowBackingValue.Never, ConnectionType.Multiple)] public int input;
 
@@ -178,24 +140,37 @@ public class EventNode : BaseNodeType
 
 
 [NodeWidth(304)]
-public class BarrierNode : BaseNodeType
+public class BarrierNode : RootNode
 {
     protected override void Init()
     {
         node_type = NODE_TYPE.BARRIER;
     }
 
+    [Input(ShowBackingValue.Never, ConnectionType.Multiple)] public int input;
+
+}
+
+[NodeWidth(304)]
+public class RootNode : BaseNodeType
+{
+    protected override void Init()
+    {
+        node_type = NODE_TYPE.ROOT;
+    }
     public enum BARRIER_STATE
     {
         NEXT_DAY,
         CATCH_A_FISH
     }
 
-    [Input(ShowBackingValue.Never, ConnectionType.Multiple)] public int input;
-    [Output(ShowBackingValue.Never, ConnectionType.Override)] public int output;
-
-
     [NodeEnum]
     public List<BARRIER_STATE> barriers;
 
+    [Output(ShowBackingValue.Never, ConnectionType.Override)] public int output;
+
+    public BaseNodeType NextNode()
+    {
+        return (BaseNodeType)GetPort("output").Connection.node;
+    }
 }
