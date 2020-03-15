@@ -13,13 +13,13 @@ public class CameraCollision : MonoBehaviour
     
     //collision detection variables 
 
-    [SerializeField] public bool collision = false;
+    float collision_box_size = 0.3f;
 
-    [SerializeField] public Vector3[] adjusted_cp_pos;
-    [SerializeField] public Vector3[] desired_cp_pos;
 
-    [Range(0.1f, 4.0f)]
-    float collision_box_size = 1.0f;
+    [HideInInspector] public bool collision = false;
+    [HideInInspector] public Vector3[] adjusted_cp_pos;
+    [HideInInspector] public Vector3[] desired_cp_pos;
+    
 
     // ==========================================
     //              Hidden Variables
@@ -37,14 +37,13 @@ public class CameraCollision : MonoBehaviour
 
         camera_collisison_layer = ~camera_collisison_layer;
 
-
     }
 
     public void UpdateCameraClipPoints(Vector3 camera_position, Quaternion cp_rotation, ref Vector3[] intoArray)
     {
         //clear intoArray 
 
-        intoArray = new Vector3[5];
+        intoArray = new Vector3[4];
 
         float z = cam.nearClipPlane; //distance from cameras position to the new clip plane
         float x = Mathf.Tan(cam.fieldOfView / collision_box_size) * z;
@@ -59,7 +58,7 @@ public class CameraCollision : MonoBehaviour
                                                                                     
         intoArray[3] = (cp_rotation * new Vector3(x, -y, z)) + camera_position;     //add and rotate the collision point based on camera
                                                                                 
-        intoArray[4] = camera_position - cam.transform.forward/2;                  //cam_pos
+        //intoArray[4] = camera_position - cam.transform.forward/2;                  //cam_pos
     }
 
     //determines if there is a collision at any of these clip points
