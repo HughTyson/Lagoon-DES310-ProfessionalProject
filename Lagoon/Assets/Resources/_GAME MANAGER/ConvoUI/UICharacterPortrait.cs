@@ -24,13 +24,13 @@ public class UICharacterPortrait : MonoBehaviour
 
         dissapearTween = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(1, 0, 2, TweenManager.CURVE_PRESET.LINEAR)             // ALPHA
+                new TweenManager.TweenPart_Start(1, 0, 1, TweenManager.CURVE_PRESET.LINEAR)             // ALPHA
             ),
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(0, 0, 2, TweenManager.CURVE_PRESET.LINEAR)             // X POS
+                new TweenManager.TweenPart_Start(0, 0, 1, TweenManager.CURVE_PRESET.LINEAR)             // X POS
             ),
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(0, -400, 2, TweenManager.CURVE_PRESET.EASE_INOUT)      // Y POS
+                new TweenManager.TweenPart_Start(0, -400, 1, TweenManager.CURVE_PRESET.EASE_INOUT)      // Y POS
             )
         );
     }
@@ -41,6 +41,7 @@ public class UICharacterPortrait : MonoBehaviour
 
     public void Appear(ConversationCharacter character_)
     {
+
         character = character_;
         image.sprite = character_.characterIcon;
         image.enabled = true;
@@ -50,17 +51,20 @@ public class UICharacterPortrait : MonoBehaviour
             dissapearTween, 
             new TypeRef<float>[] { alphaVal, positionValX, positionValY }, 
             tweenCompleteDelegate_: settledIn, 
-            startingDirection_: TweenManager.DIRECTION.END_TO_START
+            startingDirection_: TweenManager.DIRECTION.END_TO_START,
+            tweenUpdatedDelegate_: portraitTransitionUpdate
             );
     }
 
     public void Disappear()
-    {        
+    {
+
         state = STATE.DISSAPEARING;
         GM_.Instance.tween_manager.StartTweenInstance(
             dissapearTween, 
             new TypeRef<float>[] { alphaVal, positionValX, positionValY }, 
-            tweenCompleteDelegate_: settledIn
+            tweenCompleteDelegate_: settledIn,
+            tweenUpdatedDelegate_: portraitTransitionUpdate
             );
     }
 
@@ -96,7 +100,7 @@ public class UICharacterPortrait : MonoBehaviour
     }
 
 
-    public void Update()
+    public void portraitTransitionUpdate()
     {
         imageColour.a = alphaVal.value;
         positionOffset.x = positionValX.value;
@@ -104,42 +108,9 @@ public class UICharacterPortrait : MonoBehaviour
 
         image.color = imageColour;
         rectTransform.anchoredPosition = positionOffset + showingPosition;
-
-        switch (state)
-        {
-            case STATE.UNACIVE:
-                {
-
-                    break;
-                }
-            case STATE.APPEARING:
-                {
-
-                    break;
-                }
-            case STATE.DISSAPEARING:
-                {
-
-                    break;
-                }
-            case STATE.LEFT_STARTED_TALKING:
-                {
-
-                    break;
-                }
-            case STATE.RIGHT_STARTED_TALKING:
-                {
-
-                    break;
-                }
-            case STATE.SETTLED:
-                {
-
-                    break;
-                }
-            
-            
-        }
+    }
+    public void StateUpdate()
+    {
 
     }
 }

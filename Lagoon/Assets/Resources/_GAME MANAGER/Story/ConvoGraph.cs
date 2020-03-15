@@ -19,4 +19,17 @@ public class ConvoGraph : NodeGraph
         Debug.LogError("No 'RootNode' found in ConvoGraph!");
         return null;
     }
+
+    public GlobalPropertiesNode FindGlobalPropertiesNode()
+    {
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            if (((BaseNodeType)nodes[i]).GetNodeType() == BaseNodeType.NODE_TYPE.GLOBAL_PROPERTIES)
+            {
+                return (GlobalPropertiesNode)nodes[i];
+            }
+        }
+        Debug.LogError("No 'GlobalPropertiesNode' found in ConvoGraph!");
+        return null;
+    }
 }
