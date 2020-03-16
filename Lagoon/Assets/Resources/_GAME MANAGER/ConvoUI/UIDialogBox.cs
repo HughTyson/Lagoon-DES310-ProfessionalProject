@@ -37,7 +37,7 @@ public class UIDialogBox : MonoBehaviour
 
         dissapearTween = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(1, 0, 1.5f, TweenManager.CURVE_PRESET.LINEAR)             // ALPHA
+                new TweenManager.TweenPart_Start(1, 0, 1.5f, GM_.Instance.tween_curve_library.GetCurve("TEST"))             // ALPHA
             ),
             new TweenManager.TweenPath(
                 new TweenManager.TweenPart_Start(0, 0, 1.5f, TweenManager.CURVE_PRESET.LINEAR)             // X POS

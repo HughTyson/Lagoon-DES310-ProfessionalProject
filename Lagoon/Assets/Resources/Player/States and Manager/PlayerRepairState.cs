@@ -9,14 +9,14 @@ public class PlayerRepairState : BaseState
     [SerializeField] List<PlaneSegments> plane_segments;
 
     [SerializeField] CharacterControllerMovement movement_;
-    [SerializeField] ThirdPersonCamera camera_;
+    [SerializeField] ThirdPersonCamera third_person_camera;
+    [SerializeField] PlaneCamera plane_camera;
 
     PlaneSegments.SegmentType part;
 
 
     // varibles used to control player in plane
     int selected_part;
-  
 
     float counter;
 
@@ -40,12 +40,18 @@ public class PlayerRepairState : BaseState
         counter = 0;
 
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
-     
+
+        third_person_camera.enabled = false;
+        plane_camera.enabled = true;
+
+
     }
 
     public void OnDisable()
     {
-        
+        plane_camera.enabled = false;
+        third_person_camera.enabled = true;
+        Debug.Log("hello");
     }
 
     public override void StateUpdate()
@@ -61,6 +67,8 @@ public class PlayerRepairState : BaseState
                         case PlaneSegments.SegmentType.PROPELLER:
                             {
 
+                                plane_camera.active_segment = PlaneSegments.SegmentType.PROPELLER;
+
                                 GM_.Instance.ui.helperButtons.DisableAll();
                                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Access Propeller");
 
@@ -70,60 +78,91 @@ public class PlayerRepairState : BaseState
                             break;
                         case PlaneSegments.SegmentType.ENGINE_FRONT:
                             {
+
+                                plane_camera.active_segment = PlaneSegments.SegmentType.ENGINE_FRONT;
+
                                 GM_.Instance.ui.helperButtons.DisableAll();
                                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Engine Front");
                             }
                             break;
                         case PlaneSegments.SegmentType.ENGINE_MID:
                             {
+
+                                plane_camera.active_segment = PlaneSegments.SegmentType.ENGINE_MID;
+
                                 GM_.Instance.ui.helperButtons.DisableAll();
                                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "ENGINE_MID");
                             }
                             break;
                         case PlaneSegments.SegmentType.COCKPIT:
                             {
+
+                                plane_camera.active_segment = PlaneSegments.SegmentType.COCKPIT;
+
                                 GM_.Instance.ui.helperButtons.DisableAll();
                                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "COCKPIT");
                             }
                             break;
                         case PlaneSegments.SegmentType.LEFTWING:
                             {
+
+                                plane_camera.active_segment = PlaneSegments.SegmentType.LEFTWING;
+
                                 GM_.Instance.ui.helperButtons.DisableAll();
                                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "LEFTWING");
                             }
                             break;
                         case PlaneSegments.SegmentType.RIGHTWING:
                             {
+
+                                plane_camera.active_segment = PlaneSegments.SegmentType.RIGHTWING;
+
                                 GM_.Instance.ui.helperButtons.DisableAll();
                                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "RIGHTWING");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_LEFT_FRONT:
                             {
+
+                                plane_camera.active_segment = PlaneSegments.SegmentType.FUSELAGE_LEFT_FRONT;
+
                                 GM_.Instance.ui.helperButtons.DisableAll();
                                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FUSELAGE_LEFT_FRONT");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_LEFT_MID:
                             {
+
+                                plane_camera.active_segment = PlaneSegments.SegmentType.FUSELAGE_LEFT_MID;
+
+
                                 GM_.Instance.ui.helperButtons.DisableAll();
                                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FUSELAGE_LEFT_MID");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_LEFT_BACK:
                             {
+
+                                plane_camera.active_segment = PlaneSegments.SegmentType.FUSELAGE_LEFT_BACK;
+
                                 GM_.Instance.ui.helperButtons.DisableAll();
                                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FUSELAGE_LEFT_BACK");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_RIGHT_FRONT:
                             {
+
+                                plane_camera.active_segment = PlaneSegments.SegmentType.FUSELAGE_RIGHT_FRONT;
+
                                 GM_.Instance.ui.helperButtons.DisableAll();
                                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FUSELAGE_RIGHT_FRONT");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_RIGHT_MID:
                             {
+
+                                plane_camera.active_segment = PlaneSegments.SegmentType.FUSELAGE_RIGHT_MID;
+
                                 GM_.Instance.ui.helperButtons.DisableAll();
                                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FUSELAGE_RIGHT_MID");
                             }
@@ -145,83 +184,85 @@ public class PlayerRepairState : BaseState
                     plane_segments[selected_part].SegmentUpdate();
 
                     //if this segment has already been completed then change back to the plane
-                    if(plane_segments[selected_part].segment_complete)
+                    if (plane_segments[selected_part].segment_complete)
                     {
                         state = RepairState.FULLPLANE;
                     }
-                    
+
                 }
                 break;
             default:
                 break;
         }
-
-
-
     }
 
     void HandelInput()
     {
 
-        if(GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A)) //if the a button is pressed then updaate the segment that is currently selected
+        if (!plane_camera.disable_input)
         {
-            if(!plane_segments[selected_part].segment_complete)
+            if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A)) //if the a button is pressed then updaate the segment that is currently selected
             {
-                state = RepairState.SEGMENT;
-            }
-        }
-
-        if(GM_.Instance.input.GetButtonDown(InputManager.BUTTON.B)) //if the B button is pressed then either change the state to the explore state, or if in a segment then move back to segment selector
-        {
-            if (state == RepairState.FULLPLANE)
-            {
-                StateManager.ChangeState(PlayerScriptManager.STATE.EXPLORING);
-            }
-
-            state = RepairState.FULLPLANE;
-        }
-
-        if(state != RepairState.SEGMENT)
-        {
-            if(GM_.Instance.input.GetAxis(InputManager.AXIS.LH) > 0.2)
-            {
-                if(counter >= transition_time)
+                if (!plane_segments[selected_part].segment_complete)
                 {
-                    counter = 0;
-                    selected_part++;
+                    state = RepairState.SEGMENT;
+                }
+            }
 
-                    if(selected_part > 11 -1)
+            if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.B)) //if the B button is pressed then either change the state to the explore state, or if in a segment then move back to segment selector
+            {
+                if (state == RepairState.FULLPLANE)
+                {
+                    StateManager.ChangeState(PlayerScriptManager.STATE.EXPLORING);
+                }
+
+                state = RepairState.FULLPLANE;
+            }
+
+            if (state != RepairState.SEGMENT)
+            {
+                if (GM_.Instance.input.GetAxis(InputManager.AXIS.LH) > 0.2)
+                {
+                    if (counter >= transition_time)
                     {
-                        selected_part = 0;
-                    }
+                        counter = 0;
+                        selected_part++;
 
+                        if (selected_part > 11 - 1)
+                        {
+                            selected_part = 0;
+                        }
+
+                    }
+                    else
+                    {
+                        counter += Time.deltaTime;
+                    }
+                }
+                else if (GM_.Instance.input.GetAxis(InputManager.AXIS.LH) < -0.2)
+                {
+                    if (counter >= transition_time)
+                    {
+                        counter = 0;
+                        selected_part--;
+
+                        if (selected_part < 0)
+                        {
+                            selected_part = 11 - 1;
+                        }
+                    }
+                    else
+                    {
+                        counter += Time.deltaTime;
+                    }
                 }
                 else
                 {
-                    counter += Time.deltaTime;
+                    counter = transition_time;
                 }
-            } else if (GM_.Instance.input.GetAxis(InputManager.AXIS.LH) < -0.2)
-            {
-                if (counter >= transition_time)
-                {
-                    counter = 0;
-                    selected_part--;
-
-                    if (selected_part < 0)
-                    {
-                        selected_part = 11 -1;
-                    }
-                }
-                else
-                {
-                    counter += Time.deltaTime;
-                }
-            }
-            else
-            {
-                counter = transition_time;
             }
         }
+
 
     }
 
