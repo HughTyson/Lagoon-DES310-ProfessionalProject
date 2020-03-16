@@ -12,4 +12,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c5a44e5da5e23b41a4f5b6642578366, type: 3}
   m_Name: TweenCurveLibrary
   m_EditorClassIdentifier: 
-  curves: []
+  curves:
+  - NAME: OVERSHOOT
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: -1.9452341
+        outSlope: -1.9452341
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.060357388
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: -1.9500992
+        outSlope: -1.9500992
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.09496468
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+  - NAME: BOUNCE
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0.46338958
+        outSlope: 0.46338958
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.28113005
+      - serializedVersion: 3
+        time: 0.6007555
+        value: 0.99777746
+        inSlope: 4.605527
+        outSlope: -3.3203716
+        tangentMode: 1
+        weightedMode: 0
+        inWeight: 0.24459691
+        outWeight: 0.15812278
+      - serializedVersion: 3
+        time: 0.84605116
+        value: 0.9997658
+        inSlope: 3.1890893
+        outSlope: -1.0942852
+        tangentMode: 1
+        weightedMode: 0
+        inWeight: 0.3825238
+        outWeight: 0.407863
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1.4593202
+        outSlope: 1.4593202
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.43843484
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0

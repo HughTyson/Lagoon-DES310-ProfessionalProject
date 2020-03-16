@@ -32,14 +32,14 @@ public class PlayerConversationState : BaseState
         camera_.current_state = ThirdPersonCamera.STATE.FREE;
         state = ConversationState.CONVERSATION;
 
-
+        GM_.Instance.ui.helperButtons.HideButtons();
     }
 
 
 
     public void OnDisable()
     {
-
+        GM_.Instance.ui.helperButtons.ShowButtons();
     }
 
     // Update is called once per frame
@@ -49,7 +49,21 @@ public class PlayerConversationState : BaseState
         switch (state)
         {
             case ConversationState.CONVERSATION:
-                { }
+                {
+                    if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))
+                    {
+                        GM_.Instance.story.RequestButtonPressA();
+                    }
+                    if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.B))
+                    {
+                        GM_.Instance.story.RequestButtonPressB();
+                    }
+                    if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.X))
+                    {
+                        GM_.Instance.story.RequestButtonPressX();
+                    }
+
+                }
                 break;
             case ConversationState.WATCH_DROP:
                 {

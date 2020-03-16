@@ -12,7 +12,7 @@ public class UIDialogBox : MonoBehaviour
     TMPro.TextMeshProUGUI text;
     Image image;
 
-    TweenManager.TweenPathBundle dissapearTween;
+    TweenManager.TweenPathBundle boxTweenDissAndAppearTween;
     TweenManager.TweenPathBundle textAppearTween;
 
     [SerializeField] Image ButtonA_Image;
@@ -20,6 +20,8 @@ public class UIDialogBox : MonoBehaviour
     Vector2 AButtonShowingPosition;
 
     Color imageColour;
+    bool transitioning = false;
+    bool isBoxShowing = false;
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -35,15 +37,15 @@ public class UIDialogBox : MonoBehaviour
 
         ButtonA_Image.color = new Color(1, 1, 1, 0);
 
-        dissapearTween = new TweenManager.TweenPathBundle(
+        boxTweenDissAndAppearTween = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(1, 0, 1.5f, TweenManager.CURVE_PRESET.LINEAR)             // ALPHA
+                new TweenManager.TweenPart_Start(1, 0, 1.0f, TweenManager.CURVE_PRESET.LINEAR)             // ALPHA
             ),
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(0, 0, 1.5f, TweenManager.CURVE_PRESET.LINEAR)             // X POS
+                new TweenManager.TweenPart_Start(0, 0, 1.0f, TweenManager.CURVE_PRESET.LINEAR)             // X POS
             ),
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(0, -400, 1.5f, TweenManager.CURVE_PRESET.EASE_INOUT)      // Y POS
+                new TweenManager.TweenPart_Start(0, -400, 1.0f, TweenManager.CURVE_PRESET.EASE_INOUT)      // Y POS
             )
         );
 
@@ -55,7 +57,7 @@ public class UIDialogBox : MonoBehaviour
                 new TweenManager.TweenPart_Start(0, 0, 0, TweenManager.CURVE_PRESET.LINEAR)             // X POS
             ),
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(-50, 0, 0.5f, TweenManager.CURVE_PRESET.EASE_OUT)      // Y POS
+                new TweenManager.TweenPart_Start(-50, 0, 0.25f, TweenManager.CURVE_PRESET.EASE_OUT)      // Y POS
             )
         );
     }
@@ -65,13 +67,17 @@ public class UIDialogBox : MonoBehaviour
     TypeRef<float> positionValY = new TypeRef<float>();
 
     public event System.Action Event_BoxFinishedAppearing;
-
+    public event System.Action Event_Dissapeared;
     public void Appear()
     {
-        image.enabled = true;
 
+        ButtonA_Image.color = new Color(1, 1, 1, 0);
+        text.text = "";
+
+        transitioning = true;
+        image.enabled = true;
         GM_.Instance.tween_manager.StartTweenInstance(
-            dissapearTween,
+            boxTweenDissAndAppearTween,
             new TypeRef<float>[] { alphaVal, positionValX, positionValY },
             tweenCompleteDelegate_: boxFinishedAppearing,
             tweenUpdatedDelegate_: boxTransitionUpdate,
@@ -81,9 +87,11 @@ public class UIDialogBox : MonoBehaviour
 
     public void Disappear()
     {
+        ButtonA_Image.color = new Color(1, 1, 1, 0);
 
+        transitioning = true;
         GM_.Instance.tween_manager.StartTweenInstance(
-            dissapearTween,
+            boxTweenDissAndAppearTween,
             new TypeRef<float>[] { alphaVal, positionValX, positionValY },
             tweenCompleteDelegate_: boxFinishedDissappearing,
             tweenUpdatedDelegate_: boxTransitionUpdate
@@ -92,6 +100,8 @@ public class UIDialogBox : MonoBehaviour
 
     public void WriteText(string dialog_)
     {
+        ButtonA_Image.color = new Color(1, 1, 1, 0);
+        transitioning = true;
         text.text = dialog_;
         GM_.Instance.tween_manager.StartTweenInstance(
             textAppearTween,
@@ -100,14 +110,19 @@ public class UIDialogBox : MonoBehaviour
             tweenCompleteDelegate_: textFinishedAppearing
             );
     }
-
+    public void ClearContinueSymbol()
+    {
+        ButtonA_Image.color = new Color(1, 1, 1, 0);
+    }
     void textFinishedAppearing()
     {
+        transitioning = false;
         _showAButton();
     }
 
     void _showAButton()
     {
+        transitioning = true;
         imageColour = new Color(1, 1, 1, 1);
         GM_.Instance.tween_manager.StartTweenInstance(
             textAppearTween,
@@ -130,36 +145,35 @@ public class UIDialogBox : MonoBehaviour
     }
     void aButtonShowComplete()
     {
-
+        transitioning = false;
     }
 
 
     void boxFinishedAppearing()
     {
+        isBoxShowing = true;
+        transitioning = false;
         Event_BoxFinishedAppearing?.Invoke();
     }
     void boxFinishedDissappearing()
     {
+        transitioning = false;
+        isBoxShowing = false;
+        Event_Dissapeared?.Invoke();
+    }
+
+    public void SkipTransition()
+    {
 
     }
-       
-
     public bool IsTransitioning()
     {
-        return (state == STATE.APPEARING || state == STATE.DISSAPEARING || state == STATE.LEFT_STARTED_TALKING || state == STATE.RIGHT_STARTED_TALKING);
+        return transitioning;
     }
-
-    STATE state;
-    enum STATE
+    public bool IsBoxShowing()
     {
-        UNACIVE,
-        APPEARING,
-        DISSAPEARING,
-        SETTLED,
-        LEFT_STARTED_TALKING,
-        RIGHT_STARTED_TALKING
+        return isBoxShowing;
     }
-
 
     Vector2 textOffset = Vector2.zero;
     Vector2 textShowingPos;
@@ -182,8 +196,4 @@ public class UIDialogBox : MonoBehaviour
         rectTransform.anchoredPosition = positionOffset + showingPosition;
     }
 
-    public void StateUpdate()
-    {
-
-    }
 }
