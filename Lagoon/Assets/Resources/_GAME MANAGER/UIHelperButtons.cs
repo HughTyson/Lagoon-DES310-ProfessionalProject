@@ -44,12 +44,12 @@ public class UIHelperButtons : MonoBehaviour
 
     public void HideButtons()
     {
-        enabled = false;
+        gameObject.SetActive(false);
     }
 
     public void ShowButtons()
     {
-        enabled = true;
+        gameObject.SetActive(true);
     }
 
     public void DisableAll()

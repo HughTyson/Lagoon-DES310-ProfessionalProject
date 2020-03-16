@@ -20,11 +20,11 @@ public class StoryManager
     public event System.Action<ConvoCharactersShowArgs> Event_ConvoCharactersShow;
     public event System.Action<DialogEnterArgs> Event_DialogStart;                         //
     public event System.Action<DialogNewTextArgs> Event_DialogNewText;                       //                                                                          //
-    public event System.Action<ConvoCharacterChangeArgs> Event_ConvoCharacterChange;                //
                                                                           //
     public event System.Action<BranchEnterArgs> Event_BranchStart;                         //
-    public event System.Action Event_BranchChoiceMade;                    //
+    public event System.Action<BranchChoiceMadeArgs> Event_BranchChoiceMade;                    //
 
+    public event System.Action Event_SkipTextCrawl;
     public class BarrierStartArgs
     {      
         public IReadOnlyList<BarrierNode.BARRIER_STATE> Barriers {get {return barriers;} }
@@ -38,16 +38,20 @@ public class StoryManager
 
     public class DialogEnterArgs
     {
-        public readonly DialogStruct dialogVars;
-        public DialogEnterArgs(DialogStruct dialogVars_)
+        public readonly DialogNode.DialogStruct dialogVars;
+        public readonly ConversationCharacter leftCharacter;
+        public readonly ConversationCharacter rightCharacter;
+        public DialogEnterArgs(ConversationCharacter leftCharacter_, ConversationCharacter rightCharacter_ ,DialogNode.DialogStruct dialogVars_)
         {
             dialogVars = dialogVars_;
+            leftCharacter = leftCharacter_;
+            rightCharacter = rightCharacter_;
         }
     }
     public class DialogNewTextArgs
     {
-        public readonly DialogStruct dialogVars;
-        public DialogNewTextArgs(DialogStruct dialogVars_)
+        public readonly DialogNode.DialogStruct dialogVars;
+        public DialogNewTextArgs(DialogNode.DialogStruct dialogVars_)
         {
             dialogVars = dialogVars_;
         }
@@ -84,6 +88,15 @@ public class StoryManager
             leftChoice = leftChoice_;
             rightChoice = rightChoice_;
         }
+    }
+    public class BranchChoiceMadeArgs
+    {
+        public readonly BranchingNode.CHOICE choice;
+        public BranchChoiceMadeArgs(BranchingNode.CHOICE choice_)
+        {
+            choice = choice_;
+        }
+
     }
 
 
@@ -127,14 +140,7 @@ public class StoryManager
                         DialogNode node = (DialogNode)current_node;
                         Event_ConvoCharactersShow?.Invoke(new ConvoCharactersShowArgs(node.leftCharacter, node.rightCharacter));
                         node.ResetDialogIndex();
-                        Event_DialogStart?.Invoke(new DialogEnterArgs(node.GetCurrentDialog()));
-                        break;
-                    }
-                case BaseNodeType.NODE_TYPE.BRANCH:
-                    {
-                        BranchingNode node = (BranchingNode)current_node;
-                        Event_ConvoCharactersShow?.Invoke(new ConvoCharactersShowArgs(node.leftCharacter, node.rightCharacter));
-                        Event_BranchStart?.Invoke(new BranchEnterArgs(node.LeftDecision, node.RightDecision));
+                        Event_DialogStart?.Invoke(new DialogEnterArgs(node.leftCharacter,node.rightCharacter,node.GetCurrentDialog()));
                         break;
                     }
             }
@@ -143,6 +149,55 @@ public class StoryManager
         }
         return false;
     }
+
+    public void RequestButtonPressA()
+    {
+        if (!GM_.Instance.ui.state_conversation.IsTransitioning())
+        {
+            if (current_node.GetNodeType() == BaseNodeType.NODE_TYPE.DIALOG)
+            {
+                    if (((DialogNode)current_node).IsOnLastDialog())
+                    {
+                        current_node = ((DialogNode)current_node).NextNode();
+                        EnteredNewNode();
+                    }
+                    else
+                    {
+                        DialogNewTextArgs args = new DialogNewTextArgs(((DialogNode)current_node).IterateAndGetDialog());
+                        Event_DialogNewText?.Invoke(args);
+                    }
+            }
+        }
+        else
+        {
+            Event_SkipTextCrawl?.Invoke();
+        }
+    }
+    public void RequestButtonPressX()
+    {
+        if (!GM_.Instance.ui.state_conversation.IsTransitioning())
+        {
+            if (current_node.GetNodeType() == BaseNodeType.NODE_TYPE.BRANCH)
+            {
+                Event_BranchChoiceMade?.Invoke(new BranchChoiceMadeArgs(BranchingNode.CHOICE.LEFT));
+                current_node = ((BranchingNode)current_node).NextNode(BranchingNode.CHOICE.LEFT);
+                EnteredNewNode();
+            }
+        }
+    }
+    public void RequestButtonPressB()
+    {
+        if (!GM_.Instance.ui.state_conversation.IsTransitioning())
+        {
+            if (current_node.GetNodeType() == BaseNodeType.NODE_TYPE.BRANCH)
+            {
+                Event_BranchChoiceMade?.Invoke(new BranchChoiceMadeArgs(BranchingNode.CHOICE.RIGHT));
+                current_node = ((BranchingNode)current_node).NextNode(BranchingNode.CHOICE.RIGHT);
+                EnteredNewNode();
+            }
+        }
+    }
+
 
     bool barrierIsOpen = false;
     void BarrierOpened()
@@ -165,6 +220,30 @@ public class StoryManager
     }
 
 
+    void EnteredNewNode()
+    {
+        switch (current_node.GetNodeType())
+        {
+            case BaseNodeType.NODE_TYPE.DIALOG:
+                {
+                    DialogNode node = ((DialogNode)current_node);
+                    node.ResetDialogIndex();
+                    Event_DialogStart?.Invoke(new DialogEnterArgs(node.leftCharacter, node.rightCharacter, node.GetCurrentDialog()));
+                    break;
+                }
+            case BaseNodeType.NODE_TYPE.BRANCH:
+                {
+                    BranchingNode node = ((BranchingNode)current_node);
+                    Event_BranchStart?.Invoke(new BranchEnterArgs(node.LeftDecision, node.RightDecision));
+                    break;
+                }
+            case BaseNodeType.NODE_TYPE.EVENT:
+                {
+
+                    break;
+                }
+        }
+    }
 }
 
 

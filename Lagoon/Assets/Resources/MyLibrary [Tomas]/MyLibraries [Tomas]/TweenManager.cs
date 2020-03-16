@@ -67,6 +67,7 @@ public class TweenManager
         PING_PONG
     }
 
+
     public enum TIME_FORMAT
     {
         DELTA,
@@ -400,7 +401,7 @@ public class TweenManager
             totalDuration += start.Duration;
             for (int i = 0; i < tweens.Length; i++)
             {
-                tweens[i].FillMissedInfo(tweens[tweenOrder.Count - 1]);
+                tweens[i].FillMissedInfo(tweenOrder[tweenOrder.Count - 1]);
                 tweenOrder.Add(tweens[i]);
                 totalDuration += tweens[i].Duration;
             }
@@ -444,6 +445,8 @@ public class TweenManager
         protected float duration;
         protected AnimationCurve curve = null;
         protected CURVE_PRESET preset;
+        protected bool inverse_curve = false;
+        
 
         public float Start { get { return start; } }
         public float End { get { return end; } }
@@ -458,12 +461,13 @@ public class TweenManager
             duration = duration_;
             preset = preset_;
         }
-        public TweenPart_Start(float start_, float end_, float duration_, AnimationCurve curve_)
+        public TweenPart_Start(float start_, float end_, float duration_, AnimationCurve curve_, bool inverse_curve_ = false)
         {
             start = start_;
             end = end_;
             duration = duration_;
             curve = curve_;
+            inverse_curve = inverse_curve_;
         }
 
 
@@ -506,7 +510,15 @@ public class TweenManager
             }
             else
             {
-                t = curve.Evaluate(t);
+                if (inverse_curve)
+                {
+                    t = (1.0f - curve.Evaluate(1.0f - t));
+                }
+                else
+                {
+                    t = curve.Evaluate(t);
+                }
+               
             }
 
             return Mathf.LerpUnclamped(start, end, t);          
@@ -536,7 +548,7 @@ public class TweenManager
         }
         public override void FillMissedInfo(TweenPart_Start referenceTween)
         {
-            start = referenceTween.Start;
+            start = referenceTween.End;
         }
     }
     public class TweenPart_Delay : TweenPart_Continue
