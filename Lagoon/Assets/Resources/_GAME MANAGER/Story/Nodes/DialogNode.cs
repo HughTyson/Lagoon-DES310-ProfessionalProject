@@ -2,21 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
-
-
-
-
-
-
-
 [NodeWidth(304)]
 public class DialogNode : CharacterHolderNode
 {
     [System.Serializable]
-    public struct DialogStruct
+    public class DialogStruct
     {
         public enum Talking
         {
@@ -26,7 +16,7 @@ public class DialogNode : CharacterHolderNode
 
         [NodeEnum]
         public Talking whoIsTalking;
-        [TextArea(4, 6)]
+        [TextArea(2, 6)]
         public string dialog_text;
     }
 
