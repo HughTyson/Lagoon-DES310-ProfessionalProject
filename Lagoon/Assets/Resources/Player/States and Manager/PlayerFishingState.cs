@@ -80,12 +80,15 @@ public class PlayerFishingState : BaseState
     bool previousFrameIncludedAttractedFish = false;
 
     // On Enabled Components set
-        // fishingRodMesh
-        // static fishing rod origin 
-        // character controller
-        // fixed rod animator
-        // third person camera
-        // fishing indicator
+    // fishingRodMesh
+    // static fishing rod origin 
+    // character controller
+    // fixed rod animator
+    // third person camera
+    // fishing indicator
+
+
+
     public void OnEnable()
     {
         fishing_state = FISHING_STATE.PREPAIRING_ROD;

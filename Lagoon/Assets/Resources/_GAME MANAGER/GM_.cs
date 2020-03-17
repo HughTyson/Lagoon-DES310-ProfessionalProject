@@ -96,7 +96,6 @@ public class GM_ : MonoBehaviour
     {
         members.input.SetVibrationBoth(0, 0); // prevents controller vibrating even if Unity game closes
         members.input.FixedUpdate();
-        Destroy(instance_);
     }
 }
 
