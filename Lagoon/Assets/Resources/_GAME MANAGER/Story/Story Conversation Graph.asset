@@ -47,7 +47,7 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
   - whoIsTalking: 0
-    dialog_text: Oh no. I'm gonna be sick
+    dialog_text: 
   input: 0
   output: 0
 --- !u!114 &-6165283508815453756
@@ -100,9 +100,9 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   Dialog:
   - whoIsTalking: 0
-    dialog_text: Ooft. I'm dizzy..
+    dialog_text: 
   - whoIsTalking: 1
-    dialog_text: Me too..
+    dialog_text: 
   input: 0
   output: 0
 --- !u!114 &11400000
@@ -119,14 +119,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - {fileID: 5323912567286394041}
-  - {fileID: 250640198555292732}
-  - {fileID: 6536975228260611841}
-  - {fileID: 8107569085075045574}
   - {fileID: -6165283508815453756}
-  - {fileID: 937010787048392267}
   - {fileID: 3574138365267954497}
   - {fileID: -7027228327233918232}
   - {fileID: 256754200670422539}
+  - {fileID: 250640198555292732}
+  - {fileID: 6536975228260611841}
+  - {fileID: 8107569085075045574}
+  - {fileID: 937010787048392267}
 --- !u!114 &250640198555292732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,7 +155,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
-
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
@@ -170,6 +169,9 @@ MonoBehaviour:
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
+      - fieldName: outputA
+        node: {fileID: 0}
+        reroutePoints: []
       - fieldName: outputA
         node: {fileID: 937010787048392267}
         reroutePoints: []
@@ -190,15 +192,15 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   Dialog:
   - whoIsTalking: 1
-    dialog_text: Because we are in a convo graph and I'm testing it out
+    dialog_text: 
   - whoIsTalking: 0
-    dialog_text: What?
+    dialog_text: 
   - whoIsTalking: 0
-    dialog_text: What are you talking about? Convo graph? I'm on an island!
+    dialog_text: 
   - whoIsTalking: 1
-    dialog_text: No, you're in a Unity editor
+    dialog_text: 
   - whoIsTalking: 0
-    dialog_text: ':( '
+    dialog_text: 
   input: 0
   output: 0
 --- !u!114 &937010787048392267
@@ -218,7 +220,8 @@ MonoBehaviour:
   ports:
     keys:
     - input
-    - output
+    - outputA
+    - outputB
     values:
     - _fieldName: input
       _node: {fileID: 937010787048392267}
@@ -286,6 +289,9 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: outputB
+        node: {fileID: 0}
+        reroutePoints: []
+      - fieldName: outputB
         node: {fileID: 937010787048392267}
         reroutePoints: []
       _direction: 0
@@ -308,7 +314,7 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   Dialog:
   - whoIsTalking: 1
-    dialog_text: Uhhh sure..
+    dialog_text: 
   input: 0
   output: 0
 --- !u!114 &5323912567286394041
@@ -338,6 +344,9 @@ MonoBehaviour:
       - fieldName: output
         node: {fileID: 0}
         reroutePoints: []
+      - fieldName: output
+        node: {fileID: 8107569085075045574}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -346,7 +355,6 @@ MonoBehaviour:
       _node: {fileID: 5323912567286394041}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-
       connections:
       - fieldName: input
         node: {fileID: -6165283508815453756}
@@ -359,15 +367,15 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
   - whoIsTalking: 0
-    dialog_text: Hi.
+    dialog_text: 
   - whoIsTalking: 1
-    dialog_text: Hello there...
+    dialog_text: 
   - whoIsTalking: 1
-    dialog_text: Guess what.
+    dialog_text: 
   - whoIsTalking: 0
-    dialog_text: What?
+    dialog_text: 
   - whoIsTalking: 1
-    dialog_text: Switch-aroo!
+    dialog_text: 
   input: 0
   output: 0
 --- !u!114 &6536975228260611841
