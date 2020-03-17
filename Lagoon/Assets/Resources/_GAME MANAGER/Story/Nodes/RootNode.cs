@@ -24,9 +24,14 @@ public class RootNode : BaseNodeType
 
     public BaseNodeType NextNode()
     {
-        return (BaseNodeType)GetPort("output").Connection.node;
+        XNode.NodePort port = GetPort("output");
+        if (port.Connection != null)
+        {
+            return (BaseNodeType)port.Connection.node;
+        }
 
-       
+
+        return null;
     }
 
     public void AddBarrier()

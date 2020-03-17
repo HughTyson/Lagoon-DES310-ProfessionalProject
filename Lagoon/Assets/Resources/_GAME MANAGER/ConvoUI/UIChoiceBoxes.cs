@@ -62,13 +62,12 @@ public class UIChoiceBoxes : MonoBehaviour
                 new TweenManager.TweenPart_Start(1, 1.2f, 0.25f, GM_.Instance.tween_curve_library.GetCurve("OVERSHOOT"))  //
                 ),                                                                                                      //
             new TweenManager.TweenPath(                                                                                 // Selected Option Alpha
-                new TweenManager.TweenPart_Start(1,1,1.5f,TweenManager.CURVE_PRESET.LINEAR),                            //
+                new TweenManager.TweenPart_Start(1, 1, 1.5f, TweenManager.CURVE_PRESET.LINEAR),                            //
                 new TweenManager.TweenPart_Continue(0, 1.0f, TweenManager.CURVE_PRESET.LINEAR)                          //
                 ),                                                                                                      //
             new TweenManager.TweenPath(                                                                                 //
                 new TweenManager.TweenPart_Start(1, 0, 1.0f, TweenManager.CURVE_PRESET.LINEAR)                          // Not Selected Option Alpha
                 )
-
             );
     }
 

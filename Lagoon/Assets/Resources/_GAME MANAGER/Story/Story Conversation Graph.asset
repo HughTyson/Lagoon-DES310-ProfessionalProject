@@ -119,6 +119,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - {fileID: 5323912567286394041}
+  - {fileID: 8107569085075045574}
+  - {fileID: 250640198555292732}
+  - {fileID: 6536975228260611841}
   - {fileID: -6165283508815453756}
   - {fileID: 3574138365267954497}
   - {fileID: -7027228327233918232}
@@ -136,11 +139,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 0db546e197ddf224499a61f9ca95a5ca, type: 3}
   m_Name: Global Properties
   m_EditorClassIdentifier: Assembly-CSharp::GlobalPropertiesNode
-  graph: {fileID: 11400000}
-  position: {x: -264, y: -392}
+  graph: {fileID: 0}
+  position: {x: -840, y: -72}
   ports:
     keys: []
     values: []
@@ -251,10 +254,7 @@ MonoBehaviour:
       _node: {fileID: 937010787048392267}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: input
-        node: {fileID: 3574138365267954497}
-        reroutePoints: []
+      connections: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
@@ -387,11 +387,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 974e7624c5782e74da9e91b42d1160dc, type: 3}
   m_Name: Help
   m_EditorClassIdentifier: Assembly-CSharp::HelpNode
-  graph: {fileID: 11400000}
-  position: {x: -904, y: -264}
+  graph: {fileID: 0}
+  position: {x: -952, y: 88}
   ports:
     keys: []
     values: []
@@ -404,11 +404,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 53d3cd0f939421f40b74af8aee90a7cd, type: 3}
   m_Name: Root
   m_EditorClassIdentifier: Assembly-CSharp::RootNode
-  graph: {fileID: 11400000}
-  position: {x: -424, y: -120}
+  graph: {fileID: 0}
+  position: {x: -488, y: 40}
   ports:
     keys:
     - output

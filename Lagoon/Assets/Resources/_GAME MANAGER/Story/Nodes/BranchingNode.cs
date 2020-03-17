@@ -21,11 +21,10 @@ public class BranchingNode : BaseNodeType
     [Output(ShowBackingValue.Never, ConnectionType.Override)] public int outputA;
     [Output(ShowBackingValue.Never, ConnectionType.Override)] public int outputB;
 
-    [TextArea(4, 6)]
+    [TextArea(2, 6)]
     public string LeftDecision;
-    [TextArea(4, 6)]
+    [TextArea(2, 6)]
     public string RightDecision;
-
 
     public BaseNodeType NextNode(CHOICE chosen_choice)
     {
@@ -44,6 +43,8 @@ public class BranchingNode : BaseNodeType
         return null;
 
     }
-    
+
+
+
 
 }
