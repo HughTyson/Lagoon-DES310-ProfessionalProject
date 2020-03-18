@@ -17,8 +17,6 @@ public class RootNodeEditor : NodeEditor
         RootNode node = target as RootNode;
         //if (simpleNode == null) simpleNode = node as DialogNode;
 
-        // Update serialized object's representation
-        serializedObject.Update();
 
         // NodeEditorGUILayout.DrawPortHandle(new Rect(0, 0, 5, 5), Color.green, Color.yellow) ;
         GUIStyle testStyle = new GUIStyle();
@@ -29,6 +27,9 @@ public class RootNodeEditor : NodeEditor
         }
 
 
+        // Update serialized object's representation
+        serializedObject.Update();
+
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("output"));
 
         SerializedProperty barrier_list = serializedObject.FindProperty("barriers");
@@ -38,10 +39,7 @@ public class RootNodeEditor : NodeEditor
         for (int i = 0; i < node.barriers.Count; i++)
         {
             SerializedProperty test = barrier_list.GetArrayElementAtIndex(i);
-
-            GUIContent empty = new GUIContent();
-            NodeEditorGUILayout.PropertyField(test, empty);
-
+            NodeEditorGUILayout.PropertyField(test, GUIContent.none);
         }
 
         GUILayout.BeginHorizontal();

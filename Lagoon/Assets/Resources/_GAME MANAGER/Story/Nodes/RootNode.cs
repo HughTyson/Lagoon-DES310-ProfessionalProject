@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
 [NodeWidth(304)]
 public class RootNode : BaseNodeType
 {
     protected override void Init()
     {
-        node_type = NODE_TYPE.ROOT;
-        
+        node_type = NODE_TYPE.ROOT;      
     }
     public enum BARRIER_STATE
     {

@@ -5,6 +5,7 @@ using UnityEngine;
 [NodeWidth(400)]
 public class GlobalPropertiesNode : BaseNodeType
 {
+    public event System.Action ValuesChanged;
     protected override void Init()
     {
         node_type = NODE_TYPE.GLOBAL_PROPERTIES;

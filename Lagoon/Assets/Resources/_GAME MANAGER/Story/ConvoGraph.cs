@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using XNode;
@@ -7,6 +8,38 @@ using XNode;
 public class ConvoGraph : NodeGraph
 {
 
+    GlobalPropertiesNode globalPropertiesNode;
+    RootNode rootNode;
+    public override Node AddNode(Type type)
+    {
+
+        Node node = base.AddNode(type);
+
+        if (((BaseNodeType)node) == null)
+        {
+            base.RemoveNode(node);
+            return null;
+        }
+        switch (((BaseNodeType)node).GetNodeType())
+        {
+            case BaseNodeType.NODE_TYPE.ROOT:
+            {
+
+                    break;
+            }
+        
+        }
+
+        return node; 
+    }
+    public override Node CopyNode(Node original)
+    {
+        return base.CopyNode(original);
+    }
+    public override void RemoveNode(Node node)
+    {
+        base.RemoveNode(node);
+    }
 
     public BaseNodeType FindRootNode()
     {
