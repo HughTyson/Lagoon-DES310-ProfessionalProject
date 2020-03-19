@@ -67,7 +67,7 @@ public class DialogNodeEditor : NodeEditor
             if (displayStrings[i].prevString != dialogText.stringValue)
             {
                 displayStrings[i].prevString = dialogText.stringValue;
-           //     displayStrings[i].debuggerText.text = SpecialText.DebuggingParse.ParseTextToDebugMarkUpText(displayStrings[i].prevString);
+                displayStrings[i].debuggerText.text = SpecialText.DebuggingParse.ParseTextToDebugMarkUpText(displayStrings[i].prevString, ((ConvoGraph)node.graph).GlobalProperties);
                 displayStrings[i].dialogOnlyText.text = SpecialText.DebuggingParse.ParseTextToDialogOnlyString(displayStrings[i].prevString);
             }
 

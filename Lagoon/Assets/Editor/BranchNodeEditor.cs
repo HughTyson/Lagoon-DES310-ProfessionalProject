@@ -35,7 +35,7 @@ public class BranchNodeEditor : NodeEditor
         if (LeftPrevText != serializedObject.FindProperty("LeftDecision").stringValue)
         {
             LeftPrevText = serializedObject.FindProperty("LeftDecision").stringValue;
-           // leftDecisionDebugText.text = SpecialText.DebuggingParse.ParseTextToDebugMarkUpText(LeftPrevText);
+            leftDecisionDebugText.text = SpecialText.DebuggingParse.ParseTextToDebugMarkUpText(LeftPrevText, ((ConvoGraph)node.graph).GlobalProperties);
             leftDecisionDialogText.text = SpecialText.DebuggingParse.ParseTextToDialogOnlyString(LeftPrevText);
         }
 
@@ -54,7 +54,7 @@ public class BranchNodeEditor : NodeEditor
         if (rightPrevText != serializedObject.FindProperty("RightDecision").stringValue)
         {
             rightPrevText = serializedObject.FindProperty("RightDecision").stringValue;
-           // rightDecisionDebugText.text = SpecialText.DebuggingParse.ParseTextToDebugMarkUpText(rightPrevText);
+            rightDecisionDebugText.text = SpecialText.DebuggingParse.ParseTextToDebugMarkUpText(rightPrevText, ((ConvoGraph)node.graph).GlobalProperties);
             rightDecisionDialogText.text = SpecialText.DebuggingParse.ParseTextToDialogOnlyString(rightPrevText);
         }
 

@@ -45,7 +45,7 @@ namespace SpecialText
         {
             globalProperties = globalProperties_;
         }
-        public List<SpecialTextData> ParseToSpecialTextData(string data)
+        public SpecialTextData ParseToSpecialTextData(string data)
         {
             List<Token> TokenList = tokenizer.Tokenize(data);
             return lexer.Lex(TokenList, globalProperties);
@@ -55,7 +55,26 @@ namespace SpecialText
 
     public class SpecialTextData
     {
+    
         public List<TextPropertyData.Base> propertyDataList = new List<TextPropertyData.Base>();
-        public string text;
+        public List<SpecialTextCharacterData> specialTextCharacters = new List<SpecialTextCharacterData>();
+        public string fullTextString = "";
     }
+    public class SpecialTextCharacterData
+    {
+        private readonly static Color32 def_colour = new Color32(0,0,0,0);
+        public SpecialTextCharacterData(int index_, char character_)
+        {
+            index = index_;
+            character = character_;
+        }
+        public readonly int index;
+        public readonly char character;
+        public void Reset()
+        {
+            colour = def_colour;
+        }
+        public Color32 colour = def_colour;
+    }
+
 }

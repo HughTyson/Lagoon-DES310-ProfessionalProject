@@ -38,8 +38,9 @@ namespace SpecialText
             public Token token_version;
         }
 
-        public List<SpecialTextData> Lex(List<Token> tokenList, GlobalPropertiesNode globalProperties)
+        public SpecialTextData Lex(List<Token> tokenList, GlobalPropertiesNode globalProperties)
         {
+            SpecialTextData specialTextData = new SpecialTextData();
             if (tokenList.Count > 0)
             {
                 if (globalProperties == null)
@@ -64,29 +65,29 @@ namespace SpecialText
                     case Token.TYPE.PROPERTY_ENTER:
                         {
 
-                            TextPropertyData.Base property_data;
-                            if (TextPropertyData.TryParseNameToTextPropertyData(tokenList[i].Data, out property_data))
+                            TextPropertyData.Base property_data = TextPropertyData.CreatePropertyDataFromName(tokenList[i].Data);
+                            if (property_data != null)
                             {
-                                property_data.Lex(tokenList[i], tokenList[i].TokenChildren, FlagError);
+                                specialTextData.propertyDataList.Add(property_data);
+                                property_data.Lex(new TextPropertyData.Base.LexingArgs(tokenList[i], tokenList[i].TokenChildren, FlagError));
                                 openProperties.Add(new OpenProperty(property_data, tokenList[i]));
                             }
                             else
                             {
                                 FlagError("Error: Property Type Not Found. Did you mean: " + TextPropertyData.FindMostSimilarPropertyName(tokenList[i].Data) + "?", tokenList[i]);
                             }
-
                             break;
                         }
                     case Token.TYPE.PROPERTY_EXIT:
                         {
-                            TextPropertyData.DATA_TYPE property_type;
-                            if (TextPropertyData.TypeDictionary.TryGetValue(tokenList[i].Data,out property_type))
+                            TextPropertyData.PropertyInfo property_info;
+                            
+                            if (TextPropertyData.propertyInfoDictionary.TryGetValue(tokenList[i].Data.GetHashCode(), out property_info))
                             {
                                 bool found = false;
                                 for (int k = openProperties.Count - 1; k >= 0; k--) // goes backwards so if multiple same properties are opened, remove the inner most one
                                 {
-
-                                    if (openProperties[k].property_data_version.DataType == property_type)
+                                    if (openProperties[k].property_data_version.GetType() == property_info.type)
                                     {
                                         openProperties.RemoveAt(k);
                                         found = true;
@@ -108,15 +109,15 @@ namespace SpecialText
                         }
                     case Token.TYPE.TEXT:
                         {
-                            SpecialTextData newSpecialTextData = new SpecialTextData();
-                            newSpecialTextData.text = ((Token_Text)tokenList[i]).Data;
+             
+                            specialTextData.fullTextString += ((Token_Text)tokenList[i]).Data;
       
                             List<TextPropertyData.Base> appliedProperties = new List<TextPropertyData.Base>();
 
                             for (int k = openProperties.Count - 1; k >= 0; k--)
                             {
                                 // prevent property duplicates. Only use most recently opened property, which is the inner most duplicate. 
-                                if (!appliedProperties.Exists(y => { return (y.DataType == openProperties[k].property_data_version.DataType); }))
+                                if (!appliedProperties.Exists(y => { return (y.GetType() == openProperties[k].property_data_version.GetType()); }))
                                 {
                                     appliedProperties.Add(openProperties[k].property_data_version);
                                 }
@@ -128,8 +129,19 @@ namespace SpecialText
                                 incompatibleCheck[k].CheckForIncompatibles(incompatibleCheck, FlagError);
                             }
 
-                            newSpecialTextData.propertyDataList = appliedProperties;
-                            specialTextData.Add(newSpecialTextData);
+                            List<SpecialTextCharacterData> textCharacters = new List<SpecialTextCharacterData>();
+
+                            for (int k = 0; k < ((Token_Text)tokenList[i]).Data.Length; k++)
+                            {
+                                textCharacters.Add(new SpecialTextCharacterData(specialTextData.specialTextCharacters.Count + textCharacters.Count, ((Token_Text)tokenList[i]).Data[k]));
+                            }
+                            for (int k = 0; k < appliedProperties.Count; k++)
+                            {
+                                appliedProperties[k].AddCharacterReference(textCharacters);
+                            }
+                            TextPropertyData.ApplyDefaults(specialTextData, appliedProperties, textCharacters, globalProperties);
+
+                            specialTextData.specialTextCharacters.AddRange(textCharacters);
                             break;
                         }
                     default:
@@ -147,10 +159,10 @@ namespace SpecialText
             }
 
 
-            // Apply default property data to specialText which hasn't been overriden but is required
-            for (int i= 0; i < specialTextData.Count; i++)
+
+            for (int i = 0; i < specialTextData.propertyDataList.Count; i++)
             {
-                TextPropertyData.ApplyDefaults(ref specialTextData[i].propertyDataList, globalProperties);
+                specialTextData.propertyDataList[i].FinializeLexing(specialTextData);
             }
 
             return specialTextData;

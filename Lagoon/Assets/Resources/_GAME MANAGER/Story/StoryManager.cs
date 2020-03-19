@@ -25,6 +25,9 @@ public class StoryManager
     public event System.Action<BranchChoiceMadeArgs> Event_BranchChoiceMade;                    //
 
     public event System.Action Event_SkipTextCrawl;
+
+
+    SpecialText.Parser specialTextParser;
     public class BarrierStartArgs
     {      
         public IReadOnlyList<BarrierNode.BARRIER_STATE> Barriers {get {return barriers;} }
@@ -38,22 +41,26 @@ public class StoryManager
 
     public class DialogEnterArgs
     {
-        public readonly DialogNode.DialogStruct dialogVars;
         public readonly ConversationCharacter leftCharacter;
         public readonly ConversationCharacter rightCharacter;
-        public DialogEnterArgs(ConversationCharacter leftCharacter_, ConversationCharacter rightCharacter_ ,DialogNode.DialogStruct dialogVars_)
+        public readonly SpecialText.SpecialTextData specialTextData;
+        public readonly DialogNode.DialogData.Talking whosTalking;
+        public DialogEnterArgs(ConversationCharacter leftCharacter_, ConversationCharacter rightCharacter_ ,DialogNode.DialogData.Talking whosTalking_, SpecialText.SpecialTextData specialTextData_)
         {
-            dialogVars = dialogVars_;
+            whosTalking = whosTalking_;
             leftCharacter = leftCharacter_;
             rightCharacter = rightCharacter_;
+            specialTextData = specialTextData_;
         }
     }
     public class DialogNewTextArgs
     {
-        public readonly DialogNode.DialogStruct dialogVars;
-        public DialogNewTextArgs(DialogNode.DialogStruct dialogVars_)
+        public readonly DialogNode.DialogData.Talking whosTalking;
+        public readonly SpecialText.SpecialTextData specialTextData;
+        public DialogNewTextArgs(DialogNode.DialogData.Talking whosTalking_, SpecialText.SpecialTextData specialTextData_)
         {
-            dialogVars = dialogVars_;
+            whosTalking = whosTalking_;
+            specialTextData = specialTextData_;
         }
     }
     public class ConvoCharacterChangeArgs
@@ -121,6 +128,9 @@ public class StoryManager
         Event_BarrierOpened += BarrierOpened;
 
         Event_BarrierStart?.Invoke(new BarrierStartArgs(((RootNode)current_node).barriers));
+
+        specialTextParser = new SpecialText.Parser(((ConvoGraph)current_node.graph).GlobalProperties);
+
     }
 
 
@@ -140,7 +150,8 @@ public class StoryManager
                         DialogNode node = (DialogNode)current_node;
                         Event_ConvoCharactersShow?.Invoke(new ConvoCharactersShowArgs(node.leftCharacter, node.rightCharacter));
                         node.ResetDialogIndex();
-                        Event_DialogStart?.Invoke(new DialogEnterArgs(node.leftCharacter,node.rightCharacter,node.GetCurrentDialog()));
+                        DialogNode.DialogData dialogData = node.GetCurrentDialog();
+                        Event_DialogStart?.Invoke(new DialogEnterArgs(node.leftCharacter,node.rightCharacter, dialogData.whoIsTalking, specialTextParser.ParseToSpecialTextData(dialogData.dialog_text)));
                         break;
                     }
             }
@@ -163,7 +174,8 @@ public class StoryManager
                     }
                     else
                     {
-                        DialogNewTextArgs args = new DialogNewTextArgs(((DialogNode)current_node).IterateAndGetDialog());
+                        DialogNode.DialogData dialog_data = ((DialogNode)current_node).IterateAndGetDialog();
+                        DialogNewTextArgs args = new DialogNewTextArgs(dialog_data.whoIsTalking, specialTextParser.ParseToSpecialTextData(dialog_data.dialog_text));
                         Event_DialogNewText?.Invoke(args);
                     }
             }
@@ -228,7 +240,8 @@ public class StoryManager
                 {
                     DialogNode node = ((DialogNode)current_node);
                     node.ResetDialogIndex();
-                    Event_DialogStart?.Invoke(new DialogEnterArgs(node.leftCharacter, node.rightCharacter, node.GetCurrentDialog()));
+                    DialogNode.DialogData dialogData = node.GetCurrentDialog();
+                    Event_DialogStart?.Invoke(new DialogEnterArgs(node.leftCharacter, node.rightCharacter, dialogData.whoIsTalking, specialTextParser.ParseToSpecialTextData(dialogData.dialog_text)));
                     break;
                 }
             case BaseNodeType.NODE_TYPE.BRANCH:

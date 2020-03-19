@@ -13,8 +13,11 @@ public class UIStateConversation : MonoBehaviour
     ConversationCharacter leftCharacter;
     ConversationCharacter rightCharacter;
 
-    DialogNode.DialogStruct latestDialog;
+    SpecialText.SpecialTextData latestSpecialText;
+    DialogNode.DialogData.Talking latestWhosTalking;
 
+    SpecialText.SpecialTextData unseenSpecialText;
+    DialogNode.DialogData.Talking unseenWhosTalking;
 
     void Start()
     {
@@ -83,7 +86,8 @@ public class UIStateConversation : MonoBehaviour
                 dialogStartTextShouldShowIterate();
             }
 
-            latestDialog = args.dialogVars;
+            latestSpecialText = args.specialTextData;
+            latestWhosTalking = args.whosTalking;
 
             if (!dialogBox.IsBoxShowing())
             {
@@ -131,7 +135,9 @@ public class UIStateConversation : MonoBehaviour
             dialogStartTextShouldShowIterate();
         }
 
-        latestDialog = unseen_dialog_enter_args.dialogVars;
+        latestSpecialText = unseenSpecialText;
+        latestWhosTalking = unseenWhosTalking;
+
 
         if (!dialogBox.IsBoxShowing())
         {
@@ -184,14 +190,14 @@ public class UIStateConversation : MonoBehaviour
         dialog_start_text_iterator++;
         if (dialog_start_text_iterator == 3)
         {
-            dialogBox.WriteText(latestDialog.dialog_text);
+            dialogBox.WriteText(latestSpecialText);
 
-            if (latestDialog.whoIsTalking == DialogNode.DialogStruct.Talking.Left)
+            if (latestWhosTalking == DialogNode.DialogData.Talking.Left)
             {
                 leftPortrait.Talking();
                 rightPortrait.NotTalking();
             }
-            else if (latestDialog.whoIsTalking == DialogNode.DialogStruct.Talking.Right)
+            else if (latestWhosTalking == DialogNode.DialogData.Talking.Right)
             {
                 leftPortrait.NotTalking();
                 rightPortrait.Talking();
@@ -202,19 +208,21 @@ public class UIStateConversation : MonoBehaviour
 
     void DialogNewText(StoryManager.DialogNewTextArgs args)
     {
-        if (args.dialogVars.whoIsTalking == DialogNode.DialogStruct.Talking.Left)
+        if (args.whosTalking == DialogNode.DialogData.Talking.Left)
         {
             leftPortrait.Talking();
             rightPortrait.NotTalking();
         }
-        else if (args.dialogVars.whoIsTalking == DialogNode.DialogStruct.Talking.Right)
+        else if (args.whosTalking == DialogNode.DialogData.Talking.Right)
         {
             leftPortrait.NotTalking();
             rightPortrait.Talking();
         }
 
-        latestDialog = args.dialogVars;
-        dialogBox.WriteText(latestDialog.dialog_text);
+        latestSpecialText = args.specialTextData;
+        latestWhosTalking = args.whosTalking;
+
+        dialogBox.WriteText(args.specialTextData);
     }
 
 

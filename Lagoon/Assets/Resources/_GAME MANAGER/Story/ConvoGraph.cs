@@ -10,61 +10,34 @@ public class ConvoGraph : NodeGraph
 
     GlobalPropertiesNode globalPropertiesNode;
     RootNode rootNode;
-    public override Node AddNode(Type type)
-    {
 
-        Node node = base.AddNode(type);
+    
+    public GlobalPropertiesNode GlobalProperties { get {return globalPropertiesNode; } }
+    public RootNode Root { get { return rootNode; } }
 
-        if (((BaseNodeType)node) == null)
-        {
-            base.RemoveNode(node);
-            return null;
-        }
-        switch (((BaseNodeType)node).GetNodeType())
-        {
-            case BaseNodeType.NODE_TYPE.ROOT:
-            {
-
-                    break;
-            }
-        
-        }
-
-        return node; 
-    }
-    public override Node CopyNode(Node original)
-    {
-        return base.CopyNode(original);
-    }
-    public override void RemoveNode(Node node)
-    {
-        base.RemoveNode(node);
-    }
-
-    public BaseNodeType FindRootNode()
+    public void FindRootNode()
     {
         for (int i = 0; i < nodes.Count; i++)
         {
             if (((BaseNodeType)nodes[i]).GetNodeType() == BaseNodeType.NODE_TYPE.ROOT)
             {
-                return (BaseNodeType)nodes[i];
+                rootNode = (RootNode)nodes[i];
+                return;
             }
         }
-
-        Debug.LogError("No 'RootNode' found in ConvoGraph!");
-        return null;
+        rootNode = null;
     }
 
-    public GlobalPropertiesNode FindGlobalPropertiesNode()
+    public void FindGlobalPropertiesNode()
     {
         for (int i = 0; i < nodes.Count; i++)
         {
             if (((BaseNodeType)nodes[i]).GetNodeType() == BaseNodeType.NODE_TYPE.GLOBAL_PROPERTIES)
             {
-                return (GlobalPropertiesNode)nodes[i];
+                globalPropertiesNode = (GlobalPropertiesNode)nodes[i];
+                return;
             }
         }
-        Debug.LogError("No 'GlobalPropertiesNode' found in ConvoGraph!");
-        return null;
+        globalPropertiesNode =  null;
     }
 }

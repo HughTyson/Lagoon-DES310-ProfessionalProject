@@ -2771,6 +2771,7 @@ GameObject:
   - component: {fileID: 1616624711842046243}
   - component: {fileID: 3814355748992975278}
   - component: {fileID: 7081114077022722163}
+  - component: {fileID: 8164576963936233496}
   m_Layer: 5
   m_Name: Dialog Box
   m_TagString: Untagged
@@ -2849,7 +2850,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b6d5fbcde191bd4fb341323c3cd9423, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  specialText: {fileID: 8164576963936233496}
   ButtonA_Image: {fileID: 6301265786278282561}
+--- !u!114 &8164576963936233496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5747561206370506637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16feae51777e4945a8bcdf499b91e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 7666670177977360745}
 --- !u!1 &5862828956122058202
 GameObject:
   m_ObjectHideFlags: 0
@@ -3282,8 +3297,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 0
+  m_fontColor: {r: 0, g: 0, b: 0, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3566,7 +3581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57edb300b15a28d42bed6aaaf8ffd33f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  convoGraph: {fileID: 11400000, guid: 21a3689d0c369fe4296c780fe7fdddf3, type: 2}
+  convoGraph: {fileID: 11400000, guid: 526c0d6bffec45342a9060fb61c8cda0, type: 2}
   curveLibrary: {fileID: 11400000, guid: 0d00829d18788c149b622379d5b2733b, type: 2}
   uiManager: {fileID: 5273871260055037157}
 --- !u!1 &6791852377375833879
