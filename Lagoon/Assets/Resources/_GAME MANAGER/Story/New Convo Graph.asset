@@ -93,17 +93,18 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   Dialog:
   - whoIsTalking: 0
-    dialog_text: 'This is a test: [Colour(0,255,0)]green, [Colour(255,0,0)]red, [/Colour][CharSpeed(2,2)]slow
-      [Scale(1.2)]g[/Scale]reen[/CharSpeed] [/Colour]'
-  - whoIsTalking: 0
     dialog_text: 'Hello There
 
-      I''m[CharSpeed(3,1)]...[/CharSpeed] Tomas!'
+      I''m[CharSpeed(3)]...[/CharSpeed] Tomas!'
   - whoIsTalking: 0
-    dialog_text: I made my first Parser and it works, Yay!
+    dialog_text: 'This is a test: [Colour(0,255,0)][Wave(4,0.2,2)]green[/Wave], [Colour(255,0,0)]red,
+      [/Colour]slow [Scale(1.5)]g[/Scale]reen [/Colour]'
+  - whoIsTalking: 0
+    dialog_text: '[Colour(0,255,0)] Test 1 [Wave(1,0.1,1)] [Colour(255,0,0)] Testing
+      2 [Wave(1,0.1,2)] Test 3  [/Colour] [/Wave] Test 4 [/Wave]  [/Colour]'
   input: 0
   output: 0
-  nodeWidth: 554.19666
+  nodeWidth: 749.6626
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

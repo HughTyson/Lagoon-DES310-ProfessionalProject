@@ -39,14 +39,12 @@ namespace SpecialText
                 while (!info.characterInfo[charIndex].isVisible)
                 {
                     charIndex++;
-                    if (charIndex > info.characterCount)
+                    if (charIndex > info.characterCount - 1)
                         break;
                 }
-                if (charIndex > info.characterCount)
+                if (charIndex > info.characterCount - 1)
                     continue;
 
-                if (charIndex > info.characterCount - 1)
-                    Debug.LogError("Error, something went wrong :(");
 
                 TMPro.TMP_CharacterInfo char_info = tmp.textInfo.characterInfo[charIndex];
                 int meshIndex = tmp.textInfo.characterInfo[charIndex].materialReferenceIndex;
@@ -111,14 +109,11 @@ namespace SpecialText
                 while (!info.characterInfo[charIndex].isVisible)
                 {
                     charIndex++;
-                    if (charIndex > info.characterCount)
+                    if (charIndex > info.characterCount - 1)
                         break;
                 }
-                if (charIndex > info.characterCount)
-                    continue;
-
                 if (charIndex > info.characterCount - 1)
-                    Debug.LogError("Error, something went wrong :(");
+                    continue;
 
                 TMPro.TMP_CharacterInfo char_info = tmp.textInfo.characterInfo[charIndex];
                 int meshIndex = tmp.textInfo.characterInfo[charIndex].materialReferenceIndex;

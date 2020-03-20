@@ -47,10 +47,10 @@ namespace SpecialText
             new PropertyInfo(
                 "CharSpeed",
                 typeof(CharSpeed),
-                functionName_: "CharSpeed(S, AS)",
+                functionName_: "CharSpeed(S)",
                 description_: "The speed of showing the characters of the text.",
-                parameters_: "S: Speed of showing characters. AS: Speed of Character Transitioning in",
-                example_: "[CharSpeed(10, 0.2)] text [/CharSpeed]"
+                parameters_: "S: Speed of showing characters.",
+                example_: "[CharSpeed(10)] text [/CharSpeed]"
                 ),
             new PropertyInfo(
                 "Wave",
@@ -120,9 +120,9 @@ namespace SpecialText
         }
         public abstract class Base
         {
+            protected GlobalPropertiesNode globalProperties;
 
             protected List<SpecialTextCharacterData> specialTextCharacters = new List<SpecialTextCharacterData>();
-
             
 
             // Used in the SpecialTextIterator. Where this property is when it comes to stopping the flow of the iterator.
@@ -132,6 +132,11 @@ namespace SpecialText
 
             // smallerst index value of a character the property affects. 
             int lowestCharacterIndex;
+
+            public void SetGlobalPropertiesReference(GlobalPropertiesNode globalProperties_)
+            {
+                globalProperties = globalProperties_;
+            }
 
             
             public int LowestCharacterIndex { get { return lowestCharacterIndex; } }
@@ -159,6 +164,7 @@ namespace SpecialText
             {
                 specialTextCharacters.AddRange(textCharacterDatas);
             }
+
             public void FinializeLexing(SpecialTextData specialText)
             {
                 if (specialTextCharacters.Count == 0)
@@ -345,14 +351,13 @@ namespace SpecialText
                 speed = speed_;
                 transition_in_duration = transition_in_duration_;
             }
+
             public override void Lex(LexingArgs lexingArgs)
             {
-                if (!ErrorCheckForParameterNum(2, lexingArgs))
+                if (!ErrorCheckForParameterNum(1, lexingArgs))
                     return;
 
                 if (!TryParseFloatWithErrorCheck(out speed, lexingArgs, 0))
-                    return;
-                if (!TryParseFloatWithErrorCheck(out transition_in_duration, lexingArgs, 1))
                     return;
 
                 if (speed < -0.00001f)
@@ -360,11 +365,9 @@ namespace SpecialText
                     lexingArgs.ErrorMessage("Error: parameter cannot be negative.", lexingArgs.parameters[0]);
                     return;
                 }
-                if (transition_in_duration < -0.00001f)
-                {
-                    lexingArgs.ErrorMessage("Error: parameter cannot be negative.", lexingArgs.parameters[1]);
-                    return;
-                }
+
+                transition_in_duration = globalProperties.DefaultDurationOfTextCharacterTransitionIn;
+
             }
             protected override void CompletedLexing()
             {
@@ -376,11 +379,15 @@ namespace SpecialText
 
             float time = 0;
             float float_startingIndex;
+            int leftToCompleted = 0;
+            bool lastCharacterIsTransitioning = false;
             public override void Begin()
             {
                 time = 0;
                 holdingBackTextFlowIndex = specialTextCharacters[0].index ;
                 float_startingIndex = holdingBackTextFlowIndex;
+                leftToCompleted = specialTextCharacters.Count;
+                lastCharacterIsTransitioning = false;
                 for (int i = 0; i < specialTextCharacters.Count; i++)
                 {
                     uncompleteCharacterTransitions.Add(new TextCharacterWrapper(specialTextCharacters[i],i));
@@ -389,6 +396,12 @@ namespace SpecialText
                     transitionVarsList[i].ScaleRef.value = 0;
                     transitionVarsList[i].YPositionRef.value = 0;
                 }
+            }
+
+            
+            private void characterFinished()
+            {
+                leftToCompleted--;
             }
             public override bool TransitionUpdate()
             {
@@ -409,6 +422,7 @@ namespace SpecialText
                                 transitionVarsList[y.indexInList].ScaleRef,
                                 transitionVarsList[y.indexInList].YPositionRef
                             }, 
+                            tweenCompleteDelegate_: characterFinished,
                             speed_: 1.0f / transition_in_duration
                         );
                         return true;
@@ -420,14 +434,26 @@ namespace SpecialText
                     specialTextCharacters[i].colour.a = (byte)(255* transitionVarsList[i].AlphaRef.value);
                     specialTextCharacters[i].scaleMultiplier *= transitionVarsList[i].ScaleRef.value;
                     specialTextCharacters[i].rotationDegrees += transitionVarsList[i].RotationRef.value;
-
-                    // TODO: this doesn work atm..
                     specialTextCharacters[i].centrePositionOffset.y += transitionVarsList[i].YPositionRef.value;
                 }
 
-                holdingBackTextFlowIndex = (int)Mathf.Min(transitioningFloat - transition_in_duration, highestHoldingTextIndex); 
+                if (!lastCharacterIsTransitioning)
+                {
+                    holdingBackTextFlowIndex = Mathf.Min(Mathf.CeilToInt(transitioningFloat),highestHoldingTextIndex);
+                    if (holdingBackTextFlowIndex == highestHoldingTextIndex)
+                    {
+                        lastCharacterIsTransitioning = true;
+                    }
+                }
+                else
+                {
+                    holdingBackTextFlowIndex = int.MaxValue;
+                }
 
-                if (time > ((specialTextCharacters.Count / speed) + transition_in_duration)) 
+                
+
+
+                if (leftToCompleted == 0) 
                 {
                     EndlessUpdate();
                     return true;
@@ -484,6 +510,25 @@ namespace SpecialText
                     return;
                 if (!TryParseFloatWithErrorCheck(out speed, lexingArgs, 2))
                     return;
+            }
+
+            float time = 0;
+            public override void Begin()
+            {
+                time = 0;
+            }
+            public override void EndlessUpdate()
+            {
+                time += Time.deltaTime;
+                holdingBackTextFlowIndex = highestHoldingTextIndex;
+
+
+               
+                for (int i = 0; i < specialTextCharacters.Count; i++)
+                {
+                    float offset = ((float)(specialTextCharacters[i].index - specialTextCharacters[0].index) / (float)(specialTextCharacters[specialTextCharacters.Count - 1].index - specialTextCharacters[0].index));
+                    specialTextCharacters[i].centrePositionOffset.y += amplitude * Mathf.Sin((offset * Mathf.PI * frequency) + (time*speed* Mathf.PI));
+                }
             }
         }
         public class Scale : Base

@@ -30,18 +30,29 @@ namespace SpecialText
             return specialTextManager.AreAllCompleted();
         }
 
+        public void End()
+        {
+            if (coroutine != null)
+                StopCoroutine(coroutine);
+
+        }
         private void Update()
         {
         }
+
         IEnumerator UpdateText()
         {
+            bool textCompletedEventCalled = false;
             while (true)
             {
                 specialTextManager.Update();
-                if (specialTextManager.AreAllCompleted())
+                if (!textCompletedEventCalled)
                 {
-                    StopCoroutine(coroutine);
-                    TextCompleted?.Invoke();
+                    if (specialTextManager.AreAllCompleted())
+                    {
+                        textCompletedEventCalled = true;
+                        TextCompleted?.Invoke();
+                    }
                 }
                 yield return null;
             }

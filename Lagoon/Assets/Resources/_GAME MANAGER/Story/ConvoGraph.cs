@@ -12,8 +12,22 @@ public class ConvoGraph : NodeGraph
     RootNode rootNode;
 
     
-    public GlobalPropertiesNode GlobalProperties { get {return globalPropertiesNode; } }
-    public RootNode Root { get { return rootNode; } }
+    public GlobalPropertiesNode GlobalProperties { 
+        get {
+            if (globalPropertiesNode == null)
+            {
+                FindGlobalPropertiesNode();
+            }
+            return globalPropertiesNode; 
+        } 
+    }
+    public RootNode Root { get { 
+            if (rootNode == null)
+            {
+                FindRootNode();
+            }
+            return rootNode; } 
+    }
 
     public void FindRootNode()
     {

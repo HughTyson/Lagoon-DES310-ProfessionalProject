@@ -110,6 +110,7 @@ public class UIDialogBox : MonoBehaviour
         //    tweenUpdatedDelegate_: textTransitionUpdate,
         //    tweenCompleteDelegate_: textFinishedAppearing
         //    );
+        specialText.End();
         specialText.Begin(specialTextData, textFinishedAppearing);
     }
     public void ClearContinueSymbol()
