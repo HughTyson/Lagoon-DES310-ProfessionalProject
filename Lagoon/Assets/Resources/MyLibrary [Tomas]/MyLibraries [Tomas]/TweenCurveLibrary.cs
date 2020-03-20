@@ -8,8 +8,6 @@ using System.Reflection;
 
 [CreateAssetMenu(fileName = "TweenCurveLibrary")]
 
-
-
 public class TweenCurveLibrary : ScriptableObject
 {
 
@@ -30,16 +28,43 @@ public class TweenCurveLibrary : ScriptableObject
     List<Curve> curves;
 
     Dictionary<object, AnimationCurve> curve_dictionary = new Dictionary<object, AnimationCurve>();
-    
-    public void Init()
+
+
+    static TweenCurveLibrary()
     {
-        for (int i = 0; i < curves.Count; i++)
+        
+    }
+    static TweenCurveLibrary defaultLibrary = null;
+    public static TweenCurveLibrary DefaultLibrary
+    {
+        get
         {
-            curve_dictionary.Add(curves[i].NAME, curves[i].curve);
+            if (defaultLibrary == null)
+            {
+                defaultLibrary = Resources.Load<TweenCurveLibrary>("_GAME MANAGER/DefaultCurveLibrary");
+            }
+            return defaultLibrary;
         }
     }
+
     public AnimationCurve GetCurve(object key)
     {
+        if (curve_dictionary.Count == 0)
+        {
+            for (int i = 0; i < curves.Count; i++)
+            {
+                curve_dictionary.Add(curves[i].NAME, curves[i].curve);
+            }
+        }
         return curve_dictionary[key];
+    }
+
+    public void OnDestroy()
+    {
+        if (defaultLibrary != null)
+        {
+            Destroy(defaultLibrary);
+            defaultLibrary = null;
+        }
     }
 }

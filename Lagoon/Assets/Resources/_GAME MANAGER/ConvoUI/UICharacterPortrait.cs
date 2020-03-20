@@ -41,19 +41,19 @@ public class UICharacterPortrait : MonoBehaviour
                 new TweenManager.TweenPart_Start(0, 0, 1.25f, TweenManager.CURVE_PRESET.LINEAR)             // X POS
             ),
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(0, -400, 1.25f, GM_.Instance.tween_curve_library.GetCurve("OVERSHOOT"))      // Y POS
+                new TweenManager.TweenPart_Start(0, -400, 1.25f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")      // Y POS
             )
         );
 
         startTalkingTween = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(1, 1.25f, 0.5f, GM_.Instance.tween_curve_library.GetCurve("OVERSHOOT"))
+                new TweenManager.TweenPart_Start(1, 1.25f, 0.5f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
                 )
             );
 
         stopTalkingTween = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(1.25f, 1, 0.5f, GM_.Instance.tween_curve_library.GetCurve("OVERSHOOT"), inverse_curve_: true)
+                new TweenManager.TweenPart_Start(1.25f, 1, 0.5f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT", inverse_curve_: true)
                 )
             );
     }

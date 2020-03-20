@@ -30,7 +30,7 @@ public class DialogNode : CharacterHolderNode
     [Input(ShowBackingValue.Never,ConnectionType.Multiple)] public int input;
     [Output(ShowBackingValue.Never, ConnectionType.Override)] public int output;
 
-
+    public float nodeWidth = 300;
     public void AddDialogStruct()
     {
         Dialog.Add(new DialogData());

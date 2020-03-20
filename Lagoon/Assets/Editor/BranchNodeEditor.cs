@@ -15,56 +15,78 @@ public class BranchNodeEditor : NodeEditor
     GUIContent rightDecisionDebugText = new GUIContent();
     GUIContent rightDecisionDialogText = new GUIContent();
     string rightPrevText = "";
+
+    GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
+
+
+    public override int GetWidth()
+    {
+        BranchingNode node = target as BranchingNode;
+        int padding = 32;
+        return (int)node.nodeWidth + padding;
+    }
+
     public override void OnBodyGUI()
     {
         BranchingNode node = target as BranchingNode;
 
+      
         serializedObject.Update();
-
 
         markupStyle.richText = true;
         markupStyle.alignment = TextAnchor.UpperLeft;
-        markupStyle.fixedWidth = 272;
+        markupStyle.fixedWidth = node.nodeWidth;
         markupStyle.fontStyle = FontStyle.Bold;
+        labelStyle.fontStyle = FontStyle.Bold;
 
+
+        GUILayout.Label("Scale Width Of Node", labelStyle);
+        node.nodeWidth = GUILayout.HorizontalSlider(node.nodeWidth, 300, 1000);
 
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("input"));
 
-
-        NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("LeftDecision"));
-        if (LeftPrevText != serializedObject.FindProperty("LeftDecision").stringValue)
+        if (LeftPrevText != node.LeftDecision)
         {
-            LeftPrevText = serializedObject.FindProperty("LeftDecision").stringValue;
+            LeftPrevText = node.LeftDecision;
             leftDecisionDebugText.text = SpecialText.DebuggingParse.ParseTextToDebugMarkUpText(LeftPrevText, ((ConvoGraph)node.graph).GlobalProperties);
             leftDecisionDialogText.text = SpecialText.DebuggingParse.ParseTextToDialogOnlyString(LeftPrevText);
         }
 
+        GUILayout.Label("Left Choice", labelStyle);
+        node.LeftDecision = GUILayout.TextArea(node.LeftDecision, markupStyle);
 
+        GUI.color = Color.grey;
         GUILayout.Box(
             leftDecisionDebugText, markupStyle
             );
+        
         GUILayout.Box(
             leftDecisionDialogText, markupStyle
             );
+        GUI.color = Color.white;
+
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("outputA"));
 
 
 
-        NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("RightDecision"));
-        if (rightPrevText != serializedObject.FindProperty("RightDecision").stringValue)
+        if (rightPrevText != node.RightDecision)
         {
-            rightPrevText = serializedObject.FindProperty("RightDecision").stringValue;
+            rightPrevText = node.RightDecision;
             rightDecisionDebugText.text = SpecialText.DebuggingParse.ParseTextToDebugMarkUpText(rightPrevText, ((ConvoGraph)node.graph).GlobalProperties);
             rightDecisionDialogText.text = SpecialText.DebuggingParse.ParseTextToDialogOnlyString(rightPrevText);
         }
 
+        GUILayout.Label("Right Choice", labelStyle);
+        node.RightDecision = GUILayout.TextArea(node.RightDecision, markupStyle);
 
+        GUI.color = Color.grey;
         GUILayout.Box(
             rightDecisionDebugText, markupStyle
             );
         GUILayout.Box(
             rightDecisionDialogText, markupStyle
             );
+        GUI.color = Color.white;
 
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("outputB"));
 

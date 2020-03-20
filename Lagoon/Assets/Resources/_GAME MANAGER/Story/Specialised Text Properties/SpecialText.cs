@@ -16,29 +16,37 @@ namespace SpecialText
         {
         }
 
-        bool started = false;
-
-        public void Begin(SpecialTextData specialTextData_)
+        System.Action TextCompleted;
+        public void Begin(SpecialTextData specialTextData_, System.Action textCompleted_ = null)
         {
             specialTextManager.Begin(specialTextData_, text);
-            started = true;
-
-           // coroutine = StartCoroutine(UpdateText());
-
+            TextCompleted = textCompleted_;
+            if (coroutine != null)
+                 StopCoroutine(coroutine);
+            coroutine = StartCoroutine(UpdateText());
+        }
+        public bool AreAllCompleted()
+        {
+            return specialTextManager.AreAllCompleted();
         }
 
         private void Update()
         {
-            if (started)
-                specialTextManager.Update();
         }
-        //IEnumerator UpdateText()
-        //{
+        IEnumerator UpdateText()
+        {
+            while (true)
+            {
+                specialTextManager.Update();
+                if (specialTextManager.AreAllCompleted())
+                {
+                    StopCoroutine(coroutine);
+                    TextCompleted?.Invoke();
+                }
+                yield return null;
+            }
 
-
-
-        //    yield return new WaitForSeconds(Time.deltaTime);
-        //}
+        }
 
     }
 }

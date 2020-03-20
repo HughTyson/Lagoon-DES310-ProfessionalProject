@@ -43,13 +43,13 @@ public class UIChoiceBoxes : MonoBehaviour
 
         showTween_inversed = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(                                                                                                                         //   Left Option Y 
-                new TweenManager.TweenPart_Start(0, -300, 0.75f, GM_.Instance.tween_curve_library.GetCurve("OVERSHOOT"), inverse_curve_: true)                   //
+                new TweenManager.TweenPart_Start(0, -300, 0.75f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT", inverse_curve_: true)                   //
                 ),                                                                                                                                              //
             new TweenManager.TweenPath(                                                                                                                         //   Left Option Alpha
                 new TweenManager.TweenPart_Start(1, 0, 0.75f, TweenManager.CURVE_PRESET.LINEAR)                                                                  //
                 ),                                                                                                                                              //
             new TweenManager.TweenPath(                                                                                                                         //   Right Option Y
-                new TweenManager.TweenPart_Start(0, -300, 0.75f, GM_.Instance.tween_curve_library.GetCurve("OVERSHOOT"), inverse_curve_: true)              //                                                                                           //
+                new TweenManager.TweenPart_Start(0, -300, 0.75f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT", inverse_curve_: true)              //                                                                                           //
                 ),                                                                                                                                              //
             new TweenManager.TweenPath(                                                                                                                         //   Right Option Alpha
                 new TweenManager.TweenPart_Start(1, 0, 0.75f, TweenManager.CURVE_PRESET.LINEAR)                                                               //
@@ -59,7 +59,7 @@ public class UIChoiceBoxes : MonoBehaviour
 
         optionSelectedTween = new TweenManager.TweenPathBundle(                                                         //
             new TweenManager.TweenPath(                                                                                 // Selected Option Scale
-                new TweenManager.TweenPart_Start(1, 1.2f, 0.25f, GM_.Instance.tween_curve_library.GetCurve("OVERSHOOT"))  //
+                new TweenManager.TweenPart_Start(1, 1.2f, 0.25f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")  //
                 ),                                                                                                      //
             new TweenManager.TweenPath(                                                                                 // Selected Option Alpha
                 new TweenManager.TweenPart_Start(1, 1, 1.5f, TweenManager.CURVE_PRESET.LINEAR),                            //
