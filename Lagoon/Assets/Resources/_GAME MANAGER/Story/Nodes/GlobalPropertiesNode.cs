@@ -12,5 +12,6 @@ public class GlobalPropertiesNode : BaseNodeType
     }
 
 
-    public float DefaultSpeedPerTextCharacter = 0.1f;
+    public float DefaultSpeedPerTextCharacter = 20.0f;
+    public float DefaultDurationOfTextCharacterTransitionIn = 0.2f;
 }

@@ -68,6 +68,7 @@ namespace SpecialText
                             TextPropertyData.Base property_data = TextPropertyData.CreatePropertyDataFromName(tokenList[i].Data);
                             if (property_data != null)
                             {
+                                property_data.SetGlobalPropertiesReference(globalProperties);
                                 specialTextData.propertyDataList.Add(property_data);
                                 property_data.Lex(new TextPropertyData.Base.LexingArgs(tokenList[i], tokenList[i].TokenChildren, FlagError));
                                 openProperties.Add(new OpenProperty(property_data, tokenList[i]));

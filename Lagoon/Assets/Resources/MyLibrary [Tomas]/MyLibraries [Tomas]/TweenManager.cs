@@ -443,10 +443,13 @@ public class TweenManager
         protected float start;
         protected float end;
         protected float duration;
-        protected AnimationCurve curve = null;
+
         protected CURVE_PRESET preset;
         protected bool inverse_curve = false;
-        
+
+        protected AnimationCurve curve = null;
+        protected TweenCurveLibrary curve_library;
+        protected string curveID;
 
         public float Start { get { return start; } }
         public float End { get { return end; } }
@@ -461,12 +464,13 @@ public class TweenManager
             duration = duration_;
             preset = preset_;
         }
-        public TweenPart_Start(float start_, float end_, float duration_, AnimationCurve curve_, bool inverse_curve_ = false)
+        public TweenPart_Start(float start_, float end_, float duration_, TweenCurveLibrary curve_library_, string curveID_, bool inverse_curve_ = false)
         {
             start = start_;
             end = end_;
             duration = duration_;
-            curve = curve_;
+            curve_library = curve_library_;
+            curveID = curveID_;
             inverse_curve = inverse_curve_;
         }
 
@@ -474,7 +478,7 @@ public class TweenManager
         public virtual float GetValue(float time)
         {
             float t = Mathf.Clamp01(time / duration);
-            if (curve == null)
+            if (curve_library == null)
             {
                 switch (preset)
                 {
@@ -510,6 +514,11 @@ public class TweenManager
             }
             else
             {
+                // give curvelibrary and curve ID instead of curve reference because it allows TweenBundles to be created in static declarations
+                if (curve == null) 
+                {
+                    curve = curve_library.GetCurve(curveID);
+                }
                 if (inverse_curve)
                 {
                     t = (1.0f - curve.Evaluate(1.0f - t));

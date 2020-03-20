@@ -13,18 +13,14 @@ public class ConvoGraphEditor : NodeGraphEditor
         ConvoGraph convo_graph = target as ConvoGraph;
 
         NodeEditorWindow.current.graphEditor = this;
-        convo_graph.FindGlobalPropertiesNode();
-        convo_graph.FindRootNode();
 
         if (convo_graph.GlobalProperties == null)
         {
             CreateNode(typeof(GlobalPropertiesNode), Vector2.zero);
-            convo_graph.FindGlobalPropertiesNode();
         }
         if (convo_graph.Root == null)
         {
             CreateNode(typeof(RootNode), Vector2.zero);
-            convo_graph.FindRootNode();
         }
 
 

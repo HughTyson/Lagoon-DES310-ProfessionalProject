@@ -18,18 +18,29 @@ public class DialogNodeEditor : NodeEditor
     GUIStyle boldStyle = new GUIStyle();
     List<DisplayStrings> displayStrings = new List<DisplayStrings>();
 
+    public override int GetWidth()
+    {
+        DialogNode node = target as DialogNode;
+        int padding = 32;
+        return (int)node.nodeWidth + padding;
+    }
     public override void OnBodyGUI()
     {
         DialogNode node = target as DialogNode;
 
         markupStyle.richText = true;
         markupStyle.alignment = TextAnchor.UpperLeft;
-        markupStyle.fixedWidth = 272;
+        markupStyle.fixedWidth = node.nodeWidth;
         markupStyle.fontStyle = FontStyle.Bold;
         boldStyle.fontStyle = FontStyle.Bold;
 
+
+
         // Update serialized object's representation
         serializedObject.Update();
+
+        GUILayout.Label("Scale Width Of Node", boldStyle);
+        node.nodeWidth = GUILayout.HorizontalSlider(node.nodeWidth, 300, 1000);
 
         GUILayout.BeginHorizontal();
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("input"));
@@ -59,20 +70,23 @@ public class DialogNodeEditor : NodeEditor
             GUILayout.Label("Dialog " + (i + 1).ToString(), boldStyle);
 
             SerializedProperty whoIsTalking = dialogClass.FindPropertyRelative("whoIsTalking");
-            SerializedProperty dialogText = dialogClass.FindPropertyRelative("dialog_text");
+            string dialogText = dialogClass.FindPropertyRelative("dialog_text").stringValue;
 
             NodeEditorGUILayout.PropertyField(whoIsTalking);
-            NodeEditorGUILayout.PropertyField(dialogText);
 
-            if (displayStrings[i].prevString != dialogText.stringValue)
+            if (displayStrings[i].prevString != dialogText)
             {
-                displayStrings[i].prevString = dialogText.stringValue;
+                displayStrings[i].prevString = dialogText;
                 displayStrings[i].debuggerText.text = SpecialText.DebuggingParse.ParseTextToDebugMarkUpText(displayStrings[i].prevString, ((ConvoGraph)node.graph).GlobalProperties);
                 displayStrings[i].dialogOnlyText.text = SpecialText.DebuggingParse.ParseTextToDialogOnlyString(displayStrings[i].prevString);
             }
 
+            
+            node.Dialog[i].dialog_text = GUILayout.TextArea(node.Dialog[i].dialog_text, markupStyle);
+            GUI.color = Color.grey;
             GUILayout.Box(displayStrings[i].debuggerText, markupStyle);
             GUILayout.Box(displayStrings[i].dialogOnlyText, markupStyle);
+            GUI.color = Color.white;
 
             GUILayout.BeginHorizontal();
             if (i != 0)

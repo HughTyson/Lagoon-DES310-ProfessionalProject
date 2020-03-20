@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[NodeWidth(304)]
+
 public class BranchingNode : BaseNodeType
 {
     public enum CHOICE
@@ -21,10 +21,11 @@ public class BranchingNode : BaseNodeType
     [Output(ShowBackingValue.Never, ConnectionType.Override)] public int outputA;
     [Output(ShowBackingValue.Never, ConnectionType.Override)] public int outputB;
 
-    [TextArea(2, 6)]
+
     public string LeftDecision;
-    [TextArea(2, 6)]
     public string RightDecision;
+
+    public float nodeWidth = 300;
 
     public BaseNodeType NextNode(CHOICE chosen_choice)
     {

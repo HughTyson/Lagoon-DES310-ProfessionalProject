@@ -110,7 +110,8 @@ public class UIDialogBox : MonoBehaviour
         //    tweenUpdatedDelegate_: textTransitionUpdate,
         //    tweenCompleteDelegate_: textFinishedAppearing
         //    );
-        specialText.Begin(specialTextData);
+        specialText.End();
+        specialText.Begin(specialTextData, textFinishedAppearing);
     }
     public void ClearContinueSymbol()
     {
@@ -179,15 +180,7 @@ public class UIDialogBox : MonoBehaviour
 
     Vector2 textOffset = Vector2.zero;
     Vector2 textShowingPos;
-    void textTransitionUpdate()
-    {
 
-        textOffset.x = positionValX.value;
-        textOffset.y = positionValY.value;
-
-        text.alpha = alphaVal.value;
-        text.rectTransform.anchoredPosition = textShowingPos + textOffset;
-    }
     void boxTransitionUpdate()
     {
         imageColour.a = alphaVal.value;

@@ -15,7 +15,6 @@ namespace SpecialText
         List<TextPropertyData.Base> TransitioningProperties = new List<TextPropertyData.Base>();
         List<TextPropertyData.Base> EndlessUpdateProperties = new List<TextPropertyData.Base>();
 
-        Color32[] newVertexColors;
         public void Begin(SpecialTextData specialTextData_, TMPro.TextMeshProUGUI tmp_)
         {
             specialTextData = specialTextData_;
@@ -29,9 +28,38 @@ namespace SpecialText
             tmp.alpha = 1.0f;
             tmp.text = specialTextData_.fullTextString;
             tmp.ForceMeshUpdate();
-            newVertexColors = tmp.textInfo.meshInfo[0].mesh.colors32;
+
+
+
+            TMPro.TMP_TextInfo info = tmp.textInfo;
+            int charIndex = 0;
+            for (int i = 0; i < info.characterCount; ++i)
+            {
+                charIndex = i;
+                while (!info.characterInfo[charIndex].isVisible)
+                {
+                    charIndex++;
+                    if (charIndex > info.characterCount - 1)
+                        break;
+                }
+                if (charIndex > info.characterCount - 1)
+                    continue;
+
+
+                TMPro.TMP_CharacterInfo char_info = tmp.textInfo.characterInfo[charIndex];
+                int meshIndex = tmp.textInfo.characterInfo[charIndex].materialReferenceIndex;
+                int vertexIndex = tmp.textInfo.characterInfo[charIndex].vertexIndex;
+
+
+                Vector3[] vertices = tmp.textInfo.meshInfo[meshIndex + 0].vertices;
+                specialTextData.specialTextCharacters[i].SetupDefVals(vertices[vertexIndex + 0], vertices[vertexIndex + 1], vertices[vertexIndex + 2], vertices[vertexIndex + 3]);
+            }
         }
 
+        public bool AreAllCompleted()
+        {
+            return (UnactiveProperties.Count == 0 && TransitioningProperties.Count == 0);
+        }
         public void Update()
         {
             // reset all character values
@@ -71,7 +99,6 @@ namespace SpecialText
             for (int i = 0; i < EndlessUpdateProperties.Count; i++)
                 EndlessUpdateProperties[i].EndlessUpdate();
 
-            newVertexColors = tmp.textInfo.meshInfo[0].mesh.colors32;
 
             TMPro.TMP_TextInfo info = tmp.textInfo;
 
@@ -80,22 +107,24 @@ namespace SpecialText
             {
                 charIndex = i;
                 while (!info.characterInfo[charIndex].isVisible)
+                {
                     charIndex++;
+                    if (charIndex > info.characterCount - 1)
+                        break;
+                }
                 if (charIndex > info.characterCount - 1)
-                    Debug.LogError("Error, something went wrong :(");
+                    continue;
 
                 TMPro.TMP_CharacterInfo char_info = tmp.textInfo.characterInfo[charIndex];
                 int meshIndex = tmp.textInfo.characterInfo[charIndex].materialReferenceIndex;
                 int vertexIndex = tmp.textInfo.characterInfo[charIndex].vertexIndex;
 
-                Color32[] vertexColors = tmp.textInfo.meshInfo[meshIndex].colors32;
-                vertexColors[vertexIndex + 0] = specialTextData.specialTextCharacters[i].colour;
-                vertexColors[vertexIndex + 1] = specialTextData.specialTextCharacters[i].colour;
-                vertexColors[vertexIndex + 2] = specialTextData.specialTextCharacters[i].colour;
-                vertexColors[vertexIndex + 3] = specialTextData.specialTextCharacters[i].colour;
+                specialTextData.specialTextCharacters[i].ApplyToTMPChar(ref tmp.textInfo.meshInfo[meshIndex], vertexIndex);
+
+                
             }
 
-            tmp.UpdateVertexData(TMPro.TMP_VertexDataUpdateFlags.Colors32);
+            tmp.UpdateVertexData(TMPro.TMP_VertexDataUpdateFlags.All);
 
         }
     }

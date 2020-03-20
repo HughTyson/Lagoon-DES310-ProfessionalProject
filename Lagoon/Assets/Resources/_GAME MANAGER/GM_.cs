@@ -6,8 +6,12 @@ using UnityEngine;
 public class GM_ : MonoBehaviour
 {
     [SerializeField] ConvoGraph convoGraph;
-    [SerializeField] TweenCurveLibrary curveLibrary;
     [SerializeField] UIManager uiManager;
+
+    [SerializeField]
+    TweenCurveLibrary TomasCurveLibrary;
+    [SerializeField]
+    TweenCurveLibrary HughCurveLibrary;
 
     static GM_ instance_ = null;
 
@@ -19,7 +23,7 @@ public class GM_ : MonoBehaviour
             if (instance_ == null)
             {
                 instance_ = FindObjectOfType<GM_>();
-                if (instance_ == null && Application.isPlaying)
+                if (instance_ == null)
                 {
                     GameObject test = Instantiate(Resources.Load<GameObject>("_GAME MANAGER/GAME_MANAGER"));
                     test.name = "GAME MANAGER";
@@ -41,8 +45,9 @@ public class GM_ : MonoBehaviour
         public StoryEventHandler story_events;
         public UIManager ui;
         public TweenManager tween_manager;
-        public TweenCurveLibrary tween_curve_library;
-        public UpdateEventSystem update_events;        
+        public UpdateEventSystem update_events;
+        public TweenCurveLibrary tween_curveLibrary_Tomas;
+        public TweenCurveLibrary tween_curveLibrary_Hugh;
     };
 
     private void Awake()
@@ -54,11 +59,9 @@ public class GM_ : MonoBehaviour
         }
 
         instance_ = this;
-        curveLibrary.Init();
 
         members = new Members();
         members.update_events = gameObject.AddComponent<UpdateEventSystem>();
-        members.tween_curve_library = curveLibrary;
         members.tween_manager = new TweenManager();
         members.input = new InputManager();
         members.pause = new PauseManager();
@@ -67,7 +70,8 @@ public class GM_ : MonoBehaviour
         members.story_objective = new StoryObjectiveHandler();
         members.story_events = new StoryEventHandler();
         members.ui = uiManager;
-
+        members.tween_curveLibrary_Hugh = HughCurveLibrary;
+        members.tween_curveLibrary_Tomas = TomasCurveLibrary;
     }
 
 
@@ -94,8 +98,11 @@ public class GM_ : MonoBehaviour
 
     private void OnDestroy()
     {
-        members.input.SetVibrationBoth(0, 0); // prevents controller vibrating even if Unity game closes
-        members.input.FixedUpdate();
+        if (members != null)
+        {
+            members.input.SetVibrationBoth(0, 0); // prevents controller vibrating even if Unity game closes
+            members.input.FixedUpdate();
+        }
     }
 }
 
