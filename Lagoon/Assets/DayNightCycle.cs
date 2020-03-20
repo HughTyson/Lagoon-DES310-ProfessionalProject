@@ -20,13 +20,19 @@ public class DayNightCycle : MonoBehaviour
     
     ProceduralSky procedural_sky;
 
-    TypeRef<float> atmosphere_alter_value = new TypeRef<float>(0);
+    
 
     [Range(0, 1)] [SerializeField] private float secondsInFullDay = 120f;
     private float current_time;
     private float time_multiplyer = 1f;
 
     TweenManager.TweenPathBundle atmosphere_tween;
+    TweenManager.TweenPathBundle sun_intensity_tween;
+    TweenManager.TweenPathBundle moon_intensity_tween;
+
+    TypeRef<float> atmosphere_alter_value = new TypeRef<float>(0);
+    TypeRef<float> sun_intesity = new TypeRef<float>(0);
+    TypeRef<float> moon_intesity = new TypeRef<float>(0);
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +59,22 @@ public class DayNightCycle : MonoBehaviour
                 new TweenManager.TweenPart_Start(1, 0.3f, 6.0f, TweenManager.CURVE_PRESET.LINEAR)
             )
         );
+
+        sun_intesity.value = sun.intensity;
+        moon_intesity.value = moon.intensity;
+
+        sun_intensity_tween = new TweenManager.TweenPathBundle(
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(sun_intesity.value, 0, 1.5f, TweenManager.CURVE_PRESET.EASE_OUT)
+            )
+        );
+
+        moon_intensity_tween = new TweenManager.TweenPathBundle(
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(moon_intesity.value, 0, 1.5f, TweenManager.CURVE_PRESET.EASE_OUT)
+            )
+        );
+
     }
 
     // Update is called once per frame
@@ -97,7 +119,7 @@ public class DayNightCycle : MonoBehaviour
         {
             case ACTIVE.SUN:
                 {
-                    if (transform.rotation.eulerAngles.z < 5 || transform.rotation.eulerAngles.z > 185)
+                    if (transform.rotation.eulerAngles.z < 1 || transform.rotation.eulerAngles.z > 181)
                     {
                         ChangeLight(ACTIVE.MOON);
                     }
@@ -105,7 +127,7 @@ public class DayNightCycle : MonoBehaviour
                 break;
             case ACTIVE.MOON:
                 {
-                    if (transform.rotation.eulerAngles.z > 5 && transform.rotation.eulerAngles.z < 185)
+                    if (transform.rotation.eulerAngles.z > 1 && transform.rotation.eulerAngles.z < 181)
                     {
                         ChangeLight(ACTIVE.SUN);
                     }
@@ -123,18 +145,53 @@ public class DayNightCycle : MonoBehaviour
         {
             case ACTIVE.SUN:
                 {
-                    moon.enabled = false;
+                    //method one
+
+                    
                     sun.enabled = true;
                     active = ACTIVE.SUN;
                     AtmosphereChange(false);
+
+                    GM_.Instance.tween_manager.StartTweenInstance(
+                        sun_intensity_tween,
+                        new TypeRef<float>[] { sun_intesity },
+                        tweenUpdatedDelegate_: SunIntensity,
+                        startingDirection_: TweenManager.DIRECTION.END_TO_START
+                    );
+
+                    GM_.Instance.tween_manager.StartTweenInstance(
+                        moon_intensity_tween,
+                        new TypeRef<float>[] { moon_intesity },
+                        tweenUpdatedDelegate_: MoonIntensity,
+                        tweenCompleteDelegate_: MoonDisabled
+                    );
+
                 }
                 break;
             case ACTIVE.MOON:
                 {
-                    sun.enabled = false;
+                    
                     moon.enabled = true;
                     active = ACTIVE.MOON;
                     AtmosphereChange(true);
+
+                    GM_.Instance.tween_manager.StartTweenInstance(
+                        sun_intensity_tween,
+                        new TypeRef<float>[] { sun_intesity },
+                        tweenUpdatedDelegate_: SunIntensity
+                        
+                    );
+
+                    GM_.Instance.tween_manager.StartTweenInstance(
+                        moon_intensity_tween,
+                        new TypeRef<float>[] { moon_intesity },
+                        tweenUpdatedDelegate_: MoonIntensity,
+                        tweenCompleteDelegate_: SunDisabled,
+                        startingDirection_: TweenManager.DIRECTION.END_TO_START
+                    );
+
+                    
+
                 }
                 break;
             default:
@@ -168,12 +225,35 @@ public class DayNightCycle : MonoBehaviour
                 tweenUpdatedDelegate_: AtmosphereUpdate
             );
         }
-
     }
 
     void AtmosphereUpdate()
     {
-        //procedural_sky.atmosphereThickness.value = procedural_sky.atmosphereThickness.value;
         override_atmosphere.value = atmosphere_alter_value.value;
     }
+
+    void SunIntensity()
+    {
+        sun.intensity = sun_intesity.value;
+    }
+
+    void MoonIntensity()
+    {
+        moon.intensity = moon_intesity.value;
+    }
+
+    void SunDisabled()
+    {
+        sun.enabled = false;
+    }
+
+    void MoonDisabled()
+    {
+        moon.enabled = false;
+    }
+
+
+    
+
+    
 }
