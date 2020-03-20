@@ -15,8 +15,8 @@ public class SwitchGameLogic : RepairGameBase
     public Switch switch_prefab;
     private Switch[] switchs = new Switch[4];
 
-    public Light light_prefab;
-    private Light[] lights = new Light[4];
+    public RepairLight light_prefab;
+    private RepairLight[] lights = new RepairLight[4];
 
     [SerializeField] SwitchInformation[] switch_info = new SwitchInformation[4];
 

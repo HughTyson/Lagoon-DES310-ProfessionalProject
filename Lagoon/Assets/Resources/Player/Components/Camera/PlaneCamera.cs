@@ -105,42 +105,27 @@ public class PlaneCamera : MonoBehaviour
                 old_segment_type = active_segment_type;
 
 
-                //look_at = new TweenManager.TweenPathBundle(
-                //    new TweenManager.TweenPath(
-                //        new TweenManager.TweenPart_Start(old_look_at.position.x, current_look_at.position.x, 1.0f, TweenManager.CURVE_PRESET.EASE_INOUT)
-                //    ),
-                //    new TweenManager.TweenPath(
-                //        new TweenManager.TweenPart_Start(old_look_at.position.y, current_look_at.position.y, 1.0f, TweenManager.CURVE_PRESET.EASE_INOUT)
-                //    ),
-                //    new TweenManager.TweenPath(
-                //        new TweenManager.TweenPart_Start(old_look_at.position.z, current_look_at.position.z, 1.0f, TweenManager.CURVE_PRESET.EASE_INOUT)
-                //    )
-
-                //);
-
-                TweenManager.TweenPathBundle lerp_t = new TweenManager.TweenPathBundle(
+                look_at = new TweenManager.TweenPathBundle(
                     new TweenManager.TweenPath(
-                        new TweenManager.TweenPart_Start(0, 1, 5.0f, TweenManager.CURVE_PRESET.EASE_INOUT)
+                        new TweenManager.TweenPart_Start(old_look_at.position.x, current_look_at.position.x, 1.0f, TweenManager.CURVE_PRESET.EASE_INOUT)
+                    ),
+                    new TweenManager.TweenPath(
+                        new TweenManager.TweenPart_Start(old_look_at.position.y, current_look_at.position.y, 1.0f, TweenManager.CURVE_PRESET.EASE_INOUT)
+                    ),
+                    new TweenManager.TweenPath(
+                        new TweenManager.TweenPart_Start(old_look_at.position.z, current_look_at.position.z, 1.0f, TweenManager.CURVE_PRESET.EASE_INOUT)
                     )
-                    );
 
-                TypeRef<float> test = new TypeRef<float>(0);
-
-                GM_.Instance.tween_manager.StartTweenInstance(
-                    lerp_t,
-                    new TypeRef<float>[] { test}
-                    );
-
-                Mathf.Lerp(2, 2, test.value);
+                );
 
                 Debug.Log(old_look_at.position + "   " + current_look_at.position);
 
                 old_look_at = current_look_at;
 
-                //GM_.Instance.tween_manager.StartTweenInstance(
-                //    look_at,
-                //    new TypeRef<float>[] { look_at_x, look_at_y, look_at_z }
-                //    );
+                GM_.Instance.tween_manager.StartTweenInstance(
+                    look_at,
+                    new TypeRef<float>[] { look_at_x, look_at_y, look_at_z }
+                    );
 
             }
 
