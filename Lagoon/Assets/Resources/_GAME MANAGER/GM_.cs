@@ -63,7 +63,7 @@ public class GM_ : MonoBehaviour
         members.input = new InputManager();
         members.pause = new PauseManager();
         members.stats = new StatsManager();
-        members.story = new StoryManager(((RootNode)convoGraph.FindRootNode())); // should be barrier node.);
+        members.story = new StoryManager((convoGraph.Root)); // should be barrier node.);
         members.story_objective = new StoryObjectiveHandler();
         members.story_events = new StoryEventHandler();
         members.ui = uiManager;

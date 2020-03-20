@@ -16,7 +16,7 @@ namespace SpecialText
 
     public static class DebuggingParse
     {
-        public static string ParseTextToDebugMarkUpText(string data)
+        public static string ParseTextToDebugMarkUpText(string data, GlobalPropertiesNode globalProperties)
         {
             Tokenizer tokenizer = new Tokenizer();
             List<Token> TokenList = tokenizer.Tokenize(data);
@@ -24,7 +24,7 @@ namespace SpecialText
                 return TokenToMarkUpTextFormatter.DebugTextWithErrorHandlingInTokenization(TokenList, tokenizer.GetError());
 
             Lexer lexer = new Lexer();
-            lexer.Lex(TokenList);
+            lexer.Lex(TokenList, globalProperties);
            return TokenToMarkUpTextFormatter.DebugTextWithErrorHandlingInLexing(TokenList, lexer.GetError());
            
         }
@@ -40,22 +40,41 @@ namespace SpecialText
     {
         Tokenizer tokenizer = new Tokenizer();
         Lexer lexer = new Lexer();
-
-        public Parser()
+        GlobalPropertiesNode globalProperties;
+        public Parser(GlobalPropertiesNode globalProperties_)
         {
-
+            globalProperties = globalProperties_;
         }
-        public List<SpecialTextData> ParseToSpecialTextData(string data)
+        public SpecialTextData ParseToSpecialTextData(string data)
         {
             List<Token> TokenList = tokenizer.Tokenize(data);
-            return lexer.Lex(TokenList);
+            return lexer.Lex(TokenList, globalProperties);
         }
     }
 
 
     public class SpecialTextData
     {
-        public List<TextPropertyData_Base> propertyDataList = new List<TextPropertyData_Base>();
-        public string text;
+    
+        public List<TextPropertyData.Base> propertyDataList = new List<TextPropertyData.Base>();
+        public List<SpecialTextCharacterData> specialTextCharacters = new List<SpecialTextCharacterData>();
+        public string fullTextString = "";
     }
+    public class SpecialTextCharacterData
+    {
+        private readonly static Color32 def_colour = new Color32(0,0,0,0);
+        public SpecialTextCharacterData(int index_, char character_)
+        {
+            index = index_;
+            character = character_;
+        }
+        public readonly int index;
+        public readonly char character;
+        public void Reset()
+        {
+            colour = def_colour;
+        }
+        public Color32 colour = def_colour;
+    }
+
 }

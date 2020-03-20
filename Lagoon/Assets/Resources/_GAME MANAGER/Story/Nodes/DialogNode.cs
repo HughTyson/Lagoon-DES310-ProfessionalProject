@@ -6,7 +6,7 @@ using UnityEngine;
 public class DialogNode : CharacterHolderNode
 {
     [System.Serializable]
-    public class DialogStruct
+    public class DialogData
     {
         public enum Talking
         {
@@ -26,19 +26,19 @@ public class DialogNode : CharacterHolderNode
         node_type = NODE_TYPE.DIALOG;
     }
 
-    public List<DialogStruct> Dialog = new List<DialogStruct>();
+    public List<DialogData> Dialog = new List<DialogData>();
     [Input(ShowBackingValue.Never,ConnectionType.Multiple)] public int input;
     [Output(ShowBackingValue.Never, ConnectionType.Override)] public int output;
 
 
     public void AddDialogStruct()
     {
-        Dialog.Add(new DialogStruct());
+        Dialog.Add(new DialogData());
     }
 
     public void Swap(int from_index, int to_index)
     {
-        DialogStruct temp = Dialog[to_index];
+        DialogData temp = Dialog[to_index];
         Dialog[to_index] = Dialog[from_index];
         Dialog[from_index] = temp;
     }
@@ -48,7 +48,10 @@ public class DialogNode : CharacterHolderNode
     {
         index = 0;
     }
-    public DialogStruct GetCurrentDialog()
+
+
+   
+    public DialogData GetCurrentDialog()
     {
         return Dialog[index];
     }
@@ -56,7 +59,7 @@ public class DialogNode : CharacterHolderNode
     {
         return (index == Dialog.Count - 1);
     }
-    public DialogStruct IterateAndGetDialog()
+    public DialogData IterateAndGetDialog()
     {
         index++;
         return Dialog[index];

@@ -9,36 +9,36 @@ namespace SpecialText
         [SerializeField]
         TMPro.TextMeshProUGUI text;
 
-        List<SpecialTextData> specialTextDatas;
-
+        SpecialTexManager specialTextManager = new SpecialTexManager();
+        private Coroutine coroutine;
         // Start is called before the first frame update
         void Start()
         {
-
         }
-        class SpecialTextGlobalData
-        { }
 
+        bool started = false;
 
-        void Begin(List<SpecialTextData> specialTextDatas_, SpecialTextGlobalData specialTextGlobalData_)
+        public void Begin(SpecialTextData specialTextData_)
         {
-            specialTextDatas = specialTextDatas_;
+            specialTextManager.Begin(specialTextData_, text);
+            started = true;
 
-            string full_text = "";
-            for (int i = 0; i < specialTextDatas.Count; i++)
-            {
-                full_text += specialTextDatas[i].text;
-            }
+           // coroutine = StartCoroutine(UpdateText());
 
-            text.text = full_text;
-           // text.textInfo.characterInfo[0].
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
-
+            if (started)
+                specialTextManager.Update();
         }
+        //IEnumerator UpdateText()
+        //{
+
+
+
+        //    yield return new WaitForSeconds(Time.deltaTime);
+        //}
 
     }
 }

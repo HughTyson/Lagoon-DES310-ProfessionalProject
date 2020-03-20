@@ -10,6 +10,7 @@ public class UIDialogBox : MonoBehaviour
     Vector2 positionOffset = Vector2.zero;
     RectTransform rectTransform;
     TMPro.TextMeshProUGUI text;
+    [SerializeField] SpecialText.SpecialText specialText;
     Image image;
 
     TweenManager.TweenPathBundle boxTweenDissAndAppearTween;
@@ -30,7 +31,7 @@ public class UIDialogBox : MonoBehaviour
         image = GetComponent<Image>();
         showingPosition = rectTransform.anchoredPosition;
         image.enabled = false;
-        text.alpha = 0;
+        text.alpha = 0.0f;
         imageColour = image.color;
 
         AButtonShowingPosition = ButtonA_Image.rectTransform.anchoredPosition;
@@ -98,17 +99,18 @@ public class UIDialogBox : MonoBehaviour
             );
     }
 
-    public void WriteText(string dialog_)
+    public void WriteText(SpecialText.SpecialTextData specialTextData)
     {
         ButtonA_Image.color = new Color(1, 1, 1, 0);
         transitioning = true;
-        text.text = dialog_;
-        GM_.Instance.tween_manager.StartTweenInstance(
-            textAppearTween,
-            new TypeRef<float>[] { alphaVal, positionValX, positionValY },
-            tweenUpdatedDelegate_: textTransitionUpdate,
-            tweenCompleteDelegate_: textFinishedAppearing
-            );
+        //text.text = dialog_;
+        //GM_.Instance.tween_manager.StartTweenInstance(
+        //    textAppearTween,
+        //    new TypeRef<float>[] { alphaVal, positionValX, positionValY },
+        //    tweenUpdatedDelegate_: textTransitionUpdate,
+        //    tweenCompleteDelegate_: textFinishedAppearing
+        //    );
+        specialText.Begin(specialTextData);
     }
     public void ClearContinueSymbol()
     {

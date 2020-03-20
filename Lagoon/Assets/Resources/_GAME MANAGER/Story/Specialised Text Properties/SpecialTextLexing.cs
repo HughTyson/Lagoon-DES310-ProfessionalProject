@@ -29,17 +29,27 @@ namespace SpecialText
 
         struct OpenProperty
         {
-            public OpenProperty(TextPropertyData_Base property, Token token)
+            public OpenProperty(TextPropertyData.Base property, Token token)
             {
                 property_data_version = property;
                 token_version = token;
             }
-            public TextPropertyData_Base property_data_version;
+            public TextPropertyData.Base property_data_version;
             public Token token_version;
         }
 
-        public List<SpecialTextData> Lex(List<Token> tokenList)
+        public SpecialTextData Lex(List<Token> tokenList, GlobalPropertiesNode globalProperties)
         {
+            SpecialTextData specialTextData = new SpecialTextData();
+            if (tokenList.Count > 0)
+            {
+                if (globalProperties == null)
+                {
+                    FlagError("Error: Global Properties Node doesn't exist.", tokenList[0]);
+                }
+            }
+
+
 
             List<OpenProperty> openProperties = new List<OpenProperty>();
 
@@ -54,46 +64,30 @@ namespace SpecialText
                 {
                     case Token.TYPE.PROPERTY_ENTER:
                         {
-                            switch (GetEnumTypeFromToken((Token_Property)tokenList[i]))
+
+                            TextPropertyData.Base property_data = TextPropertyData.CreatePropertyDataFromName(tokenList[i].Data);
+                            if (property_data != null)
                             {
-                                case TextPropertyData_Base.TYPE.COLOUR:
-                                    {
-                                        TextPropertyData_Colour property_data = new TextPropertyData_Colour();
-                                        property_data.Lex(tokenList[i], tokenList[i].TokenChildren, FlagError);
-                                        openProperties.Add(new OpenProperty(property_data, tokenList[i]));
-                                        break;
-                                    }
-                                case TextPropertyData_Base.TYPE.SHIVER:
-                                    {
-                                        TextPropertyData_Shiver property_data = new TextPropertyData_Shiver();
-                                        property_data.Lex(tokenList[i], tokenList[i].TokenChildren, FlagError);
-                                        openProperties.Add(new OpenProperty(property_data, tokenList[i]));
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        FlagError("Error: Property Type Not Found. Did you mean: " + MostSimilarPropertyName(tokenList[i].Data) + "?", tokenList[i]);
-                                        break;
-                                    }
+                                specialTextData.propertyDataList.Add(property_data);
+                                property_data.Lex(new TextPropertyData.Base.LexingArgs(tokenList[i], tokenList[i].TokenChildren, FlagError));
+                                openProperties.Add(new OpenProperty(property_data, tokenList[i]));
+                            }
+                            else
+                            {
+                                FlagError("Error: Property Type Not Found. Did you mean: " + TextPropertyData.FindMostSimilarPropertyName(tokenList[i].Data) + "?", tokenList[i]);
                             }
                             break;
                         }
                     case Token.TYPE.PROPERTY_EXIT:
                         {
-                            TextPropertyData_Base.TYPE? property_type = GetEnumTypeFromToken((Token_Property)tokenList[i]);
-
-                            if (property_type == null)
-                            {
-                                FlagError("Error: Property Type Not Found. Did you mean: " + MostSimilarPropertyName(tokenList[i].Data) + "?", tokenList[i]);
-                                break;
-                            }
-                            else
+                            TextPropertyData.PropertyInfo property_info;
+                            
+                            if (TextPropertyData.propertyInfoDictionary.TryGetValue(tokenList[i].Data.GetHashCode(), out property_info))
                             {
                                 bool found = false;
                                 for (int k = openProperties.Count - 1; k >= 0; k--) // goes backwards so if multiple same properties are opened, remove the inner most one
                                 {
-
-                                    if (openProperties[k].property_data_version.DataType == property_type)
+                                    if (openProperties[k].property_data_version.GetType() == property_info.type)
                                     {
                                         openProperties.RemoveAt(k);
                                         found = true;
@@ -106,17 +100,48 @@ namespace SpecialText
                                     break;
                                 }
                             }
+                            else
+                            {
+                                FlagError("Error: Property Type Not Found. Did you mean: " + TextPropertyData.FindMostSimilarPropertyName(tokenList[i].Data) + "?", tokenList[i]);
+                                break;
+                            }
                             break;
                         }
                     case Token.TYPE.TEXT:
                         {
-                            SpecialTextData newSpecialTextData = new SpecialTextData();
-                            newSpecialTextData.text = ((Token_Text)tokenList[i]).Data;
-                            for (int k = 0; k < openProperties.Count; k++)
+             
+                            specialTextData.fullTextString += ((Token_Text)tokenList[i]).Data;
+      
+                            List<TextPropertyData.Base> appliedProperties = new List<TextPropertyData.Base>();
+
+                            for (int k = openProperties.Count - 1; k >= 0; k--)
                             {
-                                newSpecialTextData.propertyDataList.Add(openProperties[k].property_data_version);
+                                // prevent property duplicates. Only use most recently opened property, which is the inner most duplicate. 
+                                if (!appliedProperties.Exists(y => { return (y.GetType() == openProperties[k].property_data_version.GetType()); }))
+                                {
+                                    appliedProperties.Add(openProperties[k].property_data_version);
+                                }
                             }
-                            specialTextData.Add(newSpecialTextData);
+
+                            List<TextPropertyData.Base> incompatibleCheck = new List<TextPropertyData.Base>(appliedProperties);
+                            for (int k = incompatibleCheck.Count - 1; k >= 0; k--) // start from back to allow removing of indexes inside the loop
+                            {
+                                incompatibleCheck[k].CheckForIncompatibles(incompatibleCheck, FlagError);
+                            }
+
+                            List<SpecialTextCharacterData> textCharacters = new List<SpecialTextCharacterData>();
+
+                            for (int k = 0; k < ((Token_Text)tokenList[i]).Data.Length; k++)
+                            {
+                                textCharacters.Add(new SpecialTextCharacterData(specialTextData.specialTextCharacters.Count + textCharacters.Count, ((Token_Text)tokenList[i]).Data[k]));
+                            }
+                            for (int k = 0; k < appliedProperties.Count; k++)
+                            {
+                                appliedProperties[k].AddCharacterReference(textCharacters);
+                            }
+                            TextPropertyData.ApplyDefaults(specialTextData, appliedProperties, textCharacters, globalProperties);
+
+                            specialTextData.specialTextCharacters.AddRange(textCharacters);
                             break;
                         }
                     default:
@@ -133,33 +158,14 @@ namespace SpecialText
                 FlagError("Error: Property opened but never closed.", openProperties[0].token_version);
             }
 
+
+
+            for (int i = 0; i < specialTextData.propertyDataList.Count; i++)
+            {
+                specialTextData.propertyDataList[i].FinializeLexing(specialTextData);
+            }
+
             return specialTextData;
-        }
-
-        TextPropertyData_Base.TYPE? GetEnumTypeFromToken(Token_Property token)
-        {
-            switch (token.Data)
-            {
-                case "colour": { return TextPropertyData_Base.TYPE.COLOUR; }
-                case "shiver": { return TextPropertyData_Base.TYPE.SHIVER; }
-                default: return null;
-            }
-        }
-        string MostSimilarPropertyName(string name)
-        {
-            string property_name = "colour";
-            string most_similar = property_name;
-            int most_similar_similarity = StringDistance.GetDamerauLevenshteinDistance(name, property_name);
-
-            property_name = "shiver";
-            int similarity = StringDistance.GetDamerauLevenshteinDistance(name, property_name);
-            if (similarity < most_similar_similarity)
-            {
-                most_similar_similarity = similarity;
-                most_similar = property_name;
-            }
-
-            return most_similar;
         }
     }
 }

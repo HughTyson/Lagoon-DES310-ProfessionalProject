@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using XNode;
@@ -7,31 +8,36 @@ using XNode;
 public class ConvoGraph : NodeGraph
 {
 
+    GlobalPropertiesNode globalPropertiesNode;
+    RootNode rootNode;
 
-    public BaseNodeType FindRootNode()
+    
+    public GlobalPropertiesNode GlobalProperties { get {return globalPropertiesNode; } }
+    public RootNode Root { get { return rootNode; } }
+
+    public void FindRootNode()
     {
         for (int i = 0; i < nodes.Count; i++)
         {
             if (((BaseNodeType)nodes[i]).GetNodeType() == BaseNodeType.NODE_TYPE.ROOT)
             {
-                return (BaseNodeType)nodes[i];
+                rootNode = (RootNode)nodes[i];
+                return;
             }
         }
-
-        Debug.LogError("No 'RootNode' found in ConvoGraph!");
-        return null;
+        rootNode = null;
     }
 
-    public GlobalPropertiesNode FindGlobalPropertiesNode()
+    public void FindGlobalPropertiesNode()
     {
         for (int i = 0; i < nodes.Count; i++)
         {
             if (((BaseNodeType)nodes[i]).GetNodeType() == BaseNodeType.NODE_TYPE.GLOBAL_PROPERTIES)
             {
-                return (GlobalPropertiesNode)nodes[i];
+                globalPropertiesNode = (GlobalPropertiesNode)nodes[i];
+                return;
             }
         }
-        Debug.LogError("No 'GlobalPropertiesNode' found in ConvoGraph!");
-        return null;
+        globalPropertiesNode =  null;
     }
 }
