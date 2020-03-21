@@ -110,6 +110,7 @@ public class PlayerScriptManager : MonoBehaviour
                 }
         }
 
+        Debug.Log(newState);
         currentState.enabled = true;
     }
 

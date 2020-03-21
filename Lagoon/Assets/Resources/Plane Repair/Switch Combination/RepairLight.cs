@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Light : MonoBehaviour
+public class RepairLight : MonoBehaviour
 {
-
     public Material mat_on = null;
     public Material mat_off = null;
 

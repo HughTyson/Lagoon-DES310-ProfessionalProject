@@ -120,9 +120,6 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        //HandleInput();
-
-        //camera_input.y = Mathf.Clamp(camera_input.y, ANGLE_MIN_Y, ANGLE_MAX_Y); //limit the y rotation
 
         switch (current_state)
         {
