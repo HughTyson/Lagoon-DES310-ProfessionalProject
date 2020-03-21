@@ -19,6 +19,7 @@ namespace SpecialText
         System.Action TextCompleted;
         public void Begin(SpecialTextData specialTextData_, System.Action textCompleted_ = null)
         {
+            text.enabled = true;
             specialTextManager.Begin(specialTextData_, text);
             TextCompleted = textCompleted_;
             if (coroutine != null)
@@ -33,8 +34,15 @@ namespace SpecialText
         public void End()
         {
             if (coroutine != null)
+            {
                 StopCoroutine(coroutine);
+            }
 
+        }
+
+        public void Hide()
+        {
+            text.enabled = false;
         }
         private void Update()
         {

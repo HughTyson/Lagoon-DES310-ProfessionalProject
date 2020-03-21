@@ -88,9 +88,9 @@ public class StoryManager
 
     public class BranchEnterArgs
     {
-        public readonly string leftChoice;
-        public readonly string rightChoice;
-        public BranchEnterArgs(string leftChoice_, string rightChoice_)
+        public readonly SpecialText.SpecialTextData leftChoice;
+        public readonly SpecialText.SpecialTextData rightChoice;
+        public BranchEnterArgs(SpecialText.SpecialTextData leftChoice_, SpecialText.SpecialTextData rightChoice_)
         {
             leftChoice = leftChoice_;
             rightChoice = rightChoice_;
@@ -247,7 +247,7 @@ public class StoryManager
             case BaseNodeType.NODE_TYPE.BRANCH:
                 {
                     BranchingNode node = ((BranchingNode)current_node);
-                    Event_BranchStart?.Invoke(new BranchEnterArgs(node.LeftDecision, node.RightDecision));
+                    Event_BranchStart?.Invoke(new BranchEnterArgs(specialTextParser.ParseToSpecialTextData(node.LeftDecision), specialTextParser.ParseToSpecialTextData(node.RightDecision)));
                     break;
                 }
             case BaseNodeType.NODE_TYPE.EVENT:

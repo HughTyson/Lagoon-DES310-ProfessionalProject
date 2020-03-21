@@ -73,6 +73,47 @@ namespace SpecialText
                             output += (errorTriggered) ? "" : "</color>";
                             break;
                         }
+                    case Token.TYPE.PROPERTY_NOEXIT:
+                        {
+                            output += (errorTriggered) ? "" : "<color=#6A0DADFF>";
+                            output += "[#";
+                            output += tokenList[i].Data;
+                            foreach (Token tok in tokenList[i].TokenChildren)
+                            {
+                                if (tok.TokenType == Token.TYPE.PARAMETER)
+                                {
+                                    if (potentialError.errorFlag)
+                                    {
+                                        if (tok == potentialError.tokenOfError)
+                                        {
+                                            output += "</color>";
+                                            errorTriggered = true;
+                                            output += "<color=#FF0000FF>";
+                                        }
+                                    }
+
+                                    if (tok == tokenList[i].TokenChildren[0])
+                                        output += "(";
+
+                                    output += (errorTriggered) ? "" : "<color=#0000FFFF>";
+                                    output += tok.Data;
+                                    output += (errorTriggered) ? "" : "</color>";
+                                    if (tok == tokenList[i].TokenChildren[tokenList[i].TokenChildren.Count - 1])
+                                    {
+                                        if (tok != potentialError.tokenOfError)
+                                            output += ")";
+                                    }
+                                    else
+                                    {
+                                        output += ",";
+                                    }
+                                }
+                            }
+
+                            output += (potentialError.tokenOfError == tokenList[i]) ? "" : "]";
+                            output += (errorTriggered) ? "" : "</color>";
+                            break;
+                        }
                     case Token.TYPE.PROPERTY_EXIT:
                         {
                             output += (errorTriggered) ? "" : "<color=#ED7D31FF>";
@@ -176,6 +217,47 @@ namespace SpecialText
                             }
 
                             output += "]";
+                            output += (errorTriggered) ? "" : "</color>";
+                            break;
+                        }
+                    case Token.TYPE.PROPERTY_NOEXIT:
+                        {
+                            output += (errorTriggered) ? "" : "<color=#6A0DADFF>";
+                            output += "[#";
+                            output += tokenList[i].Data;
+                            foreach (Token tok in tokenList[i].TokenChildren)
+                            {
+                                if (tok.TokenType == Token.TYPE.PARAMETER)
+                                {
+                                    if (potentialError.errorFlag)
+                                    {
+                                        if (tok == potentialError.tokenOfError)
+                                        {
+                                            output += "</color>";
+                                            errorTriggered = true;
+                                            output += "<color=#FF0000FF>";
+                                        }
+                                    }
+
+                                    if (tok == tokenList[i].TokenChildren[0])
+                                        output += "(";
+
+                                    output += (errorTriggered) ? "" : "<color=#0000FFFF>";
+                                    output += tok.Data;
+                                    output += (errorTriggered) ? "" : "</color>";
+                                    if (tok == tokenList[i].TokenChildren[tokenList[i].TokenChildren.Count - 1])
+                                    {
+                                        if (tok != potentialError.tokenOfError)
+                                            output += ")";
+                                    }
+                                    else
+                                    {
+                                        output += ",";
+                                    }
+                                }
+                            }
+
+                            output += (potentialError.tokenOfError == tokenList[i]) ? "" : "]";
                             output += (errorTriggered) ? "" : "</color>";
                             break;
                         }

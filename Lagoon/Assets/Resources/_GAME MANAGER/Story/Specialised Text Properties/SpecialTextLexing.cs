@@ -108,6 +108,22 @@ namespace SpecialText
                             }
                             break;
                         }
+                    case Token.TYPE.PROPERTY_NOEXIT:
+                        {
+                            TextPropertyData.NoExitBase property_data = TextPropertyData.CreateNoExitPropertyDataFromName(tokenList[i].Data);
+                            if (property_data != null)
+                            {
+                                property_data.SetGlobalPropertiesReference(globalProperties);
+                                property_data.SetUpNoExitBase(specialTextData.specialTextCharacters.Count - 1);
+                                specialTextData.propertyDataList.Add(property_data);
+                                property_data.Lex(new TextPropertyData.Base.LexingArgs(tokenList[i], tokenList[i].TokenChildren, FlagError));
+                            }
+                            else
+                            {
+                                FlagError("Error: No-Exit Property Type Not Found. Did you mean: " + TextPropertyData.FindMostSimilarNoExitPropertyName(tokenList[i].Data) + "?", tokenList[i]);
+                            }
+                            break;
+                        }
                     case Token.TYPE.TEXT:
                         {
              
@@ -125,10 +141,12 @@ namespace SpecialText
                             }
 
                             List<TextPropertyData.Base> incompatibleCheck = new List<TextPropertyData.Base>(appliedProperties);
-                            for (int k = incompatibleCheck.Count - 1; k >= 0; k--) // start from back to allow removing of indexes inside the loop
+
+                            for (int k = appliedProperties.Count - 1; k >= 0; k--) // start from back to allow removing of indexes inside the loop
                             {
-                                incompatibleCheck[k].CheckForIncompatibles(incompatibleCheck, FlagError);
+                                appliedProperties[k].OverrideIncompatibles(incompatibleCheck, FlagError, k);
                             }
+                            appliedProperties = incompatibleCheck;
 
                             List<SpecialTextCharacterData> textCharacters = new List<SpecialTextCharacterData>();
 
@@ -161,7 +179,7 @@ namespace SpecialText
 
 
 
-            for (int i = 0; i < specialTextData.propertyDataList.Count; i++)
+            for (int i = specialTextData.propertyDataList.Count - 1; i >= 0; i--)
             {
                 specialTextData.propertyDataList[i].FinializeLexing(specialTextData);
             }

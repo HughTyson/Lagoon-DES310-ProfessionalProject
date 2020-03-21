@@ -21,8 +21,10 @@ public class HelpNodeEditor : NodeEditor
         titleStyle.fontStyle = FontStyle.Bold;
         titleStyle.fontSize = 14;
 
-
-        GUIStyle normalStyle = new GUIStyle();
+    
+        GUIStyle normalStyle = GUI.skin.box;
+        normalStyle.fixedWidth = 560;
+        normalStyle.alignment = TextAnchor.UpperLeft;
 
         normalStyle.alignment = TextAnchor.UpperLeft;
         normalStyle.fontSize = 12;
@@ -42,38 +44,51 @@ public class HelpNodeEditor : NodeEditor
         GUILayout.Label("Overview", titleStyle);
         GUILayout.Box(
             "This is a tool which allows the creation of a story based on Nodes",
-            normalStyle);
+            GUI.skin.box);
         GUILayout.Label("Node Types", titleStyle);
         GUILayout.Box(
             "Dialog Node: Allows conversation to happen between 2 Characters" + System.Environment.NewLine + System.Environment.NewLine +
             "Branch Node: Splits the conversation into 2 paths which the player can choose from" + System.Environment.NewLine + System.Environment.NewLine +
             "Barrier Node: Stops the continueation of the story until the player has completed the objectives" + System.Environment.NewLine + System.Environment.NewLine +
             "Event Node: Triggers an event" + System.Environment.NewLine + System.Environment.NewLine +
-            "(REQUIRED) Root Node: The starting node. Acts like a barrier node." + System.Environment.NewLine + System.Environment.NewLine +
-            "(REQUIRED) Global Properties Node: The properties the nodes will abide to in-game",
-            normalStyle);
+            "Root Node: The starting node. Acts like a barrier node." + System.Environment.NewLine + System.Environment.NewLine +
+            "Global Properties Node: The properties the nodes will abide to in-game",
+            GUI.skin.box);
         GUILayout.Label("Property Programming", titleStyle);
         GUILayout.Box(
-            "All TextBoxes parsed for additional 'Properties'. These change the formatting of the text when it will be shown in game." + System.Environment.NewLine +
+            "All TextBoxes are parsed for additional 'Properties'. These change the formatting of the text when it will be shown in-game." + System.Environment.NewLine +
             "Properties are similar to HTML tags." + System.Environment.NewLine +
-            "To give a peice of text a proprty, the text must be inside a:" + System.Environment.NewLine +
-            "   <#> & </#>" + System.Environment.NewLine +
-            "where the # is the property and the & is the text." + System.Environment.NewLine +
-            "Below are all the possible properties."
-            , normalStyle);
+            "Properties are represented within the [ ] tags" +
+            "There are 2 types of properties. Enclosed and Singular." + System.Environment.NewLine +
+            "Enclosed: Have a start and an end and encapsulated text has the property. e.g.: not red [Colour(255,0,0) red text [/Colour] not red." + System.Environment.NewLine +
+            "Singular: Triggers once when reached. e.g: 3.. [#Delay(1)] 2.. [#Delay(1)] 1.. [#Delay(1)] Go!" + System.Environment.NewLine +
+            "To Recognise properties easier, Enclosed starts are green, Enclosed ends are orange, and singulars are purple."
+
+            , GUI.skin.box);
         GUILayout.Label("Property Sheet", titleStyle);
 
-        GUILayout.Label("", boldStyle);
-        GUILayout.Label("Delay", boldStyle);
-        GUILayout.Box(
-            "Overview: Stops showing text for a length of time" + System.Environment.NewLine +
-            "Tags: <delay(#d)>  </delay>" + System.Environment.NewLine +
-            "Parameters:" + System.Environment.NewLine +
-            "   #d: duration of delay" + System.Environment.NewLine +
-            "Example: <delay(0.3)> exampleText </delay>"
-            , normalStyle);
+        titleStyle.alignment = TextAnchor.MiddleLeft;
+        GUILayout.Label("Encapsulated Properties", titleStyle);
 
-        GUILayout.Label("Shiver", boldStyle);
+        for (int i = 0; i < SpecialText.TextPropertyData.propertyInfos.Length; i++)
+        {
+            SpecialText.TextPropertyData.PropertyInfo info = SpecialText.TextPropertyData.propertyInfos[i];
+            GUILayout.Label(info.name, boldStyle);
+            GUILayout.Label("Overview: " + info.description, GUI.skin.box);
+            GUILayout.Label("Function: " + info.functionName, GUI.skin.box);
+            GUILayout.Label("Parameters: " + info.parameters, GUI.skin.box);
+            GUILayout.Label("Example: " + info.example, GUI.skin.box);
+        }
+        GUILayout.Label("Singular Properties", titleStyle);
+        for (int i = 0; i < SpecialText.TextPropertyData.noExitPropertyInfo.Length; i++)
+        {
+            SpecialText.TextPropertyData.PropertyInfo info = SpecialText.TextPropertyData.noExitPropertyInfo[i];
+            GUILayout.Label(info.name, boldStyle);
+            GUILayout.Label("Overview: " + info.description, GUI.skin.box);
+            GUILayout.Label("Function: " + info.functionName, GUI.skin.box);
+            GUILayout.Label("Parameters: " + info.parameters, GUI.skin.box);
+            GUILayout.Label("Example: " + info.example, GUI.skin.box);
+        }
 
         // Apply property modifications
         serializedObject.ApplyModifiedProperties();

@@ -2350,6 +2350,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ea22cb5abdf99b42953156e4723e030, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  specialText_Left: {fileID: 1232613345349207338}
+  specialText_Right: {fileID: 7228973022317495614}
   leftOptionImage: {fileID: 370030976457706939}
   leftOptionButtonImage: {fileID: 7431165854933164279}
   leftOptionText: {fileID: 7018983472960940667}
@@ -2370,6 +2372,7 @@ GameObject:
   - component: {fileID: 7136761143997829144}
   - component: {fileID: 370030976457706939}
   - component: {fileID: 3261410504700592378}
+  - component: {fileID: 1232613345349207338}
   m_Layer: 5
   m_Name: Left Option
   m_TagString: Untagged
@@ -2457,6 +2460,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 2
   m_TargetDisplay: 0
+--- !u!114 &1232613345349207338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4799711538011430063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16feae51777e4945a8bcdf499b91e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 7018983472960940667}
 --- !u!1 &4856617198068339357
 GameObject:
   m_ObjectHideFlags: 0
@@ -3685,6 +3701,7 @@ GameObject:
   - component: {fileID: 3861897968052216681}
   - component: {fileID: 8304658866576199031}
   - component: {fileID: 8579032548245652645}
+  - component: {fileID: 7228973022317495614}
   m_Layer: 5
   m_Name: Right Option
   m_TagString: Untagged
@@ -3772,6 +3789,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 2
   m_TargetDisplay: 0
+--- !u!114 &7228973022317495614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6803733920481026550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16feae51777e4945a8bcdf499b91e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 8203612710619517193}
 --- !u!1 &7013806851508643750
 GameObject:
   m_ObjectHideFlags: 0

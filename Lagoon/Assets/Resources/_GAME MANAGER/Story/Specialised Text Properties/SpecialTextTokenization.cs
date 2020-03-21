@@ -23,75 +23,66 @@ namespace SpecialText
         {
             TokenList.Clear();
             data = data_;
-            index = -1;
-            depth = 0;
             error.errorFlag = false;
 
-            Itirate();
-            while (GetCurrent() != null)
-            {
-                switch (GetCurrent())
-                {
-                    case '[':
-                        {
-                            Token_Property token = new Token_Property(this);
-                            TokenList.Add(token);
-                            token.Tokenize();
-                            break;
-                        }
-                    default:
-                        {
-                            Token_Text token = new Token_Text(this);
-                            TokenList.Add(token);
-                            token.Tokenize();
-                            break;
-                        }
 
+            int iterator = 0;
+
+            if (data_ == null)
+                return new List<Token>();
+
+            while (iterator < data.Length)
+            {
+
+                // Property Token
+                if (data_[iterator] == '[')
+                {
+                    string property_data = "";
+                    iterator++;
+                    bool found = false;
+
+                    while(iterator < data.Length && !found)
+                    {
+                        if (data_[iterator] == ']')
+                        {
+                            found = true;
+                        }
+                        else
+                        {
+                            property_data += data_[iterator];
+                        }
+                        iterator++;
+                    }
+                    property_data = property_data.Trim(' ');
+                    Token_Property propertyToken = new Token_Property(this, property_data);
+                    TokenList.Add(propertyToken);
+                    if (!found)
+                    {
+                        FlagError("Error. No ']' found.", propertyToken);
+                    }
+                }
+                // Text Token
+                else
+                {
+                    string text_data = "";
+                    while (iterator < data.Length)
+                    {
+                        if (data_[iterator] == '[')
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            text_data += data_[iterator];
+                        }
+                        iterator++;
+                    }
+                    Token_Text textToken = new Token_Text(this, text_data);
+                    TokenList.Add(textToken);
                 }
             }
             return TokenList;
         }
-
-        public void Itirate()
-        {
-            index++;
-            if (index < data.Length)
-            {
-                current_data = data[index];
-            }
-            else
-            {
-                current_data = null;
-            }
-
-        }
-        public void IterateBack()
-        {
-            index--;
-            if (index < data.Length)
-            {
-                current_data = data[index];
-            }
-            else
-            {
-                current_data = null;
-            }
-        }
-
-        public char? GetCurrent()
-        {
-            return current_data;
-        }
-
-        public void GoDownTokenLayer()
-        {
-            depth++;
-        }
-        public void GoUpTokenLayer()
-        {
-            depth--;
-        }
-
         public void AddToken(Token token)
         {
             List<Token> tokenLayer = TokenList;
@@ -122,11 +113,6 @@ namespace SpecialText
 
     public abstract class Token
     {
-        protected bool errorFlag = false;
-        protected string errorMessage = "";
-
-        public bool ErrorFlag { get { return errorFlag; } }
-        public string ErrorMessage { get { return errorMessage; } }
         public enum TYPE
         {
             TEXT,
@@ -134,6 +120,7 @@ namespace SpecialText
             PROPERTY_EXIT,
             PROPERTY_PRESET,
             PROPERTY_PRESET_EXIT,
+            PROPERTY_NOEXIT,
             PARAMETER
         }
         protected TYPE tokenType;
@@ -145,158 +132,141 @@ namespace SpecialText
 
         protected List<Token> tokenChildren = new List<Token>();
         public List<Token> TokenChildren { get { return tokenChildren; } }
-
-        public abstract void Tokenize();
     }
     public class Token_Property : Token
     {
-        public Token_Property(Tokenizer iterator_)
-        {
-            tokenType = TYPE.PROPERTY_ENTER;
-            tokenizer = iterator_;
-        }
-        public override void Tokenize()
+        public Token_Property(Tokenizer iterator_, string data_)
         {
 
-            while (true)
+            tokenizer = iterator_;
+
+            data = "";
+            int iterator = 0;
+            
+
+
+            // Search for Parameter Tokens
+            while (iterator < data_.Length)
             {
-                tokenizer.Itirate();
-                switch (tokenizer.GetCurrent())
+                if (data_[iterator] == '(')
                 {
-                    case null:
+                    string parameter_data = "";
+                    iterator++;
+                    bool found = false;
+
+                    while (iterator < data_.Length && !found)
+                    {
+                        if (data_[iterator] == ')')
                         {
-                            tokenizer.FlagError("Error: no ']' found", this);
-                            return;
+                            found = true;
                         }
-                    case '[':
+                        else if (data_[iterator] == ',')
                         {
-                            tokenizer.FlagError("Error: no ']' found", this);
-                            return;
+                            tokenChildren.Add(new Token_Parameter(tokenizer, parameter_data));
+                            parameter_data = "";
                         }
-                    case ']':
+                        else
                         {
-                            tokenizer.Itirate();
-                            return;
+                            parameter_data += data_[iterator];
                         }
-                    case '(':
+                        iterator++;
+                    }
+                    tokenChildren.Add(new Token_Parameter(tokenizer, parameter_data));
+                    if (!found)
+                    {
+                        tokenizer.FlagError("Error. No ')' found.", this);
+                    }
+                    else
+                    {
+                        if (iterator < data_.Length)
                         {
-                            Token_Parameter token = new Token_Parameter(tokenizer);
-                            tokenizer.GoDownTokenLayer();
-                            tokenizer.AddToken(token);
-                            token.Tokenize();
-                            tokenizer.GoUpTokenLayer();
-                                break;
+                            if (data_[iterator] != ']')
+                            {
+                                tokenizer.FlagError("Error. Unknown characters inside properties after parameters", this);
+                            }
                         }
+                    }
+                }
+                else
+                {
+                    data += data_[iterator];
+                    iterator++;
+                }
+            }
+
+            if (data.Length > 0)
+            {
+                switch (data[0])
+                {
                     case '/':
                         {
+                            if (data.Length > 1)
+                            {
+                                if (data[1] == '@')
+                                {
+                                    tokenType = TYPE.PROPERTY_PRESET_EXIT;
+                                    data = data.Remove(0, 2);
+                                    break;
+                                }
+                            }
                             tokenType = TYPE.PROPERTY_EXIT;
+                            data = data.Remove(0, 1);
                             break;
                         }
                     case '@':
                         {
-                            if (tokenType == TYPE.PROPERTY_EXIT)
-                            {
-                                tokenType = TYPE.PROPERTY_PRESET_EXIT;
-                            }
-                            else
-                            {
-                                tokenType = TYPE.PROPERTY_PRESET;
-                            }
+                            tokenType = TYPE.PROPERTY_PRESET;
+                            data = data.Remove(0, 1);
                             break;
                         }
-                    case ' ':
+                    case '#':
                         {
+                            tokenType = TYPE.PROPERTY_NOEXIT;
+                            data = data.Remove(0, 1);
                             break;
                         }
-                    default:
-                        {
-                            data += tokenizer.GetCurrent();
-                            break;
-                        }
+                    default: tokenType = TYPE.PROPERTY_ENTER; break;
                 }
             }
 
+
+            if (data.Length == 0)
+            {
+                tokenizer.FlagError("Error, no property in brackets", this);
+            }
+
+            // Error Check for illegal case
+            for (int i = 0; i < data.Length; i++)
+            {
+               if (data[i] == '#' || data[i] == '@' || data[i] == '/')
+                {
+                    if (!(i == 0 && data[i] == '@' && tokenType == TYPE.PROPERTY_PRESET_EXIT)) // exception
+                    {
+                        tokenizer.FlagError("Error, illegal characters in property", this);
+                    }                   
+                }
+            }
         }
+
+
     }
     public class Token_Parameter : Token
     {
-        public Token_Parameter(Tokenizer tokenizer_)
+        public Token_Parameter(Tokenizer tokenizer_, string data_)
         {
+            data = data_;
             tokenizer = tokenizer_;
             tokenType = TYPE.PARAMETER;
-        }
-        public override void Tokenize()
-        {
-            while (true)
-            {
-                tokenizer.Itirate();
-                switch (tokenizer.GetCurrent())
-                {
-                    case null:
-                        {
-                            tokenizer.FlagError("Error: no ')' found", this);
-                            return;
-                        }
-                    case '(':
-                        {
-                            tokenizer.FlagError("Error: no ')' found", this);
-                            return;
-                        }
-                    case '[':
-                        {
-                            tokenizer.FlagError("Error: no ')' found", this);
-                            tokenizer.IterateBack();
-                            return;
-                        }
-                    case ']':
-                        {
-                            tokenizer.FlagError("Error: no ')' found", this);
-                            tokenizer.IterateBack();
-                            return;
-                        }
-                    case ')':
-                        {
-                            return;
-                        }
-                    case ',':
-                        {
-                            Token_Parameter token = new Token_Parameter(tokenizer);
-                            tokenizer.AddToken(token);
-                            token.Tokenize();
-                            return;
-                        }
-                    case ' ':
-                        {
-                            break;
-                        }
-                    default:
-                        {
-                            data += tokenizer.GetCurrent();
-                            break;
-                        }
-                }
-            }
-
         }
     }
     public class Token_Text : Token
     {
 
-        public Token_Text(Tokenizer iterator_)
+        public Token_Text(Tokenizer iterator_, string data_)
         {
             tokenType = TYPE.TEXT;
             tokenizer = iterator_;
-        }
-
-        public override void Tokenize()
-        {
-            char? current = tokenizer.GetCurrent();
-            while (current != null && current != '[')
-            {
-                data += current;
-                tokenizer.Itirate();
-                current = tokenizer.GetCurrent();
-            }
+            data = data_;
         }
     }
 }

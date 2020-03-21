@@ -60,6 +60,7 @@ public class RootNodeEditor : NodeEditor
         GUILayout.EndHorizontal();
 
         BaseNodeType connected_node = node.NextNode();
+
         if (connected_node != null)
         {
             if (connected_node.GetNodeType() != BaseNodeType.NODE_TYPE.DIALOG)
@@ -68,6 +69,10 @@ public class RootNodeEditor : NodeEditor
                 testStyle.fontStyle = FontStyle.Bold;
                 testStyle.normal.textColor = new Color(1, 0, 0);
                 GUILayout.Label("Output has to connenct to a dialog node.", testStyle);
+            }
+            else
+            {
+                GUILayout.Label(" ", testStyle);
             }
         }
         else

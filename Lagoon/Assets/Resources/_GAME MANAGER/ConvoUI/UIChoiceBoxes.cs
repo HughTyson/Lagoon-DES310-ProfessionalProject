@@ -10,6 +10,11 @@ public class UIChoiceBoxes : MonoBehaviour
     bool is_boxshowing = false;
     bool is_transitioning = false;
 
+    [SerializeField] SpecialText.SpecialText specialText_Left;
+    [SerializeField] SpecialText.SpecialText specialText_Right;
+
+
+ 
     [SerializeField] Image leftOptionImage;
     [SerializeField] Image leftOptionButtonImage;
     [SerializeField] TMPro.TextMeshProUGUI leftOptionText;
@@ -22,6 +27,10 @@ public class UIChoiceBoxes : MonoBehaviour
 
     TweenManager.TweenPathBundle showTween_inversed;
     TweenManager.TweenPathBundle optionSelectedTween;
+
+
+    SpecialText.SpecialTextData specialTextData_Left;
+    SpecialText.SpecialTextData specialTextData_Right;
 
 
     Vector2 leftOptionShowingPosition;
@@ -103,8 +112,8 @@ public class UIChoiceBoxes : MonoBehaviour
         rightOptionButtonImage.enabled = true;
         rightOptionText.enabled = true;
 
-        leftOptionText.text = args.leftChoice;
-        rightOptionText.text = args.rightChoice;
+        leftOptionText.text = "";
+        rightOptionText.text = "";
 
         GM_.Instance.tween_manager.StartTweenInstance(
             showTween_inversed,
@@ -113,6 +122,10 @@ public class UIChoiceBoxes : MonoBehaviour
             tweenCompleteDelegate_: appearingFinished,
             startingDirection_: TweenManager.DIRECTION.END_TO_START
             );
+
+        specialTextData_Left = args.leftChoice;
+        specialTextData_Right = args.rightChoice;
+
     }
 
 
@@ -142,9 +155,22 @@ public class UIChoiceBoxes : MonoBehaviour
     }
     void appearingFinished()
     {
-        is_transitioning = false;
+        counterTextFinished = 2;
+        specialText_Left.End();
+        specialText_Left.Begin(specialTextData_Left, textFinished);
+
+        specialText_Right.End();
+        specialText_Right.Begin(specialTextData_Right, textFinished);
     }
 
+
+    int counterTextFinished;
+    void textFinished()
+    {
+        counterTextFinished--;
+        if (counterTextFinished == 0)
+            is_transitioning = false;
+    }
 
     BranchingNode.CHOICE choice;
     public void SelectOption(BranchingNode.CHOICE choice_)
@@ -152,7 +178,10 @@ public class UIChoiceBoxes : MonoBehaviour
         is_transitioning = true;
         choice = choice_;
 
-        switch(choice)
+        specialText_Left.End();
+        specialText_Right.End();
+
+        switch (choice)
         {
             case BranchingNode.CHOICE.LEFT:
                 {
@@ -227,6 +256,7 @@ public class UIChoiceBoxes : MonoBehaviour
         rightOptionText.enabled = false;
         rightOptionImage.rectTransform.localScale = Vector3.one;
         leftOptionImage.rectTransform.localScale = Vector3.one;
+
 
         Event_FinishedSelection?.Invoke();
 

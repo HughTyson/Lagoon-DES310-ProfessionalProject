@@ -72,43 +72,43 @@ namespace SpecialText
             index = index_;
             character = character_;
         }
-        public void SetupDefVals(Vector2 TopLeft, Vector2 TopRight, Vector2 BottomLeft, Vector2 BottomRight)
+        public void SetupDefVals(Vector2 Bottom_Left, Vector2 Top_Left, Vector2 Top_Right, Vector2 Bottom_Right)
         {
-            def_centrePos = (TopLeft + TopRight + BottomLeft + BottomRight) / 4.0f;
-            def_vertTL = TopLeft - def_centrePos;
-            def_vertTR = TopRight - def_centrePos;
-            def_vertBL = BottomLeft - def_centrePos;
-            def_vertBR = BottomRight - def_centrePos;
+            def_centrePos = (Bottom_Left + Top_Left + Top_Right + Bottom_Right) / 4.0f;
+            def_vert_BL = Bottom_Left - def_centrePos;
+            def_vert_TL = Top_Left - def_centrePos;
+            def_vert_TR = Top_Right - def_centrePos;
+            def_vert_BR = Bottom_Right - def_centrePos;
         }
 
         public readonly int index;
         public readonly char character;
 
-        public Vector2 centrePos;
+        public Vector2 centrePositionOffset;
+        public Vector2 positionOffset_BottomLeft;
         public Vector2 positionOffset_TopLeft;
         public Vector2 positionOffset_TopRight;
-        public Vector2 positionOffset_BottomLeft;
         public Vector2 positionOffset_BottomRight;
         public float rotationDegrees = def_rotation;
         public Color32 colour = def_colour;
         public Vector2 scaleMultiplier = def_scaleMultiplier;
-        public Vector2 centrePositionOffset = def_cetrePposition_offset;
+        public Vector2 centrePositionScaledOffset = def_cetrePposition_offset; // scaled offset based on the characters width and height.
 
         private Vector2 def_centrePos;
-        private Vector2 def_vertTL;
-        private Vector2 def_vertTR;
-        private Vector2 def_vertBL;
-        private Vector2 def_vertBR;
+        private Vector2 def_vert_BL;
+        private Vector2 def_vert_TL;
+        private Vector2 def_vert_TR;
+        private Vector2 def_vert_BR;
         public void Reset()
         {
             colour = def_colour;
             scaleMultiplier = def_scaleMultiplier;
-            centrePos = def_centrePos;
-            centrePositionOffset = def_cetrePposition_offset;
-            positionOffset_TopLeft = def_vertTL;
-            positionOffset_TopRight = def_vertTR;
-            positionOffset_BottomLeft = def_vertBL;
-            positionOffset_BottomRight = def_vertBR;
+            centrePositionOffset = def_centrePos;
+            centrePositionScaledOffset = def_cetrePposition_offset;
+            positionOffset_BottomLeft = def_vert_BL;
+            positionOffset_TopLeft = def_vert_TL;
+            positionOffset_TopRight = def_vert_TR;
+            positionOffset_BottomRight = def_vert_BR;
             rotationDegrees = def_rotation;
         }
 
@@ -120,35 +120,34 @@ namespace SpecialText
             vertexColors[verticeIndex + 1] = colour;
             vertexColors[verticeIndex + 2] = colour;
             vertexColors[verticeIndex + 3] = colour;
-            
 
-            Vector2 topLeft = positionOffset_TopLeft * scaleMultiplier;
-            Vector2 topRight = positionOffset_TopRight * scaleMultiplier; 
-            Vector2 bottomLeft = positionOffset_BottomLeft * scaleMultiplier; 
-            Vector2 bottomRight = positionOffset_BottomRight * scaleMultiplier;
+            Vector2 bottom_Left = positionOffset_BottomLeft * scaleMultiplier;
+            Vector2 top_Left = positionOffset_TopLeft * scaleMultiplier; 
+            Vector2 top_Right = positionOffset_TopRight * scaleMultiplier; 
+            Vector2 bottom_Right = positionOffset_BottomRight * scaleMultiplier;
 
-            float height = Mathf.Abs(topLeft.y - bottomLeft.y);
-            float width = Mathf.Abs(topLeft.x - topRight.x);
-            Vector2 centreOffset = centrePositionOffset * new Vector2(width, height);
+            float height = Mathf.Abs(bottom_Left.y - top_Right.y);
+            float width = Mathf.Abs(bottom_Left.x - bottom_Right.x);
+            Vector2 centreOffset = centrePositionScaledOffset * new Vector2(width, height);
 
-            topLeft = Vector2Extension.Rotate(topLeft, rotationDegrees);
-            topRight = Vector2Extension.Rotate(topRight, rotationDegrees);
-            bottomLeft = Vector2Extension.Rotate(bottomLeft, rotationDegrees);
-            bottomRight = Vector2Extension.Rotate(bottomRight, rotationDegrees);
+            bottom_Left = Vector2Extension.Rotate(bottom_Left, rotationDegrees);
+            top_Left = Vector2Extension.Rotate(top_Left, rotationDegrees);
+            top_Right = Vector2Extension.Rotate(top_Right, rotationDegrees);
+            bottom_Right = Vector2Extension.Rotate(bottom_Right, rotationDegrees);
 
-            topLeft += centreOffset;
-            topRight += centreOffset;
-            bottomLeft += centreOffset;
-            bottomRight += centreOffset;
-            topLeft += centrePos;
-            topRight += centrePos;
-            bottomLeft += centrePos;
-            bottomRight += centrePos;
+            bottom_Left += centreOffset;
+            top_Left += centreOffset;
+            top_Right += centreOffset;
+            bottom_Right += centreOffset;
+            bottom_Left += centrePositionOffset;
+            top_Left += centrePositionOffset;
+            top_Right += centrePositionOffset;
+            bottom_Right += centrePositionOffset;
 
-            verices[verticeIndex + 0] = topLeft;
-            verices[verticeIndex + 1] = topRight;
-            verices[verticeIndex + 2] = bottomLeft;
-            verices[verticeIndex + 3] = bottomRight;
+            verices[verticeIndex + 0] = bottom_Left;
+            verices[verticeIndex + 1] = top_Left;
+            verices[verticeIndex + 2] = top_Right;
+            verices[verticeIndex + 3] = bottom_Right;
         }
     }
 

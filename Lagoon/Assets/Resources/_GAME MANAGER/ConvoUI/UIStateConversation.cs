@@ -16,8 +16,6 @@ public class UIStateConversation : MonoBehaviour
     SpecialText.SpecialTextData latestSpecialText;
     DialogNode.DialogData.Talking latestWhosTalking;
 
-    SpecialText.SpecialTextData unseenSpecialText;
-    DialogNode.DialogData.Talking unseenWhosTalking;
 
     void Start()
     {
@@ -135,8 +133,8 @@ public class UIStateConversation : MonoBehaviour
             dialogStartTextShouldShowIterate();
         }
 
-        latestSpecialText = unseenSpecialText;
-        latestWhosTalking = unseenWhosTalking;
+        latestSpecialText = unseen_dialog_enter_args.specialTextData;
+        latestWhosTalking = unseen_dialog_enter_args.whosTalking;
 
 
         if (!dialogBox.IsBoxShowing())

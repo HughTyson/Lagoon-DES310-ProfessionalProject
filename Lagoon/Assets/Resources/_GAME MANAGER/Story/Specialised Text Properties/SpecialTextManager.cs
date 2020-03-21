@@ -10,7 +10,6 @@ namespace SpecialText
         int iterator;
         TMPro.TextMeshProUGUI tmp;
 
-
         List<TextPropertyData.Base> UnactiveProperties = new List<TextPropertyData.Base>();
         List<TextPropertyData.Base> TransitioningProperties = new List<TextPropertyData.Base>();
         List<TextPropertyData.Base> EndlessUpdateProperties = new List<TextPropertyData.Base>();
@@ -30,9 +29,8 @@ namespace SpecialText
             tmp.ForceMeshUpdate();
 
 
-
             TMPro.TMP_TextInfo info = tmp.textInfo;
-            int charIndex = 0;
+            int charIndex;
             for (int i = 0; i < info.characterCount; ++i)
             {
                 charIndex = i;
@@ -60,6 +58,9 @@ namespace SpecialText
         {
             return (UnactiveProperties.Count == 0 && TransitioningProperties.Count == 0);
         }
+
+
+
         public void Update()
         {
             // reset all character values
@@ -80,21 +81,22 @@ namespace SpecialText
                 return false;
             });
 
+            int lowestHoldBackIndex = int.MaxValue;
+            for (int i = 0; i < TransitioningProperties.Count; i++)
+                lowestHoldBackIndex = Mathf.Min(lowestHoldBackIndex, TransitioningProperties[i].HoldingBackIndex);
 
-            int lowestHoldBackValue = int.MaxValue;
             TransitioningProperties.RemoveAll( y =>
             {
-                if (y.TransitionUpdate())
+                if (y.TransitionUpdate(lowestHoldBackIndex))
                 {
                     EndlessUpdateProperties.Add(y);
-                    lowestHoldBackValue = Mathf.Min(lowestHoldBackValue, y.HoldingBackIndex);
+                    lowestHoldBackIndex = Mathf.Min(lowestHoldBackIndex, y.HoldingBackIndex);
                     return true;
                 }
-                lowestHoldBackValue = Mathf.Min(lowestHoldBackValue, y.HoldingBackIndex);
                 return false;
             }
             );
-            iterator = lowestHoldBackValue;
+            iterator = lowestHoldBackIndex;
 
             for (int i = 0; i < EndlessUpdateProperties.Count; i++)
                 EndlessUpdateProperties[i].EndlessUpdate();
