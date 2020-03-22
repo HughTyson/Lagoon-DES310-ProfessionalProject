@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Foliage_Material
+  m_Shader: {fileID: -6465566751694194690, guid: abc55d6198ccdcd4c8d7bde4a334a6b4,
+    type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap:
+    MotionVector: User
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _SampleTexture2D_175EFB9F_Texture_1:
+        m_Texture: {fileID: 2800000, guid: df22632a3580d5645837a4b2dbf81e5c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_4BDFFC4C_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 036e206b1d0ab474ab9080ddaab7880b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_65AADDB5_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 0a8759ed5fa0eb642ade3bfe9c58a179, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_7B270DFF_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 5c8d822071b33554482eac805718e3fb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_B1560DFE_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 8db1419436eb05e46b1c649467ba3aae, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors: []
