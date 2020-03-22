@@ -255,6 +255,14 @@ public class StoryManager
 
                     break;
                 }
+            case BaseNodeType.NODE_TYPE.BARRIER:
+                {
+                    Event_ConvoExit?.Invoke();
+                    BarrierNode node = ((BarrierNode)current_node);
+                    Event_BarrierStart?.Invoke(new BarrierStartArgs(node.barriers));
+
+                    break;
+                }
         }
     }
 }

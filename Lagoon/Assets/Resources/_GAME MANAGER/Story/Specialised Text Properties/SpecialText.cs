@@ -10,21 +10,20 @@ namespace SpecialText
         TMPro.TextMeshProUGUI text;
 
         SpecialTexManager specialTextManager = new SpecialTexManager();
-        private Coroutine coroutine;
         // Start is called before the first frame update
         void Start()
         {
         }
-
+        bool isOn = false;
         System.Action TextCompleted;
         public void Begin(SpecialTextData specialTextData_, System.Action textCompleted_ = null)
         {
+            textCompletedEventCalled = false;
             text.enabled = true;
+            Revert();
             specialTextManager.Begin(specialTextData_, text);
             TextCompleted = textCompleted_;
-            if (coroutine != null)
-                 StopCoroutine(coroutine);
-            coroutine = StartCoroutine(UpdateText());
+            isOn = true;
         }
         public bool AreAllCompleted()
         {
@@ -33,25 +32,26 @@ namespace SpecialText
 
         public void End()
         {
-            if (coroutine != null)
+            isOn = false;
+        }
+        bool textCompletedEventCalled = false;
+        public void Revert()
+        {
+            if (isOn)
             {
-                StopCoroutine(coroutine);
+                isOn = false;
+                specialTextManager.Revert();
             }
-
         }
 
         public void Hide()
         {
             text.enabled = false;
+            isOn = false; 
         }
         private void Update()
         {
-        }
-
-        IEnumerator UpdateText()
-        {
-            bool textCompletedEventCalled = false;
-            while (true)
+            if (isOn)
             {
                 specialTextManager.Update();
                 if (!textCompletedEventCalled)
@@ -62,9 +62,7 @@ namespace SpecialText
                         TextCompleted?.Invoke();
                     }
                 }
-                yield return null;
             }
-
         }
 
     }

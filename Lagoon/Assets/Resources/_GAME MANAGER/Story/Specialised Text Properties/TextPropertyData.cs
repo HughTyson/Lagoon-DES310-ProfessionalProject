@@ -90,6 +90,14 @@ namespace SpecialText
                 description_: "Shows the text at the same.",
                 parameters_: "None",
                 example_: "[AppearAtOnce] text [/AppearAtOnce]"
+                ),
+            new PropertyInfo(
+                "StaticAppear",
+                typeof(StaticAppear),
+                soft_incompatibles_: new Type[] { typeof(CharSpeed), typeof(AppearAtOnce) },
+                description_: "Shows the text at the same time, without any transition",
+                parameters_: "None",
+                example_: "[StaticAppear] text [/StaticAppear]"
                 )
         };
         public static readonly PropertyInfo[] noExitPropertyInfo = new PropertyInfo[]
@@ -245,10 +253,17 @@ namespace SpecialText
                         specialText.propertyDataList.Remove(this);
                         return;
                     }
+
+                    CompletedLexing();
+            }
+            public virtual void Init()
+            {
+                if (specialTextCharacters.Count > 0)
+                {
                     lowestCharacterIndex = specialTextCharacters[0].index;
                     highestHoldingTextIndex = specialTextCharacters[specialTextCharacters.Count - 1].index + 1;
                     holdingBackTextFlowIndex = highestHoldingTextIndex; // sets index to highest index, so default is to not hold back the flow of characters.    
-                    CompletedLexing();
+                }
             }
             protected virtual void CompletedLexing() { }
 
@@ -337,6 +352,13 @@ namespace SpecialText
             public Colour()
             {
             }
+            public Colour(byte R, byte G, byte B)
+            {
+                colour.r = R;
+                colour.g = G;
+                colour.b = B;
+            }
+
             public override void Lex(LexingArgs lexingArgs)
             {
                 if (!ErrorCheckForParameterNum(3, lexingArgs))
@@ -492,6 +514,13 @@ namespace SpecialText
             public WaveScaled()
             {
             }
+            public WaveScaled(float frequincy_, float amplitude_, float speed_)
+            {
+                frequency = frequincy_;
+                amplitude = amplitude_;
+                speed = speed_;
+            }
+
             public override void Lex(LexingArgs lexingArgs)
             {
                 if (!ErrorCheckForParameterNum(3, lexingArgs))
@@ -677,6 +706,61 @@ namespace SpecialText
                     specialTextCharacters[i].colour.a = 255;
                 }
             }
+
+        }
+        public class StaticAppear : Base
+        {
+
+
+            public override void Lex(LexingArgs lexingArgs)
+            {
+                if (!ErrorCheckForParameterNum(0, lexingArgs))
+                    return;
+            }
+
+            public override void Begin()
+            {
+            }
+
+            protected override void CompletedLexing()
+            {
+            }
+
+            public override bool TransitionUpdate(int lowestHoldBackIndex)
+            {
+
+                bool allComplete = false;
+                for (int i = 0; i < specialTextCharacters.Count; i++)
+                {
+                    if (specialTextCharacters[i].index <= lowestHoldBackIndex)
+                    {
+                        specialTextCharacters[i].colour.a = (byte)(255);
+                    }
+                    else
+                    {
+                        allComplete = true;
+                        break;
+                    }
+                }
+
+
+                if (allComplete)
+                {
+                    EndlessUpdate();
+                    return true;
+                }
+                return false;
+            }
+
+            public override void EndlessUpdate()
+            {
+                holdingBackTextFlowIndex = highestHoldingTextIndex;
+                for (int i = 0; i < specialTextCharacters.Count; i++)
+                {
+                    specialTextCharacters[i].colour.a = 255;
+                }
+            }
+
 
         }
 

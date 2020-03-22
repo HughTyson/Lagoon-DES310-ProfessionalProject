@@ -28,6 +28,8 @@ public class UIChoiceBoxes : MonoBehaviour
     TweenManager.TweenPathBundle showTween_inversed;
     TweenManager.TweenPathBundle optionSelectedTween;
 
+    TweenManager.TweenPathBundle buttonShowTween;
+
 
     SpecialText.SpecialTextData specialTextData_Left;
     SpecialText.SpecialTextData specialTextData_Right;
@@ -39,17 +41,6 @@ public class UIChoiceBoxes : MonoBehaviour
     public event System.Action Event_FinishedSelection;
     private void Start()
     {
-        leftOptionShowingPosition = leftOptionImage.rectTransform.anchoredPosition;
-        leftOptionImage.enabled = false;
-        leftOptionButtonImage.enabled = false;
-        leftOptionText.enabled = false;
-
-        rightOptionShowingPosition = rightOptionImage.rectTransform.anchoredPosition;
-        rightOptionImage.enabled = false;
-        rightOptionButtonImage.enabled = false;
-        rightOptionText.enabled = false;
-
-
         showTween_inversed = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(                                                                                                                         //   Left Option Y 
                 new TweenManager.TweenPart_Start(0, -300, 0.75f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT", inverse_curve_: true)                   //
@@ -64,8 +55,6 @@ public class UIChoiceBoxes : MonoBehaviour
                 new TweenManager.TweenPart_Start(1, 0, 0.75f, TweenManager.CURVE_PRESET.LINEAR)                                                               //
                 )
             );
-
-
         optionSelectedTween = new TweenManager.TweenPathBundle(                                                         //
             new TweenManager.TweenPath(                                                                                 // Selected Option Scale
                 new TweenManager.TweenPart_Start(1, 1.2f, 0.25f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")  //
@@ -78,6 +67,29 @@ public class UIChoiceBoxes : MonoBehaviour
                 new TweenManager.TweenPart_Start(1, 0, 1.0f, TweenManager.CURVE_PRESET.LINEAR)                          // Not Selected Option Alpha
                 )
             );
+        buttonShowTween = new TweenManager.TweenPathBundle(
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(0, 1, 0.25f, TweenManager.CURVE_PRESET.LINEAR)             // ALPHA
+            ),
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(0, 0, 0, TweenManager.CURVE_PRESET.LINEAR)             // X POS
+            ),
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(-50, 0, 0.25f, TweenManager.CURVE_PRESET.EASE_OUT)      // Y POS
+            )
+        );
+        leftOptionShowingPosition = leftOptionImage.rectTransform.anchoredPosition;
+        leftOptionImage.enabled = false;
+        leftOptionButtonImage.enabled = false;
+        leftOptionText.enabled = false;
+
+        rightOptionShowingPosition = rightOptionImage.rectTransform.anchoredPosition;
+        rightOptionImage.enabled = false;
+        rightOptionButtonImage.enabled = false;
+        rightOptionText.enabled = false;
+
+
+
     }
 
 
@@ -101,11 +113,16 @@ public class UIChoiceBoxes : MonoBehaviour
     TypeRef<float> SelectedOptionAlphaVal = new TypeRef<float>();
     TypeRef<float> NotSelectedOptionAlphaVal = new TypeRef<float>();
 
+    TypeRef<float> Ref_ButtonAlpha = new TypeRef<float>();
+    TypeRef<float> Ref_ButtonXPos = new TypeRef<float>();
+    TypeRef<float> Ref_ButtonYPos = new TypeRef<float>();
+
     public void Appear(StoryManager.BranchEnterArgs args)
     {
         is_transitioning = true;
 
         leftOptionImage.enabled = true;
+
         leftOptionButtonImage.enabled = true;
         leftOptionText.enabled = true;
         rightOptionImage.enabled = true;
@@ -114,6 +131,9 @@ public class UIChoiceBoxes : MonoBehaviour
 
         leftOptionText.text = "";
         rightOptionText.text = "";
+
+        leftOptionButtonImage.color = new Color(1, 1, 1, 0);
+        rightOptionButtonImage.color = new Color(1, 1, 1, 0);
 
         GM_.Instance.tween_manager.StartTweenInstance(
             showTween_inversed,
@@ -128,7 +148,6 @@ public class UIChoiceBoxes : MonoBehaviour
 
     }
 
-
     Color leftColour = new Color(1, 1, 1, 0);
     Color rightColour = new Color(1, 1, 1, 0);
     Vector2 leftOffset = new Vector2(0, 0);
@@ -141,13 +160,11 @@ public class UIChoiceBoxes : MonoBehaviour
         leftOffset.y = leftOptionYVal.value;
         rightOffset.y = RightOptionYVal.value;
 
-        leftOptionButtonImage.color = leftColour;
         leftOptionImage.color = leftColour;
         leftOptionText.color = new Color(0,0,0, leftColour.a);
         leftOptionImage.rectTransform.anchoredPosition = leftOffset + leftOptionShowingPosition;
 
         rightOptionImage.color = rightColour;
-        rightOptionButtonImage.color = rightColour;
         rightOptionText.color = new Color(0, 0, 0, rightColour.a); ;
         rightOptionImage.rectTransform.anchoredPosition = rightOffset + rightOptionShowingPosition;
 
@@ -169,7 +186,22 @@ public class UIChoiceBoxes : MonoBehaviour
     {
         counterTextFinished--;
         if (counterTextFinished == 0)
-            is_transitioning = false;
+            GM_.Instance.tween_manager.StartTweenInstance(
+                buttonShowTween,
+                new TypeRef<float>[] { Ref_ButtonAlpha , Ref_ButtonXPos, Ref_ButtonYPos },
+                tweenUpdatedDelegate_: buttonsShowUpdate,
+                tweenCompleteDelegate_: buttonsShown
+                );
+    }
+
+    void buttonsShowUpdate()
+    {
+        leftOptionButtonImage.color = new Color(1, 1, 1, Ref_ButtonAlpha.value);
+        rightOptionButtonImage.color = new Color(1, 1, 1, Ref_ButtonAlpha.value);
+    }
+    void buttonsShown()
+    {
+        is_transitioning = false;
     }
 
     BranchingNode.CHOICE choice;
@@ -232,11 +264,11 @@ public class UIChoiceBoxes : MonoBehaviour
         leftOptionImage.rectTransform.anchoredPosition = leftOptionShowingPosition;
         leftOptionButtonImage.color = leftColour;
         leftOptionImage.color = leftColour;
-        leftOptionText.color = new Color(0, 0, 0, leftColour.a); ;
+        leftOptionText.color = new Color(0, 0, 0, leftColour.a); 
 
         rightOptionImage.color = rightColour;
         rightOptionButtonImage.color = rightColour;
-        rightOptionText.color = new Color(0, 0, 0, rightColour.a); ;
+        rightOptionText.color = new Color(0, 0, 0, rightColour.a); 
         rightOptionImage.rectTransform.anchoredPosition = rightOptionShowingPosition;
     }
 

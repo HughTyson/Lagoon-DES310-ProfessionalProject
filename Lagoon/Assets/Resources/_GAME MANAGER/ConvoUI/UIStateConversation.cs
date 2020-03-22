@@ -19,14 +19,13 @@ public class UIStateConversation : MonoBehaviour
 
     void Start()
     {
-        GM_.Instance.story.Event_ConvoEnter += ConvoEnter;
-        GM_.Instance.story.Event_ConvoExit += ConvoExit;
         GM_.Instance.story.Event_ConvoCharactersShow += ConvoCharactersShow;
         GM_.Instance.story.Event_DialogStart += DialogStart;
         GM_.Instance.story.Event_DialogNewText += DialogNewText;
         GM_.Instance.story.Event_BranchChoiceMade += BranchChoiceChosen;
         GM_.Instance.story.Event_BranchStart += BranchStart;
         GM_.Instance.story.Event_SkipTextCrawl += SkipTextCrawl;
+        GM_.Instance.story.Event_ConvoExit += ConversationExit;
 
         dialogBox.Event_BoxFinishedAppearing += dialogStartTextShouldShowIterate;
 
@@ -37,12 +36,14 @@ public class UIStateConversation : MonoBehaviour
         rightPortrait.Event_FinishedAppearing += dialogStartTextShouldShowIterate;
     }
 
-    void ConvoEnter()
-    {
-    }
 
-    void ConvoExit()
+
+    void ConversationExit()
     {
+        leftPortrait.Disappear();
+        rightPortrait.Disappear();
+        if (dialogBox.IsBoxShowing())
+            dialogBox.Disappear();
     }
 
     void  ConvoCharactersShow(StoryManager.ConvoCharactersShowArgs args)

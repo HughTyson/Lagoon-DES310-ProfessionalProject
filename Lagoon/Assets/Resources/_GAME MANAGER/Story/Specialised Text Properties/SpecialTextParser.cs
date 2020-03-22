@@ -11,8 +11,8 @@ namespace SpecialText
         public bool errorFlag = false;
         public string errorMessage = "";
         public Token tokenOfError = null;
-        public object additionalInfo = null;
     }
+
 
     public static class DebuggingParse
     {
@@ -55,7 +55,23 @@ namespace SpecialText
 
     public class SpecialTextData
     {
-    
+        public void FillTextWithProperties(List<TextPropertyData.Base> properties, int start_index, int end_index)
+        {
+            propertyDataList.AddRange(properties);
+            for (int i = 0; i < properties.Count; i++)
+            {
+                properties[i].AddCharacterReference(specialTextCharacters.GetRange(start_index, start_index + (end_index - start_index)));
+            }
+
+        }
+        public void CreateCharacterData(string text)
+        {
+            fullTextString = text;
+            for (int i = 0; i < text.Length; i++)
+                specialTextCharacters.Add(new SpecialTextCharacterData(i, text[i]));
+        }
+        public SpecialTextData() { }
+
         public List<TextPropertyData.Base> propertyDataList = new List<TextPropertyData.Base>();
         public List<SpecialTextCharacterData> specialTextCharacters = new List<SpecialTextCharacterData>();
         public string fullTextString = "";
@@ -67,10 +83,35 @@ namespace SpecialText
         private readonly static float def_rotation = 0;
         private readonly static Vector2 def_cetrePposition_offset = new Vector2(0, 0);
 
+
+        struct InitVals
+        {
+            public Vector2 Bottom_Left;
+            public Vector2 Top_Left;
+            public Vector2 Top_Right;
+            public Vector2 Bottom_Right;
+            public Vector2 Centre;
+            public Color32 Colour;
+        }
+        InitVals initVals;
         public SpecialTextCharacterData(int index_, char character_)
         {
             index = index_;
             character = character_;
+        }
+
+
+        public void SetupInitialVals(Vector2 Bottom_Left_, Vector2 Top_Left_, Vector2 Top_Right_, Vector2 Bottom_Right_, Color32 colour_)
+        {
+            Vector2 centre = (Bottom_Left_ + Top_Left_ + Top_Right_ + Bottom_Right_) / 4.0f;
+            initVals = new InitVals {
+                Bottom_Left = Bottom_Left_ - centre,
+                Top_Left = Top_Left_ - centre,
+                Top_Right = Top_Right_ - centre,
+                Bottom_Right = Bottom_Right_ - centre,
+                Colour = colour_ , 
+                Centre = centre
+            };
         }
         public void SetupDefVals(Vector2 Bottom_Left, Vector2 Top_Left, Vector2 Top_Right, Vector2 Bottom_Right)
         {
@@ -112,6 +153,18 @@ namespace SpecialText
             rotationDegrees = def_rotation;
         }
 
+        public void ResetToInit()
+        {
+            colour = initVals.Colour;
+            scaleMultiplier = def_scaleMultiplier;
+            centrePositionOffset = initVals.Centre;
+            centrePositionScaledOffset = def_cetrePposition_offset;
+            positionOffset_BottomLeft = initVals.Bottom_Left;
+            positionOffset_TopLeft = initVals.Top_Left;
+            positionOffset_TopRight = initVals.Top_Right;
+            positionOffset_BottomRight = initVals.Bottom_Right;
+            rotationDegrees = def_rotation;
+        }
         public void ApplyToTMPChar(ref TMPro.TMP_MeshInfo meshInfo, int verticeIndex)
         {
             Color32[] vertexColors = meshInfo.colors32;

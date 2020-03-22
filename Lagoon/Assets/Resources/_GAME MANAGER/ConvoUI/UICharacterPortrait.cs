@@ -18,7 +18,6 @@ public class UICharacterPortrait : MonoBehaviour
 
     bool transitioning = false;
     bool is_talking = false;
-
     public event System.Action Event_FinishedChanging;
     public event System.Action Event_FinishedAppearing;
 
