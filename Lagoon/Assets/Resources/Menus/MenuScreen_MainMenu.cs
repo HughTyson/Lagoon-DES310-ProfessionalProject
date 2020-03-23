@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MenuScreen_MainMenu : MenuScreenBase
 {
-    [SerializeField] Camera camera_;
 
     [SerializeField] SelectableButton startButton;
     [SerializeField] SelectableButton optionsButton;
@@ -12,64 +11,38 @@ public class MenuScreen_MainMenu : MenuScreenBase
     [SerializeField] SelectableButton exitButton;
 
 
-    ValueWithDefault<Vector3> cameraPosition = new ValueWithDefault<Vector3>();
-    ValueWithDefault<Vector3> cameraRotation = new ValueWithDefault<Vector3>();
-    ValueWithDefault<Color> buttonColour = new ValueWithDefault<Color>();
+    [SerializeField] MenuScreenBase creditsMenu;
+    [SerializeField] MenuScreenBase optionsMenu;
+
+
+
     // Start is called before the first frame update
+
+
     void Start()
     {
         startButton.Event_Selected += start_transitionToGame;
         optionsButton.Event_Selected += start_transitionToOptions;
         creditsButton.Event_Selected += start_transitionToCredits;
         exitButton.Event_Selected += start_transitionToExit;
+        SetupDefaults();
 
-
-        cameraPosition.SetDefault(camera_.transform.position);
-        cameraRotation.SetDefault(camera_.transform.rotation.eulerAngles);
-        buttonColour.SetDefault(new Color(1, 1, 1, 1));
         startButton.HoveredOver();
     }
 
 
     TypeRef<float> refButtonAlpha = new TypeRef<float>();
 
-    // Transition to credits
-    //static TweenManager.TweenPathBundle transitionToCraditsTween = new TweenManager.TweenPathBundle(
-    //    // Buttons Alpha
-    //    new TweenManager.TweenPath(
-    //        new TweenManager.TweenPart_Start(1, 0, 0.3f, TweenManager.CURVE_PRESET.LINEAR)
-    //        ),
-    //    // Camera X
-    //    new TweenManager.TweenPath(
-    //        new TweenManager.TweenPart_Start(0,0, 0.3f, TweenManager.CURVE_PRESET.LINEAR),
-    //        new TweenManager.TweenPart_Continue()
-    //        ),
-    //    // Camera Y
-    //    new TweenManager.TweenPath(
-    //        new TweenManager.TweenPart_Start(0, 0, 0.3f, TweenManager.CURVE_PRESET.LINEAR),
-    //        new TweenManager.TweenPart_Continue()
-    //        ),
-    //    // Camera Z
-    //    new TweenManager.TweenPath(
-    //        new TweenManager.TweenPart_Start(0, 0, 0.3f, TweenManager.CURVE_PRESET.LINEAR),
-    //        new TweenManager.TweenPart_Continue()
-    //        ),
-    //    // Camera X Rot
-    //    new TweenManager.TweenPath(
-    //        new TweenManager.TweenPart_Start(0, 0, 0.3f, TweenManager.CURVE_PRESET.LINEAR),
-    //        new TweenManager.TweenPart_Continue()
-    //        ),
-    //    // Camera Y Rot
-    //    new TweenManager.TweenPath(
-    //        new TweenManager.TweenPart_Start(0, 0, 0.3f, TweenManager.CURVE_PRESET.LINEAR),
-    //        new TweenManager.TweenPart_Continue()
-    //        )
-    //    );
 
-    void hideMyButtons_Update()
+
+
+
+
+    public override void EnteredMenu()
     {
-
+        gameObject.SetActive(true);
     }
+
 
     void start_transitionToGame()
     {
@@ -78,10 +51,30 @@ public class MenuScreen_MainMenu : MenuScreenBase
 
     void start_transitionToCredits()
     {
+        startButton.Hide();
+        exitButton.Hide();
+        optionsButton.Hide();
+        creditsButton.Hide();
 
+        GM_.Instance.tween_manager.StartTweenInstance(
+            MenuTransitions.transition_MainMenuToCredits,
+            transitionOutputs,
+            tweenUpdatedDelegate_: transitionUpdate,
+            tweenCompleteDelegate_: end_transitionToCredits,
+            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
+            );
+    }
+    void end_transitionToCredits()
+    {
+        gameObject.SetActive(false);
+        creditsMenu.EnteredMenu();
     }
 
     void start_transitionToExit()
+    {
+
+    }
+    void end_transitionToExit()
     {
 
     }
@@ -90,19 +83,25 @@ public class MenuScreen_MainMenu : MenuScreenBase
     {
 
     }
-    
+    void end_transitionToOptions()
+    {
+        gameObject.SetActive(false);
+
+    }
+
 
     void transitionUpdate()
     {
-        startButton.Text.color = new Color(1, 1, 1, refButtonAlpha.value);
-        optionsButton.Text.color = new Color(1, 1, 1, refButtonAlpha.value);
-        creditsButton.Text.color = new Color(1, 1, 1, refButtonAlpha.value);
-        exitButton.Text.color = new Color(1, 1, 1, refButtonAlpha.value);
-    }
+        current_cameraPosition.x = cameraPositionRef_X.value;
+        current_cameraPosition.y = cameraPositionRef_Y.value;
+        current_cameraPosition.z = cameraPositionRef_Z.value;
+        current_cameraRotation.x = cameraRotationRef_X.value;
+        current_cameraRotation.y = cameraRotationRef_Y.value;
+        current_cameraRotation.z = cameraRotationRef_Z.value;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Quaternion new_rotation = new Quaternion();
+        new_rotation.eulerAngles = current_cameraRotation + default_cameraRotation;
+        camera_.transform.position = current_cameraPosition + default_cameraPosition;
+        camera_.transform.rotation = new_rotation;
     }
 }

@@ -55,15 +55,15 @@ namespace SpecialText
 
     public class SpecialTextData
     {
-        public void FillTextWithProperties(List<TextPropertyData.Base> properties, int start_index, int end_index)
+        public void AddPropertyToText(List<TextProperties.Base> properties, int start_index, int count)
         {
             propertyDataList.AddRange(properties);
             for (int i = 0; i < properties.Count; i++)
             {
-                properties[i].AddCharacterReference(specialTextCharacters.GetRange(start_index, start_index + (end_index - start_index)));
+                properties[i].AddCharacterReference(specialTextCharacters.GetRange(start_index, start_index + (count - start_index)));
             }
-
         }
+      
         public void CreateCharacterData(string text)
         {
             fullTextString = text;
@@ -72,7 +72,7 @@ namespace SpecialText
         }
         public SpecialTextData() { }
 
-        public List<TextPropertyData.Base> propertyDataList = new List<TextPropertyData.Base>();
+        public List<TextProperties.Base> propertyDataList = new List<TextProperties.Base>();
         public List<SpecialTextCharacterData> specialTextCharacters = new List<SpecialTextCharacterData>();
         public string fullTextString = "";
     }

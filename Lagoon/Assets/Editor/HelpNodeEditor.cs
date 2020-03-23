@@ -70,9 +70,9 @@ public class HelpNodeEditor : NodeEditor
         titleStyle.alignment = TextAnchor.MiddleLeft;
         GUILayout.Label("Encapsulated Properties", titleStyle);
 
-        for (int i = 0; i < SpecialText.TextPropertyData.propertyInfos.Length; i++)
+        for (int i = 0; i < SpecialText.TextProperties.propertyInfos.Length; i++)
         {
-            SpecialText.TextPropertyData.PropertyInfo info = SpecialText.TextPropertyData.propertyInfos[i];
+            SpecialText.TextProperties.PropertyInfo info = SpecialText.TextProperties.propertyInfos[i];
             GUILayout.Label(info.name, boldStyle);
             GUILayout.Label("Overview: " + info.description, GUI.skin.box);
             GUILayout.Label("Function: " + info.functionName, GUI.skin.box);
@@ -80,9 +80,9 @@ public class HelpNodeEditor : NodeEditor
             GUILayout.Label("Example: " + info.example, GUI.skin.box);
         }
         GUILayout.Label("Singular Properties", titleStyle);
-        for (int i = 0; i < SpecialText.TextPropertyData.noExitPropertyInfo.Length; i++)
+        for (int i = 0; i < SpecialText.TextProperties.noExitPropertyInfo.Length; i++)
         {
-            SpecialText.TextPropertyData.PropertyInfo info = SpecialText.TextPropertyData.noExitPropertyInfo[i];
+            SpecialText.TextProperties.PropertyInfo info = SpecialText.TextProperties.noExitPropertyInfo[i];
             GUILayout.Label(info.name, boldStyle);
             GUILayout.Label("Overview: " + info.description, GUI.skin.box);
             GUILayout.Label("Function: " + info.functionName, GUI.skin.box);

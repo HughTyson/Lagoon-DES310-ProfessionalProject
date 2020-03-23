@@ -29,12 +29,12 @@ namespace SpecialText
 
         struct OpenProperty
         {
-            public OpenProperty(TextPropertyData.Base property, Token token)
+            public OpenProperty(TextProperties.Base property, Token token)
             {
                 property_data_version = property;
                 token_version = token;
             }
-            public TextPropertyData.Base property_data_version;
+            public TextProperties.Base property_data_version;
             public Token token_version;
         }
 
@@ -65,25 +65,24 @@ namespace SpecialText
                     case Token.TYPE.PROPERTY_ENTER:
                         {
 
-                            TextPropertyData.Base property_data = TextPropertyData.CreatePropertyDataFromName(tokenList[i].Data);
+                            TextProperties.Base property_data = TextProperties.CreatePropertyDataFromName(tokenList[i].Data);
                             if (property_data != null)
                             {
-                                property_data.SetGlobalPropertiesReference(globalProperties);
                                 specialTextData.propertyDataList.Add(property_data);
-                                property_data.Lex(new TextPropertyData.Base.LexingArgs(tokenList[i], tokenList[i].TokenChildren, FlagError));
+                                property_data.Lex(new TextProperties.Base.LexingArgs(tokenList[i], tokenList[i].TokenChildren,globalProperties, FlagError));
                                 openProperties.Add(new OpenProperty(property_data, tokenList[i]));
                             }
                             else
                             {
-                                FlagError("Error: Property Type Not Found. Did you mean: " + TextPropertyData.FindMostSimilarPropertyName(tokenList[i].Data) + "?", tokenList[i]);
+                                FlagError("Error: Property Type Not Found. Did you mean: " + TextProperties.FindMostSimilarPropertyName(tokenList[i].Data) + "?", tokenList[i]);
                             }
                             break;
                         }
                     case Token.TYPE.PROPERTY_EXIT:
                         {
-                            TextPropertyData.PropertyInfo property_info;
+                            TextProperties.PropertyInfo property_info;
                             
-                            if (TextPropertyData.propertyInfoDictionary.TryGetValue(tokenList[i].Data.GetHashCode(), out property_info))
+                            if (TextProperties.propertyInfoDictionary.TryGetValue(tokenList[i].Data.GetHashCode(), out property_info))
                             {
                                 bool found = false;
                                 for (int k = openProperties.Count - 1; k >= 0; k--) // goes backwards so if multiple same properties are opened, remove the inner most one
@@ -103,24 +102,23 @@ namespace SpecialText
                             }
                             else
                             {
-                                FlagError("Error: Property Type Not Found. Did you mean: " + TextPropertyData.FindMostSimilarPropertyName(tokenList[i].Data) + "?", tokenList[i]);
+                                FlagError("Error: Property Type Not Found. Did you mean: " + TextProperties.FindMostSimilarPropertyName(tokenList[i].Data) + "?", tokenList[i]);
                                 break;
                             }
                             break;
                         }
                     case Token.TYPE.PROPERTY_NOEXIT:
                         {
-                            TextPropertyData.NoExitBase property_data = TextPropertyData.CreateNoExitPropertyDataFromName(tokenList[i].Data);
+                            TextProperties.NoExitBase property_data = TextProperties.CreateNoExitPropertyDataFromName(tokenList[i].Data);
                             if (property_data != null)
                             {
-                                property_data.SetGlobalPropertiesReference(globalProperties);
                                 property_data.SetUpNoExitBase(specialTextData.specialTextCharacters.Count - 1);
                                 specialTextData.propertyDataList.Add(property_data);
-                                property_data.Lex(new TextPropertyData.Base.LexingArgs(tokenList[i], tokenList[i].TokenChildren, FlagError));
+                                property_data.Lex(new TextProperties.Base.LexingArgs(tokenList[i], tokenList[i].TokenChildren, globalProperties, FlagError));
                             }
                             else
                             {
-                                FlagError("Error: No-Exit Property Type Not Found. Did you mean: " + TextPropertyData.FindMostSimilarNoExitPropertyName(tokenList[i].Data) + "?", tokenList[i]);
+                                FlagError("Error: No-Exit Property Type Not Found. Did you mean: " + TextProperties.FindMostSimilarNoExitPropertyName(tokenList[i].Data) + "?", tokenList[i]);
                             }
                             break;
                         }
@@ -129,7 +127,7 @@ namespace SpecialText
              
                             specialTextData.fullTextString += ((Token_Text)tokenList[i]).Data;
       
-                            List<TextPropertyData.Base> appliedProperties = new List<TextPropertyData.Base>();
+                            List<TextProperties.Base> appliedProperties = new List<TextProperties.Base>();
 
                             for (int k = openProperties.Count - 1; k >= 0; k--)
                             {
@@ -140,7 +138,7 @@ namespace SpecialText
                                 }
                             }
 
-                            List<TextPropertyData.Base> incompatibleCheck = new List<TextPropertyData.Base>(appliedProperties);
+                            List<TextProperties.Base> incompatibleCheck = new List<TextProperties.Base>(appliedProperties);
 
                             for (int k = appliedProperties.Count - 1; k >= 0; k--) // start from back to allow removing of indexes inside the loop
                             {
@@ -158,7 +156,7 @@ namespace SpecialText
                             {
                                 appliedProperties[k].AddCharacterReference(textCharacters);
                             }
-                            TextPropertyData.ApplyDefaults(specialTextData, appliedProperties, textCharacters, globalProperties);
+                            TextProperties.ApplyDefaults(specialTextData, appliedProperties, textCharacters, globalProperties);
 
                             specialTextData.specialTextCharacters.AddRange(textCharacters);
                             break;
@@ -175,13 +173,6 @@ namespace SpecialText
             if (openProperties.Count != 0)
             {
                 FlagError("Error: Property opened but never closed.", openProperties[0].token_version);
-            }
-
-
-
-            for (int i = specialTextData.propertyDataList.Count - 1; i >= 0; i--)
-            {
-                specialTextData.propertyDataList[i].FinializeLexing(specialTextData);
             }
 
             return specialTextData;

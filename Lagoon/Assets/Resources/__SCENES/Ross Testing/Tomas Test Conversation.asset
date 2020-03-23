@@ -385,7 +385,7 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: d3e1b4c88d0156245b0f08062593e928, type: 2}
   Dialog:
   - whoIsTalking: 1
-    dialog_text: 'You...[#Delay(0.4)] You''re a [Colour(255,0,0)]sinner[/Colour].[#Delay(0.4)]
+    dialog_text: 'You...[#Delay(0.4)] You''re a [Colour(255,0,0)]sinner.[/Colour][#Delay(0.4)]
       A [Colour(255,0,0)]ruthless man[/Colour]. '
   - whoIsTalking: 1
     dialog_text: 'You have committed crimes against this island and its inhabitants. '
@@ -452,7 +452,7 @@ MonoBehaviour:
   outputA: 0
   outputB: 0
   LeftDecision: How did you contact me?
-  RightDecision: 'Who [AppearAtOnce]are[/AppearAtOnce] you? '
+  RightDecision: 'Wsdfgsdfgdsfgho [AppearAtOnce]are[/AppearAtOnce] yosdgfsdfgu? '
   nodeWidth: 300
 --- !u!114 &11400000
 MonoBehaviour:
@@ -648,7 +648,8 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: d3e1b4c88d0156245b0f08062593e928, type: 2}
   Dialog:
   - whoIsTalking: 1
-    dialog_text: Hello, [#Delay(0.5)][Colour(255,0,0)]Joe[/Colour].
+    dialog_text: 'You...You''re a [Colour(255,0,0)]sinne[#Delay(0.4)]r.[/Colour] A
+      [Colour(255,0,0)]ruthless man[/Colour]. '
   - whoIsTalking: 0
     dialog_text: Hello?
   - whoIsTalking: 0
@@ -731,7 +732,6 @@ MonoBehaviour:
     keys: []
     values: []
   DefaultSpeedPerTextCharacter: 20
-  DefaultDurationOfTextCharacterTransitionIn: 0.3
 --- !u!114 &6167159373758414410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -830,7 +830,7 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: d3e1b4c88d0156245b0f08062593e928, type: 2}
   Dialog:
   - whoIsTalking: 1
-    dialog_text: '[AppearAtOnce]Hah[/AppearAtOnce]! We are not of the [Shiver(0.1,50)]people[/Shiver(0.1,50)]
+    dialog_text: '[AppearAtOnce]Hah[/AppearAtOnce]test We are not of the [Shiver(0.1,50)]people[/Shiver(0.1,50)]
       kind.'
   - whoIsTalking: 1
     dialog_text: We are a superior kind...

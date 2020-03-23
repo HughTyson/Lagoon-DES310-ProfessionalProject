@@ -10,9 +10,9 @@ namespace SpecialText
         int iterator;
         TMPro.TextMeshProUGUI tmp;
 
-        List<TextPropertyData.Base> UnactiveProperties = new List<TextPropertyData.Base>();
-        List<TextPropertyData.Base> TransitioningProperties = new List<TextPropertyData.Base>();
-        List<TextPropertyData.Base> EndlessUpdateProperties = new List<TextPropertyData.Base>();
+        List<TextProperties.Base> UnactiveProperties = new List<TextProperties.Base>();
+        List<TextProperties.Base> TransitioningProperties = new List<TextProperties.Base>();
+        List<TextProperties.Base> EndlessUpdateProperties = new List<TextProperties.Base>();
 
         bool isReverted = false;
 
@@ -120,7 +120,7 @@ namespace SpecialText
             { 
                 if (iterator >= y.LowestCharacterIndex)
                 {
-                    y.Begin();
+                    y.TransitionStart();
                     TransitioningProperties.Add(y);
                     return true;
                 }
@@ -130,6 +130,8 @@ namespace SpecialText
             int lowestHoldBackIndex = int.MaxValue;
             for (int i = 0; i < TransitioningProperties.Count; i++)
                 lowestHoldBackIndex = Mathf.Min(lowestHoldBackIndex, TransitioningProperties[i].HoldingBackIndex);
+            for (int i = 0; i < UnactiveProperties.Count; i++)
+                lowestHoldBackIndex = Mathf.Min(lowestHoldBackIndex, UnactiveProperties[i].HoldingBackIndex);
 
             TransitioningProperties.RemoveAll( y =>
             {

@@ -16,7 +16,7 @@ public class SelectableButton : MenuSelectableBase
     TypeRef<float> refScale = new TypeRef<float>();
     TypeRef<float> refColour = new TypeRef<float>();
 
-    static TweenManager.TweenPathBundle selectedTween = new TweenManager.TweenPathBundle(
+    static readonly TweenManager.TweenPathBundle selectedTween = new TweenManager.TweenPathBundle(
         // Scale
         new TweenManager.TweenPath(
             new TweenManager.TweenPart_Start(1, 0.9f, 0.1f, TweenManager.CURVE_PRESET.LINEAR), 
@@ -29,29 +29,44 @@ public class SelectableButton : MenuSelectableBase
             )
         );
 
+    static readonly TweenManager.TweenPathBundle showTween = new TweenManager.TweenPathBundle(
+    new TweenManager.TweenPath(
+        new TweenManager.TweenPart_Start(0, 1, 0.3f, TweenManager.CURVE_PRESET.LINEAR)
+        )
+    );
+    static public readonly TweenManager.TweenPathBundle hideTween = new TweenManager.TweenPathBundle(
+                new TweenManager.TweenPath(
+            new TweenManager.TweenPart_Start(1, 0, 0.3f, TweenManager.CURVE_PRESET.LINEAR)
+            )
+        );
+
 
     public RectTransform ThisRectTransform { get { return rectTransform; } }
     public TextMeshProUGUI Text { get { return TMProText; } }
 
 
+    Color default_colour; 
     public void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         TMProText = GetComponentInChildren<TextMeshProUGUI>();
         specialText = GetComponentInChildren<SpecialText.SpecialText>();
         parentMenu = GetComponentInParent<MenuScreenBase>();
+        default_colour = TMProText.color;
 
         specialTextData.CreateCharacterData(TMProText.text);
-        specialTextData.FillTextWithProperties(
-            new List<SpecialText.TextPropertyData.Base>()
+        specialTextData.AddPropertyToText(
+            new List<SpecialText.TextProperties.Base>()
             {
-            new SpecialText.TextPropertyData.Colour(255,0,0),
-            new SpecialText.TextPropertyData.StaticAppear(),
-            new SpecialText.TextPropertyData.WaveScaled(1,2,5)
+            new SpecialText.TextProperties.Colour(255,0,0),
+            new SpecialText.TextProperties.StaticAppear(),
+            new SpecialText.TextProperties.WaveScaled(1,2,5)
             },
             0,
             TMProText.text.Length
             );
+
+
     }
     public void Start()
     {
@@ -63,7 +78,8 @@ public class SelectableButton : MenuSelectableBase
     {
     NONE,
     HOVERING,
-    SELECTING    
+    SELECTING,
+    HIDDEN
     }
     STATE state = STATE.NONE;
     static readonly float OPTION_SWAP_COOLDOWN = 0.3f;
@@ -87,7 +103,39 @@ public class SelectableButton : MenuSelectableBase
     }
     void EndSelected()
     {
+        state = STATE.NONE;
         Invoke_EventSelected();
+    }
+
+    public override void InstantHide()
+    {
+        state = STATE.HIDDEN;
+        gameObject.SetActive(false);
+        TMProText.color = new Color(default_colour.r, default_colour.g, default_colour.b, 0);
+    }
+    public override void InstantShow()
+    {
+        state = STATE.NONE;
+        gameObject.SetActive(true);
+        TMProText.color = default_colour;
+    }
+    public override void Hide()
+    {
+        GM_.Instance.tween_manager.StartTweenInstance(hideTween,
+            new TypeRef<float>[] { refColour },
+            tweenUpdatedDelegate_: SelectedUpdate,
+            tweenCompleteDelegate_: InstantHide,
+            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA);
+    }
+
+    public override void Show()
+    {
+        gameObject.SetActive(true);
+        GM_.Instance.tween_manager.StartTweenInstance(showTween,
+             new TypeRef<float>[] { refColour },
+             tweenUpdatedDelegate_: SelectedUpdate,
+             tweenCompleteDelegate_: InstantShow,
+             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA);
     }
 
     public override void HoveredOver()
@@ -105,6 +153,12 @@ public class SelectableButton : MenuSelectableBase
         if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))
         {
             Selected();
+            return;
+        }
+        else if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.B))
+        {
+            state = STATE.NONE;
+            Invoke_CancelledWhileHovering();
             return;
         }
 
