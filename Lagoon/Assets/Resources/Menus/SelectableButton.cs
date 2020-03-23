@@ -29,6 +29,11 @@ public class SelectableButton : MenuSelectableBase
             )
         );
 
+
+    public RectTransform ThisRectTransform { get { return rectTransform; } }
+    public TextMeshProUGUI Text { get { return TMProText; } }
+
+
     public void Awake()
     {
         rectTransform = GetComponent<RectTransform>();

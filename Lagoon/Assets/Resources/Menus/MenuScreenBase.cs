@@ -8,6 +8,6 @@ abstract public class MenuScreenBase : MonoBehaviour
     MenuScreenBase goBackMenu;
 
 
-    public abstract void TransitionIn();
-    public abstract void TransitionOut();
+   // public abstract void TransitionIn();
+   // public abstract void TransitionOut();
 }
