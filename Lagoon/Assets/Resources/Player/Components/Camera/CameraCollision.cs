@@ -33,7 +33,7 @@ public class CameraCollision : MonoBehaviour
         adjusted_cp_pos = new Vector3[5]; //4 clip points and the cameras position
         desired_cp_pos = new Vector3[5];
 
-        camera_collisison_layer = (1 << 5) |(1 << 9) | (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13) | (1 << 14);
+        camera_collisison_layer = (1 << 5) |(1 << 9) | (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13) | (1 << 14) | (1 << 15);
 
         camera_collisison_layer = ~camera_collisison_layer;
 
@@ -51,14 +51,14 @@ public class CameraCollision : MonoBehaviour
 
         //top left
         intoArray[0] = (cp_rotation * new Vector3(-x, y, z)) + camera_position;     //add and rotate the collision point based on camera top right
-                                                                                
+
         intoArray[1] = (cp_rotation * new Vector3(x, y, z)) + camera_position;      //add and rotate the collision point based on camera bottom left
-                                                                                    
+
         intoArray[2] = (cp_rotation * new Vector3(-x, -y, z)) + camera_position;    //add and rotate the collision point based on camera bottom right
-                                                                                    
+
         intoArray[3] = (cp_rotation * new Vector3(x, -y, z)) + camera_position;     //add and rotate the collision point based on camera
-                                                                                
-        //intoArray[4] = camera_position - cam.transform.forward/2;                  //cam_pos
+
+        // intoArray[4] = camera_position - cam.transform.forward/2;                  //cam_pos
     }
 
     //determines if there is a collision at any of these clip points
@@ -74,6 +74,9 @@ public class CameraCollision : MonoBehaviour
             
             if(Physics.Raycast(ray, out hit, distance, camera_collisison_layer))
             {
+
+                Debug.Log(hit.collider.gameObject.layer);
+
                 return true;    //a collision has been detected
             }
         }
@@ -100,6 +103,7 @@ public class CameraCollision : MonoBehaviour
                 {
                     if (hit.distance < distance) //get the shortest distance from a point to the targets position
                     {
+
                         distance = hit.distance;
                     }
                 }
@@ -112,6 +116,7 @@ public class CameraCollision : MonoBehaviour
         }
         else
         {
+       
             return distance;
         }
     }

@@ -35,13 +35,15 @@ public class PlayerScriptManager : MonoBehaviour
     [SerializeField] PlayerExploreState stateExplore;
     [SerializeField] PlayerConversationState stateConverstation;
     [SerializeField] PlayerRepairState stateRepair;
+    [SerializeField] PlayerSleepState stateSleep;
 
     public enum STATE
     { 
         EXPLORING,
         FISHING,
         CONVERSATION,
-        REPAIR
+        REPAIR,
+        SLEEP
     };
 
 
@@ -53,15 +55,18 @@ public class PlayerScriptManager : MonoBehaviour
         stateExplore.SetStateManagerPointer(this);
         stateConverstation.SetStateManagerPointer(this);
         stateRepair.SetStateManagerPointer(this);
+        stateSleep.SetStateManagerPointer(this);
 
         stateFishing.enabled = false;
         stateExplore.enabled = false;
         stateConverstation.enabled = false;
         stateRepair.enabled = false;
+        stateSleep.enabled = false;
 
         stateFishing.OnDisable();
         stateConverstation.OnDisable();
         stateRepair.OnDisable();
+        stateSleep.OnDisable();
 
         currentState.enabled = true;
     }
@@ -106,6 +111,11 @@ public class PlayerScriptManager : MonoBehaviour
             case STATE.REPAIR:
                 {
                     currentState = stateRepair;
+                    break;
+                }
+            case STATE.SLEEP:
+                {
+                    currentState = stateSleep;
                     break;
                 }
         }

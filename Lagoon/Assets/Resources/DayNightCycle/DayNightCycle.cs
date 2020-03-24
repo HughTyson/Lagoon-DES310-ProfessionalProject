@@ -11,8 +11,8 @@ public class DayNightCycle : MonoBehaviour
 
 
 
-    [SerializeField] Light sun;
     [SerializeField] Light moon;
+    [SerializeField] Light sun;
 
     [SerializeField] GameObject scene;
 
@@ -25,14 +25,13 @@ public class DayNightCycle : MonoBehaviour
     
     ProceduralSky procedural_sky;
 
-    [Range(0, 120)] [SerializeField] public float secondsInFullDay = 120f;
-    private float current_time;
-    private float time_multiplyer = 1f;
+    [HideInInspector] public float secondsInFullDay = 600f;
+    public float current_time;
+    [SerializeField] public float time_multiplyer = 1f;
 
     TweenManager.TweenPathBundle atmosphere_tween;
     TweenManager.TweenPathBundle sun_intensity_tween;
     TweenManager.TweenPathBundle moon_intensity_tween;
-    TweenManager.TweenPathBundle day_speed;
 
     TypeRef<float> atmosphere_alter_value = new TypeRef<float>(0);
     TypeRef<float> sun_intesity = new TypeRef<float>(0);
@@ -43,6 +42,8 @@ public class DayNightCycle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        //transform.rotation = new Quaternion(0, 0, 0.7f, 0.7f);
 
         Volume volume = scene.GetComponent<Volume>();
         ProceduralSky sky;
@@ -71,22 +72,18 @@ public class DayNightCycle : MonoBehaviour
 
         sun_intensity_tween = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(sun_intesity.value, 0, 0.5f, TweenManager.CURVE_PRESET.EASE_OUT)
+                new TweenManager.TweenPart_Start(sun_intesity.value, 0, 2f, TweenManager.CURVE_PRESET.EASE_OUT)
             )
         );
 
         moon_intensity_tween = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(moon_intesity.value, 0, 0.5f, TweenManager.CURVE_PRESET.EASE_OUT)
+                new TweenManager.TweenPart_Start(moon_intesity.value, 0, 2f, TweenManager.CURVE_PRESET.EASE_OUT)
             )
         );
 
-        day_speed = new TweenManager.TweenPathBundle(
-            new TweenManager.TweenPath(
-                        new TweenManager.TweenPart_Start(secondsInFullDay, max_sleep_speed/2, 5.0f, TweenManager.CURVE_PRESET.EASE_IN),
-                        new TweenManager.TweenPart_Continue(max_sleep_speed, 5.0f, TweenManager.CURVE_PRESET.LINEAR)
-                )
-            );
+        current_time = 0.3f;
+        secondsInFullDay = 600f;
 
     }
 
@@ -94,7 +91,9 @@ public class DayNightCycle : MonoBehaviour
     void Update()
     {
 
-        //rotate the object by a value - predetermined by the designers - this value can also be changed if time is being pushed forward (use tween manager)
+        //rotate the object by a value - predetermined by the designers(not) - this value can also be changed if time is being pushed forward (use tween manager)
+
+
 
         UpdateLight();
 
@@ -107,30 +106,10 @@ public class DayNightCycle : MonoBehaviour
 
         CorrectTime();
 
-        ResetRotations();
-
-        Debug.Log(moon.intensity);
-
-    }
-
-    void ResetRotations()
-    {
-        if (transform.rotation.eulerAngles.z > 360.01)
-        {
-            transform.rotation.eulerAngles.Set(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z - 360);
-        }
-
-        if (transform.rotation.eulerAngles.z < 0.01)
-        {
-            transform.rotation.eulerAngles.Set(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z + 360);
-        }
     }
 
     void CorrectTime()
     {
-
-        Debug.Log(transform.rotation.eulerAngles.z);
-
         if(change)
         {
             switch (active)
@@ -163,12 +142,10 @@ public class DayNightCycle : MonoBehaviour
             change = true;
         }
 
-
     }
 
     void ChangeLight(ACTIVE new_light)
     {
-
         switch (new_light)
         {
             case ACTIVE.SUN:
@@ -206,7 +183,6 @@ public class DayNightCycle : MonoBehaviour
             default:
                 break;
         }
-
     }
 
     void UpdateLight()
@@ -280,7 +256,4 @@ public class DayNightCycle : MonoBehaviour
             startingDirection_: TweenManager.DIRECTION.END_TO_START
         );
     }
-    
-
-    
 }
