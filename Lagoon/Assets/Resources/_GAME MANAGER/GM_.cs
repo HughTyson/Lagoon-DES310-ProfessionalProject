@@ -70,6 +70,8 @@ public class GM_ : MonoBehaviour
         members.story_objective = new StoryObjectiveHandler();
         members.story_events = new StoryEventHandler();
         members.ui = uiManager;
+        members.ui.helperButtons.HideButtons();
+
         members.tween_curveLibrary_Hugh = HughCurveLibrary;
         members.tween_curveLibrary_Tomas = TomasCurveLibrary;
     }
@@ -80,7 +82,6 @@ public class GM_ : MonoBehaviour
     {
         members.story.Begin();
     }
-
 
     private void FixedUpdate()
     {
@@ -94,6 +95,7 @@ public class GM_ : MonoBehaviour
         members.ui.ManagerUpdate();
        // members.story.Update();
         members.pause.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
+
     }
 
     private void OnDestroy()

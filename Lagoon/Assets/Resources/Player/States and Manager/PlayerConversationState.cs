@@ -24,6 +24,7 @@ public class PlayerConversationState : BaseState
     private void Start()
     {
         test_drop = GetComponent<SupplyDrop>();
+        GM_.Instance.story.Event_ConvoExit += ExitConversation;
     }
 
     public void OnEnable()
@@ -31,11 +32,15 @@ public class PlayerConversationState : BaseState
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
         camera_.current_state = ThirdPersonCamera.STATE.FREE;
         state = ConversationState.CONVERSATION;
-
         GM_.Instance.ui.helperButtons.HideButtons();
     }
 
 
+    void ExitConversation()
+    {
+        StateManager.ChangeState(PlayerScriptManager.STATE.EXPLORING);
+        GM_.Instance.ui.helperButtons.ShowButtons();
+    }
 
     public void OnDisable()
     {

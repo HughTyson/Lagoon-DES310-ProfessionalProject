@@ -11,8 +11,8 @@ namespace SpecialText
         public bool errorFlag = false;
         public string errorMessage = "";
         public Token tokenOfError = null;
-        public object additionalInfo = null;
     }
+
 
     public static class DebuggingParse
     {
@@ -55,8 +55,24 @@ namespace SpecialText
 
     public class SpecialTextData
     {
-    
-        public List<TextPropertyData.Base> propertyDataList = new List<TextPropertyData.Base>();
+        public void AddPropertyToText(List<TextProperties.Base> properties, int start_index, int count)
+        {
+            propertyDataList.AddRange(properties);
+            for (int i = 0; i < properties.Count; i++)
+            {
+                properties[i].AddCharacterReference(specialTextCharacters.GetRange(start_index, start_index + (count - start_index)));
+            }
+        }
+      
+        public void CreateCharacterData(string text)
+        {
+            fullTextString = text;
+            for (int i = 0; i < text.Length; i++)
+                specialTextCharacters.Add(new SpecialTextCharacterData(i, text[i]));
+        }
+        public SpecialTextData() { }
+
+        public List<TextProperties.Base> propertyDataList = new List<TextProperties.Base>();
         public List<SpecialTextCharacterData> specialTextCharacters = new List<SpecialTextCharacterData>();
         public string fullTextString = "";
     }
@@ -67,51 +83,88 @@ namespace SpecialText
         private readonly static float def_rotation = 0;
         private readonly static Vector2 def_cetrePposition_offset = new Vector2(0, 0);
 
+
+        struct InitVals
+        {
+            public Vector2 Bottom_Left;
+            public Vector2 Top_Left;
+            public Vector2 Top_Right;
+            public Vector2 Bottom_Right;
+            public Vector2 Centre;
+            public Color32 Colour;
+        }
+        InitVals initVals;
         public SpecialTextCharacterData(int index_, char character_)
         {
             index = index_;
             character = character_;
         }
-        public void SetupDefVals(Vector2 TopLeft, Vector2 TopRight, Vector2 BottomLeft, Vector2 BottomRight)
+
+
+        public void SetupInitialVals(Vector2 Bottom_Left_, Vector2 Top_Left_, Vector2 Top_Right_, Vector2 Bottom_Right_, Color32 colour_)
         {
-            def_centrePos = (TopLeft + TopRight + BottomLeft + BottomRight) / 4.0f;
-            def_vertTL = TopLeft - def_centrePos;
-            def_vertTR = TopRight - def_centrePos;
-            def_vertBL = BottomLeft - def_centrePos;
-            def_vertBR = BottomRight - def_centrePos;
+            Vector2 centre = (Bottom_Left_ + Top_Left_ + Top_Right_ + Bottom_Right_) / 4.0f;
+            initVals = new InitVals {
+                Bottom_Left = Bottom_Left_ - centre,
+                Top_Left = Top_Left_ - centre,
+                Top_Right = Top_Right_ - centre,
+                Bottom_Right = Bottom_Right_ - centre,
+                Colour = colour_ , 
+                Centre = centre
+            };
+        }
+        public void SetupDefVals(Vector2 Bottom_Left, Vector2 Top_Left, Vector2 Top_Right, Vector2 Bottom_Right)
+        {
+            def_centrePos = (Bottom_Left + Top_Left + Top_Right + Bottom_Right) / 4.0f;
+            def_vert_BL = Bottom_Left - def_centrePos;
+            def_vert_TL = Top_Left - def_centrePos;
+            def_vert_TR = Top_Right - def_centrePos;
+            def_vert_BR = Bottom_Right - def_centrePos;
         }
 
         public readonly int index;
         public readonly char character;
 
-        public Vector2 centrePos;
+        public Vector2 centrePositionOffset;
+        public Vector2 positionOffset_BottomLeft;
         public Vector2 positionOffset_TopLeft;
         public Vector2 positionOffset_TopRight;
-        public Vector2 positionOffset_BottomLeft;
         public Vector2 positionOffset_BottomRight;
         public float rotationDegrees = def_rotation;
         public Color32 colour = def_colour;
         public Vector2 scaleMultiplier = def_scaleMultiplier;
-        public Vector2 centrePositionOffset = def_cetrePposition_offset;
+        public Vector2 centrePositionScaledOffset = def_cetrePposition_offset; // scaled offset based on the characters width and height.
 
         private Vector2 def_centrePos;
-        private Vector2 def_vertTL;
-        private Vector2 def_vertTR;
-        private Vector2 def_vertBL;
-        private Vector2 def_vertBR;
+        private Vector2 def_vert_BL;
+        private Vector2 def_vert_TL;
+        private Vector2 def_vert_TR;
+        private Vector2 def_vert_BR;
         public void Reset()
         {
             colour = def_colour;
             scaleMultiplier = def_scaleMultiplier;
-            centrePos = def_centrePos;
-            centrePositionOffset = def_cetrePposition_offset;
-            positionOffset_TopLeft = def_vertTL;
-            positionOffset_TopRight = def_vertTR;
-            positionOffset_BottomLeft = def_vertBL;
-            positionOffset_BottomRight = def_vertBR;
+            centrePositionOffset = def_centrePos;
+            centrePositionScaledOffset = def_cetrePposition_offset;
+            positionOffset_BottomLeft = def_vert_BL;
+            positionOffset_TopLeft = def_vert_TL;
+            positionOffset_TopRight = def_vert_TR;
+            positionOffset_BottomRight = def_vert_BR;
             rotationDegrees = def_rotation;
         }
 
+        public void ResetToInit()
+        {
+            colour = initVals.Colour;
+            scaleMultiplier = def_scaleMultiplier;
+            centrePositionOffset = initVals.Centre;
+            centrePositionScaledOffset = def_cetrePposition_offset;
+            positionOffset_BottomLeft = initVals.Bottom_Left;
+            positionOffset_TopLeft = initVals.Top_Left;
+            positionOffset_TopRight = initVals.Top_Right;
+            positionOffset_BottomRight = initVals.Bottom_Right;
+            rotationDegrees = def_rotation;
+        }
         public void ApplyToTMPChar(ref TMPro.TMP_MeshInfo meshInfo, int verticeIndex)
         {
             Color32[] vertexColors = meshInfo.colors32;
@@ -120,35 +173,34 @@ namespace SpecialText
             vertexColors[verticeIndex + 1] = colour;
             vertexColors[verticeIndex + 2] = colour;
             vertexColors[verticeIndex + 3] = colour;
-            
 
-            Vector2 topLeft = positionOffset_TopLeft * scaleMultiplier;
-            Vector2 topRight = positionOffset_TopRight * scaleMultiplier; 
-            Vector2 bottomLeft = positionOffset_BottomLeft * scaleMultiplier; 
-            Vector2 bottomRight = positionOffset_BottomRight * scaleMultiplier;
+            Vector2 bottom_Left = positionOffset_BottomLeft * scaleMultiplier;
+            Vector2 top_Left = positionOffset_TopLeft * scaleMultiplier; 
+            Vector2 top_Right = positionOffset_TopRight * scaleMultiplier; 
+            Vector2 bottom_Right = positionOffset_BottomRight * scaleMultiplier;
 
-            float height = Mathf.Abs(topLeft.y - bottomLeft.y);
-            float width = Mathf.Abs(topLeft.x - topRight.x);
-            Vector2 centreOffset = centrePositionOffset * new Vector2(width, height);
+            float height = Mathf.Abs(bottom_Left.y - top_Right.y);
+            float width = Mathf.Abs(bottom_Left.x - bottom_Right.x);
+            Vector2 centreOffset = centrePositionScaledOffset * new Vector2(width, height);
 
-            topLeft = Vector2Extension.Rotate(topLeft, rotationDegrees);
-            topRight = Vector2Extension.Rotate(topRight, rotationDegrees);
-            bottomLeft = Vector2Extension.Rotate(bottomLeft, rotationDegrees);
-            bottomRight = Vector2Extension.Rotate(bottomRight, rotationDegrees);
+            bottom_Left = Vector2Extension.Rotate(bottom_Left, rotationDegrees);
+            top_Left = Vector2Extension.Rotate(top_Left, rotationDegrees);
+            top_Right = Vector2Extension.Rotate(top_Right, rotationDegrees);
+            bottom_Right = Vector2Extension.Rotate(bottom_Right, rotationDegrees);
 
-            topLeft += centreOffset;
-            topRight += centreOffset;
-            bottomLeft += centreOffset;
-            bottomRight += centreOffset;
-            topLeft += centrePos;
-            topRight += centrePos;
-            bottomLeft += centrePos;
-            bottomRight += centrePos;
+            bottom_Left += centreOffset;
+            top_Left += centreOffset;
+            top_Right += centreOffset;
+            bottom_Right += centreOffset;
+            bottom_Left += centrePositionOffset;
+            top_Left += centrePositionOffset;
+            top_Right += centrePositionOffset;
+            bottom_Right += centrePositionOffset;
 
-            verices[verticeIndex + 0] = topLeft;
-            verices[verticeIndex + 1] = topRight;
-            verices[verticeIndex + 2] = bottomLeft;
-            verices[verticeIndex + 3] = bottomRight;
+            verices[verticeIndex + 0] = bottom_Left;
+            verices[verticeIndex + 1] = top_Left;
+            verices[verticeIndex + 2] = top_Right;
+            verices[verticeIndex + 3] = bottom_Right;
         }
     }
 

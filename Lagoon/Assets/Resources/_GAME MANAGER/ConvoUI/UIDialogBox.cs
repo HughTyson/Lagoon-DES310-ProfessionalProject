@@ -73,7 +73,8 @@ public class UIDialogBox : MonoBehaviour
     {
 
         ButtonA_Image.color = new Color(1, 1, 1, 0);
-        text.text = "";
+        specialText.Hide();
+
 
         transitioning = true;
         image.enabled = true;
