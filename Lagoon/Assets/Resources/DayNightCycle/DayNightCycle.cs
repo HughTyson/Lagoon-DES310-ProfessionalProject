@@ -17,22 +17,28 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] GameObject scene;
 
     [SerializeField] private ClampedFloatParameter override_atmosphere;
+
+
+    [SerializeField] float max_sleep_speed = 50;
+
+    bool sleep = false;
     
     ProceduralSky procedural_sky;
 
-    
-
-    [Range(0, 1)] [SerializeField] private float secondsInFullDay = 120f;
+    [Range(0, 120)] [SerializeField] public float secondsInFullDay = 120f;
     private float current_time;
     private float time_multiplyer = 1f;
 
     TweenManager.TweenPathBundle atmosphere_tween;
     TweenManager.TweenPathBundle sun_intensity_tween;
     TweenManager.TweenPathBundle moon_intensity_tween;
+    TweenManager.TweenPathBundle day_speed;
 
     TypeRef<float> atmosphere_alter_value = new TypeRef<float>(0);
     TypeRef<float> sun_intesity = new TypeRef<float>(0);
     TypeRef<float> moon_intesity = new TypeRef<float>(0);
+
+    bool change = true;
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +47,7 @@ public class DayNightCycle : MonoBehaviour
         Volume volume = scene.GetComponent<Volume>();
         ProceduralSky sky;
 
-        if(volume.profile.TryGet<ProceduralSky>(out sky))
+        if (volume.profile.TryGet<ProceduralSky>(out sky))
         {
             procedural_sky = sky;
         }
@@ -65,15 +71,22 @@ public class DayNightCycle : MonoBehaviour
 
         sun_intensity_tween = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(sun_intesity.value, 0, 1.5f, TweenManager.CURVE_PRESET.EASE_OUT)
+                new TweenManager.TweenPart_Start(sun_intesity.value, 0, 0.5f, TweenManager.CURVE_PRESET.EASE_OUT)
             )
         );
 
         moon_intensity_tween = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(moon_intesity.value, 0, 1.5f, TweenManager.CURVE_PRESET.EASE_OUT)
+                new TweenManager.TweenPart_Start(moon_intesity.value, 0, 0.5f, TweenManager.CURVE_PRESET.EASE_OUT)
             )
         );
+
+        day_speed = new TweenManager.TweenPathBundle(
+            new TweenManager.TweenPath(
+                        new TweenManager.TweenPart_Start(secondsInFullDay, max_sleep_speed/2, 5.0f, TweenManager.CURVE_PRESET.EASE_IN),
+                        new TweenManager.TweenPart_Continue(max_sleep_speed, 5.0f, TweenManager.CURVE_PRESET.LINEAR)
+                )
+            );
 
     }
 
@@ -96,7 +109,7 @@ public class DayNightCycle : MonoBehaviour
 
         ResetRotations();
 
-        Debug.Log(transform.rotation.eulerAngles.z);
+        Debug.Log(moon.intensity);
 
     }
 
@@ -115,27 +128,42 @@ public class DayNightCycle : MonoBehaviour
 
     void CorrectTime()
     {
-        switch (active)
+
+        Debug.Log(transform.rotation.eulerAngles.z);
+
+        if(change)
         {
-            case ACTIVE.SUN:
-                {
-                    if (transform.rotation.eulerAngles.z < 1 || transform.rotation.eulerAngles.z > 181)
+            switch (active)
+            {
+                case ACTIVE.SUN:
                     {
-                        ChangeLight(ACTIVE.MOON);
+                        if (transform.rotation.eulerAngles.z > 180)
+                        {
+                            ChangeLight(ACTIVE.MOON);
+                            change = false;
+                        }
                     }
-                }
-                break;
-            case ACTIVE.MOON:
-                {
-                    if (transform.rotation.eulerAngles.z > 1 && transform.rotation.eulerAngles.z < 181)
+                    break;
+                case ACTIVE.MOON:
                     {
-                        ChangeLight(ACTIVE.SUN);
+                        if (transform.rotation.eulerAngles.z > -180)
+                        {
+                            ChangeLight(ACTIVE.SUN);
+                            change = false; 
+                        }
                     }
-                }
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
         }
+
+        if(transform.rotation.eulerAngles.z < 10)
+        {
+            change = true;
+        }
+
+
     }
 
     void ChangeLight(ACTIVE new_light)
@@ -146,18 +174,9 @@ public class DayNightCycle : MonoBehaviour
             case ACTIVE.SUN:
                 {
                     //method one
-
-                    
-                    sun.enabled = true;
+ 
                     active = ACTIVE.SUN;
                     AtmosphereChange(false);
-
-                    GM_.Instance.tween_manager.StartTweenInstance(
-                        sun_intensity_tween,
-                        new TypeRef<float>[] { sun_intesity },
-                        tweenUpdatedDelegate_: SunIntensity,
-                        startingDirection_: TweenManager.DIRECTION.END_TO_START
-                    );
 
                     GM_.Instance.tween_manager.StartTweenInstance(
                         moon_intensity_tween,
@@ -171,26 +190,16 @@ public class DayNightCycle : MonoBehaviour
             case ACTIVE.MOON:
                 {
                     
-                    moon.enabled = true;
+                    
                     active = ACTIVE.MOON;
                     AtmosphereChange(true);
 
                     GM_.Instance.tween_manager.StartTweenInstance(
                         sun_intensity_tween,
                         new TypeRef<float>[] { sun_intesity },
-                        tweenUpdatedDelegate_: SunIntensity
-                        
+                        tweenUpdatedDelegate_: SunIntensity,
+                        tweenCompleteDelegate_: SunDisabled
                     );
-
-                    GM_.Instance.tween_manager.StartTweenInstance(
-                        moon_intensity_tween,
-                        new TypeRef<float>[] { moon_intesity },
-                        tweenUpdatedDelegate_: MoonIntensity,
-                        tweenCompleteDelegate_: SunDisabled,
-                        startingDirection_: TweenManager.DIRECTION.END_TO_START
-                    );
-
-                    
 
                 }
                 break;
@@ -245,14 +254,32 @@ public class DayNightCycle : MonoBehaviour
     void SunDisabled()
     {
         sun.enabled = false;
+
+        moon.enabled = true;
+
+        GM_.Instance.tween_manager.StartTweenInstance(
+            moon_intensity_tween,
+            new TypeRef<float>[] { moon_intesity },
+            tweenUpdatedDelegate_: MoonIntensity,
+            startingDirection_: TweenManager.DIRECTION.END_TO_START
+        );
+
+
     }
 
     void MoonDisabled()
     {
         moon.enabled = false;
+
+        sun.enabled = true;
+
+        GM_.Instance.tween_manager.StartTweenInstance(
+            sun_intensity_tween,
+            new TypeRef<float>[] { sun_intesity },
+            tweenUpdatedDelegate_: SunIntensity,
+            startingDirection_: TweenManager.DIRECTION.END_TO_START
+        );
     }
-
-
     
 
     
