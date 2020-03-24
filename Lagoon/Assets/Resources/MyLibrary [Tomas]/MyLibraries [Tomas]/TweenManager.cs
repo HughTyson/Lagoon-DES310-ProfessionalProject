@@ -97,30 +97,53 @@ public class TweenManager
     /// Create a self-dependant tween
     /// </summary>
     /// <returns>Returns an optional commander delgate. Allows the stopping of a tween by force</returns>
-    public System.Action<STOP_COMMAND> StartTweenInstance(TweenPathBundle pathBundle_, TypeRef<float>[] valueRefs_,  System.Action tweenUpdatedDelegate_ = null, System.Action tweenCompleteDelegate_ = null, PATH path_ = PATH.NORMAL, DIRECTION startingDirection_ = DIRECTION.START_TO_END, TIME_FORMAT TimeFormat_ = TIME_FORMAT.DELTA, float speed_ = 1)
+    public TweenInstanceInterface StartTweenInstance(TweenPathBundle pathBundle_, TypeRef<float>[] valueRefs_,  System.Action tweenUpdatedDelegate_ = null, System.Action tweenCompleteDelegate_ = null, PATH path_ = PATH.NORMAL, DIRECTION startingDirection_ = DIRECTION.START_TO_END, TIME_FORMAT TimeFormat_ = TIME_FORMAT.DELTA, float speed_ = 1)
     {
         TweenInstance instance = new TweenInstance(pathBundle_, tweenUpdatedDelegate_, tweenCompleteDelegate_, path_, startingDirection_, TimeFormat_, speed_, valueRefs_);
         currentTweens.Add(instance);
         instance.Update();
-        return instance.Command;
+        return new TweenInstanceInterface(instance);
+    }
+
+ 
+    private class InstanceHolder
+    {
+        public TweenInstance instance;
+    }
+
+    public class TweenInstanceInterface
+    {
+        public TweenInstanceInterface(TweenInstance instance_)
+        {
+            instance = instance_;
+        }
+        public bool Exists { get { return (instance != null); } }
+           
+        public void StopTween(STOP_COMMAND cmd)
+        {
+            instance?.Command(cmd);
+
+        }
+
+
+        TweenInstance instance;
     }
 
 
-    class TweenInstance
+    public class TweenInstance
     {
-        TypeRef<float>[] valueRefs;
+        public TypeRef<float>[] valueRefs;
         public readonly System.Action actionTweenComplete;
         public readonly System.Action actionTweenUpdated;
-        TIME_FORMAT timeFormat;
-        TweenPathBundle pathBundle;
-        float current_time;
-        float duration;
-        float speed;
-        DIRECTION direction;
-        PATH tween_path;
-        bool isStopping = false;
-        STOP_COMMAND stop_command;
-
+        public TIME_FORMAT timeFormat;
+        public TweenPathBundle pathBundle;
+        public float current_time;
+        public float duration;
+        public float speed;
+        public DIRECTION direction;
+        public PATH tween_path;
+        public bool isStopping = false;
+        public STOP_COMMAND stop_command;
 
        
 

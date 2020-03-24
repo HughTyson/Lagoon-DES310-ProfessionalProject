@@ -133,6 +133,10 @@ namespace SpecialText
             for (int i = 0; i < UnactiveProperties.Count; i++)
                 lowestHoldBackIndex = Mathf.Min(lowestHoldBackIndex, UnactiveProperties[i].HoldingBackIndex);
 
+
+            for (int i = 0; i < EndlessUpdateProperties.Count; i++)
+                EndlessUpdateProperties[i].EndlessUpdate();
+
             TransitioningProperties.RemoveAll( y =>
             {
                 if (y.TransitionUpdate(lowestHoldBackIndex))
@@ -146,8 +150,6 @@ namespace SpecialText
             );
             iterator = lowestHoldBackIndex;
 
-            for (int i = 0; i < EndlessUpdateProperties.Count; i++)
-                EndlessUpdateProperties[i].EndlessUpdate();
 
 
             TMPro.TMP_TextInfo info = tmp.textInfo;

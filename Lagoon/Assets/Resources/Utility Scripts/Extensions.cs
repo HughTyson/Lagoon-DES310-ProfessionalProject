@@ -51,6 +51,21 @@ public static class ListExtension
             if (list[i] == null)
                 list.Remove(list[i]);
         }
+
+      
     }
 
+}
+
+
+public static  class ColourExtension
+{ 
+    public static Color32 ColourtoColour32(Color color)
+    {
+        return new Color32((byte)(255 * color.r), (byte)(255 * color.g), (byte)(255 * color.b), (byte)(255 * color.a));
+    }
+    public static Color Colour32toColour(Color32 color)
+    {
+        return new Color(((float)color.r)/255.0f, ((float)color.g) / 255.0f, ((float)color.b) / 255.0f, ((float)color.a) / 255.0f);
+    }
 }

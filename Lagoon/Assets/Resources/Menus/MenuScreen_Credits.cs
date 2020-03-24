@@ -9,6 +9,9 @@ public class MenuScreen_Credits : MenuScreenBase
 
 
     [SerializeField] MenuScreenBase mainMenu;
+    [SerializeField] MenuScreen_ExtraCredits extraCreditsMenu;
+
+    [SerializeField] SpecialText.SpecialText SpecialText_CreditsTitle;
 
     [SerializeField] SpecialText.SpecialText SpecialText_progammerTitle;
     [SerializeField] SpecialText.SpecialText SpecialText_progammerNames;
@@ -20,6 +23,8 @@ public class MenuScreen_Credits : MenuScreenBase
     // Start is called before the first frame update
 
 
+    SpecialText.SpecialTextData TextData_CreditsTitle = new SpecialText.SpecialTextData();
+
     SpecialText.SpecialTextData TextData_programmerNames = new SpecialText.SpecialTextData();
     SpecialText.SpecialTextData TextData_artistNames = new SpecialText.SpecialTextData();
     SpecialText.SpecialTextData TextData_designerNames = new SpecialText.SpecialTextData();
@@ -27,98 +32,216 @@ public class MenuScreen_Credits : MenuScreenBase
     SpecialText.SpecialTextData TextData_artistTitle = new SpecialText.SpecialTextData();
     SpecialText.SpecialTextData TextData_designerTitle = new SpecialText.SpecialTextData();
 
-    void Start()
+
+    private void Start()
     {
-        TextData_programmerNames.CreateCharacterData(SpecialText_progammerTitle.GetComponent<TMPro.TextMeshProUGUI>().text);
+        TextData_CreditsTitle.CreateCharacterData(SpecialText_CreditsTitle.GetComponent<TMPro.TextMeshProUGUI>().text);
+
+        TextData_programmerNames.CreateCharacterData(SpecialText_progammerNames.GetComponent<TMPro.TextMeshProUGUI>().text);
         TextData_artistNames.CreateCharacterData(SpecialText_artistNames.GetComponent<TMPro.TextMeshProUGUI>().text);
         TextData_designerNames.CreateCharacterData(SpecialText_designerNames.GetComponent<TMPro.TextMeshProUGUI>().text);
         TextData_programmerTitle.CreateCharacterData(SpecialText_progammerTitle.GetComponent<TMPro.TextMeshProUGUI>().text);
         TextData_artistTitle.CreateCharacterData(SpecialText_artistTitle.GetComponent<TMPro.TextMeshProUGUI>().text);
         TextData_designerTitle.CreateCharacterData(SpecialText_designerTitle.GetComponent<TMPro.TextMeshProUGUI>().text);
 
+        Color32 default_colour_CreditsTitle = ColourExtension.ColourtoColour32(SpecialText_CreditsTitle.GetComponent<TMPro.TextMeshProUGUI>().color);
+
+        Color32 default_colour_programmerNames = ColourExtension.ColourtoColour32(SpecialText_progammerNames.GetComponent<TMPro.TextMeshProUGUI>().color);
+        Color32 default_colour_programmerTitle = ColourExtension.ColourtoColour32(SpecialText_progammerTitle.GetComponent<TMPro.TextMeshProUGUI>().color);
+        Color32 default_colour_artistNames = ColourExtension.ColourtoColour32(SpecialText_artistNames.GetComponent<TMPro.TextMeshProUGUI>().color);
+        Color32 default_colour_artistTitle = ColourExtension.ColourtoColour32(SpecialText_artistTitle.GetComponent<TMPro.TextMeshProUGUI>().color);
+        Color32 default_colour_designNames = ColourExtension.ColourtoColour32(SpecialText_designerNames.GetComponent<TMPro.TextMeshProUGUI>().color);
+        Color32 default_colour_designTitle = ColourExtension.ColourtoColour32(SpecialText_designerTitle.GetComponent<TMPro.TextMeshProUGUI>().color);
+
+
+        TextData_CreditsTitle.AddPropertyToText(
+        new List<SpecialText.TextProperties.Base> {
+                    new SpecialText.TextProperties.AppearAtOnce(),
+                    new SpecialText.TextProperties.Colour(default_colour_CreditsTitle.r,default_colour_CreditsTitle.g,default_colour_CreditsTitle.b)
+        },
+        0,
+        TextData_CreditsTitle.fullTextString.Length
+        );
+
+
         TextData_programmerTitle.AddPropertyToText(
-            new List<SpecialText.TextProperties.Base> { 
-                new SpecialText.TextProperties.AppearAtOnce()
+            new List<SpecialText.TextProperties.Base> {
+                new SpecialText.TextProperties.AppearAtOnce(),
+                new SpecialText.TextProperties.Colour(default_colour_programmerTitle.r,default_colour_programmerTitle.g,default_colour_programmerTitle.b)
             },
             0,
             TextData_programmerTitle.fullTextString.Length
         );
-
+        TextData_programmerTitle.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.4f, -1));
 
         TextData_artistTitle.AddPropertyToText(
         new List<SpecialText.TextProperties.Base> {
-                    new SpecialText.TextProperties.AppearAtOnce()
+                    new SpecialText.TextProperties.AppearAtOnce(),
+                    new SpecialText.TextProperties.Colour(default_colour_artistTitle.r,default_colour_artistTitle.g,default_colour_artistTitle.b)
         },
         0,
         TextData_artistTitle.fullTextString.Length
         );
-        TextData_artistTitle.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.5f, -1));
+        TextData_artistTitle.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.2f, -1));
 
         TextData_designerTitle.AddPropertyToText(
         new List<SpecialText.TextProperties.Base> {
-                    new SpecialText.TextProperties.AppearAtOnce()
+                    new SpecialText.TextProperties.AppearAtOnce(),
+                    new SpecialText.TextProperties.Colour(default_colour_designTitle.r,default_colour_designTitle.g,default_colour_designTitle.b)
         },
         0,
         TextData_designerTitle.fullTextString.Length
         );
-        TextData_designerTitle.propertyDataList.Add(new SpecialText.TextProperties.Delay(1.0f, -1));
+        TextData_designerTitle.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.4f, -1));
 
 
-        //specialTextData.FillTextWithProperties(
-        //    new List<SpecialText.TextPropertyData.Base>()
-        //    {
-        //    new SpecialText.TextPropertyData.Colour(255,0,0),
-        //    new SpecialText.TextPropertyData.StaticAppear(),
-        //    new SpecialText.TextPropertyData.WaveScaled(1,2,5)
-        //    },
-        //    0,
-        //    TMProText.text.Length
-        //    );
+        TextData_programmerNames.AddPropertyToText(
+        new List<SpecialText.TextProperties.Base> {
+                    new SpecialText.TextProperties.AppearAtOnce(),
+                    new SpecialText.TextProperties.Colour(default_colour_programmerNames.r,default_colour_programmerNames.g,default_colour_programmerNames.b)
+        },
+        0,
+        TextData_programmerNames.fullTextString.Length
+        );
+        TextData_programmerNames.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.4f, -1));
 
+        TextData_artistNames.AddPropertyToText(
+        new List<SpecialText.TextProperties.Base> {
+                    new SpecialText.TextProperties.AppearAtOnce(),
+                    new SpecialText.TextProperties.Colour(default_colour_artistNames.r,default_colour_artistNames.g,default_colour_artistNames.b)
+        },
+        0,
+        TextData_artistNames.fullTextString.Length
+        );
+        TextData_artistNames.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.2f, -1));
+
+
+        TextData_designerNames.AddPropertyToText(
+        new List<SpecialText.TextProperties.Base> {
+                    new SpecialText.TextProperties.AppearAtOnce(),
+                    new SpecialText.TextProperties.Colour(default_colour_designNames.r,default_colour_designNames.g,default_colour_designNames.b)
+        },
+        0,
+        TextData_designerNames.fullTextString.Length
+        );
+        TextData_designerNames.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.4f, -1));
+
+
+        nextPrevButton.Event_CancelledWhileHovering += start_transitionToMainMenu;
+        nextPrevButton.Event_Selected += start_transitionToExtraCredits;
+
+
+        nextPrevButton.InstantHide();
 
         gameObject.SetActive(false);
-        nextPrevButton.Event_CancelledWhileHovering += start_transitionToMainMenu;
-        SetupDefaults();
-        nextPrevButton.Hide();
-
-
     }
-
 
     public override void EnteredMenu()
     {
+        SetupDefaults();
         gameObject.SetActive(true);
+
+        SpecialText_CreditsTitle.Begin(TextData_CreditsTitle);
+
         SpecialText_progammerTitle.Begin(TextData_programmerTitle);
-        SpecialText_artistTitle.Begin(TextData_artistNames);
+        SpecialText_artistTitle.Begin(TextData_artistTitle);
         SpecialText_designerTitle.Begin(TextData_designerTitle);
+
+        SpecialText_progammerNames.Begin(TextData_programmerNames);
+        SpecialText_artistNames.Begin(TextData_artistNames);
+        SpecialText_designerNames.Begin(TextData_designerNames, textCompleted_: entered_showButton);
+
+    }
+
+    void start_transitionToExtraCredits()
+    {
+        nextPrevButton.Hide();
+
+        HideText();
+
+        GM_.Instance.tween_manager.StartTweenInstance(
+            MenuTransitions.transition_CreditToExtraCredits,
+            transitionOutputs,
+            tweenUpdatedDelegate_: transitionUpdate,
+            tweenCompleteDelegate_: end_transitionToExtraCredits,
+            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
+            );
+    }
+
+    void end_transitionToExtraCredits()
+    {
+        extraCreditsMenu.EnteredMenu();
+    }
+
+    public void entered_showButton()
+    {
+        nextPrevButton.Event_FinishedShow += entered_showButtonComplete;
+        nextPrevButton.Show();
+    }
+    public void entered_showButtonComplete()
+    {
+        nextPrevButton.Event_FinishedShow -= entered_showButtonComplete;
+        nextPrevButton.HoveredOver();
     }
 
 
-    void enteringTransitionUpdate()
+    void HideText()
     {
+        SpecialText_CreditsTitle.End();
+        SpecialText_progammerTitle.End();
+        SpecialText_progammerNames.End();
+        SpecialText_artistNames.End();
+        SpecialText_artistTitle.End();
+        SpecialText_designerTitle.End();
+        SpecialText_designerNames.End();
 
+        GM_.Instance.tween_manager.StartTweenInstance(
+            SelectableButton.hideTween,
+            new TypeRef<float>[] { textAlpha },
+            tweenUpdatedDelegate_: textHideUpdate,
+            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
+            );
+    }
+    TypeRef<float> textAlpha = new TypeRef<float>();
+
+    void textHideUpdate()
+    {
+        Color new_colour = new Color(textAlpha.value, textAlpha.value, textAlpha.value, textAlpha.value);
+        SpecialText_CreditsTitle.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
+        SpecialText_progammerNames.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
+        SpecialText_artistNames.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
+        SpecialText_designerNames.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
+        SpecialText_progammerTitle.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
+        SpecialText_artistTitle.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
+        SpecialText_designerTitle.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
     }
 
     void start_transitionToMainMenu()
     {
+        nextPrevButton.Hide();
+
+        HideText();
+
         GM_.Instance.tween_manager.StartTweenInstance(
-            MenuTransitions.transition_MainMenuToCredits,
+            MenuTransitions.transition_CreditsToMenu,
             transitionOutputs,
             tweenUpdatedDelegate_: transitionUpdate,
             tweenCompleteDelegate_: end_transitionToMainMenu,
-            startingDirection_: TweenManager.DIRECTION.END_TO_START,
-            TimeFormat_: TweenManager.TIME_FORMAT.FIXED_DELTA
+            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
             );
     }
     void end_transitionToMainMenu()
     {
-
+        gameObject.SetActive(false);
+        mainMenu.EnteredMenu();
     }
 
 
 
+    void transition_hideTextUpdate()
+    {
 
-
+    }
     void transitionUpdate()
     {
       //  Color new_colour = new Color(1, 1, 1, refButtonAlpha.value);

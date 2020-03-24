@@ -19,14 +19,19 @@ public class MenuScreen_MainMenu : MenuScreenBase
     // Start is called before the first frame update
 
 
-    void Start()
+    void Awake()
     {
         startButton.Event_Selected += start_transitionToGame;
         optionsButton.Event_Selected += start_transitionToOptions;
         creditsButton.Event_Selected += start_transitionToCredits;
         exitButton.Event_Selected += start_transitionToExit;
-        SetupDefaults();
+        startButton.Event_FinishedShow += show_finshed;
 
+        gameObject.SetActive(true);
+    }
+    private void Start()
+    {
+        SetupDefaults();
         startButton.HoveredOver();
     }
 
@@ -41,6 +46,15 @@ public class MenuScreen_MainMenu : MenuScreenBase
     public override void EnteredMenu()
     {
         gameObject.SetActive(true);
+        startButton.Show();
+        optionsButton.Show();
+        creditsButton.Show();
+        exitButton.Show();
+
+    }
+    void show_finshed()
+    {
+        startButton.HoveredOver();
     }
 
 
