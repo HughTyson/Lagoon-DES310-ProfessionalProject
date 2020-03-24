@@ -11,9 +11,7 @@ namespace SpecialText
 
         SpecialTexManager specialTextManager = new SpecialTexManager();
         // Start is called before the first frame update
-        void Start()
-        {
-        }
+        
         bool isOn = false;
         System.Action TextCompleted;
         public void Begin(SpecialTextData specialTextData_, System.Action textCompleted_ = null)
@@ -24,6 +22,7 @@ namespace SpecialText
             specialTextManager.Begin(specialTextData_, text);
             TextCompleted = textCompleted_;
             isOn = true;
+            Update();
         }
         public bool AreAllCompleted()
         {

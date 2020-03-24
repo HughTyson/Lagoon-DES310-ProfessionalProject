@@ -13,7 +13,7 @@ public class SelectableButton : MenuSelectableBase
 
     SpecialText.SpecialTextData specialTextData = new SpecialText.SpecialTextData();
 
-    TypeRef<float> refScale = new TypeRef<float>();
+    TypeRef<float> refScale = new TypeRef<float>(1);
     TypeRef<float> refColour = new TypeRef<float>();
 
     static readonly TweenManager.TweenPathBundle selectedTween = new TweenManager.TweenPathBundle(
@@ -29,7 +29,7 @@ public class SelectableButton : MenuSelectableBase
             )
         );
 
-    static readonly TweenManager.TweenPathBundle showTween = new TweenManager.TweenPathBundle(
+    public static readonly TweenManager.TweenPathBundle showTween = new TweenManager.TweenPathBundle(
     new TweenManager.TweenPath(
         new TweenManager.TweenPart_Start(0, 1, 0.3f, TweenManager.CURVE_PRESET.LINEAR)
         )
@@ -99,7 +99,7 @@ public class SelectableButton : MenuSelectableBase
     void SelectedUpdate()
     {
         rectTransform.localScale = new Vector3(refScale.value, refScale.value, 1);
-        TMProText.color = new Color(refColour.value, refColour.value, refColour.value );
+        TMProText.color = new Color(refColour.value, refColour.value, refColour.value, refColour.value);
     }
     void EndSelected()
     {
@@ -121,23 +121,36 @@ public class SelectableButton : MenuSelectableBase
     }
     public override void Hide()
     {
+        state = STATE.HIDDEN;
         GM_.Instance.tween_manager.StartTweenInstance(hideTween,
             new TypeRef<float>[] { refColour },
             tweenUpdatedDelegate_: SelectedUpdate,
-            tweenCompleteDelegate_: InstantHide,
+            tweenCompleteDelegate_: finishedHide,
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA);
     }
-
+    void finishedHide()
+    {
+        state = STATE.HIDDEN;
+        TMProText.color = new Color(default_colour.r, default_colour.g, default_colour.b, 0);
+        gameObject.SetActive(false);
+        Invoke_FinishedHide();
+    }
     public override void Show()
     {
+        state = STATE.HIDDEN;
         gameObject.SetActive(true);
         GM_.Instance.tween_manager.StartTweenInstance(showTween,
              new TypeRef<float>[] { refColour },
              tweenUpdatedDelegate_: SelectedUpdate,
-             tweenCompleteDelegate_: InstantShow,
+             tweenCompleteDelegate_: finishedShow,
              TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA);
     }
-
+    void finishedShow()
+    {
+        state = STATE.NONE;
+        TMProText.color = default_colour;
+        Invoke_FinishedShow();
+    }
     public override void HoveredOver()
     {
         state = STATE.HOVERING;
@@ -157,7 +170,6 @@ public class SelectableButton : MenuSelectableBase
         }
         else if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.B))
         {
-            state = STATE.NONE;
             Invoke_CancelledWhileHovering();
             return;
         }

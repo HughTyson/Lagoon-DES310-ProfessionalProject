@@ -87,6 +87,7 @@ namespace SpecialText
                 "AppearAtOnce",
                 typeof(AppearAtOnce),
                 soft_incompatibles_: new Type[] {typeof(CharSpeed) },
+                functionName_: "AppearAtOnce",
                 description_: "Shows the text at the same.",
                 parameters_: "None",
                 example_: "[AppearAtOnce] text [/AppearAtOnce]"
@@ -95,9 +96,25 @@ namespace SpecialText
                 "StaticAppear",
                 typeof(StaticAppear),
                 soft_incompatibles_: new Type[] { typeof(CharSpeed), typeof(AppearAtOnce) },
+                functionName_: "StaticAppear",
                 description_: "Shows the text at the same time, without any transition",
                 parameters_: "None",
                 example_: "[StaticAppear] text [/StaticAppear]"
+                ),
+            new PropertyInfo(
+               "Rotate",
+               typeof(Rotate),
+                functionName_: "Rotate(A)",
+                description_: "Set a rotation for the characters in degress",
+                parameters_: "A: signed angle in degrees of rotation",
+                example_: "[Rotate(-45)] text [/Rotate]"
+                ),
+            new PropertyInfo(
+                "RotateFromTo",
+                typeof(RotateFromTo),
+                functionName_: "RotateFromTo(F,T,D,TP)",
+                description_: "Rotate from an angle to an angle, with a duration and a tween type",
+                parameters_: "F : from angle in degress, T : to angle in degress, D: duration in sections, TP: Type of tween. this can be either; L, EI, EO, EIO or NEIO. These stand for; Linear, Ease-In, Ease-Out, Ease-In-Out and Non-Ease-In-Out"
                 )
         };
         public static readonly PropertyInfo[] noExitPropertyInfo = new PropertyInfo[]

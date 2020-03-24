@@ -26,6 +26,14 @@ abstract public class MenuSelectableBase : MonoBehaviour
     {
         Event_CancelledWhileHovering?.Invoke();
     }
+    protected void Invoke_FinishedHide()
+    {
+        Event_FinishedHide?.Invoke();
+    }
+    protected void Invoke_FinishedShow()
+    {
+        Event_FinishedShow?.Invoke();
+    }
     public virtual void HoveredOver() 
     { 
     
