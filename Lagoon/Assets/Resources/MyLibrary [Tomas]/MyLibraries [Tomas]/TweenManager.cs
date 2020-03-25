@@ -53,7 +53,11 @@ public class TweenManager
         /// <summary> Transition from current values to the final values of the tweening direction, then (unless at end point), transition to end point</summary>
         SEEMLESS_TO_END,
         /// <summary> Transition from current values to the final values of the tweening direction, then (unless at start point), transition to start point</summary>
-        SEEMLESS_TO_START
+        SEEMLESS_TO_START,
+        /// <summary> Set current values to end values</summary>
+        IMMEDIATE_TO_END,
+        /// <summary> Set current values to start values</summary>
+        IMMEDIATE_TO_START
     };
 
     ///<summary>
@@ -84,24 +88,36 @@ public class TweenManager
         int count = currentTweens.Count;
         for (int i = count - 1; i >= 0; i--)
         {
-            if (currentTweens[i].Update())
+            if (currentTweens[i].flagComplete)
             {
-                currentTweens[i].actionTweenComplete?.Invoke();
                 currentTweens.RemoveAt(i);
             }
+            else
+            {
+                if (currentTweens[i].Update())
+                {
+                    currentTweens[i].flagComplete = true;
+                    currentTweens[i].actionTweenComplete?.Invoke();
+                    currentTweens.RemoveAt(i);
+                }
+            }
+
         }
     }
 
 
+    int generatedTweenID = 0;
     /// <summary>
     /// Create a self-dependant tween
     /// </summary>
     /// <returns>Returns an optional commander delgate. Allows the stopping of a tween by force</returns>
-    public TweenInstanceInterface StartTweenInstance(TweenPathBundle pathBundle_, TypeRef<float>[] valueRefs_,  System.Action tweenUpdatedDelegate_ = null, System.Action tweenCompleteDelegate_ = null, PATH path_ = PATH.NORMAL, DIRECTION startingDirection_ = DIRECTION.START_TO_END, TIME_FORMAT TimeFormat_ = TIME_FORMAT.DELTA, float speed_ = 1)
+    public TweenInstanceInterface StartTweenInstance(TweenPathBundle pathBundle_, TypeRef<float>[] valueRefs_,  System.Action tweenUpdatedDelegate_ = null, System.Action tweenCompleteDelegate_ = null, PATH path_ = PATH.NORMAL, DIRECTION startingDirection_ = DIRECTION.START_TO_END, TIME_FORMAT TimeFormat_ = TIME_FORMAT.DELTA, float speed_ = 1, object instanceID = null, float startingPercentageOfCompletion = 0.0f)
     {
-        TweenInstance instance = new TweenInstance(pathBundle_, tweenUpdatedDelegate_, tweenCompleteDelegate_, path_, startingDirection_, TimeFormat_, speed_, valueRefs_);
+        TweenInstance instance = new TweenInstance(pathBundle_, tweenUpdatedDelegate_, tweenCompleteDelegate_, path_, startingDirection_, TimeFormat_, speed_, instanceID, generatedTweenID, startingPercentageOfCompletion, valueRefs_);
         currentTweens.Add(instance);
         instance.Update();
+
+        generatedTweenID++;
         return new TweenInstanceInterface(instance);
     }
 
@@ -117,12 +133,106 @@ public class TweenManager
         {
             instance = instance_;
         }
-        public bool Exists { get { return (instance != null); } }
-           
+        public bool Exists
+        {
+            get
+            {
+                if (instance != null)
+                    return !instance.flagComplete;
+                return false;
+            }
+        }
+        public int GeneratedID
+        {
+            get { 
+                if (!Exists)
+                {
+                    Debug.LogException(new System.NullReferenceException());
+                }
+                return instance.generatedTweenID; 
+            }
+        }
+        public object AppliedID
+        {
+            get {
+                if (!Exists)
+                {
+                    Debug.LogException(new System.NullReferenceException());
+                }
+                return instance.tweenID; 
+            }
+        }
+
+
+        /// <summary>
+        /// 0 = 0%
+        /// 1 = 100%
+        /// </summary>
+        public float PercentageOfCompletion
+        {
+            get
+            {
+                float output = instance.current_time / instance.duration; 
+                if (instance.direction == DIRECTION.END_TO_START)
+                {
+                    output = 1.0f - output;
+                }
+                return Mathf.Clamp01(output);
+            }
+        }
+
+        public TweenPathBundle TweenBundle
+        {
+            get
+            {
+                if (!Exists)
+                {
+                    Debug.LogException(new System.NullReferenceException());
+                }
+                return instance.pathBundle;
+            }
+        }
+
         public void StopTween(STOP_COMMAND cmd)
         {
+            if (!Exists)
+            {
+                Debug.LogException(new System.NullReferenceException());
+            }
             instance?.Command(cmd);
+        }
 
+        public void ChangeSpeed(float new_speed)
+        {
+            if (!Exists)
+            {
+                Debug.LogException(new System.NullReferenceException());
+            }
+            instance.speed = new_speed;
+        }
+        public void ChangeTimeFormat(TIME_FORMAT new_time_format)
+        {
+            if (!Exists)
+            {
+                Debug.LogException(new System.NullReferenceException());
+            }
+            instance.timeFormat = new_time_format;
+        }
+        public void ChangeCompleteDelegate(System.Action new_complete_delegate)
+        {
+            if (!Exists)
+            {
+                Debug.LogException(new System.NullReferenceException());
+            }
+            instance.actionTweenComplete = new_complete_delegate;
+        }
+        public void ChangeUpdateDelegate(System.Action new_update_delegate)
+        {
+            if (!Exists)
+            {
+                Debug.LogException(new System.NullReferenceException());
+            }
+            instance.actionTweenUpdated = new_update_delegate;
         }
 
 
@@ -133,8 +243,8 @@ public class TweenManager
     public class TweenInstance
     {
         public TypeRef<float>[] valueRefs;
-        public readonly System.Action actionTweenComplete;
-        public readonly System.Action actionTweenUpdated;
+        public System.Action actionTweenComplete;
+        public System.Action actionTweenUpdated;
         public TIME_FORMAT timeFormat;
         public TweenPathBundle pathBundle;
         public float current_time;
@@ -144,12 +254,16 @@ public class TweenManager
         public PATH tween_path;
         public bool isStopping = false;
         public STOP_COMMAND stop_command;
+        public readonly int generatedTweenID;
+        public readonly object tweenID;
 
-       
+        public bool flagComplete = false;
 
-
-        public TweenInstance(TweenPathBundle pathBundle_,System.Action actionTweenUpdated_, System.Action actionTweenComplete_, PATH tween_path_, DIRECTION starting_direction = DIRECTION.START_TO_END, TIME_FORMAT time_format_ = TIME_FORMAT.DELTA, float speed_ = 1, params TypeRef<float>[] valueRefs_)
+        public TweenInstance(TweenPathBundle pathBundle_,System.Action actionTweenUpdated_, System.Action actionTweenComplete_, PATH tween_path_, DIRECTION starting_direction, TIME_FORMAT time_format_, float speed_, object tweenID_, int generatedTweenID_, float startingPercentageOfCompletion_, params TypeRef<float>[] valueRefs_)
         {
+            tweenID = tweenID_;
+            generatedTweenID = generatedTweenID_;
+
             actionTweenComplete = actionTweenComplete_;
             actionTweenUpdated = actionTweenUpdated_;
 
@@ -159,9 +273,10 @@ public class TweenManager
 
             direction = starting_direction;
             if (direction == DIRECTION.START_TO_END)
-                current_time = 0;
+                current_time = 0 + (Mathf.Clamp01(startingPercentageOfCompletion_) * duration);
             else if (direction == DIRECTION.END_TO_START)
-                current_time = duration;
+                current_time = duration - (Mathf.Clamp01(startingPercentageOfCompletion_) * duration);
+
 
             tween_path = tween_path_;
             speed = speed_;
@@ -188,11 +303,6 @@ public class TweenManager
             {
                 switch(stop_command)
                 {
-                    case STOP_COMMAND.IMMEDIATE:
-                        {
-
-                            return true;
-                        }
                     case STOP_COMMAND.INVERSE_SEEMLESS:
                         {
                             switch (direction)
@@ -342,6 +452,26 @@ public class TweenManager
 
             switch (stop_command)
             {
+                case STOP_COMMAND.IMMEDIATE:
+                    {
+                        flagComplete = true;
+                        actionTweenComplete?.Invoke();
+                        break;
+                    }
+                case STOP_COMMAND.IMMEDIATE_TO_END:
+                    {
+                        pathBundle.GetValues(duration, valueRefs);
+                        flagComplete = true;
+                        actionTweenComplete?.Invoke();
+                        break;
+                    }
+                case STOP_COMMAND.IMMEDIATE_TO_START:
+                    {
+                        pathBundle.GetValues(0, valueRefs);
+                        flagComplete = true;
+                        actionTweenComplete?.Invoke();
+                        break;
+                    }
                 case STOP_COMMAND.INVERSE_SEEMLESS:
                     {
                         switch (direction)
@@ -369,6 +499,7 @@ public class TweenManager
                         direction = DIRECTION.END_TO_START;
                         break;
                     }
+                 
             }
         }
     }   

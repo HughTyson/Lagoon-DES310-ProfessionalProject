@@ -44,6 +44,8 @@ public class MenuScreen_Credits : MenuScreenBase
                 )
             );
 
+        SetupTypeRefArray();
+
 
         TextData_CreditsTitle.CreateCharacterData(SpecialText_CreditsTitle.GetComponent<TMPro.TextMeshProUGUI>().text);
 
@@ -150,7 +152,8 @@ public class MenuScreen_Credits : MenuScreenBase
 
     public override void EnteredMenu()
     {
-        SetupDefaults();
+
+
         gameObject.SetActive(true);
 
         SpecialText_CreditsTitle.Begin(TextData_CreditsTitle);
@@ -266,8 +269,8 @@ public class MenuScreen_Credits : MenuScreenBase
         current_cameraRotation.y = cameraRotationRef_Y.value;
 
         Quaternion new_rotation = new Quaternion();
-        new_rotation.eulerAngles = current_cameraRotation + default_cameraRotation;
-        camera_.transform.position = current_cameraPosition + default_cameraPosition;
+        new_rotation.eulerAngles = current_cameraRotation;
+        camera_.transform.position = current_cameraPosition;
         camera_.transform.rotation = new_rotation;
     }
 }

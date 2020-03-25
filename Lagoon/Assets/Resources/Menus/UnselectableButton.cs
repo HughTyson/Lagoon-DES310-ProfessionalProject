@@ -18,6 +18,10 @@ public class UnselectableButton : MonoBehaviour
     public event System.Action Event_FinishedShow;
 
 
+    // This type ref is given to all buttons in a group. Only one button in a group can be selected at a time
+    TypeRef<bool> isGroupingButtonSelected = new TypeRef<bool>(false);
+
+
 
     // Default Button Tweens
     static readonly TweenManager.TweenPathBundle default_selectedTween = new TweenManager.TweenPathBundle(
@@ -117,6 +121,13 @@ public class UnselectableButton : MonoBehaviour
 
     TweenParametersWrapper currentTweenWrapper;
 
+
+    enum TWEEN_ID_TYPE
+    {
+        SELECTED,
+        SHOW,
+        HIDE
+    }
 
     public enum TWEEN_PARAMETERS
     {
@@ -264,16 +275,26 @@ public class UnselectableButton : MonoBehaviour
         tweenBundle_hide.CreateParameterFormat(tweenBundle, tween_parameters);
     }
 
+
+
     public void Selected()
     {
+        if (current_tweenInstance.Exists)
+        {
+            current_tweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
+        }
+
         currentTweenWrapper = tweenBundle_select;
         isTransitioning = true;
+        isGroupingButtonSelected.value = true;
 
-        GM_.Instance.tween_manager.StartTweenInstance(currentTweenWrapper.tweenBundle,
-            currentTweenWrapper.tweenParameterFormat,
-            tweenUpdatedDelegate_: transitioningUpdate,
-            tweenCompleteDelegate_: EndSelected,
-            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA);
+
+        current_tweenInstance = GM_.Instance.tween_manager.StartTweenInstance(currentTweenWrapper.tweenBundle,
+                currentTweenWrapper.tweenParameterFormat,
+                tweenUpdatedDelegate_: transitioningUpdate,
+                tweenCompleteDelegate_: EndSelected,
+                TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA,
+                instanceID: TWEEN_ID_TYPE.SELECTED);
     }
     void transitioningUpdate()
     {
@@ -292,11 +313,16 @@ public class UnselectableButton : MonoBehaviour
     void EndSelected()
     {
         isTransitioning = false;
+        isGroupingButtonSelected.value = false;
         Event_Selected?.Invoke();
     }
 
+    public void AssignToGroup(TypeRef<bool> referenceLink)
+    {
+        isGroupingButtonSelected = referenceLink;
+    }
 
-
+    TweenManager.TweenInstanceInterface current_tweenInstance = new TweenManager.TweenInstanceInterface(null);
 
     //public void IsPressable(bool isPressable_)
     //{
@@ -304,14 +330,24 @@ public class UnselectableButton : MonoBehaviour
     //}
     public void Show()
     {
+        if (current_tweenInstance.Exists)
+        {
+            current_tweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
+        }
+
         gameObject.SetActive(true);
         currentTweenWrapper = tweenBundle_show;
+        isTransitioning = false;
 
-        GM_.Instance.tween_manager.StartTweenInstance(currentTweenWrapper.tweenBundle,
+
+
+
+        current_tweenInstance = GM_.Instance.tween_manager.StartTweenInstance(currentTweenWrapper.tweenBundle,
             currentTweenWrapper.tweenParameterFormat,
             tweenUpdatedDelegate_: transitioningUpdate,
             tweenCompleteDelegate_: finishedShow,
-            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA);
+            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA,
+            instanceID: TWEEN_ID_TYPE.SHOW);
     }
     void finishedShow()
     {
@@ -321,14 +357,21 @@ public class UnselectableButton : MonoBehaviour
 
     public void Hide()
     {
+        if (current_tweenInstance.Exists)
+        {
+            current_tweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
+        }
+
         isTransitioning = true;
         currentTweenWrapper = tweenBundle_hide;
 
-        GM_.Instance.tween_manager.StartTweenInstance(currentTweenWrapper.tweenBundle,
+
+        current_tweenInstance = GM_.Instance.tween_manager.StartTweenInstance(currentTweenWrapper.tweenBundle,
             currentTweenWrapper.tweenParameterFormat,
             tweenUpdatedDelegate_: transitioningUpdate,
             tweenCompleteDelegate_: finishedHide,
-            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA);
+            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA,
+            instanceID: TWEEN_ID_TYPE.HIDE );
     }
     void finishedHide()
     {
@@ -354,18 +397,20 @@ public class UnselectableButton : MonoBehaviour
     }
     void Update()
     {
-        if (!isTransitioning)
+        if (!isGroupingButtonSelected.value)
         {
-            for (int i = 0; i < buttonsToCheck.Length; i++)
+            if (!isTransitioning)
             {
-                if (GM_.Instance.input.GetButtonDown(buttonsToCheck[i]))
+                for (int i = 0; i < buttonsToCheck.Length; i++)
                 {
-                    Selected();
-                    break;
+                    if (GM_.Instance.input.GetButtonDown(buttonsToCheck[i]))
+                    {
+                        Selected();
+                        break;
+                    }
                 }
             }
         }
-
     }
 
 }

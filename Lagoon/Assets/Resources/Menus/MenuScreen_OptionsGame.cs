@@ -19,7 +19,7 @@ public class MenuScreen_OptionsGame : MenuScreenBase
     {
         Color32 default_colour_programmerTitle = ColourExtension.ColourtoColour32(SpecialText_Title.GetComponent<TMPro.TextMeshProUGUI>().color);
 
-
+        SetupTypeRefArray();
         //hiddenButton.Event_CancelledWhileHovering += start_transitionToMain;
 
         SpecialTextData_Title.CreateCharacterData(SpecialText_Title.GetComponent<TMPro.TextMeshProUGUI>().text);
@@ -49,12 +49,16 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         goToAudioOptionsButton.Event_Selected += start_transitionToAudio;
         goToControlOptionsButton.Event_Selected += start_transitionToControls;
 
+        TypeRef<bool> buttonGrouper = new TypeRef<bool>(false);
+        goBackButton.AssignToGroup(buttonGrouper);
+        goToAudioOptionsButton.AssignToGroup(buttonGrouper);
+        goToControlOptionsButton.AssignToGroup(buttonGrouper);
     }
 
 
     public override void EnteredMenu()
     {
-        SetupDefaults();
+
 
         gameObject.SetActive(true);
 
@@ -114,7 +118,7 @@ public class MenuScreen_OptionsGame : MenuScreenBase
             MenuTransitions.transition_GameOptionsToControls,
             transitionOutputs,
             tweenUpdatedDelegate_: transitionUpdate,
-            tweenCompleteDelegate_: end_transitionToMain,
+            tweenCompleteDelegate_: end_transitionToControls,
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
             );
     }
@@ -164,8 +168,8 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         current_cameraRotation.y = cameraRotationRef_Y.value;
 
         Quaternion new_rotation = new Quaternion();
-        new_rotation.eulerAngles = current_cameraRotation + default_cameraRotation;
-        camera_.transform.position = current_cameraPosition + default_cameraPosition;
+        new_rotation.eulerAngles = current_cameraRotation ;
+        camera_.transform.position = current_cameraPosition;
         camera_.transform.rotation = new_rotation;
     }
 }

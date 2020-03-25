@@ -59,7 +59,7 @@ public class MenuScreen_MainMenu : MenuScreenBase
 
     private void Start()
     {
-        SetupDefaults();
+        SetupTypeRefArray();
 
         startButton.SetShowTweenBundle(showButtonTween, SelectableButton.TWEEN_PARAMETERS.POS_X);
         optionsButton.SetShowTweenBundle(showButtonTween, SelectableButton.TWEEN_PARAMETERS.POS_X);
@@ -79,6 +79,12 @@ public class MenuScreen_MainMenu : MenuScreenBase
         actionTimer.AddAction(show_optionButton, 0.1f);
         actionTimer.AddAction(show_creditButton, 0.2f);
         actionTimer.AddAction(show_exitButton, 0.3f);
+
+        Quaternion new_rotation = new Quaternion();
+        new_rotation.eulerAngles = MenuTransitions.MainMenuVals.rotation;
+        camera_.transform.position = MenuTransitions.MainMenuVals.position;
+        camera_.transform.rotation = new_rotation;
+
     }
 
 
@@ -207,8 +213,8 @@ public class MenuScreen_MainMenu : MenuScreenBase
         current_cameraRotation.z = cameraRotationRef_Z.value;
 
         Quaternion new_rotation = new Quaternion();
-        new_rotation.eulerAngles = current_cameraRotation + default_cameraRotation;
-        camera_.transform.position = current_cameraPosition + default_cameraPosition;
+        new_rotation.eulerAngles = current_cameraRotation;
+        camera_.transform.position = current_cameraPosition;
         camera_.transform.rotation = new_rotation;
     }
 }
