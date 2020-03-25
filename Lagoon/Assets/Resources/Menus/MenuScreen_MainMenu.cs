@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuScreen_MainMenu : MenuScreenBase
 {
 
+    [SerializeField] UnityEngine.UI.Image fadeInOutImage;
     [SerializeField] SelectableButton startButton;
     [SerializeField] SelectableButton optionsButton;
     [SerializeField] SelectableButton creditsButton;
@@ -12,55 +14,128 @@ public class MenuScreen_MainMenu : MenuScreenBase
 
 
     [SerializeField] MenuScreenBase creditsMenu;
-    [SerializeField] MenuScreenBase optionsMenu;
+    [SerializeField] MenuScreenBase gameOptionsMenu;
 
 
 
     // Start is called before the first frame update
 
+    static TweenManager.TweenPathBundle fadeInTween = new TweenManager.TweenPathBundle(
+        new TweenManager.TweenPath(
+            new TweenManager.TweenPart_Start(1, 0, 1, TweenManager.CURVE_PRESET.LINEAR)
+            )
+        );
+
+    TweenManager.TweenPathBundle showButtonTween;
 
     void Awake()
     {
+        showButtonTween = new TweenManager.TweenPathBundle(
+            // button X position
+            new TweenManager.TweenPath
+            (
+                new TweenManager.TweenPart_Start(-1100, -700, 1, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
+            )
+        );
+
+        startButton.Event_Selected += buttonPressed;
+        optionsButton.Event_Selected += buttonPressed;
+        creditsButton.Event_Selected += buttonPressed;
+        exitButton.Event_Selected += buttonPressed;
+
         startButton.Event_Selected += start_transitionToGame;
         optionsButton.Event_Selected += start_transitionToOptions;
         creditsButton.Event_Selected += start_transitionToCredits;
         exitButton.Event_Selected += start_transitionToExit;
-        startButton.Event_FinishedShow += show_finshed;
+
+
+
+
 
         gameObject.SetActive(true);
     }
+
+    ActionTimer actionTimer = new ActionTimer();
+
     private void Start()
     {
         SetupDefaults();
-        startButton.HoveredOver();
+
+        startButton.SetShowTweenBundle(showButtonTween, SelectableButton.TWEEN_PARAMETERS.POS_X);
+        optionsButton.SetShowTweenBundle(showButtonTween, SelectableButton.TWEEN_PARAMETERS.POS_X);
+        creditsButton.SetShowTweenBundle(showButtonTween, SelectableButton.TWEEN_PARAMETERS.POS_X);
+        exitButton.SetShowTweenBundle(showButtonTween, SelectableButton.TWEEN_PARAMETERS.POS_X);
+
+        fadeInOutImage.color = new Color(0, 0, 0, 1);
+
+        GM_.Instance.tween_manager.StartTweenInstance(
+            fadeInTween,
+            new TypeRef<float>[] { fadeAlpha},
+            tweenUpdatedDelegate_: init_update,
+            tweenCompleteDelegate_: init_finished
+            );
+
+        actionTimer.AddAction(show_startButton, 0);
+        actionTimer.AddAction(show_optionButton, 0.1f);
+        actionTimer.AddAction(show_creditButton, 0.2f);
+        actionTimer.AddAction(show_exitButton, 0.3f);
     }
 
 
     TypeRef<float> refButtonAlpha = new TypeRef<float>();
 
 
-
-
-
-
-    public override void EnteredMenu()
+    TypeRef<float> fadeAlpha = new TypeRef<float>();
+    void init_update()
     {
-        gameObject.SetActive(true);
-        startButton.Show();
-        optionsButton.Show();
-        creditsButton.Show();
-        exitButton.Show();
-
+        fadeInOutImage.color = new Color(0, 0, 0, fadeAlpha.value);
     }
-    void show_finshed()
+    void init_finished()
     {
         startButton.HoveredOver();
     }
 
 
+
+    public override void EnteredMenu()
+    {
+        buttonTweenInterfaces.Clear();
+
+        gameObject.SetActive(true);
+
+        actionTimer.Start();
+        GM_.Instance.update_events.UpdateEvent += actionTimer.Update;
+    }
+
+    List<TweenManager.TweenInstanceInterface> buttonTweenInterfaces = new List<TweenManager.TweenInstanceInterface>();
+
+    void show_startButton()
+    {
+        startButton.Show();
+        startButton.HoveredOver();
+    }
+    void show_optionButton()
+    {
+        optionsButton.Show();
+    }
+    void show_creditButton()
+    {
+        creditsButton.Show();
+    }
+    void show_exitButton()
+    {
+        exitButton.Show();
+        GM_.Instance.update_events.UpdateEvent -= actionTimer.Update;
+    }
+
+    void buttonPressed()
+    {
+        GM_.Instance.update_events.UpdateEvent -= actionTimer.Update;
+    }
+
     void start_transitionToGame()
     {
-        
+        SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
     }
 
     void start_transitionToCredits()
@@ -87,20 +162,38 @@ public class MenuScreen_MainMenu : MenuScreenBase
     void start_transitionToExit()
     {
 
+        GM_.Instance.tween_manager.StartTweenInstance(
+            fadeInTween,
+            new TypeRef<float>[] { fadeAlpha },
+            tweenUpdatedDelegate_: init_update,
+            tweenCompleteDelegate_: end_transitionToExit,
+            startingDirection_: TweenManager.DIRECTION.END_TO_START
+            );
     }
     void end_transitionToExit()
     {
-
+        Application.Quit();
     }
 
     void start_transitionToOptions()
     {
+        startButton.Hide();
+        exitButton.Hide();
+        optionsButton.Hide();
+        creditsButton.Hide();
 
+        GM_.Instance.tween_manager.StartTweenInstance(
+            MenuTransitions.transition_MainToGameOptions,
+            transitionOutputs,
+            tweenUpdatedDelegate_: transitionUpdate,
+            tweenCompleteDelegate_: end_transitionToOptions,
+            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
+            );
     }
     void end_transitionToOptions()
     {
         gameObject.SetActive(false);
-
+        gameOptionsMenu.EnteredMenu();
     }
 
 

@@ -13,19 +13,16 @@ abstract public class MenuSelectableBase : MonoBehaviour
     protected MenuScreenBase parentMenu;
 
     public event System.Action Event_Selected;
-    public event System.Action Event_CancelledWhileHovering;
     public event System.Action Event_FinishedHide;
     public event System.Action Event_FinishedShow;
+
 
     // Allow derived classes to call event
     protected void Invoke_EventSelected()
     {
         Event_Selected?.Invoke();
     }
-    protected void Invoke_CancelledWhileHovering()
-    {
-        Event_CancelledWhileHovering?.Invoke();
-    }
+
     protected void Invoke_FinishedHide()
     {
         Event_FinishedHide?.Invoke();
@@ -42,20 +39,23 @@ abstract public class MenuSelectableBase : MonoBehaviour
     {
 
     }
+
     public virtual void Hide()
     {
 
     }
+
     public virtual void Show()
     {
 
     }
-    public virtual void InstantHide()
-    {
 
+    public virtual void Activate()
+    {
+        gameObject.SetActive(false);
     }
-    public virtual void InstantShow()
+    public virtual void Deactivate()
     {
-
+        gameObject.SetActive(true);
     }
 }

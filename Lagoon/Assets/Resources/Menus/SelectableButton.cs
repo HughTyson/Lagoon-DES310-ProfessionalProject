@@ -13,46 +13,59 @@ public class SelectableButton : MenuSelectableBase
 
     SpecialText.SpecialTextData specialTextData = new SpecialText.SpecialTextData();
 
-    TypeRef<float> refScale = new TypeRef<float>(1);
-    TypeRef<float> refColour = new TypeRef<float>();
 
-    static readonly TweenManager.TweenPathBundle selectedTween = new TweenManager.TweenPathBundle(
-        // Scale
+
+    // Default Button Tweens
+    static readonly TweenManager.TweenPathBundle default_selectedTween = new TweenManager.TweenPathBundle(
+        // Scale X
         new TweenManager.TweenPath(
             new TweenManager.TweenPart_Start(1, 0.9f, 0.1f, TweenManager.CURVE_PRESET.LINEAR), 
             new TweenManager.TweenPart_Continue(1.0f, 0.1f, TweenManager.CURVE_PRESET.LINEAR)
             ),
-        // Colour
+        // Scale Y
+        new TweenManager.TweenPath(
+            new TweenManager.TweenPart_Start(1, 0.9f, 0.1f, TweenManager.CURVE_PRESET.LINEAR),
+            new TweenManager.TweenPart_Continue(1.0f, 0.1f, TweenManager.CURVE_PRESET.LINEAR)
+            ),
+       // Colour R
+       new TweenManager.TweenPath(
+            new TweenManager.TweenPart_Start(1, 0.7f, 0.1f, TweenManager.CURVE_PRESET.LINEAR),
+            new TweenManager.TweenPart_Continue(1.0f, 0.1f, TweenManager.CURVE_PRESET.LINEAR)
+            ),
+       // Colour G
+       new TweenManager.TweenPath(
+            new TweenManager.TweenPart_Start(1, 0.7f, 0.1f, TweenManager.CURVE_PRESET.LINEAR),
+            new TweenManager.TweenPart_Continue(1.0f, 0.1f, TweenManager.CURVE_PRESET.LINEAR)
+            ),
+       // Colour B
        new TweenManager.TweenPath(
             new TweenManager.TweenPart_Start(1, 0.7f, 0.1f, TweenManager.CURVE_PRESET.LINEAR),
             new TweenManager.TweenPart_Continue(1.0f, 0.1f, TweenManager.CURVE_PRESET.LINEAR)
             )
-        );
 
-    public static readonly TweenManager.TweenPathBundle showTween = new TweenManager.TweenPathBundle(
-    new TweenManager.TweenPath(
-        new TweenManager.TweenPart_Start(0, 1, 0.3f, TweenManager.CURVE_PRESET.LINEAR)
-        )
-    );
-    static public readonly TweenManager.TweenPathBundle hideTween = new TweenManager.TweenPathBundle(
+        );
+    static public readonly TweenManager.TweenPathBundle default_hideTween = new TweenManager.TweenPathBundle(
                 new TweenManager.TweenPath(
             new TweenManager.TweenPart_Start(1, 0, 0.3f, TweenManager.CURVE_PRESET.LINEAR)
             )
         );
+    static public readonly TweenManager.TweenPathBundle default_showTween = new TweenManager.TweenPathBundle(
+            new TweenManager.TweenPath(
+        new TweenManager.TweenPart_Start(0, 1, 0.3f, TweenManager.CURVE_PRESET.LINEAR)
+        )
+    );
 
 
     public RectTransform ThisRectTransform { get { return rectTransform; } }
     public TextMeshProUGUI Text { get { return TMProText; } }
 
 
-    Color default_colour; 
     public void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         TMProText = GetComponentInChildren<TextMeshProUGUI>();
         specialText = GetComponentInChildren<SpecialText.SpecialText>();
         parentMenu = GetComponentInParent<MenuScreenBase>();
-        default_colour = TMProText.color;
 
         specialTextData.CreateCharacterData(TMProText.text);
         specialTextData.AddPropertyToText(
@@ -65,41 +78,143 @@ public class SelectableButton : MenuSelectableBase
             0,
             TMProText.text.Length
             );
-
-
     }
+
     public void Start()
     {
+        tweenBundle_hide.SetDefaults(Text.color, rectTransform.anchoredPosition, rectTransform.localScale);
+        tweenBundle_show.SetDefaults(Text.color, rectTransform.anchoredPosition, rectTransform.localScale);
+        tweenBundle_select.SetDefaults(Text.color, rectTransform.anchoredPosition, rectTransform.localScale);
 
-
+        tweenBundle_hide.CreateParameterFormat(default_hideTween,TWEEN_PARAMETERS.ALPHA);
+        tweenBundle_show.CreateParameterFormat(default_showTween, TWEEN_PARAMETERS.ALPHA);
+        tweenBundle_select.CreateParameterFormat(default_selectedTween, TWEEN_PARAMETERS.SCALE_X, TWEEN_PARAMETERS.SCALE_Y, TWEEN_PARAMETERS.COLOUR_R, TWEEN_PARAMETERS.COLOUR_G, TWEEN_PARAMETERS.COLOUR_B);
     }
 
     enum STATE
     {
     NONE,
-    HOVERING,
-    SELECTING,
-    HIDDEN
+    HOVERING
     }
     STATE state = STATE.NONE;
     static readonly float OPTION_SWAP_COOLDOWN = 0.3f;
     float current_optionswap_timer = 0;
-    
+
+
+    TweenParametersWrapper tweenBundle_show = new TweenParametersWrapper();
+    TweenParametersWrapper tweenBundle_select = new TweenParametersWrapper();
+    TweenParametersWrapper tweenBundle_hide = new TweenParametersWrapper();
+
+    TweenParametersWrapper currentTweenWrapper;
+
+
+    public enum TWEEN_PARAMETERS
+    { 
+        POS_X,
+        POS_Y,
+        COLOUR_R,
+        COLOUR_B,
+        COLOUR_G,
+        ALPHA,
+        SCALE_X,
+        SCALE_Y
+    }
+    class TweenParametersWrapper
+    {
+        public TypeRef<float> ref_posX = new TypeRef<float>();
+        public TypeRef<float> ref_posY = new TypeRef<float>();
+        public TypeRef<float> ref_colourR = new TypeRef<float>();
+        public TypeRef<float> ref_colourG = new TypeRef<float>();
+        public TypeRef<float> ref_colourB = new TypeRef<float>();
+        public TypeRef<float> ref_alpha = new TypeRef<float>();
+        public TypeRef<float> ref_scaleX = new TypeRef<float>();
+        public TypeRef<float> ref_scaleY = new TypeRef<float>();
+
+        public TypeRef<float>[] tweenParameterFormat;
+
+        public TweenManager.TweenPathBundle tweenBundle;
+
+        Color default_colour; 
+        Vector2 default_position; 
+        Vector2 default_scale;
+
+        public void SetDefaults(Color colour, Vector2 position, Vector2 scale)
+        {
+            default_colour = colour;
+            default_position = position;
+            default_scale = scale;
+            ApplyDefaults();
+        }
+
+        public void ApplyDefaults()
+        {
+            ref_posX.value = default_position.x;
+            ref_posY.value = default_position.y;
+            ref_colourR.value = default_colour.r;
+            ref_colourG.value = default_colour.g;
+            ref_colourB.value = default_colour.b;
+            ref_alpha.value = default_colour.a;
+            ref_scaleX.value = default_scale.x;
+            ref_scaleY.value = default_scale.y;
+        }
+        
+        public void CreateParameterFormat(TweenManager.TweenPathBundle bundle, params TWEEN_PARAMETERS[] tween_parameters )
+        {
+            ApplyDefaults();
+
+            tweenBundle = bundle;
+            tweenParameterFormat = new TypeRef<float>[tween_parameters.Length];
+
+            for (int i = 0; i < tweenParameterFormat.Length; i++)
+            {
+                switch (tween_parameters[i])
+                {
+                    case TWEEN_PARAMETERS.ALPHA: tweenParameterFormat[i] = ref_alpha; break;
+                    case TWEEN_PARAMETERS.COLOUR_R: tweenParameterFormat[i] = ref_colourR; break;
+                    case TWEEN_PARAMETERS.COLOUR_G: tweenParameterFormat[i] = ref_colourG; break;
+                    case TWEEN_PARAMETERS.COLOUR_B: tweenParameterFormat[i] = ref_colourB; break;
+                    case TWEEN_PARAMETERS.POS_X: tweenParameterFormat[i] = ref_posX; break;
+                    case TWEEN_PARAMETERS.POS_Y: tweenParameterFormat[i] = ref_posY; break;
+                    case TWEEN_PARAMETERS.SCALE_X: tweenParameterFormat[i] = ref_scaleX; break;
+                    case TWEEN_PARAMETERS.SCALE_Y: tweenParameterFormat[i] = ref_scaleY; break;
+                }
+            }
+        }
+    }
+
+
+
+    public void SetShowTweenBundle(TweenManager.TweenPathBundle tweenBundle, params TWEEN_PARAMETERS[] tween_parameters)
+    {
+        tweenBundle_show.CreateParameterFormat(tweenBundle, tween_parameters);
+    }
+    public void SetSelectTweenBundle(TweenManager.TweenPathBundle tweenBundle, params TWEEN_PARAMETERS[] tween_parameters)
+    {
+        tweenBundle_select.CreateParameterFormat(tweenBundle, tween_parameters);
+    }
+    public void SetHideTweenBundle(TweenManager.TweenPathBundle tweenBundle, params TWEEN_PARAMETERS[] tween_parameters)
+    {
+        tweenBundle_hide.CreateParameterFormat(tweenBundle, tween_parameters);
+    }
 
     public override void Selected()
     {
         specialText.Revert();
-        state = STATE.SELECTING;
-        GM_.Instance.tween_manager.StartTweenInstance(selectedTween,
-            new TypeRef<float>[] { refScale, refColour },
-            tweenUpdatedDelegate_: SelectedUpdate,
+        state = STATE.NONE;
+        currentTweenWrapper = tweenBundle_select;
+
+        GM_.Instance.tween_manager.StartTweenInstance(currentTweenWrapper.tweenBundle,
+            currentTweenWrapper.tweenParameterFormat,
+            tweenUpdatedDelegate_: transitioningUpdate,
             tweenCompleteDelegate_: EndSelected,
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA);
     }
-    void SelectedUpdate()
+    void transitioningUpdate()
     {
-        rectTransform.localScale = new Vector3(refScale.value, refScale.value, 1);
-        TMProText.color = new Color(refColour.value, refColour.value, refColour.value, refColour.value);
+        rectTransform.localScale = new Vector3(currentTweenWrapper.ref_scaleX.value, currentTweenWrapper.ref_scaleY.value, 1);
+        TMProText.color = new Color(currentTweenWrapper.ref_colourR.value, currentTweenWrapper.ref_colourG.value, currentTweenWrapper.ref_colourB.value, currentTweenWrapper.ref_alpha.value);
+        rectTransform.anchoredPosition = new Vector3(currentTweenWrapper.ref_posX.value, currentTweenWrapper.ref_posY.value, 0);
+
     }
     void EndSelected()
     {
@@ -107,56 +222,52 @@ public class SelectableButton : MenuSelectableBase
         Invoke_EventSelected();
     }
 
-    public override void InstantHide()
+    public override void Show()
     {
-        state = STATE.HIDDEN;
-        gameObject.SetActive(false);
-        TMProText.color = new Color(default_colour.r, default_colour.g, default_colour.b, 0);
-    }
-    public override void InstantShow()
-    {
-        state = STATE.NONE;
         gameObject.SetActive(true);
-        TMProText.color = default_colour;
+        state = STATE.NONE;
+        currentTweenWrapper = tweenBundle_show;
+
+        GM_.Instance.tween_manager.StartTweenInstance(currentTweenWrapper.tweenBundle,
+            currentTweenWrapper.tweenParameterFormat,
+            tweenUpdatedDelegate_: transitioningUpdate,
+            tweenCompleteDelegate_: finishedShow,
+            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA);
     }
+    void finishedShow()
+    {
+        Invoke_FinishedShow();
+    }
+
     public override void Hide()
     {
-        state = STATE.HIDDEN;
-        GM_.Instance.tween_manager.StartTweenInstance(hideTween,
-            new TypeRef<float>[] { refColour },
-            tweenUpdatedDelegate_: SelectedUpdate,
+        currentTweenWrapper = tweenBundle_hide;
+        state = STATE.NONE;
+
+        GM_.Instance.tween_manager.StartTweenInstance(currentTweenWrapper.tweenBundle,
+            currentTweenWrapper.tweenParameterFormat,
+            tweenUpdatedDelegate_: transitioningUpdate,
             tweenCompleteDelegate_: finishedHide,
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA);
     }
     void finishedHide()
     {
-        state = STATE.HIDDEN;
-        TMProText.color = new Color(default_colour.r, default_colour.g, default_colour.b, 0);
+
+        state = STATE.NONE;
+        TMProText.color = new Color(0, 0, 0, 0);
         gameObject.SetActive(false);
         Invoke_FinishedHide();
     }
-    public override void Show()
-    {
-        state = STATE.HIDDEN;
-        gameObject.SetActive(true);
-        GM_.Instance.tween_manager.StartTweenInstance(showTween,
-             new TypeRef<float>[] { refColour },
-             tweenUpdatedDelegate_: SelectedUpdate,
-             tweenCompleteDelegate_: finishedShow,
-             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA);
-    }
-    void finishedShow()
-    {
-        state = STATE.NONE;
-        TMProText.color = default_colour;
-        Invoke_FinishedShow();
-    }
+
     public override void HoveredOver()
     {
+        gameObject.SetActive(true);
         state = STATE.HOVERING;
         current_optionswap_timer = OPTION_SWAP_COOLDOWN;
         specialText.Begin(specialTextData);
     }
+
+
     void HoveredUpdate()
     {
         float verticalVal = GM_.Instance.input.GetAxis(InputManager.AXIS.LV);
@@ -166,11 +277,6 @@ public class SelectableButton : MenuSelectableBase
         if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))
         {
             Selected();
-            return;
-        }
-        else if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.B))
-        {
-            Invoke_CancelledWhileHovering();
             return;
         }
 
@@ -259,17 +365,6 @@ public class SelectableButton : MenuSelectableBase
                     HoveredUpdate();
                     break;
                 }
-            case STATE.SELECTING:
-                {
-                    SelectedUpdate();
-                    break;
-                }      
         }
     }
-    public void OnEnable()
-    {
-
-    }
-
-
 }

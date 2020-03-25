@@ -5,7 +5,8 @@ using UnityEngine;
 public class MenuScreen_Credits : MenuScreenBase
 {
 
-    [SerializeField] SelectableButton nextPrevButton;
+    [SerializeField] SelectableButton extraCreditsButton;
+    [SerializeField] UnselectableButton goBackButton;
 
 
     [SerializeField] MenuScreenBase mainMenu;
@@ -33,8 +34,17 @@ public class MenuScreen_Credits : MenuScreenBase
     SpecialText.SpecialTextData TextData_designerTitle = new SpecialText.SpecialTextData();
 
 
+    TweenManager.TweenPathBundle tweenShowButton;
     private void Start()
     {
+        tweenShowButton = new TweenManager.TweenPathBundle(
+            new TweenManager.TweenPath(
+                // Y POS
+                new TweenManager.TweenPart_Start(-720, -450, 1, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
+                )
+            );
+
+
         TextData_CreditsTitle.CreateCharacterData(SpecialText_CreditsTitle.GetComponent<TMPro.TextMeshProUGUI>().text);
 
         TextData_programmerNames.CreateCharacterData(SpecialText_progammerNames.GetComponent<TMPro.TextMeshProUGUI>().text);
@@ -127,11 +137,13 @@ public class MenuScreen_Credits : MenuScreenBase
         TextData_designerNames.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.4f, -1));
 
 
-        nextPrevButton.Event_CancelledWhileHovering += start_transitionToMainMenu;
-        nextPrevButton.Event_Selected += start_transitionToExtraCredits;
+        extraCreditsButton.Event_Selected += start_transitionToExtraCredits;
+        extraCreditsButton.SetShowTweenBundle(tweenShowButton, SelectableButton.TWEEN_PARAMETERS.POS_Y);
 
+        goBackButton.SetButtonsToCheckForPress(InputManager.BUTTON.B);
+        goBackButton.Event_Selected += start_transitionToMainMenu;
 
-        nextPrevButton.InstantHide();
+        extraCreditsButton.Deactivate();
 
         gameObject.SetActive(false);
     }
@@ -149,14 +161,16 @@ public class MenuScreen_Credits : MenuScreenBase
 
         SpecialText_progammerNames.Begin(TextData_programmerNames);
         SpecialText_artistNames.Begin(TextData_artistNames);
-        SpecialText_designerNames.Begin(TextData_designerNames, textCompleted_: entered_showButton);
+        SpecialText_designerNames.Begin(TextData_designerNames);
+
+        entered_showButton();
 
     }
 
     void start_transitionToExtraCredits()
     {
-        nextPrevButton.Hide();
-
+        extraCreditsButton.Hide();
+        goBackButton.Hide();
         HideText();
 
         GM_.Instance.tween_manager.StartTweenInstance(
@@ -168,6 +182,7 @@ public class MenuScreen_Credits : MenuScreenBase
             );
     }
 
+
     void end_transitionToExtraCredits()
     {
         extraCreditsMenu.EnteredMenu();
@@ -175,13 +190,9 @@ public class MenuScreen_Credits : MenuScreenBase
 
     public void entered_showButton()
     {
-        nextPrevButton.Event_FinishedShow += entered_showButtonComplete;
-        nextPrevButton.Show();
-    }
-    public void entered_showButtonComplete()
-    {
-        nextPrevButton.Event_FinishedShow -= entered_showButtonComplete;
-        nextPrevButton.HoveredOver();
+        extraCreditsButton.Show();
+        extraCreditsButton.HoveredOver();
+        goBackButton.Show();
     }
 
 
@@ -196,7 +207,7 @@ public class MenuScreen_Credits : MenuScreenBase
         SpecialText_designerNames.End();
 
         GM_.Instance.tween_manager.StartTweenInstance(
-            SelectableButton.hideTween,
+            SelectableButton.default_hideTween,
             new TypeRef<float>[] { textAlpha },
             tweenUpdatedDelegate_: textHideUpdate,
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
@@ -218,7 +229,8 @@ public class MenuScreen_Credits : MenuScreenBase
 
     void start_transitionToMainMenu()
     {
-        nextPrevButton.Hide();
+        extraCreditsButton.Hide();
+        goBackButton.Hide();
 
         HideText();
 

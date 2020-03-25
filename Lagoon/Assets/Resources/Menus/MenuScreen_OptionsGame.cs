@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuScreen_ExtraCredits : MenuScreenBase
+public class MenuScreen_OptionsGame : MenuScreenBase
 {
-
-    [SerializeField] MenuScreenBase creditsMenu;
+    [SerializeField] MenuScreenBase mainMenu;
+    [SerializeField] MenuScreenBase audioMenu;
+    [SerializeField] MenuScreenBase controlMenu;
 
     [SerializeField] SpecialText.SpecialText SpecialText_Title;
 
     [SerializeField] UnselectableButton goBackButton;
+    [SerializeField] UnselectableButton goToAudioOptionsButton;
+    [SerializeField] UnselectableButton goToControlOptionsButton;
 
     SpecialText.SpecialTextData SpecialTextData_Title = new SpecialText.SpecialTextData();
     void Start()
@@ -17,7 +20,7 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
         Color32 default_colour_programmerTitle = ColourExtension.ColourtoColour32(SpecialText_Title.GetComponent<TMPro.TextMeshProUGUI>().color);
 
 
-        //hiddenButton.Event_CancelledWhileHovering += start_transitionToCredits;
+        //hiddenButton.Event_CancelledWhileHovering += start_transitionToMain;
 
         SpecialTextData_Title.CreateCharacterData(SpecialText_Title.GetComponent<TMPro.TextMeshProUGUI>().text);
 
@@ -35,9 +38,17 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
         SpecialTextData_Title.fullTextString.Length
         );
 
-        goBackButton.SetButtonsToCheckForPress(InputManager.BUTTON.B);
-        goBackButton.Event_Selected += start_transitionToCredits;
+
         gameObject.SetActive(false);
+
+        goBackButton.SetButtonsToCheckForPress(InputManager.BUTTON.B);
+        goToAudioOptionsButton.SetButtonsToCheckForPress(InputManager.BUTTON.RB);
+        goToControlOptionsButton.SetButtonsToCheckForPress(InputManager.BUTTON.LB);
+
+        goBackButton.Event_Selected += start_transitionToMain;
+        goToAudioOptionsButton.Event_Selected += start_transitionToAudio;
+        goToControlOptionsButton.Event_Selected += start_transitionToControls;
+
     }
 
 
@@ -46,28 +57,69 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
         SetupDefaults();
 
         gameObject.SetActive(true);
+
         goBackButton.Show();
+        goToAudioOptionsButton.Show();
+        goToControlOptionsButton.Show();
+
         SpecialText_Title.Begin(SpecialTextData_Title);
+
     }
 
-   
-    void start_transitionToCredits()
+
+
+    void start_transitionToMain()
     {
         goBackButton.Hide();
+        goToAudioOptionsButton.Hide();
+        goToControlOptionsButton.Hide();
 
         HideText();
 
         GM_.Instance.tween_manager.StartTweenInstance(
-            MenuTransitions.transition_ExtraCreditsToCredits,
+            MenuTransitions.transition_GameOptionsToMain,
             transitionOutputs,
             tweenUpdatedDelegate_: transitionUpdate,
-            tweenCompleteDelegate_: end_transitionToCredits,
+            tweenCompleteDelegate_: end_transitionToMain,
+            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
+            );
+    }
+
+    void start_transitionToAudio()
+    {
+        goBackButton.Hide();
+        goToAudioOptionsButton.Hide();
+        goToControlOptionsButton.Hide();
+
+        HideText();
+
+        GM_.Instance.tween_manager.StartTweenInstance(
+            MenuTransitions.transition_GameOptionsToAudio,
+            transitionOutputs,
+            tweenUpdatedDelegate_: transitionUpdate,
+            tweenCompleteDelegate_: end_transitionToAudio,
+            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
+            );
+    }
+
+    void start_transitionToControls()
+    {
+        goBackButton.Hide();
+        goToAudioOptionsButton.Hide();
+        goToControlOptionsButton.Hide();
+
+        HideText();
+
+        GM_.Instance.tween_manager.StartTweenInstance(
+            MenuTransitions.transition_GameOptionsToControls,
+            transitionOutputs,
+            tweenUpdatedDelegate_: transitionUpdate,
+            tweenCompleteDelegate_: end_transitionToMain,
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
             );
     }
 
 
-    
     void HideText()
     {
         SpecialText_Title.End();
@@ -87,14 +139,18 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
         SpecialText_Title.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
     }
 
-    void end_transitionToCredits()
+    void end_transitionToMain()
     {
-        creditsMenu.EnteredMenu();
+        mainMenu.EnteredMenu();
     }
 
-    void transition_hideTextUpdate()
+    void end_transitionToAudio()
     {
-
+        audioMenu.EnteredMenu();
+    }
+    void end_transitionToControls()
+    {
+        controlMenu.EnteredMenu();
     }
 
 
