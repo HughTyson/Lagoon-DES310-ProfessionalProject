@@ -82,7 +82,11 @@ public class PlayerExploreState : BaseState
                         break;
                     }
                 case INTERACTION_TYPE.SLEEP:
-                    { }
+                    {
+                        StateManager.ChangeState(PlayerScriptManager.STATE.SLEEP);
+
+                        GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
+                    }
                     break;
                 case INTERACTION_TYPE.REPAIR:
                     { 
