@@ -514,6 +514,8 @@ public class TweenManager
         List<TweenPath> compositeTweens = new List<TweenPath>();
         float duration = 0;
 
+        public int NumberOfTweenedValues => compositeTweens.Count;
+
         public float Duration { get { return duration; } }
         public TweenPathBundle(params TweenPath[] composites)
         {

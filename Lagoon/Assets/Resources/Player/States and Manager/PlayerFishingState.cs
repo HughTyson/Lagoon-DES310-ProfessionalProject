@@ -562,7 +562,7 @@ public class PlayerFishingState : BaseState
         fishing_state = FISHING_STATE.INTERACTING_FISH;
 
         fishingIndicatorLogic.SetPosition(new Vector3(interactingFish.transform.position.x, GlobalVariables.WATER_LEVEL + 1.0f, interactingFish.transform.position.z));
-        fishingIndicatorLogic.SetIndicator(FishingUI.ANIMATION_STATE.FISH_INTERACTING);
+
 
     }
 
