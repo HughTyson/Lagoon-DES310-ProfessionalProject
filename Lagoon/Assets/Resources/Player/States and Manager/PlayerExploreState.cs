@@ -47,7 +47,6 @@ public class PlayerExploreState : BaseState
     {
         radioIsAvailable = false;
     }
-    
 
     // Update is called once per frame
     public override void StateUpdate()

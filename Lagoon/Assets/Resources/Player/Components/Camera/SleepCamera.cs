@@ -27,6 +27,8 @@ public class SleepCamera : MonoBehaviour
     {
         transform.position = Vector3.Lerp(transform.position, target_position, camera_speed * Time.deltaTime);
 
-        transform.LookAt(look_at);
+        Quaternion rot = Quaternion.LookRotation(look_at - transform.position);
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime);
     }
 }

@@ -16,8 +16,10 @@ public class PlayerSleepState : BaseState
     TypeRef<float> multiplyer = new TypeRef<float>();
 
     TweenManager.TweenPathBundle speed_tween;
-    bool b = false;
 
+    bool start_ = false;
+
+    System.Action<TweenManager.STOP_COMMAND> tween;
 
     // Start is called before the first frame update
     void Start()
@@ -26,17 +28,13 @@ public class PlayerSleepState : BaseState
 
         multiplyer.value = base_speed;
 
-        //atmosphere_tween = new TweenManager.TweenPathBundle(
-        //    new TweenManager.TweenPath(
-        //        new TweenManager.TweenPart_Start(1, 0.3f, 6.0f, TweenManager.CURVE_PRESET.LINEAR)
-        //    )
-        //);
+        speed_tween = new TweenManager.TweenPathBundle(
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(base_speed, max_sleep_speed, 3.0f, TweenManager.CURVE_PRESET.EASE_IN)
+            )
+        );
 
-        //speed_tween = new TweenManager.TweenPathBundle(
-        //    new TweenManager.TweenPath(
-        //        new TweenManager.TweenPart_Start(base_speed, max_sleep_speed, 3.0f, TweenManager.CURVE_PRESET.EASE_IN)
-        //    )
-        //);
+
     }
 
     public void OnEnable()
@@ -45,17 +43,13 @@ public class PlayerSleepState : BaseState
         sleep_camera.enabled = true;
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
 
-        if(b)
-        {
-            //GM_.Instance.tween_manager.StartTweenInstance(
-            //                speed_tween,
-            //                new TypeRef<float>[] { multiplyer },
-            //                tweenUpdatedDelegate_: time_update
-            // );
-        }
+        start_ = true;
 
-        b = true;
+        //change the time for the tween, to crete a better effect
 
+        cycle.ChangeIntensityTweenTime(0.2f);
+
+        cycle.ChangeAtmosphereTweenTime(3f);
 
     }
 
@@ -63,28 +57,49 @@ public class PlayerSleepState : BaseState
     {
         sleep_camera.enabled = false;
         third_person_camera.enabled = true;
+
+        cycle.ChangeIntensityTweenTime(2f);
+
+        cycle.ChangeAtmosphereTweenTime(6f);
+
     }
 
     // Update is called once per frame
     public override void StateUpdate()
     {
 
-        if(cycle.current_time > 0.3f && cycle.current_time < 0.31f)
+        if(start_)
         {
-            //GM_.Instance.tween_manager.StartTweenInstance(
-            //                speed_tween,
-            //                new TypeRef<float>[] { multiplyer },
-            //                tweenUpdatedDelegate_: time_update,
-            //                startingDirection_: TweenManager.DIRECTION.END_TO_START
-            //            );
+            GM_.Instance.tween_manager.StartTweenInstance(
+                            speed_tween,
+                            new TypeRef<float>[] { multiplyer },
+                            tweenUpdatedDelegate_: time_update,
+                            startingDirection_: TweenManager.DIRECTION.START_TO_END
+             );
+
+            start_ = false;
         }
 
-
+        if(cycle.current_time > 0.3f && cycle.current_time < 0.31f)
+        {
+            GM_.Instance.tween_manager.StartTweenInstance(
+                            speed_tween,
+                            new TypeRef<float>[] { multiplyer },
+                            tweenUpdatedDelegate_: time_update,
+                            startingDirection_: TweenManager.DIRECTION.END_TO_START,
+                            tweenCompleteDelegate_: sleep_done
+                        );
+        }
     }
 
     private void time_update()
     {
         cycle.time_multiplyer = multiplyer.value;
+    }
+
+    private void sleep_done()
+    {
+        StateManager.ChangeState(PlayerScriptManager.STATE.EXPLORING);
     }
 
 }
