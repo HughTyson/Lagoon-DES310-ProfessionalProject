@@ -20,16 +20,11 @@ abstract public class MenuScreenBase : MonoBehaviour
 
 
 
-    protected Vector3 default_cameraPosition;
-    protected Vector3 default_cameraRotation;
-
     protected Vector3 current_cameraRotation;
     protected Vector3 current_cameraPosition;
 
-    protected void SetupDefaults()
+    protected void SetupTypeRefArray()
     {
        transitionOutputs = new TypeRef<float>[] {cameraPositionRef_X, cameraPositionRef_Y, cameraPositionRef_Z, cameraRotationRef_X, cameraRotationRef_Y, cameraRotationRef_Z };
-       default_cameraPosition = camera_.transform.position;
-        default_cameraRotation = camera_.transform.rotation.eulerAngles;
     }
 }

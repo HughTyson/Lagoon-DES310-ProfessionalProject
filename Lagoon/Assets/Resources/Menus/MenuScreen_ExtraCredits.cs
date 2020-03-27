@@ -9,15 +9,16 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
 
     [SerializeField] SpecialText.SpecialText SpecialText_Title;
 
-    [SerializeField] SelectableButton hiddenButton;
+    [SerializeField] UnselectableButton goBackButton;
 
     SpecialText.SpecialTextData SpecialTextData_Title = new SpecialText.SpecialTextData();
     void Start()
     {
         Color32 default_colour_programmerTitle = ColourExtension.ColourtoColour32(SpecialText_Title.GetComponent<TMPro.TextMeshProUGUI>().color);
 
+        SetupTypeRefArray();
 
-        hiddenButton.Event_CancelledWhileHovering += start_transitionToCredits;
+        //hiddenButton.Event_CancelledWhileHovering += start_transitionToCredits;
 
         SpecialTextData_Title.CreateCharacterData(SpecialText_Title.GetComponent<TMPro.TextMeshProUGUI>().text);
 
@@ -35,31 +36,25 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
         SpecialTextData_Title.fullTextString.Length
         );
 
-
+        goBackButton.SetButtonsToCheckForPress(InputManager.BUTTON.B);
+        goBackButton.Event_Selected += start_transitionToCredits;
         gameObject.SetActive(false);
     }
 
 
     public override void EnteredMenu()
     {
-        SetupDefaults();
+
 
         gameObject.SetActive(true);
-        hiddenButton.InstantHide();
-
-        SpecialText_Title.Begin(SpecialTextData_Title, textCompleted_: finishedEnteringMenu);
-
+        goBackButton.Show();
+        SpecialText_Title.Begin(SpecialTextData_Title);
     }
 
-    void finishedEnteringMenu()
-    {
-        hiddenButton.InstantShow();
-        hiddenButton.HoveredOver();
-    }
-
+   
     void start_transitionToCredits()
     {
-        hiddenButton.InstantHide();
+        goBackButton.Hide();
 
         HideText();
 
@@ -79,7 +74,7 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
         SpecialText_Title.End();
 
         TweenManager.TweenInstanceInterface inter = GM_.Instance.tween_manager.StartTweenInstance(
-            SelectableButton.hideTween,
+            SelectableButton.default_hideTween,
             new TypeRef<float>[] { textAlpha },
             tweenUpdatedDelegate_: textHideUpdate,
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
@@ -114,8 +109,8 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
         current_cameraRotation.y = cameraRotationRef_Y.value;
 
         Quaternion new_rotation = new Quaternion();
-        new_rotation.eulerAngles = current_cameraRotation + default_cameraRotation;
-        camera_.transform.position = current_cameraPosition + default_cameraPosition;
+        new_rotation.eulerAngles = current_cameraRotation;
+        camera_.transform.position = current_cameraPosition;
         camera_.transform.rotation = new_rotation;
     }
 }
