@@ -11,7 +11,7 @@ public class EventNode : BaseNodeType
         node_type = NODE_TYPE.EVENT;
     }
 
-    public enum EVENT_STATE
+    public enum EVENT_TYPE
     {
         SUPPLY_DROP,
         SOMETHING
@@ -22,5 +22,10 @@ public class EventNode : BaseNodeType
     [Output(ShowBackingValue.Never, ConnectionType.Override)] public int output;
 
     [NodeEnum]
-    public EVENT_STATE event_occured;
+    public EVENT_TYPE event_occured;
+
+    public BaseNodeType NextNode()
+    {
+        return (BaseNodeType)GetPort("output").Connection.node;
+    }
 }

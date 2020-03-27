@@ -26,8 +26,31 @@ public class StoryManager
 
     public event System.Action Event_SkipTextCrawl;
 
+    public event System.Action<GameEventTriggeredArgs> Event_GameEventTriggered;
+
+    public event System.Action<ButtonPressRequestArgs> EventRequest_BlockingButtonPress;
+
 
     SpecialText.Parser specialTextParser;
+
+
+    public class ButtonPressRequestArgs
+    {
+        bool isBlocked = false;
+        InputManager.BUTTON button;
+        public InputManager.BUTTON RequestedButton => button;
+        public bool IsBlocked => isBlocked;
+        public void Block()
+        {
+            isBlocked = true;
+        }
+        public ButtonPressRequestArgs(InputManager.BUTTON requestedButton)
+        {
+            button = requestedButton;
+        }
+
+    }
+
     public class BarrierStartArgs
     {      
         public IReadOnlyList<BarrierNode.BARRIER_STATE> Barriers {get {return barriers;} }
@@ -82,6 +105,17 @@ public class StoryManager
         {
             leftCharacter = leftCharacter_;
             rightCharacter = rightCharacter_;
+        }
+
+    }
+
+    public class GameEventTriggeredArgs
+    {
+        public readonly EventNode.EVENT_TYPE event_type;
+
+        public GameEventTriggeredArgs(EventNode.EVENT_TYPE event_type_)
+        {
+            event_type = event_type_;
         }
 
     }
@@ -163,7 +197,10 @@ public class StoryManager
 
     public void RequestButtonPressA()
     {
-        if (!GM_.Instance.ui.state_conversation.IsTransitioning())
+        ButtonPressRequestArgs requestArgs = new ButtonPressRequestArgs(InputManager.BUTTON.A);
+        EventRequest_BlockingButtonPress?.Invoke(requestArgs);
+
+        if (!requestArgs.IsBlocked)
         {
             if (current_node.GetNodeType() == BaseNodeType.NODE_TYPE.DIALOG)
             {
@@ -179,15 +216,19 @@ public class StoryManager
                         Event_DialogNewText?.Invoke(args);
                     }
             }
-        }
-        else
-        {
-            Event_SkipTextCrawl?.Invoke();
+            else if (current_node.GetNodeType() == BaseNodeType.NODE_TYPE.EVENT)
+            {
+                current_node = ((EventNode)current_node).NextNode();
+                EnteredNewNode();
+            }
         }
     }
     public void RequestButtonPressX()
     {
-        if (!GM_.Instance.ui.state_conversation.IsTransitioning())
+        ButtonPressRequestArgs requestArgs = new ButtonPressRequestArgs(InputManager.BUTTON.X);
+        EventRequest_BlockingButtonPress?.Invoke(requestArgs);
+
+        if (!requestArgs.IsBlocked)
         {
             if (current_node.GetNodeType() == BaseNodeType.NODE_TYPE.BRANCH)
             {
@@ -199,7 +240,10 @@ public class StoryManager
     }
     public void RequestButtonPressB()
     {
-        if (!GM_.Instance.ui.state_conversation.IsTransitioning())
+        ButtonPressRequestArgs requestArgs = new ButtonPressRequestArgs(InputManager.BUTTON.B);
+        EventRequest_BlockingButtonPress?.Invoke(requestArgs);
+
+        if (!requestArgs.IsBlocked)
         {
             if (current_node.GetNodeType() == BaseNodeType.NODE_TYPE.BRANCH)
             {
@@ -252,7 +296,8 @@ public class StoryManager
                 }
             case BaseNodeType.NODE_TYPE.EVENT:
                 {
-
+                    EventNode node = ((EventNode)current_node);
+                    Event_GameEventTriggered?.Invoke(new GameEventTriggeredArgs(node.event_occured));
                     break;
                 }
             case BaseNodeType.NODE_TYPE.BARRIER:
