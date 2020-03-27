@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class StoryEventHandler
 {
-    // Start is called before the first frame update
-    void Start()
+    // event : Event Started
+    // event request: Block Completed
+    // event : Event Completed
+
+
+    // steps
+    // Subscribe to Event Started, Event Completed Request and Event Completed
+    // Event Started: Called when an event has been triggered (e.i Supply Crate Event has been triggered)
+    // EventRequest Block Completed: Gives opportunity for subscibers to block the completed event from triggering
+    // Event Completed: Called when an event has been completed
+
+    // Call "EventCompletedRequest" When 
+
+    public bool EventCompletedRequest()
     {
-        
+      //  Event_Completed?.Invoke();
+        return true;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

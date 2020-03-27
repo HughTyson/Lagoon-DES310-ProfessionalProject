@@ -26,6 +26,8 @@ public class UIStateConversation : MonoBehaviour
         GM_.Instance.story.Event_BranchStart += BranchStart;
         GM_.Instance.story.Event_SkipTextCrawl += SkipTextCrawl;
         GM_.Instance.story.Event_ConvoExit += ConversationExit;
+        GM_.Instance.story.EventRequest_BlockingButtonPress += ShouldBlockButtons;
+        GM_.Instance.story.Event_GameEventTriggered += GameEventTriggered;
 
         dialogBox.Event_BoxFinishedAppearing += dialogStartTextShouldShowIterate;
 
@@ -34,6 +36,9 @@ public class UIStateConversation : MonoBehaviour
 
         leftPortrait.Event_FinishedAppearing += dialogStartTextShouldShowIterate;
         rightPortrait.Event_FinishedAppearing += dialogStartTextShouldShowIterate;
+
+
+
     }
 
 
@@ -55,6 +60,10 @@ public class UIStateConversation : MonoBehaviour
         rightPortrait.Appear(rightCharacter);
     }
 
+    void GameEventTriggered(StoryManager.GameEventTriggeredArgs args)
+    {
+
+    }
 
     void DialogStart(StoryManager.DialogEnterArgs args)
     {
@@ -240,16 +249,27 @@ public class UIStateConversation : MonoBehaviour
             choiceBoxes.SkipTransition();
     }
 
-    public bool IsTransitioning()
-    {
+    void ShouldBlockButtons(StoryManager.ButtonPressRequestArgs request)
+    {       
         if (leftPortrait.IsTransitioning())
-            return true;
+        {
+            request.Block();
+            return;
+        }
         if (rightPortrait.IsTransitioning())
-            return true;
+        {
+            request.Block();
+            return;
+        }
         if (dialogBox.IsTransitioning())
-            return true;
+        {
+            request.Block();
+            return;
+        }
         if (choiceBoxes.IsTransitioning())
-            return true;
-        return false;
+        {
+            request.Block();
+            return;
+        }
     }
 }
