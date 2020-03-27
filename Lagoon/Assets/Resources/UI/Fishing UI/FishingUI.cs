@@ -9,7 +9,7 @@ public class FishingUI : MonoBehaviour
     [SerializeField] HDRP_SpriteSheet spriteSheet_FishBite;
     [SerializeField] HDRP_SpriteSheet spriteSheet_FishTest;
 
-    Dictionary<ANIMATION_STATE, int> Hashes = new Dictionary<ANIMATION_STATE, int>();
+
     public enum ANIMATION_STATE
     { 
     NOT_ACTIVE,
@@ -21,12 +21,113 @@ public class FishingUI : MonoBehaviour
 
     Transform LookAt;
 
+    TweenManager.TweenPathBundle fishBiteIndicatorTween;
+    TweenManager.TweenPathBundle fishTestIndicatorTween;
 
+    TweenAnimator.Animation fishBiteIndicatorAnimation;
+    TweenAnimator.Animation fishTestIndicatorAnimation;
+    HDRP_Unlit_ManualAnimator manualSpriteAnimator;
+    Material material;
 
-    HDRP_Unlit_Animator animator;
     void Awake()
     {
-        animator = GetComponent<HDRP_Unlit_Animator>();
+        manualSpriteAnimator = GetComponentInChildren<HDRP_Unlit_ManualAnimator>();
+        material = GetComponentInChildren<MeshRenderer>().material;
+    }
+
+    private void Start()
+    {
+        fishBiteIndicatorTween = new TweenManager.TweenPathBundle(
+            // frame index
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(0, (spriteSheet_FishBite.Animations[0].FrameIndexes.Count - 1) + 0.01f, 0.25f, TweenManager.CURVE_PRESET.EASE_IN),
+                new TweenManager.TweenPart_Delay(0.5f)
+                ),
+            // alpha
+            new TweenManager.TweenPath(
+                 new TweenManager.TweenPart_Start(0, 1, 0.25f, TweenManager.CURVE_PRESET.LINEAR),
+                 new TweenManager.TweenPart_Delay(0.5f),
+                 new TweenManager.TweenPart_Continue(0, 0.25f, TweenManager.CURVE_PRESET.LINEAR)
+                ),
+            // X scale
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(transform.localScale.x * 2.0f, transform.localScale.x, 0.40f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
+                ),
+            // Y scale
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start((transform.localScale.x * spriteSheet_FishBite.SpriteToHeightAspectRation)/2.0f, transform.localScale.x * spriteSheet_FishBite.SpriteToHeightAspectRation, 0.40f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
+                )
+
+            );
+
+        fishBiteIndicatorAnimation = new TweenAnimator.Animation(
+            fishBiteIndicatorTween,
+            new TweenAnimator.Transf_(
+                transform,
+                local_scale: new TweenAnimator.Transf_.LocalScale_(true, 2, true, 3, false, -1, TweenAnimator.MOD_TYPE.ABSOLUTE)
+                ),
+            new TweenAnimator.HDRP_Animator_(
+                manualSpriteAnimator,
+               new TweenAnimator.HDRP_Animator_.Frame_(
+                0,
+                TweenAnimator.Base.IntProperty.INT_SELECTION_METHOD.FLOOR,
+                TweenAnimator.MOD_TYPE.ABSOLUTE
+                )
+                ),
+            new TweenAnimator.HDRP_Unlit_Material_(
+                material,
+                new TweenAnimator.HDRP_Unlit_Material_.Color_(
+                    false, 0, false, 0, false, 0, true, 1,
+                    TweenAnimator.MOD_TYPE.ABSOLUTE
+                    )
+                )
+                );
+
+        fishTestIndicatorTween = new TweenManager.TweenPathBundle(
+            // frame index
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(0, (spriteSheet_FishTest.Animations[0].FrameIndexes.Count - 1) + 0.01f, 0.25f, TweenManager.CURVE_PRESET.EASE_IN),
+                new TweenManager.TweenPart_Delay(0.5f)
+                ),
+            // alpha
+            new TweenManager.TweenPath(
+                 new TweenManager.TweenPart_Start(0, 1, 0.25f, TweenManager.CURVE_PRESET.LINEAR),
+                 new TweenManager.TweenPart_Delay(0.5f),
+                 new TweenManager.TweenPart_Continue(0, 0.25f, TweenManager.CURVE_PRESET.LINEAR)
+                ),
+            // X scale
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(transform.localScale.x * 2.0f, transform.localScale.x, 0.40f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
+                ),
+            // Y scale
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start((transform.localScale.x * spriteSheet_FishTest.SpriteToHeightAspectRation) / 2.0f, transform.localScale.x * spriteSheet_FishTest.SpriteToHeightAspectRation, 0.40f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
+                )
+
+            );
+
+        fishTestIndicatorAnimation = new TweenAnimator.Animation(
+            fishTestIndicatorTween,
+            new TweenAnimator.Transf_(
+                transform,
+                local_scale: new TweenAnimator.Transf_.LocalScale_(true, 2, true, 3, false, -1, TweenAnimator.MOD_TYPE.ABSOLUTE)
+                ),
+            new TweenAnimator.HDRP_Animator_(
+                manualSpriteAnimator,
+               new TweenAnimator.HDRP_Animator_.Frame_(
+                0,
+                TweenAnimator.Base.IntProperty.INT_SELECTION_METHOD.FLOOR,
+                TweenAnimator.MOD_TYPE.ABSOLUTE
+                )
+                ),
+            new TweenAnimator.HDRP_Unlit_Material_(
+                material,
+                new TweenAnimator.HDRP_Unlit_Material_.Color_(
+                    false, 0, false, 0, false, 0, true, 1,
+                    TweenAnimator.MOD_TYPE.ABSOLUTE
+                    )
+                )
+                );
     }
 
     private void OnEnable()
@@ -45,23 +146,21 @@ public class FishingUI : MonoBehaviour
         {
             case ANIMATION_STATE.NOT_ACTIVE:
                 {
-                    animator.StopAnimation();
+                    fishBiteIndicatorAnimation.StopAnimation(TweenManager.STOP_COMMAND.IMMEDIATE);
+                    fishTestIndicatorAnimation.StopAnimation(TweenManager.STOP_COMMAND.IMMEDIATE);
+                    manualSpriteAnimator.Hide();
                     break;
                 }
             case ANIMATION_STATE.FISH_BITE:
                 {
-                    Vector3 scale = transform.localScale;
-                    scale.y = scale.x * spriteSheet_FishBite.SpriteToHeightAspectRation;
-                    transform.localScale = scale;
-                    animator.PlayAnimation(spriteSheet_FishBite.Animations[0]);
+                    manualSpriteAnimator.SetAnimation(spriteSheet_FishBite.Animations[0]);
+                    fishBiteIndicatorAnimation.PlayAnimation();
                     break;
                 }
             case ANIMATION_STATE.FISH_TEST:
                 {
-                    Vector3 scale = transform.localScale;
-                    scale.y = scale.x * spriteSheet_FishTest.SpriteToHeightAspectRation;
-                    transform.localScale = scale;
-                    animator.PlayAnimation(spriteSheet_FishTest.Animations[0]);
+                    manualSpriteAnimator.SetAnimation(spriteSheet_FishTest.Animations[0]);
+                    fishTestIndicatorAnimation.PlayAnimation();
                     break;
                 }
         }

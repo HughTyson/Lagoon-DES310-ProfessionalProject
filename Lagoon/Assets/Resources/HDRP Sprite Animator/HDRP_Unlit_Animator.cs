@@ -78,19 +78,12 @@ public class HDRP_Unlit_Animator : MonoBehaviour
         isPlaying = true;
 
 
-        Vector2 startingOffset = Vector2.zero;
-
-        // required alligment offset if a flip on an axis is performed
-        if (flipOnX)
-            startingOffset.x += 1;
-        if (flipOnY)
-            startingOffset.y += 1;     
-
-        current_animation.Setup(frames.FrameIndexes, speed * frames.Duration, startingOffset, spriteSheet.Offset,  startFromEnd, time_format_, anim_player, animationCompletedDelegate, animationInterupted);
+        current_animation.Setup(frames.FrameIndexes, speed * frames.Duration, flipOnX, flipOnY, spriteSheet.Offset,  startFromEnd, time_format_, anim_player, animationCompletedDelegate, animationInterupted);
         current_animation.Update();
         MyMaterial.SetTextureOffset(meshTextureID, current_animation.CurrentOffset);
         Show();
     }
+
 
     public void Hide()
     {
@@ -106,9 +99,9 @@ public class HDRP_Unlit_Animator : MonoBehaviour
         if (isPlaying)
         {
             isPlaying = false;
-            Hide();
             current_animation.CallAnimationInterupted();
         }
+        Hide();
     }
 
     // Update is called once per frame
@@ -161,12 +154,12 @@ public class HDRP_Unlit_Animator : MonoBehaviour
             animationInteruptedDelegate?.Invoke();
         }
 
-        public void Setup(List<Vector2Int> frame_indexes_, float duration_, Vector2 startingOffset_, Vector2 tileOffset_, bool fromEndToStart_, TIME_FORMAT time_format_, ANIMATION_PLAYER animation_player_, System.Action animationCompletedDelegate_, System.Action animationInteruptedDelegate_)
+        public void Setup(List<Vector2Int> frame_indexes_, float duration_, bool flipOnX, bool flipOnY, Vector2 tileOffset_, bool fromEndToStart_, TIME_FORMAT time_format_, ANIMATION_PLAYER animation_player_, System.Action animationCompletedDelegate_, System.Action animationInteruptedDelegate_)
         {
             isFinished = false;
             frame_indexes = frame_indexes_;
             duration = duration_;
-            startingOffset = startingOffset_;
+
             tileOffset = tileOffset_;
             fromEndToStart = fromEndToStart_;
             time_format = time_format_;
@@ -176,6 +169,14 @@ public class HDRP_Unlit_Animator : MonoBehaviour
 
             current_index = 0;
             current_time = 0;
+
+
+            startingOffset = Vector2.zero;
+            // required alligment offset if a flip on an axis is performed
+            if (flipOnX)
+                startingOffset.x += 1;
+            if (flipOnY)
+                startingOffset.y += 1;
         }
 
         public void Update()

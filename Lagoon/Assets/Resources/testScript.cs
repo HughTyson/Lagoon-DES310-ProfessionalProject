@@ -44,9 +44,9 @@ public class testScript : MonoBehaviour
         animationTestTween,
         new TweenAnimator.Transf_(
             transform,
-            position: new TweenAnimator.Transf_.Position(true,0, true,1, true,2, TweenAnimator.MOD_TYPE.OFFSET),
-            rotation: new TweenAnimator.Transf_.Rotation(true,3, true,3, true,4, TweenAnimator.MOD_TYPE.OFFSET),
-            local_scale: new TweenAnimator.Transf_.LocalScale(true,5, false,0, false,0, TweenAnimator.MOD_TYPE.ABSOLUTE)
+            position: new TweenAnimator.Transf_.Position_(true,0, true,1, true,2, TweenAnimator.MOD_TYPE.OFFSET),
+            rotation: new TweenAnimator.Transf_.Rotation_(true,3, true,3, true,4, TweenAnimator.MOD_TYPE.OFFSET),
+            local_scale: new TweenAnimator.Transf_.LocalScale_(true,5, false,0, false,0, TweenAnimator.MOD_TYPE.ABSOLUTE)
             )
         );
     }
