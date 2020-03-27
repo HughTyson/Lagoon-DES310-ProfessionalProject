@@ -19,6 +19,7 @@ public class PlayerRepairState : BaseState
 
     float counter;
 
+    
 
     enum RepairState
     {
@@ -155,14 +156,14 @@ public class PlayerRepairState : BaseState
                                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FUSELAGE_LEFT_MID");
                             }
                             break;
-                        case PlaneSegments.SegmentType.FUSELAGE_LEFT_BACK:
+                        case PlaneSegments.SegmentType.TAIL:
                             {
 
-                                plane_camera.active_segment_type = PlaneSegments.SegmentType.FUSELAGE_LEFT_BACK;
+                                plane_camera.active_segment_type = PlaneSegments.SegmentType.TAIL;
                                 plane_camera.current_look_at = plane_segments[selected_part].transform;
 
                                 GM_.Instance.ui.helperButtons.DisableAll();
-                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FUSELAGE_LEFT_BACK");
+                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "TAIL");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_RIGHT_FRONT:
@@ -184,8 +185,6 @@ public class PlayerRepairState : BaseState
                                 GM_.Instance.ui.helperButtons.DisableAll();
                                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FUSELAGE_RIGHT_MID");
                             }
-                            break;
-                        case PlaneSegments.SegmentType.FUSELAGE_RIGHT_BACK:
                             break;
                         default:
                             break;
@@ -216,7 +215,6 @@ public class PlayerRepairState : BaseState
 
     void HandelInput()
     {
-
         if (!plane_camera.disable_input)
         {
             if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A)) //if the a button is pressed then updaate the segment that is currently selected
@@ -246,7 +244,7 @@ public class PlayerRepairState : BaseState
                         counter = 0;
                         selected_part++;
 
-                        if (selected_part > 11 - 1)
+                        if (selected_part > plane_segments.Count - 1)
                         {
                             selected_part = 0;
                         }
@@ -266,7 +264,7 @@ public class PlayerRepairState : BaseState
 
                         if (selected_part < 0)
                         {
-                            selected_part = 11 - 1;
+                            selected_part = plane_segments.Count - 1;
                         }
                     }
                     else
@@ -278,6 +276,10 @@ public class PlayerRepairState : BaseState
                 {
                     counter = transition_time;
                 }
+
+
+                 Debug.Log(selected_part);
+
             }
         }
 

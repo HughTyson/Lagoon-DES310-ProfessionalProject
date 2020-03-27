@@ -37,6 +37,9 @@ public class DayNightCycle : MonoBehaviour
     TypeRef<float> sun_intesity = new TypeRef<float>(0);
     TypeRef<float> moon_intesity = new TypeRef<float>(0);
 
+    float base_moon_intensity;
+    float base_sun_intensity;
+
     bool change = true;
 
     // Start is called before the first frame update
@@ -61,28 +64,20 @@ public class DayNightCycle : MonoBehaviour
 
         active = ACTIVE.SUN;
 
-        atmosphere_tween = new TweenManager.TweenPathBundle(
-            new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(1, 0.3f, 6.0f, TweenManager.CURVE_PRESET.LINEAR)
-            )
-        );
+
 
         sun_intesity.value = sun.intensity;
+        base_sun_intensity = sun.intensity;
+
+
         moon_intesity.value = moon.intensity;
+        base_moon_intensity = moon.intensity;
 
-        sun_intensity_tween = new TweenManager.TweenPathBundle(
-            new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(sun_intesity.value, 0, 2f, TweenManager.CURVE_PRESET.EASE_OUT)
-            )
-        );
+        ChangeIntensityTweenTime(2f);
 
-        moon_intensity_tween = new TweenManager.TweenPathBundle(
-            new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(moon_intesity.value, 0, 2f, TweenManager.CURVE_PRESET.EASE_OUT)
-            )
-        );
+        ChangeAtmosphereTweenTime(6f);
 
-        current_time = 0.3f;
+        current_time = 0.5f;
         secondsInFullDay = 600f;
 
     }
@@ -255,5 +250,29 @@ public class DayNightCycle : MonoBehaviour
             tweenUpdatedDelegate_: SunIntensity,
             startingDirection_: TweenManager.DIRECTION.END_TO_START
         );
+    }
+
+    public void ChangeIntensityTweenTime(float time)
+    {
+        sun_intensity_tween = new TweenManager.TweenPathBundle(
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(base_sun_intensity, 0, time, TweenManager.CURVE_PRESET.EASE_OUT)
+            )
+        );
+
+        moon_intensity_tween = new TweenManager.TweenPathBundle(
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(base_moon_intensity, 0, time, TweenManager.CURVE_PRESET.EASE_OUT)
+            )
+        );
+    }
+
+    public void ChangeAtmosphereTweenTime(float time)
+    {
+        atmosphere_tween = new TweenManager.TweenPathBundle(
+    new TweenManager.TweenPath(
+        new TweenManager.TweenPart_Start(1, 0.3f, 6.0f, TweenManager.CURVE_PRESET.LINEAR)
+    )
+);
     }
 }

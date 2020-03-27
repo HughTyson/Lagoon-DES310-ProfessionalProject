@@ -27,10 +27,9 @@ public class PlaneSegments : MonoBehaviour
         RIGHTWING,
         FUSELAGE_LEFT_FRONT,
         FUSELAGE_LEFT_MID,
-        FUSELAGE_LEFT_BACK,
+        TAIL,
         FUSELAGE_RIGHT_FRONT,
         FUSELAGE_RIGHT_MID,
-        FUSELAGE_RIGHT_BACK
     }
 
     enum State
