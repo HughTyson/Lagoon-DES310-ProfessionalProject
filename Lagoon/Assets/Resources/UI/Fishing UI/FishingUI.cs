@@ -128,11 +128,13 @@ public class FishingUI : MonoBehaviour
                     )
                 )
                 );
+
+        SetIndicator(ANIMATION_STATE.NOT_ACTIVE);
     }
 
     private void OnEnable()
     {
-        SetIndicator(ANIMATION_STATE.NOT_ACTIVE);
+
     }
 
     private void OnDisable()

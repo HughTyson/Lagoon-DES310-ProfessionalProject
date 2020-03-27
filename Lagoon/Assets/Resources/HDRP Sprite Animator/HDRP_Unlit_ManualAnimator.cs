@@ -28,7 +28,6 @@ public class HDRP_Unlit_ManualAnimator : MonoBehaviour
             }
             return 0;
         }
-    
     }
 
 
@@ -65,6 +64,7 @@ public class HDRP_Unlit_ManualAnimator : MonoBehaviour
         spriteSheet = sprite_sheet;
         MyMaterial.SetTexture(meshTextureID, spriteSheet.SpriteSheetTexture);
         MyMaterial.SetTextureScale(meshTextureID, spriteSheet.Offset);
+      
     }
 
 
