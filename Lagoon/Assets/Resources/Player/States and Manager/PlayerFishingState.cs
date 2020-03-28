@@ -215,16 +215,9 @@ public class PlayerFishingState : BaseState
                 {
 
 
-                    if (fishingBob.GetComponentInChildren<BuoyancyPhysics>().GetCurrentState() == BuoyancyPhysics.STATE.IN_WATER || fishingBob.GetComponentInChildren<BuoyancyPhysics>().IsInEquilibrium()) // bob has settled
+                    if (fishingBob.GetComponentInChildren<BuoyancyPhysics>().GetCurrentState() == BuoyancyPhysics.STATE.IN_WATER || fishingBob.GetComponentInChildren<BuoyancyPhysics>().IsInEquilibrium() || GM_.Instance.input.GetAxis(InputManager.AXIS.RT) > 0.5f) // bob has settled
                     {
-                        fishingLineLogic.BeganFishing();
-                        fishingBob.GetComponentInChildren<FishingBobLogic>().BeganFishing();
-                        fishingProjectileIndicator.SetActive(false);
-                        fishing_state = FISHING_STATE.FISHING;
-
-                        GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.RT, "Reel In / Hook Fish");
-
-
+                        StartFishing();
                     }
                     else // bob is moving through the air
                     {
@@ -365,7 +358,6 @@ public class PlayerFishingState : BaseState
         }
     }
 
-
     public override void StateFixedUpdate()
     {
         switch(fishing_state)
@@ -383,6 +375,18 @@ public class PlayerFishingState : BaseState
 
     float castingTime = 0.0f;
     float castingTimeout = 0.0f;
+
+
+    // bob has landed in water and can now fish
+    void StartFishing()
+    {
+        fishingBob.GetComponent<FishingBobCollisionEvent>().Event_EnterCollision -= StartFishing;
+        fishingLineLogic.BeganFishing();
+        fishingBob.GetComponentInChildren<FishingBobLogic>().BeganFishing();
+        fishingProjectileIndicator.SetActive(false);
+        fishing_state = FISHING_STATE.FISHING;
+        GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.RT, "Reel In / Hook Fish");
+    }
     void BeginPowerUpThrow()
     {
         GM_.Instance.ui.helperButtons.EnableLeftStick(false, false, true, false, "Cast");
@@ -395,6 +399,7 @@ public class PlayerFishingState : BaseState
 
     void CancelPowerUpThrow()
     {
+        fishingBob.GetComponent<FishingBobCollisionEvent>().Event_EnterCollision -= StartFishing;
         fishingBob.SetActive(false);
         fishingProjectileIndicator.SetActive(false);
 
@@ -421,6 +426,7 @@ public class PlayerFishingState : BaseState
     void PowerUpThrow()
     {
         GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.B, "Cancel Cast");
+        GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.RT, "Hook Early");
 
         Vector3 cast_direction = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
 
@@ -440,7 +446,7 @@ public class PlayerFishingState : BaseState
             Physics.IgnoreCollision(GetComponent<CharacterController>(), colliders[i]);
         }
         fishingBob.GetComponentInChildren<FishingBobLogic>().CastBob(fishingRodTip.position, cast_direction * Mathf.PingPong(castingTime, 1.0f) * fishingCastVelocity);
-
+        fishingBob.GetComponent<FishingBobCollisionEvent>().Event_EnterCollision += StartFishing;
 
 
 
@@ -514,6 +520,8 @@ public class PlayerFishingState : BaseState
 
     void CancelCasted()
     {
+        fishingBob.GetComponent<FishingBobCollisionEvent>().Event_EnterCollision -= StartFishing;
+
         GM_.Instance.ui.helperButtons.DisableAll();
         GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.B, "Cancel Fishing");
         GM_.Instance.ui.helperButtons.EnableLeftStick(false, false, false, true, "Begin Cast");

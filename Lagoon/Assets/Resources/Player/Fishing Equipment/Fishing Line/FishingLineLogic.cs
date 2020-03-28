@@ -7,8 +7,7 @@ public class FishingLineLogic : MonoBehaviour
     // Start is called before the first frame update
 
     [SerializeField] Transform FishingLineTip;
-    [SerializeField] GameObject fishingBob;
-
+    [SerializeField] GameObject fishingBobLineLoop;
 
     [SerializeField] int accuracyItirations = 5;
 
@@ -162,38 +161,38 @@ public class FishingLineLogic : MonoBehaviour
     }
 
     // Update is called once per frame
-    void LateUpdate() // in late update to prevent rendering line faster than fishing rod mesh
+    void LateUpdate()
     {
-
 
         // Collisions
 
         IReadOnlyList<LineParticle> lineParticles = LineParticlesPool.ActiveObjects;
         IReadOnlyList<RodJointParticles> rodLineParticles = RodLineParticlesPool.ActiveObjects;
 
-        for (int i = 0; i < lineParticles.Count; i++)
-            {
-                
-                if (lineParticles[i].position.y < GlobalVariables.WATER_LEVEL)
-                {
-                    lineParticles[i].accelleration = Physics.gravity * -0.1f;
-                    lineParticles[i].dragPercentage = 0.1f;
-                }
-                else
-                {
-                    lineParticles[i].accelleration = Physics.gravity * 0.1f;
-                    lineParticles[i].dragPercentage = 0.01f;
-                }
-            }
-
             switch (current_state)
             {
             case STATE.CASTING: // do casting in update to keep a smooth look as soaring through the sky
                 {
 
+                    for (int i = 0; i < lineParticles.Count; i++)
+                    {
+
+                        if (lineParticles[i].position.y < GlobalVariables.WATER_LEVEL)
+                        {
+                            lineParticles[i].accelleration = Physics.gravity * -0.1f;
+                            lineParticles[i].dragPercentage = 0.1f;
+                        }
+                        else
+                        {
+                            lineParticles[i].accelleration = Physics.gravity * 0.1f;
+                            lineParticles[i].dragPercentage = 0.01f;
+                        }
+                    }
+
+
                     lineParticles[lineParticles.Count - 1].position = FishingLineTip.position;
-                    lineParticles[0].position = fishingBob.transform.position;
-                    lineParticles[0].oldPosition = fishingBob.transform.position;
+                    lineParticles[0].position = fishingBobLineLoop.transform.position;
+                    lineParticles[0].oldPosition = fishingBobLineLoop.transform.position;
 
                     setDistanceBetweenParticle0And1 = Vector3.Distance(lineParticles[lineParticles.Count - 1].position, lineParticles[lineParticles.Count - 2].position); // change distance between 
 
@@ -219,7 +218,7 @@ public class FishingLineLogic : MonoBehaviour
                     for (int k = 0; k < accuracyItirations; k++)
                     {
                         lineParticles[lineParticles.Count - 1].position = FishingLineTip.position;
-                        lineParticles[0].position = fishingBob.transform.position;
+                        lineParticles[0].position = fishingBobLineLoop.transform.position;
 
                         PoleConstraint(lineParticles[lineParticles.Count - 1], lineParticles[lineParticles.Count - 2], setDistanceBetweenParticle0And1); // makes a distance transition between particle 0 and 1
 
@@ -236,6 +235,22 @@ public class FishingLineLogic : MonoBehaviour
             case STATE.FISHING:
                     {
 
+                    for (int i = 0; i < lineParticles.Count; i++)
+                    {
+
+                        if (lineParticles[i].position.y < GlobalVariables.WATER_LEVEL)
+                        {
+                            lineParticles[i].accelleration = Physics.gravity * -0.1f;
+                            lineParticles[i].dragPercentage = 0.1f;
+                        }
+                        else
+                        {
+                            lineParticles[i].accelleration = Physics.gravity * 0.1f;
+                            lineParticles[i].dragPercentage = 0.01f;
+                        }
+                    }
+
+
                     if (willReelInOnUpdate)
                     {
                         if (lineParticles.Count != 0)
@@ -247,7 +262,7 @@ public class FishingLineLogic : MonoBehaviour
                     }
 
                     lineParticles[lineParticles.Count - 1].position = FishingLineTip.position;
-                    lineParticles[0].position = fishingBob.transform.position;
+                    lineParticles[0].position = fishingBobLineLoop.transform.position;
 
 
                     for (int i = lineParticles.Count - 1; i >= 0; i--)
@@ -257,7 +272,7 @@ public class FishingLineLogic : MonoBehaviour
 
 
                     lineParticles[lineParticles.Count - 1].position = FishingLineTip.position;
-                    lineParticles[0].position = fishingBob.transform.position;
+                    lineParticles[0].position = fishingBobLineLoop.transform.position;
 
                     for (int k = 0; k < accuracyItirations; k++)
                     {
@@ -274,7 +289,7 @@ public class FishingLineLogic : MonoBehaviour
                     {
 
                     lineParticles[lineParticles.Count - 1].position = FishingLineTip.position;
-                    lineParticles[0].position = fishingBob.transform.position;
+                    lineParticles[0].position = fishingBobLineLoop.transform.position;
 
 
                     fishingLineRenderer.material.SetColor("_UnlitColor", Color.Lerp(snapping_colour, normal_colour, fightingFish.GetLineStrengthPercentageLeft()));
@@ -292,7 +307,7 @@ public class FishingLineLogic : MonoBehaviour
             linePositions[i] = lineParticles[i].position;
 
         }
-        linePositions[0] = fishingBob.transform.position;
+        linePositions[0] = fishingBobLineLoop.transform.position;
         linePositions[lineParticles.Count - 1] = FishingLineTip.position;
         fishingLineRenderer.SetPositions(linePositions);
 
@@ -428,12 +443,12 @@ public class FishingLineLogic : MonoBehaviour
             current_rope_length += Vector3.Distance(lineParticles[i].position, lineParticles[i+1].position);
         }
 
-        float fromTipToBob = Vector3.Distance(fishingBob.transform.position, FishingLineTip.position);
+        float fromTipToBob = Vector3.Distance(fishingBobLineLoop.transform.position, FishingLineTip.position);
 
         float extra_tension_multiplier = 1.01f;
         float extra_length = Mathf.Max(fromTipToBob - (current_rope_length*extra_tension_multiplier), 0);
 
-        return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length;
+        return (FishingLineTip.position - fishingBobLineLoop.transform.position).normalized * extra_length;
     }
 
     public Vector3 EndOfLineForce()
@@ -441,7 +456,7 @@ public class FishingLineLogic : MonoBehaviour
         if (current_state != STATE.NOT_ACTIVE)
         {
 
-            if (Vector3.Distance(FishingLineTip.position, fishingBob.transform.position) > 0.01f)
+            if (Vector3.Distance(FishingLineTip.position, fishingBobLineLoop.transform.position) > 0.01f)
             {
                 IReadOnlyList<LineParticle> lineParticles = LineParticlesPool.ActiveObjects;
 
@@ -454,16 +469,16 @@ public class FishingLineLogic : MonoBehaviour
                 {
                     case STATE.CASTING:
                         {
-                            return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * 10.0f;
+                            return (FishingLineTip.position - fishingBobLineLoop.transform.position).normalized * extra_length * 10.0f;
                         }
                     case STATE.FISHING:
                         {
                             test += Time.deltaTime;
-                            return (FishingLineTip.position - fishingBob.transform.position).normalized * extra_length * 3.0f; // lerp force multiple settles the fishing rod rather than making a clear force difference
+                            return (FishingLineTip.position - fishingBobLineLoop.transform.position).normalized * extra_length * 3.0f; // lerp force multiple settles the fishing rod rather than making a clear force difference
                         }
                     case STATE.FIGHTING:
                         {
-                            return (FishingLineTip.position - fishingBob.transform.position).normalized * 5.0f;
+                            return (FishingLineTip.position - fishingBobLineLoop.transform.position).normalized * 5.0f;
 
                         }
                 }

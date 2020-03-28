@@ -23,6 +23,11 @@ public class FishingBobLogic : MonoBehaviour
     [SerializeField] FishingLineLogic fishingLineLogic;
 
     [SerializeField] GameObject meshObject;
+    [SerializeField] GameObject lineLoop;
+    [SerializeField] FishingBobCollisionEvent collisionEvent;
+
+
+    public FishingBobCollisionEvent CollisionEvents => collisionEvent;
     public enum STATE
     {
         NOT_ACTIVE,
@@ -138,7 +143,15 @@ public class FishingBobLogic : MonoBehaviour
         {
             case STATE.CASTING: // the bob is moving and fish will ignore it
                 {
-                    
+                    Vector3 current_velocity = GetComponentInParent<Rigidbody>().velocity;
+                 
+                    if (current_velocity.magnitude > 0.001f)
+                    {
+                        Vector3 angles = Quaternion.LookRotation(current_velocity.normalized).eulerAngles;
+                        angles.x -= 90;
+                        GetComponentInParent<Rigidbody>().MoveRotation(Quaternion.Euler(angles));
+                    }
+                   
                     break;
                 }
             case STATE.CASTED:
@@ -157,7 +170,7 @@ public class FishingBobLogic : MonoBehaviour
                     //      if (dampened_magnitude > 0)
                     ///  {
                     ///  
-                    GetComponentInParent<Rigidbody>().AddForce(fishingLineLogic.EndOfLineVelocity(), ForceMode.VelocityChange);
+                    GetComponentInParent<Rigidbody>().AddForceAtPosition(fishingLineLogic.EndOfLineVelocity(), lineLoop.transform.position, ForceMode.VelocityChange);
                     //   GetComponentInParent<Rigidbody>().AddForce(fishingLineLogic.EndOfLineVelocity().normalized * dampened_magnitude, ForceMode.VelocityChange);
                     //     }
 
@@ -278,9 +291,6 @@ public class FishingBobLogic : MonoBehaviour
         current_state = STATE.FISH_INTERACTING;
         interactingFish = interactingFish_;
     }
-
-
-
 
     public STATE GetState()
     {

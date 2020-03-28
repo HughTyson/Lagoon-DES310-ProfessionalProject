@@ -27,7 +27,10 @@ public class UIStateConversation : MonoBehaviour
         GM_.Instance.story.Event_SkipTextCrawl += SkipTextCrawl;
         GM_.Instance.story.Event_ConvoExit += ConversationExit;
         GM_.Instance.story.EventRequest_BlockingButtonPress += ShouldBlockButtons;
-        GM_.Instance.story.Event_GameEventTriggered += GameEventTriggered;
+        GM_.Instance.story.Event_GameEventStart += GameEventTriggered;
+
+
+
 
         dialogBox.Event_BoxFinishedAppearing += dialogStartTextShouldShowIterate;
 
@@ -62,7 +65,26 @@ public class UIStateConversation : MonoBehaviour
 
     void GameEventTriggered(StoryManager.GameEventTriggeredArgs args)
     {
+        //leftPortrait.Disappear();
+        //rightPortrait.Disappear();
+        leftPortrait.NotTalking();
+        rightPortrait.NotTalking();
+        GM_.Instance.story.EventRequest_GameEventContinue += BlockingGameEventContinue;
+        dialogBox.Event_Dissapeared += UnblockGameEvent;
 
+        if (dialogBox.IsBoxShowing())
+            dialogBox.Disappear();
+    }
+    void BlockingGameEventContinue(StoryManager.EventRequestArgs args)
+    {
+        args.Block();
+    }
+    void UnblockGameEvent()
+    {
+        dialogBox.Event_Dissapeared -= UnblockGameEvent;
+        GM_.Instance.story.EventRequest_GameEventContinue -= BlockingGameEventContinue;
+
+        GM_.Instance.story.RequestGameEventContinue();
     }
 
     void DialogStart(StoryManager.DialogEnterArgs args)
