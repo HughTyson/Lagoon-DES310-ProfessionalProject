@@ -74,9 +74,6 @@ public class CameraCollision : MonoBehaviour
             
             if(Physics.Raycast(ray, out hit, distance, camera_collisison_layer))
             {
-
-                Debug.Log(hit.collider.gameObject.layer);
-
                 return true;    //a collision has been detected
             }
         }
