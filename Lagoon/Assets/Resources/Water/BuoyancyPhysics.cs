@@ -99,11 +99,7 @@ public class BuoyancyPhysics : MonoBehaviour
         {
             GetComponentInParent<Rigidbody>().drag = WaterDrag;
             current_state = STATE.IN_WATER;
-
-
         }
-
-
     }
 
     void OnTriggerStay(Collider other)

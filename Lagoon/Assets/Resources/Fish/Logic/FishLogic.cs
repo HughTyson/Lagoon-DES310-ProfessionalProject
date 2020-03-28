@@ -25,6 +25,8 @@ public class FishLogic : MonoBehaviour
     [SerializeField] Transform MeshTransform;
 
 
+    Rigidbody parentRigidbody;
+
 
     public struct VarsFromFishGenerator
     {
@@ -56,6 +58,7 @@ public class FishLogic : MonoBehaviour
     }
     STATE current_state;     // The current state of the fish
 
+    bool isDespawning = false;
 
 
     const float wanderingTargetRadius = 0.75f;  // used for wandering algorithm
@@ -82,6 +85,11 @@ public class FishLogic : MonoBehaviour
     Vector2 headVectorXZ = new Vector2();
 
 
+
+    private void Awake()
+    {
+        parentRigidbody = GetComponentInParent<Rigidbody>();
+    }
     void Start()
     {
 
@@ -117,7 +125,7 @@ public class FishLogic : MonoBehaviour
             case STATE.WANDERING:
                 {
                     Vector3 forward = transform.forward;
-                    GetComponentInParent<Rigidbody>().AddForce(new Vector3(forward.x, 0, forward.z) * varsFromFishGenerator.defaultForce);
+                    parentRigidbody.AddForce(new Vector3(forward.x, 0, forward.z) * varsFromFishGenerator.defaultForce);
 
                  //   GetComponentInParent<MeshRenderer>().material.color = Color.green;      // used for debugging
                     Wander();
@@ -126,10 +134,6 @@ public class FishLogic : MonoBehaviour
                     if (avoidingObjects.Count != 0) // if there are objects to avoid, start avoiding them
                     {
                         current_state = STATE.AVOIDING;
-                    }
-                    else if (distanceFromHabitatOrigin < varsFromFishGenerator.habitatRingMin || distanceFromHabitatOrigin > varsFromFishGenerator.habitatRingMax)
-                    {
-                 //       current_state = STATE.RETURN_HOME;
                     }
                     break;
                 }
@@ -269,12 +273,12 @@ public class FishLogic : MonoBehaviour
         }
         else
         {
-            GetComponentInParent<Rigidbody>().velocity = Vector3.ClampMagnitude(GetComponentInParent<Rigidbody>().velocity, varsFromFishGenerator.maxVelocity);
+            parentRigidbody.velocity = Vector3.ClampMagnitude(parentRigidbody.velocity, varsFromFishGenerator.maxVelocity);
 
             NotInterestedInBobTime = Mathf.Max(0, NotInterestedInBobTime - Time.fixedDeltaTime); // countdown time 
 
             // Rotate the fish on the y axis dependant on the velocity on the XZ plane, so it faces the direction of its velocity
-            Vector2 velocityUnitXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z).normalized;
+            Vector2 velocityUnitXZ = new Vector2(parentRigidbody.velocity.x, parentRigidbody.velocity.z).normalized;
 
             if (velocityUnitXZ.magnitude > 0.0001)
             {
@@ -301,7 +305,7 @@ public class FishLogic : MonoBehaviour
     void Wander()
     {
         // XZ velocity
-        Vector2 velocityXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z);
+        Vector2 velocityXZ = new Vector2(parentRigidbody.velocity.x, parentRigidbody.velocity.z);
 
 
         // angle on the circle set infront of the fish to be its target
@@ -377,7 +381,7 @@ public class FishLogic : MonoBehaviour
         t *= t; // change distribution curve to quadratic instead of linear when lerping
 
         Vector3 forward = transform.forward;
-        GetComponentInParent<Rigidbody>().AddForce(new Vector3(forward.x, 0, forward.z) * Mathf.Lerp(varsFromFishGenerator.defaultForce, varsFromFishGenerator.maxForce, t));
+        parentRigidbody.AddForce(new Vector3(forward.x, 0, forward.z) * Mathf.Lerp(varsFromFishGenerator.defaultForce, varsFromFishGenerator.maxForce, t));
 
         // average escape vector of all the threats
 
@@ -405,11 +409,11 @@ public class FishLogic : MonoBehaviour
 
 
 
-        Vector2 velocityXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z);
+        Vector2 velocityXZ = new Vector2(parentRigidbody.velocity.x, parentRigidbody.velocity.z);
         Vector2 steer = desired_vector - velocityXZ;
 
         // move in the direction of the desired vector
-        GetComponentInParent<Rigidbody>().AddForce(new Vector3(steer.x, 0, steer.y));
+        parentRigidbody.AddForce(new Vector3(steer.x, 0, steer.y));
 
 
 
@@ -423,19 +427,19 @@ public class FishLogic : MonoBehaviour
 
 
         Vector3 forward = transform.forward;
-        GetComponentInParent<Rigidbody>().AddForce(new Vector3(forward.x, 0, forward.z) * varsFromFishGenerator.defaultForce);
+        parentRigidbody.AddForce(new Vector3(forward.x, 0, forward.z) * varsFromFishGenerator.defaultForce);
 
         Vector2 location = new Vector2(transform.position.x, transform.position.z);
         Vector2 desired = target - location;
         desired = desired.normalized;
         desired *= varsFromFishGenerator.defaultForce;
 
-        Vector2 velocityXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z);
+        Vector2 velocityXZ = new Vector2(parentRigidbody.velocity.x, parentRigidbody.velocity.z);
         Vector2 steer = desired - velocityXZ;
 
 
 
-        GetComponentInParent<Rigidbody>().AddForce(new Vector3(steer.x, 0, steer.y));
+        parentRigidbody.AddForce(new Vector3(steer.x, 0, steer.y));
 
     }
 
@@ -453,12 +457,12 @@ public class FishLogic : MonoBehaviour
         desired_turn *= Mathf.Lerp(0, varsFromFishGenerator.maxTurnForce, desired_dist / targetRadius);
 
         Vector3 forward = transform.forward;
-        GetComponentInParent<Rigidbody>().AddForce(new Vector3(forward.x, 0, forward.z) * Mathf.Lerp(0, varsFromFishGenerator.maxForce, desired_dist / targetRadius));
+        parentRigidbody.AddForce(new Vector3(forward.x, 0, forward.z) * Mathf.Lerp(0, varsFromFishGenerator.maxForce, desired_dist / targetRadius));
 
-        Vector2 velocityXZ = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z);
+        Vector2 velocityXZ = new Vector2(parentRigidbody.velocity.x, parentRigidbody.velocity.z);
         Vector2 steer = desired_turn - velocityXZ;
 
-        GetComponentInParent<Rigidbody>().AddForce(new Vector3(steer.x, 0, steer.y));
+        parentRigidbody.AddForce(new Vector3(steer.x, 0, steer.y));
 
        
 
@@ -614,7 +618,7 @@ public class FishLogic : MonoBehaviour
 
         fightingStateVars.state = FIGHTING_STATE.GO_TO_STARTPOSITION;
         current_state = STATE.FIGHTING;
-        GetComponentInParent<Rigidbody>().isKinematic = true;
+        parentRigidbody.isKinematic = true;
         fightingStateVars.playerPosXZ = playerPosXZ_;
 
         fightingStateVars.currentVelocity = 0;
@@ -683,7 +687,7 @@ public class FishLogic : MonoBehaviour
     public void FishEscaped()
     {
         LostInterestInFishingBob(20.0f);
-        GetComponentInParent<Rigidbody>().isKinematic = false;
+        parentRigidbody.isKinematic = false;
     }
     public void FightingStateUpdate()
     {
@@ -883,5 +887,10 @@ public class FishLogic : MonoBehaviour
 
     }
 
-    
+    public void Despawn()
+    {
+        isDespawning = true;
+    }
+
+
 }

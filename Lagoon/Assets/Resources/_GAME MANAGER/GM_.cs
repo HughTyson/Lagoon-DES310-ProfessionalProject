@@ -42,7 +42,6 @@ public class GM_ : MonoBehaviour
         public StatsManager stats;
         public StoryManager story;
         public StoryObjectiveHandler story_objective; // might not need to be here
-        public StoryEventHandler story_events;
         public UIManager ui;
         public TweenManager tween_manager;
         public UpdateEventSystem update_events;
@@ -68,7 +67,6 @@ public class GM_ : MonoBehaviour
         members.stats = new StatsManager();
         members.story = new StoryManager((convoGraph.Root)); // should be barrier node.);
         members.story_objective = new StoryObjectiveHandler();
-        members.story_events = new StoryEventHandler();
         members.ui = uiManager;
         members.ui.helperButtons.HideButtons();
 

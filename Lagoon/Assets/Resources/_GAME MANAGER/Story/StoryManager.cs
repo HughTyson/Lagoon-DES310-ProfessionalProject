@@ -26,7 +26,13 @@ public class StoryManager
 
     public event System.Action Event_SkipTextCrawl;
 
-    public event System.Action<GameEventTriggeredArgs> Event_GameEventTriggered;
+
+    // -- GameEvent Events -- //
+    public event System.Action<GameEventTriggeredArgs> Event_GameEventStart; // Called upon entering an event node. Holds info about the event that is to be triggered
+    public event System.Action<EventRequestArgs> EventRequest_GameEventContinue; // Called when the StoryManager has been requested to continue and end the game event. Alls subscibers are able to block the request, as they are not finished
+    public event System.Action Event_GameEventEnd; // Called after a successfull EventRequest of the GameEventContinue
+    // -- //
+
 
     public event System.Action<ButtonPressRequestArgs> EventRequest_BlockingButtonPress;
 
@@ -49,6 +55,15 @@ public class StoryManager
             button = requestedButton;
         }
 
+    }
+    public class EventRequestArgs
+    {
+        bool isBlocked = false;
+        public bool IsBlocked => isBlocked;
+        public void Block()
+        {
+            isBlocked = true;
+        }
     }
 
     public class BarrierStartArgs
@@ -218,8 +233,7 @@ public class StoryManager
             }
             else if (current_node.GetNodeType() == BaseNodeType.NODE_TYPE.EVENT)
             {
-                current_node = ((EventNode)current_node).NextNode();
-                EnteredNewNode();
+                RequestGameEventContinue();
             }
         }
     }
@@ -253,7 +267,21 @@ public class StoryManager
             }
         }
     }
+    public void RequestGameEventContinue()
+    {
+        if (current_node.GetNodeType() == BaseNodeType.NODE_TYPE.EVENT)
+        {
+            EventRequestArgs requestArgs = new EventRequestArgs();
+            EventRequest_GameEventContinue?.Invoke(requestArgs);
 
+            if (!requestArgs.IsBlocked)
+            {
+                Event_GameEventEnd?.Invoke();
+                current_node = ((EventNode)current_node).NextNode();
+                EnteredNewNode();
+            }
+        }
+    }
 
     bool barrierIsOpen = false;
     void BarrierOpened()
@@ -274,6 +302,8 @@ public class StoryManager
         }
 
     }
+
+    
 
 
     void EnteredNewNode()
@@ -297,7 +327,7 @@ public class StoryManager
             case BaseNodeType.NODE_TYPE.EVENT:
                 {
                     EventNode node = ((EventNode)current_node);
-                    Event_GameEventTriggered?.Invoke(new GameEventTriggeredArgs(node.event_occured));
+                    Event_GameEventStart?.Invoke(new GameEventTriggeredArgs(node.event_occured));
                     break;
                 }
             case BaseNodeType.NODE_TYPE.BARRIER:
