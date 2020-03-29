@@ -20,7 +20,6 @@ public class PlayerConversationState : BaseState
     }
     ConversationState state;
 
-
     private void Start()
     {
         test_drop = GetComponent<SupplyDrop>();
@@ -34,7 +33,6 @@ public class PlayerConversationState : BaseState
         state = ConversationState.CONVERSATION;
         GM_.Instance.ui.helperButtons.HideButtons();
     }
-
 
     void ExitConversation()
     {

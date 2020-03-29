@@ -105,7 +105,6 @@ class Transitions
                         new TweenManager.TweenPart_Start(start_pos.position.z, zoomed_pos.position.z, 1.0f, TweenManager.CURVE_PRESET.LINEAR)
                     )
                 );
-
     }
 
     public void Start(ref TypeRef<float> x, ref TypeRef<float> y, ref TypeRef<float> z, TweenManager.DIRECTION direction, System.Action enable, System.Action disable)
@@ -262,6 +261,12 @@ public class PlaneCamera : MonoBehaviour
         old_segment_type = PlaneSegments.SegmentType.PROPELLER;
 
         current_state = PlaneCameraStates.INIT;
+
+        c_look = new Vector3(look_at_x.value, look_at_y.value, look_at_z.value);
+
+        Quaternion new_look = Quaternion.LookRotation(c_look - transform.position);                                     //create a new look at rotation based on the position of the camera and the position of the target
+
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, new_look, player_step * Time.deltaTime);             //use unity rotate twoards to rotate the camera from the current rotation to the new rotation
     }
 
     // Update is called once per frame

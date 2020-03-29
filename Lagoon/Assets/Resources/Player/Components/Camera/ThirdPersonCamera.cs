@@ -97,6 +97,12 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void Update()
     {
+
+    }
+
+    private void LateUpdate()
+    {
+
         HandleInput();
 
 
@@ -116,10 +122,26 @@ public class ThirdPersonCamera : MonoBehaviour
             default:
                 break;
         }
-    }
 
-    private void LateUpdate()
-    {
+        collisionUpdate();
+
+        //draw the debug line
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (drawDesiredCollisionLines)
+            {
+                Debug.DrawLine((rot_target.position + target_offset), collision.desired_cp_pos[i], Color.white);
+            }
+
+            if (drawAdjustedCollisionLines)
+            {
+                Debug.DrawLine((rot_target.position + target_offset), collision.adjusted_cp_pos[i], Color.green);
+            }
+        }
+
+        collision.CheckColliding((rot_target.position + target_offset));
+        adjusted_distance = collision.GetAdjustedDistanceWithRay((rot_target.position + target_offset));
 
         switch (current_state)
         {
@@ -152,25 +174,7 @@ public class ThirdPersonCamera : MonoBehaviour
     private void FixedUpdate()
     {
 
-        collisionUpdate();
 
-        //draw the debug line
-
-        for (int i = 0; i < 4; i++)
-        {
-            if (drawDesiredCollisionLines)
-            {
-                Debug.DrawLine((rot_target.position + target_offset), collision.desired_cp_pos[i], Color.white);
-            }
-
-            if (drawAdjustedCollisionLines)
-            {
-                Debug.DrawLine((rot_target.position + target_offset), collision.adjusted_cp_pos[i], Color.green);
-            }
-        }
-
-        collision.CheckColliding((rot_target.position + target_offset));
-        adjusted_distance = collision.GetAdjustedDistanceWithRay((rot_target.position + target_offset));
 
     }
 
