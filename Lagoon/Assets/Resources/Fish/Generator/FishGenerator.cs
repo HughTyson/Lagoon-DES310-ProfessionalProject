@@ -221,7 +221,7 @@ public class FishGenerator : MonoBehaviour
         //        Matrix4x4 rotationMatrix = Matrix4x4.TRS(trans.position, trans.rotation, trans.lossyScale);
         //        Gizmos.matrix = rotationMatrix;
 
-        //        Gizmos.DrawWireCube(transform.position,Vector3.one);
+        //        Gizmos.DrawWireCube(transform.position, Vector3.one);
         //    }
 
         //}

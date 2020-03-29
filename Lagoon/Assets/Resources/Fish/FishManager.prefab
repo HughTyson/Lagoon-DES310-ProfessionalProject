@@ -524,6 +524,7 @@ Transform:
   - {fileID: 3372641647652057219}
   - {fileID: 3372641648801643558}
   - {fileID: 3372641648618986182}
+  - {fileID: 5756840572327025602}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -557,7 +558,7 @@ MonoBehaviour:
     - {fileID: 3372641647738924800}
     habitatRingMin: 19.3
     habitatRingMax: 30.3
-    maxFish: 20
+    maxFish: 10
     spawnAreaWeighting: []
   - fishTeirEnum: 1
     spawnArea:
@@ -566,7 +567,7 @@ MonoBehaviour:
     - {fileID: 3372641648882107529}
     habitatRingMin: 24
     habitatRingMax: 38.5
-    maxFish: 10
+    maxFish: 5
     spawnAreaWeighting: []
   - fishTeirEnum: 2
     spawnArea:
@@ -584,8 +585,38 @@ MonoBehaviour:
     - {fileID: 3372641648618986041}
     habitatRingMin: 44.2
     habitatRingMax: 54.98
-    maxFish: 5
+    maxFish: 2
     spawnAreaWeighting: []
   AllowableFishTypes:
   - {fileID: 11400000, guid: 1b51dc51185631142ae3127bda53d098, type: 2}
   DebugMat: {fileID: 0}
+--- !u!1 &8289687137921609317
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5756840572327025602}
+  m_Layer: 0
+  m_Name: Despawn Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5756840572327025602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8289687137921609317}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2217840317689136180}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

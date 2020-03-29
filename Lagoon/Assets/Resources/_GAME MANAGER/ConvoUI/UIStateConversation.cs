@@ -17,7 +17,7 @@ public class UIStateConversation : MonoBehaviour
     DialogNode.DialogData.Talking latestWhosTalking;
 
 
-    void Start()
+    void Awake()
     {
         GM_.Instance.story.Event_ConvoCharactersShow += ConvoCharactersShow;
         GM_.Instance.story.Event_DialogStart += DialogStart;
@@ -26,6 +26,7 @@ public class UIStateConversation : MonoBehaviour
         GM_.Instance.story.Event_BranchStart += BranchStart;
         GM_.Instance.story.Event_SkipTextCrawl += SkipTextCrawl;
         GM_.Instance.story.Event_ConvoExit += ConversationExit;
+
         GM_.Instance.story.EventRequest_BlockingButtonPress += ShouldBlockButtons;
         GM_.Instance.story.Event_GameEventStart += GameEventTriggered;
 
@@ -72,6 +73,7 @@ public class UIStateConversation : MonoBehaviour
         GM_.Instance.story.EventRequest_GameEventContinue += BlockingGameEventContinue;
         dialogBox.Event_Dissapeared += UnblockGameEvent;
 
+        // cHANGE: BUG
         if (dialogBox.IsBoxShowing())
             dialogBox.Disappear();
     }
@@ -83,6 +85,8 @@ public class UIStateConversation : MonoBehaviour
     {
         dialogBox.Event_Dissapeared -= UnblockGameEvent;
         GM_.Instance.story.EventRequest_GameEventContinue -= BlockingGameEventContinue;
+
+
 
         GM_.Instance.story.RequestGameEventContinue();
     }
@@ -96,9 +100,17 @@ public class UIStateConversation : MonoBehaviour
 
             dialogBox.ClearContinueSymbol();
 
+           
             if (leftCharacter != args.leftCharacter)
             {
-                leftPortrait.ChangeCharacter(args.leftCharacter);
+                if (args.leftCharacter == null)
+                {
+                    leftPortrait.Disappear();
+                }
+                else
+                { 
+                    leftPortrait.ChangeCharacter(args.leftCharacter);                
+                }
                 leftCharacter = args.leftCharacter;
             }
             else if (!leftPortrait.IsTransitioning())
@@ -108,7 +120,14 @@ public class UIStateConversation : MonoBehaviour
 
             if (rightCharacter != args.rightCharacter)
             {
-                rightPortrait.ChangeCharacter(args.rightCharacter);
+                if (args.rightCharacter == null)
+                {
+                    rightPortrait.Disappear();
+                }
+                else
+                {
+                    rightPortrait.ChangeCharacter(args.rightCharacter);
+                }
                 rightCharacter = args.rightCharacter;
             }
             else if (!rightPortrait.IsTransitioning())

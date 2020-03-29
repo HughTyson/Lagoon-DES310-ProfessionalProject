@@ -1,5 +1,62 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1711450226270165912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1271295364165408052}
+  - component: {fileID: 8947700192277781868}
+  - component: {fileID: 5231811677363997330}
+  m_Layer: 10
+  m_Name: InvisbleWall (8)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1271295364165408052
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711450226270165912}
+  m_LocalRotation: {x: -6.699818e-12, y: 0.3245436, z: 2.8322162e-11, w: 0.94587076}
+  m_LocalPosition: {x: 1.849, y: -1.18, z: 7.7658005}
+  m_LocalScale: {x: 1.01685, y: 1.0001199, z: 0.38496995}
+  m_Children: []
+  m_Father: {fileID: 7804393007983765858}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 37.876003, z: 0}
+--- !u!65 &8947700192277781868
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711450226270165912}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 5.494417, z: 21.192482}
+  m_Center: {x: 0, y: 2.2472086, z: -0.3657341}
+--- !u!114 &5231811677363997330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711450226270165912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e89fdbd432b4e641bc3fcb4687c29cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4751473582175722239
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,6 +495,7 @@ Transform:
   - {fileID: 7804393008145579353}
   - {fileID: 7804393007240746309}
   - {fileID: 2093088961615888088}
+  - {fileID: 1271295364165408052}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
