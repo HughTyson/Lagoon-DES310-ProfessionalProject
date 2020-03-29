@@ -101,8 +101,8 @@ public class FishLogic : MonoBehaviour
     {
         varsFromFishGenerator = vars;
 
-
-        avoidanceRad = GetComponent<SphereCollider>().radius;
+        GetComponent<SphereCollider>().radius *= vars.size;
+       avoidanceRad = GetComponent<SphereCollider>().radius;
 
         CapsuleCollider capsule = GetComponentInParent<CapsuleCollider>();
         sizeRad = Mathf.Max(capsule.radius, capsule.height / 2.0f); // gets the radius that will encapsulate the whole fish
@@ -111,6 +111,7 @@ public class FishLogic : MonoBehaviour
         capsule.height *= vars.size;
         MeshTransform.localScale *= vars.size;
         fishheadTransform.localPosition *= vars.size;
+
 
 
     }

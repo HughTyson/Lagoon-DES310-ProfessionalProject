@@ -141,9 +141,23 @@ public class MenuScreen_MainMenu : MenuScreenBase
 
     void start_transitionToGame()
     {
+        startButton.Hide();
+        exitButton.Hide();
+        optionsButton.Hide();
+        creditsButton.Hide();
+
+        GM_.Instance.tween_manager.StartTweenInstance(
+            fadeInTween,
+            new TypeRef<float>[] { fadeAlpha },
+            tweenUpdatedDelegate_: init_update,
+            tweenCompleteDelegate_: game_startFinsihed,
+            startingDirection_: TweenManager.DIRECTION.END_TO_START
+            );
+    }
+    void game_startFinsihed()
+    {
         SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
     }
-
     void start_transitionToCredits()
     {
         startButton.Hide();
