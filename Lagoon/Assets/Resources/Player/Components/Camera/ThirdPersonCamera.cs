@@ -94,13 +94,7 @@ public class ThirdPersonCamera : MonoBehaviour
     }
 
     //update function
-
     private void Update()
-    {
-
-    }
-
-    private void LateUpdate()
     {
 
         HandleInput();
@@ -169,13 +163,6 @@ public class ThirdPersonCamera : MonoBehaviour
             default:
                 break;
         }
-    }
-
-    private void FixedUpdate()
-    {
-
-
-
     }
 
     //methods
