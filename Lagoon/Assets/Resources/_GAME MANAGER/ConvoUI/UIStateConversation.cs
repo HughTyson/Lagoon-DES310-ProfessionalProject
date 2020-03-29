@@ -75,7 +75,13 @@ public class UIStateConversation : MonoBehaviour
 
         // cHANGE: BUG
         if (dialogBox.IsBoxShowing())
+        {
             dialogBox.Disappear();
+        }
+        else
+        {
+            UnblockGameEvent();
+        }
     }
     void BlockingGameEventContinue(StoryManager.EventRequestArgs args)
     {
