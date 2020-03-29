@@ -77,7 +77,6 @@ public class DayNightCycle : MonoBehaviour
 
         ChangeAtmosphereTweenTime(6f);
 
-        current_time = 0.5f;
         secondsInFullDay = 600f;
 
     }

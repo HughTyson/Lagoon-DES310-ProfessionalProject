@@ -19,8 +19,6 @@ public class PlayerRepairState : BaseState
 
     float counter;
 
-    
-
     enum RepairState
     {
         FULLPLANE,
@@ -42,8 +40,7 @@ public class PlayerRepairState : BaseState
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
 
         third_person_camera.enabled = false;
-        
-        
+          
         for(int i = 0; i < plane_segments.Count; i++)
         {
             if(plane_segments[selected_part].type == PlaneSegments.SegmentType.PROPELLER)
@@ -221,7 +218,13 @@ public class PlayerRepairState : BaseState
             {
                 if (!plane_segments[selected_part].segment_complete)
                 {
+
+                    Debug.Log(plane_segments[selected_part].type);
+
                     state = RepairState.SEGMENT;
+
+                    plane_camera.current_state = PlaneCamera.PlaneCameraStates.SEGMENT;
+                    plane_camera.zoom = true;
                 }
             }
 
@@ -230,6 +233,15 @@ public class PlayerRepairState : BaseState
                 if (state == RepairState.FULLPLANE)
                 {
                     StateManager.ChangeState(PlayerScriptManager.STATE.EXPLORING);
+                }
+
+                if (!plane_segments[selected_part].segment_complete)
+                {
+                    if (plane_camera.current_state == PlaneCamera.PlaneCameraStates.SEGMENT)
+                    {
+                        plane_camera.un_zoom = true;
+                        Debug.Log("UNZOOM");
+                    }
                 }
 
                 state = RepairState.FULLPLANE;
@@ -276,14 +288,7 @@ public class PlayerRepairState : BaseState
                 {
                     counter = transition_time;
                 }
-
-
-                 Debug.Log(selected_part);
-
             }
         }
-
-
     }
-
 }

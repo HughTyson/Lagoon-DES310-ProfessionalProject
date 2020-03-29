@@ -67,7 +67,19 @@ public class PlaneSegments : MonoBehaviour
     {
         selected_game = 0;
         segment_state = State.PANEL;
-        segment_complete = false;
+
+        if(games.Count > 0)
+        {
+            segment_complete = false;
+        }
+        else
+        {
+            segment_complete = true;
+        }
+
+        Debug.Log(type + " , " + segment_complete);
+
+       
         game_selected = false;
         needs_init = true;
         
