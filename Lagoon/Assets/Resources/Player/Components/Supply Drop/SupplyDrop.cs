@@ -6,31 +6,85 @@ public class SupplyDrop : MonoBehaviour
 {
 
     [SerializeField] SupplyBox box_prefab;
-    
 
     [SerializeField] public List<SupplyBox> box_list = new List<SupplyBox>();
 
     [SerializeField] List<GameObject> drop_points;
 
+    [Header("Plane Movement")]
+
+    [SerializeField] GameObject plane;
+    [SerializeField] Transform start_pos;
+    [SerializeField] Transform end_pos;
+
+
+    bool do_stuff = false;
+
+    //static public readonly TweenManager.TweenPathBundle plane_animation_tween = new TweenManager.TweenPathBundle(
+
+    //    //x pos
+    //    new TweenManager.TweenPath(
+    //        new TweenManager.TweenPart_Start(-27, )
+    //        ),
+    //    );
+
+    public void Awake()
+    {
+        GM_.Instance.story.Event_GameEventStart += SupplyStart;       //start plane moving and setup
+    }
+
+    public void SupplyStart(StoryManager.GameEventTriggeredArgs args)
+    {
+        if(args.event_type == EventNode.EVENT_TYPE.SUPPLY_DROP)
+        {
+            //start the update and act as OnEnable()
+            GM_.Instance.story.EventRequest_GameEventContinue += Blocker; //called when requesting the node to continue
+
+            do_stuff = true;
+        }
+    }
+
+    public void Blocker(StoryManager.EventRequestArgs args)
+    {
+        args.Block();
+    }
+
+    public void End()
+    {
+
+        
+
+        //cleanUp
+    }
+
+
+    public void Update()
+    {
+        
+        if(do_stuff)
+        {
+
+
+            Spawn();
+
+
+
+            do_stuff = false;
+            GM_.Instance.story.EventRequest_GameEventContinue -= Blocker;
+            GM_.Instance.story.RequestGameEventContinue();
+            
+
+
+        }
+
+
+
+    }
+
     public void Spawn()
     {
         StartCoroutine(SpawnBoxes());
-        Debug.Log("HELLO");
     }
-    
-    //public void SpawnBoxes()
-    //{
-
-    //   // int random_point = Random.Range(0, drop_points.Count);      //get the random point it will be dropped at
-
-    //   // SupplyBox new_box = new SupplyBox();
-
-    //   // new_box = Instantiate(box_prefab);
-    //   // new_box.box_state = SupplyBox.STATE.DROPPING;
-
-    //   // Spawn(new_box);
-
-    //}
 
     public void DestroyBox()
     {
@@ -43,12 +97,8 @@ public class SupplyDrop : MonoBehaviour
 
     public IEnumerator SpawnBoxes()
     {
-
-        Debug.Log("HELLO2");
-
         for (int i = 0; i < drop_points.Count; i++)
         {
-            Debug.Log("HELLO3");
 
             SupplyBox new_box = new SupplyBox();
 
@@ -62,5 +112,4 @@ public class SupplyDrop : MonoBehaviour
 
         }
     }
-
 }

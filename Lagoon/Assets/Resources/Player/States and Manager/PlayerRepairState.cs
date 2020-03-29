@@ -216,15 +216,18 @@ public class PlayerRepairState : BaseState
         {
             if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A)) //if the a button is pressed then updaate the segment that is currently selected
             {
-                if (!plane_segments[selected_part].segment_complete)
+                if(state != RepairState.SEGMENT)
                 {
+                    if (!plane_segments[selected_part].segment_complete)
+                    {
 
-                    Debug.Log(plane_segments[selected_part].type);
+                        Debug.Log(plane_segments[selected_part].type);
 
-                    state = RepairState.SEGMENT;
+                        state = RepairState.SEGMENT;
 
-                    plane_camera.current_state = PlaneCamera.PlaneCameraStates.SEGMENT;
-                    plane_camera.zoom = true;
+                        plane_camera.current_state = PlaneCamera.PlaneCameraStates.SEGMENT;
+                        plane_camera.zoom = true;
+                    }
                 }
             }
 
