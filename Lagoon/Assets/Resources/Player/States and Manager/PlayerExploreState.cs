@@ -70,8 +70,10 @@ public class PlayerExploreState : BaseState
                     {
                         if (GM_.Instance.story.RequestConversationEnter())
                         {
-                            StateManager.ChangeState(PlayerScriptManager.STATE.CONVERSATION);
+                            interaction_type = INTERACTION_TYPE.NONE;
+                            GM_.Instance.ui.helperButtons.DisableAll();
                             GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
+                            StateManager.ChangeState(PlayerScriptManager.STATE.CONVERSATION);
                         }
                         else
                         {

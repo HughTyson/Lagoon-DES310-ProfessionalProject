@@ -103,6 +103,22 @@ namespace SpecialText
         }
 
 
+        public void ForceAll()
+        {
+            UnactiveProperties.RemoveAll(y =>
+            {
+                    y.TransitionStart();
+                    EndlessUpdateProperties.Add(y);
+                    return true;
+            });
+
+            TransitioningProperties.RemoveAll(y =>
+            {
+                EndlessUpdateProperties.Add(y);
+                return true;
+            }
+            );
+        }
 
         public void Update()
         {

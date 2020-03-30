@@ -22,7 +22,7 @@ public class UICharacterPortrait : MonoBehaviour
     bool is_talking = false;
     public event System.Action Event_FinishedChanging;
     public event System.Action Event_FinishedAppearing;
-
+    public event System.Action Event_FinishedDisappearing;
 
     System.Action<TweenManager.STOP_COMMAND> transitioningTween;
 
@@ -74,6 +74,9 @@ startTalkingTween = new TweenManager.TweenPathBundle(
     TypeRef<float> positionValX = new TypeRef<float>();
     TypeRef<float> positionValY = new TypeRef<float>();
     TypeRef<float> scaleVal = new TypeRef<float>(1);
+
+
+    TweenManager.TweenInstanceInterface currentTweenInstance = new TweenManager.TweenInstanceInterface(null);
     public void Appear(ConversationCharacter character_)
     {
         transitioning = true;
@@ -82,7 +85,7 @@ startTalkingTween = new TweenManager.TweenPathBundle(
         border_image.enabled = true;
         character_image.enabled = true;
 
-        GM_.Instance.tween_manager.StartTweenInstance(
+        currentTweenInstance = GM_.Instance.tween_manager.StartTweenInstance(
             dissapearTween, 
             new TypeRef<float>[] { alphaVal, positionValX, positionValY }, 
             tweenCompleteDelegate_: finishedAppearing, 
@@ -94,10 +97,10 @@ startTalkingTween = new TweenManager.TweenPathBundle(
     public void Disappear()
     {
         transitioning = true;
-        GM_.Instance.tween_manager.StartTweenInstance(
+        currentTweenInstance = GM_.Instance.tween_manager.StartTweenInstance(
             dissapearTween, 
             new TypeRef<float>[] { alphaVal, positionValX, positionValY }, 
-            tweenCompleteDelegate_: settledIn,
+            tweenCompleteDelegate_: dissapeared,
             tweenUpdatedDelegate_: portraitTransitionUpdate
             );
     }
@@ -122,6 +125,11 @@ startTalkingTween = new TweenManager.TweenPathBundle(
         //    );
     }
 
+    void dissapeared()
+    {
+        settledIn();
+        Event_FinishedDisappearing?.Invoke();
+    }
 
     public void NotTalking()
     {
@@ -160,6 +168,17 @@ startTalkingTween = new TweenManager.TweenPathBundle(
 
     public void SkipTransition()
     {
+        while (transitioning)
+        {
+            if (currentTweenInstance.Exists)
+            {
+                currentTweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
+            }
+            else
+            {
+                break;
+            }
+        }
 
     }
     public void portraitTransitionUpdate()
@@ -171,6 +190,7 @@ startTalkingTween = new TweenManager.TweenPathBundle(
         rectTransform.localScale = new Vector3(scaleVal.value, scaleVal.value , 1);
 
         character_image.color = imageColour;
+        border_image.color = imageColour;
         rectTransform.anchoredPosition = positionOffset + showingPosition;
         
     }
@@ -182,15 +202,17 @@ startTalkingTween = new TweenManager.TweenPathBundle(
     ConversationCharacter changingCharacter;
     public void ChangeCharacter(ConversationCharacter newCharacter)
     {
+        NotTalking();
+
         changingCharacterStep2Flag = false;
         changingCharacter = newCharacter;
 
         transitioning = true;
 
-        NotTalking();
 
 
-        GM_.Instance.tween_manager.StartTweenInstance(
+        // use events instead of 2 tweens
+        currentTweenInstance = GM_.Instance.tween_manager.StartTweenInstance(
             changeCharacterTween,
             new TypeRef<float>[] { alphaVal},
             tweenCompleteDelegate_: changingCharacterFinished,
@@ -209,9 +231,9 @@ startTalkingTween = new TweenManager.TweenPathBundle(
 
             character_image.sprite = changingCharacter.characterIcon;
 
-            GM_.Instance.tween_manager.StartTweenInstance(
+            currentTweenInstance = GM_.Instance.tween_manager.StartTweenInstance(
                 changeCharacterTween,
-                new TypeRef<float>[] { alphaVal},
+                new TypeRef<float>[] { alphaVal },
                 tweenCompleteDelegate_: changingCharacterFinished,
                 tweenUpdatedDelegate_: portraitTransitionUpdate,
                 startingDirection_: TweenManager.DIRECTION.END_TO_START

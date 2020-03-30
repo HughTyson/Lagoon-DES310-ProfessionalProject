@@ -24,7 +24,6 @@ public class UIStateConversation : MonoBehaviour
         GM_.Instance.story.Event_DialogNewText += DialogNewText;
         GM_.Instance.story.Event_BranchChoiceMade += BranchChoiceChosen;
         GM_.Instance.story.Event_BranchStart += BranchStart;
-        GM_.Instance.story.Event_SkipTextCrawl += SkipTextCrawl;
         GM_.Instance.story.Event_ConvoExit += ConversationExit;
 
         GM_.Instance.story.EventRequest_BlockingButtonPress += ShouldBlockButtons;
@@ -47,12 +46,43 @@ public class UIStateConversation : MonoBehaviour
 
 
 
+    int countOfCompletedTransitions;
+
+    void ConversationExit_CompletedTransition()
+    {
+        countOfCompletedTransitions--;
+
+        if (countOfCompletedTransitions == 0)
+        {
+            leftPortrait.Event_FinishedDisappearing -= ConversationExit_CompletedTransition;
+            rightPortrait.Event_FinishedDisappearing -= ConversationExit_CompletedTransition;
+            dialogBox.Event_Dissapeared -= ConversationExit_CompletedTransition;
+            GM_.Instance.story.EventRequest_BarrierStart -= Blocker;
+            GM_.Instance.story.RequestBarrierStart();
+        }
+    }
     void ConversationExit()
     {
+        GM_.Instance.story.EventRequest_BarrierStart += Blocker;
+        countOfCompletedTransitions = 2;
+
+        leftPortrait.Event_FinishedDisappearing += ConversationExit_CompletedTransition;
         leftPortrait.Disappear();
+
+        rightPortrait.Event_FinishedDisappearing += ConversationExit_CompletedTransition;
         rightPortrait.Disappear();
+
         if (dialogBox.IsBoxShowing())
+        {
+            countOfCompletedTransitions++;
+            dialogBox.Event_Dissapeared += ConversationExit_CompletedTransition;
             dialogBox.Disappear();
+        }
+    }
+
+    void Blocker(StoryManager.EventRequestArgs args)
+    {
+        args.Block();
     }
 
     void  ConvoCharactersShow(StoryManager.ConvoCharactersShowArgs args)
@@ -69,14 +99,11 @@ public class UIStateConversation : MonoBehaviour
 
     void GameEventTriggered(StoryManager.GameEventTriggeredArgs args)
     {
-        //leftPortrait.Disappear();
-        //rightPortrait.Disappear();
         leftPortrait.NotTalking();
         rightPortrait.NotTalking();
         GM_.Instance.story.EventRequest_GameEventContinue += BlockingGameEventContinue;
         dialogBox.Event_Dissapeared += UnblockGameEvent;
 
-        // cHANGE: BUG
         if (dialogBox.IsBoxShowing())
         {
             dialogBox.Disappear();
@@ -270,42 +297,38 @@ public class UIStateConversation : MonoBehaviour
     }
 
 
-    void SkipTextCrawl()
-    {
-        if (leftPortrait.IsTransitioning())
-            leftPortrait.SkipTransition();
-
-        if (rightPortrait.IsTransitioning())
-            rightPortrait.SkipTransition();
-
-        if (dialogBox.IsTransitioning())
-            dialogBox.SkipTransition();
-
-        if (choiceBoxes.IsTransitioning())
-            choiceBoxes.SkipTransition();
-    }
-
     void ShouldBlockButtons(StoryManager.ButtonPressRequestArgs request)
-    {       
+    {
+        bool isTransitioning = false;
+
         if (leftPortrait.IsTransitioning())
         {
-            request.Block();
-            return;
+            isTransitioning = true;
         }
         if (rightPortrait.IsTransitioning())
         {
-            request.Block();
-            return;
+            isTransitioning = true;
         }
         if (dialogBox.IsTransitioning())
         {
-            request.Block();
-            return;
+            isTransitioning = true;
         }
         if (choiceBoxes.IsTransitioning())
         {
+            isTransitioning = true;
+        }
+
+        if (isTransitioning)
+        {
+            if (request.RequestedButton == InputManager.BUTTON.A || request.RequestedButton == InputManager.BUTTON.X || request.RequestedButton == InputManager.BUTTON.B)
+            {
+                leftPortrait.SkipTransition();
+                rightPortrait.SkipTransition();
+                dialogBox.SkipTransition();
+                choiceBoxes.SkipTransition();
+            }
+
             request.Block();
-            return;
         }
     }
 }

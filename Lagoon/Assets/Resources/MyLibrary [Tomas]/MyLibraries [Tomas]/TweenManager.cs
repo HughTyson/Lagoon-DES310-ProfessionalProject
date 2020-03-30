@@ -460,15 +460,24 @@ public class TweenManager
                     }
                 case STOP_COMMAND.IMMEDIATE_TO_END:
                     {
-                        pathBundle.GetValues(duration, valueRefs);
+                        if (direction == DIRECTION.START_TO_END)
+                            pathBundle.GetValues(duration, valueRefs);
+                        else
+                            pathBundle.GetValues(0, valueRefs);
                         flagComplete = true;
+                        actionTweenUpdated?.Invoke();
                         actionTweenComplete?.Invoke();
                         break;
                     }
                 case STOP_COMMAND.IMMEDIATE_TO_START:
                     {
-                        pathBundle.GetValues(0, valueRefs);
+                        if (direction == DIRECTION.START_TO_END)
+                            pathBundle.GetValues(0, valueRefs);
+                        else
+                            pathBundle.GetValues(duration, valueRefs);
+
                         flagComplete = true;
+                        actionTweenUpdated?.Invoke();
                         actionTweenComplete?.Invoke();
                         break;
                     }
