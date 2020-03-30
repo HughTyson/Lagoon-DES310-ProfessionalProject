@@ -64,7 +64,7 @@ public class CharacterControllerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         current_velocity += acceleration * movement_input.magnitude;
         current_velocity = Mathf.Clamp(current_velocity, 0, max_velocity);
@@ -75,9 +75,10 @@ public class CharacterControllerMovement : MonoBehaviour
                 current_velocity -= acceleration;
         }
 
-        move_direction = transform.forward * current_velocity * Time.deltaTime;
+        move_direction = transform.forward * current_velocity;
 
-        move_direction.y = g;
+        
+        move_direction.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
 
         switch (current_state)
         {
@@ -86,7 +87,7 @@ public class CharacterControllerMovement : MonoBehaviour
                     HandleInput();
                     Rotation();
 
-                    controller.Move(move_direction);
+                    controller.Move(move_direction * Time.fixedDeltaTime);
 
                 }
                 break;
@@ -120,15 +121,6 @@ public class CharacterControllerMovement : MonoBehaviour
             default:
                 break;
         }
-    }
-
-     //this function is called every fixed framerate frame
-    private void FixedUpdate()
-    {
-
-        move_direction.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
-         g = move_direction.y;
-
     }
 
     //methods

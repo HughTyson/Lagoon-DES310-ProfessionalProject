@@ -94,7 +94,7 @@ public class ThirdPersonCamera : MonoBehaviour
     }
 
     //update function
-    private void Update()
+    private void FixedUpdate()
     {
 
         HandleInput();
@@ -169,7 +169,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void HandleInput()
     {
-        camera_input += new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.RH) * camera_rotation_speed, GM_.Instance.input.GetAxis(InputManager.AXIS.RV) * camera_rotation_speed) * Time.deltaTime; //get the input from the left stick
+        camera_input += new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.RH) * camera_rotation_speed, GM_.Instance.input.GetAxis(InputManager.AXIS.RV) * camera_rotation_speed) * Time.fixedDeltaTime; //get the input from the left stick
 
         //limit the camera between 0 and 360 - this is to stop the camera jumping when fixing
         //use .01 to combat floating point problems that may arise
@@ -212,12 +212,12 @@ public class ThirdPersonCamera : MonoBehaviour
 
             //linear interpolation between the camera's current position and its new destination
            
-            _camera.position = Vector3.SmoothDamp(_camera.position, adjusted_destination, ref cam_velocity, camera_movement_speed * Time.deltaTime);
+            _camera.position = Vector3.SmoothDamp(_camera.position, adjusted_destination, ref cam_velocity, camera_movement_speed * Time.fixedDeltaTime);
         }
         else
         {
             //linear interpolation between the camera's current position and its new destination]
-            _camera.position = Vector3.SmoothDamp(_camera.position, destination, ref cam_velocity, camera_movement_speed * Time.deltaTime);
+            _camera.position = Vector3.SmoothDamp(_camera.position, destination, ref cam_velocity, camera_movement_speed * Time.fixedDeltaTime);
         }
     }
 
@@ -225,7 +225,7 @@ public class ThirdPersonCamera : MonoBehaviour
     {
         Quaternion new_look = Quaternion.LookRotation(look_target - _camera.position);                                     //create a new look at rotation based on the position of the camera and the position of the target
 
-        _camera.rotation = Quaternion.RotateTowards(_camera.rotation, new_look, player_step * Time.deltaTime);             //use unity rotate twoards to rotate the camera from the current rotation to the new rotation
+        _camera.rotation = Quaternion.RotateTowards(_camera.rotation, new_look, player_step * Time.fixedDeltaTime);             //use unity rotate twoards to rotate the camera from the current rotation to the new rotation
     }
 }
 
