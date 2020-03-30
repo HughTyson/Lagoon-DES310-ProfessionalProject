@@ -39,6 +39,9 @@ public class UIChoiceBoxes : MonoBehaviour
     Vector2 rightOptionShowingPosition;
 
     public event System.Action Event_FinishedSelection;
+
+    TweenManager.TweenInstanceInterface currentTweenInstance = new TweenManager.TweenInstanceInterface(null);
+
     private void Start()
     {
         showTween_inversed = new TweenManager.TweenPathBundle(
@@ -135,7 +138,7 @@ public class UIChoiceBoxes : MonoBehaviour
         leftOptionButtonImage.color = new Color(1, 1, 1, 0);
         rightOptionButtonImage.color = new Color(1, 1, 1, 0);
 
-        GM_.Instance.tween_manager.StartTweenInstance(
+        currentTweenInstance = GM_.Instance.tween_manager.StartTweenInstance(
             showTween_inversed,
             new TypeRef<float>[] { leftOptionYVal, leftOptionAlphaVal, RightOptionYVal, RightOptionAlphaVal },
             tweenUpdatedDelegate_: appearingUpdate,
@@ -186,7 +189,7 @@ public class UIChoiceBoxes : MonoBehaviour
     {
         counterTextFinished--;
         if (counterTextFinished == 0)
-            GM_.Instance.tween_manager.StartTweenInstance(
+            currentTweenInstance = GM_.Instance.tween_manager.StartTweenInstance(
                 buttonShowTween,
                 new TypeRef<float>[] { Ref_ButtonAlpha , Ref_ButtonXPos, Ref_ButtonYPos },
                 tweenUpdatedDelegate_: buttonsShowUpdate,
@@ -230,7 +233,7 @@ public class UIChoiceBoxes : MonoBehaviour
         }
 
 
-        GM_.Instance.tween_manager.StartTweenInstance(
+        currentTweenInstance = GM_.Instance.tween_manager.StartTweenInstance(
             optionSelectedTween,
             new TypeRef<float>[] { SelectedOptionScaleVal, SelectedOptionYVal, NotSelectedOptionYVal},
             tweenUpdatedDelegate_: selectingUpdate,
@@ -275,6 +278,31 @@ public class UIChoiceBoxes : MonoBehaviour
     public void SkipTransition()
     {
 
+
+        if (!specialText_Left.AreAllCompleted())
+        {
+            specialText_Left.ForceAll();
+        }
+        if (!specialText_Right.AreAllCompleted())
+        {
+            specialText_Right.ForceAll();
+        }
+        while (is_transitioning)
+        {
+            if (currentTweenInstance.Exists)
+            {
+                currentTweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
+                if (counterTextFinished != 0)
+                {
+                    specialText_Left.ForceAll();
+                    specialText_Right.ForceAll();
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
     }
     void selectingFinished()
     {

@@ -33,6 +33,12 @@ namespace SpecialText
         {
             isOn = false;
         }
+        public void ForceAll()
+        {
+            specialTextManager.ForceAll();
+            Update();
+        }
+
         bool textCompletedEventCalled = false;
         public void Revert()
         {

@@ -24,14 +24,15 @@ public class StoryManager
     public event System.Action<BranchEnterArgs> Event_BranchStart;                         //
     public event System.Action<BranchChoiceMadeArgs> Event_BranchChoiceMade;                    //
 
-    public event System.Action Event_SkipTextCrawl;
 
 
     // -- GameEvent Events -- //
     public event System.Action<GameEventTriggeredArgs> Event_GameEventStart; // Called upon entering an event node. Holds info about the event that is to be triggered
     public event System.Action<EventRequestArgs> EventRequest_GameEventContinue; // Called when the StoryManager has been requested to continue and end the game event. Alls subscibers are able to block the request, as they are not finished
     public event System.Action Event_GameEventEnd; // Called after a successfull EventRequest of the GameEventContinue
-    // -- //
+                                                   // -- //
+
+    public event System.Action<EventRequestArgs> EventRequest_BarrierStart;
 
 
     public event System.Action<ButtonPressRequestArgs> EventRequest_BlockingButtonPress;
@@ -298,6 +299,7 @@ public class StoryManager
         }
         else
         {
+            barrierIsOpen = false;
             Event_BarrierStart?.Invoke(new BarrierStartArgs(((BarrierNode)current_node).barriers));
         }
 
@@ -331,13 +333,29 @@ public class StoryManager
                     break;
                 }
             case BaseNodeType.NODE_TYPE.BARRIER:
-                {
+                {               
                     Event_ConvoExit?.Invoke();
                     BarrierNode node = ((BarrierNode)current_node);
-                    Event_BarrierStart?.Invoke(new BarrierStartArgs(node.barriers));
 
+                    RequestBarrierStart();                  
                     break;
                 }
+        }
+    }
+
+
+    public void RequestBarrierStart()
+    {
+        if (current_node.GetNodeType() == BaseNodeType.NODE_TYPE.BARRIER)
+        {
+            EventRequestArgs args = new EventRequestArgs();
+            EventRequest_BarrierStart?.Invoke(args);
+
+            if (!args.IsBlocked)
+            {
+                barrierIsOpen = false;
+                Event_BarrierStart?.Invoke(new BarrierStartArgs(((BarrierNode)current_node).barriers));
+            }
         }
     }
 }

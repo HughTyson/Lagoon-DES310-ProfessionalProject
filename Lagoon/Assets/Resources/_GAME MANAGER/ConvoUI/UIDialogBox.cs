@@ -69,6 +69,9 @@ public class UIDialogBox : MonoBehaviour
 
     public event System.Action Event_BoxFinishedAppearing;
     public event System.Action Event_Dissapeared;
+
+
+    TweenManager.TweenInstanceInterface currentTweenInstance = new TweenManager.TweenInstanceInterface(null);
     public void Appear()
     {
 
@@ -78,7 +81,7 @@ public class UIDialogBox : MonoBehaviour
 
         transitioning = true;
         image.enabled = true;
-        GM_.Instance.tween_manager.StartTweenInstance(
+        currentTweenInstance = GM_.Instance.tween_manager.StartTweenInstance(
             boxTweenDissAndAppearTween,
             new TypeRef<float>[] { alphaVal, positionValX, positionValY },
             tweenCompleteDelegate_: boxFinishedAppearing,
@@ -92,7 +95,7 @@ public class UIDialogBox : MonoBehaviour
         ButtonA_Image.color = new Color(1, 1, 1, 0);
 
         transitioning = true;
-        GM_.Instance.tween_manager.StartTweenInstance(
+        currentTweenInstance = GM_.Instance.tween_manager.StartTweenInstance(
             boxTweenDissAndAppearTween,
             new TypeRef<float>[] { alphaVal, positionValX, positionValY },
             tweenCompleteDelegate_: boxFinishedDissappearing,
@@ -128,7 +131,7 @@ public class UIDialogBox : MonoBehaviour
     {
         transitioning = true;
         imageColour = new Color(1, 1, 1, 1);
-        GM_.Instance.tween_manager.StartTweenInstance(
+        currentTweenInstance = GM_.Instance.tween_manager.StartTweenInstance(
             textAppearTween,
             new TypeRef<float>[] { alphaVal, positionValX, positionValY },
             tweenUpdatedDelegate_: aButtonUpdate,
@@ -168,6 +171,25 @@ public class UIDialogBox : MonoBehaviour
 
     public void SkipTransition()
     {
+        if (!specialText.AreAllCompleted())
+        {
+            specialText.ForceAll();
+        }
+        while (transitioning)
+        {
+            if (currentTweenInstance.Exists)
+            {
+                currentTweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
+                if (!specialText.AreAllCompleted())
+                {
+                    specialText.ForceAll();
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
 
     }
     public bool IsTransitioning()
