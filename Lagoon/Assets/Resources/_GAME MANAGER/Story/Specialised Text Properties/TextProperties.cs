@@ -194,7 +194,12 @@ namespace SpecialText
                     specialTextData.propertyDataList.Add(default_property);
                 }
             }
-
+            if (!included_properties.Exists(y => { return y.GetType() == typeof(Colour); }))
+            {
+                Base default_property = new Colour(globalProperties.DefaultColour.r, globalProperties.DefaultColour.g, globalProperties.DefaultColour.b);
+                default_property.AddCharacterReference(characters);
+                specialTextData.propertyDataList.Add(default_property);
+            }
         }
     }        
 }

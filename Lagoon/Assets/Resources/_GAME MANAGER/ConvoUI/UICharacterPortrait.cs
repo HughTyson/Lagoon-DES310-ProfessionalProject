@@ -9,11 +9,13 @@ public class UICharacterPortrait : MonoBehaviour
     Vector2 showingPosition;
     Vector2 positionOffset = Vector2.zero;
     RectTransform rectTransform;
-    Image image;
+    [SerializeField] Image border_image;
+    [SerializeField] Image character_image;
 
     TweenManager.TweenPathBundle dissapearTween;
     TweenManager.TweenPathBundle startTalkingTween;
     TweenManager.TweenPathBundle stopTalkingTween;
+    TweenManager.TweenPathBundle changeCharacterTween;
     Color imageColour;
 
     bool transitioning = false;
@@ -24,13 +26,17 @@ public class UICharacterPortrait : MonoBehaviour
 
     System.Action<TweenManager.STOP_COMMAND> transitioningTween;
 
+    [SerializeField] Sprite sprTalkingBorder;
+    [SerializeField] Sprite sprNotTalkingBorder;
+
+
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
-        image = GetComponent<Image>();
         showingPosition = rectTransform.anchoredPosition;
-        image.enabled = false;
-        imageColour = image.color;
+        border_image.enabled = false;
+        character_image.enabled = false;
+        imageColour = border_image.color;
 
         dissapearTween = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
@@ -44,7 +50,14 @@ public class UICharacterPortrait : MonoBehaviour
             )
         );
 
-        startTalkingTween = new TweenManager.TweenPathBundle(
+        changeCharacterTween = new TweenManager.TweenPathBundle(
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(1, 0, 0.25f, TweenManager.CURVE_PRESET.LINEAR)             // ALPHA
+            )
+            );
+
+
+startTalkingTween = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
                 new TweenManager.TweenPart_Start(1, 1.25f, 0.5f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
                 )
@@ -65,8 +78,9 @@ public class UICharacterPortrait : MonoBehaviour
     {
         transitioning = true;
         character = character_;
-        image.sprite = character_.characterIcon;
-        image.enabled = true;
+        character_image.sprite = character_.characterIcon;
+        border_image.enabled = true;
+        character_image.enabled = true;
 
         GM_.Instance.tween_manager.StartTweenInstance(
             dissapearTween, 
@@ -95,12 +109,17 @@ public class UICharacterPortrait : MonoBehaviour
 
         is_talking = true;
         transitioning = true;
-        GM_.Instance.tween_manager.StartTweenInstance(
-            startTalkingTween,
-            new TypeRef<float>[] { scaleVal},
-            tweenCompleteDelegate_: settledIn,
-            tweenUpdatedDelegate_: portraitTransitionUpdate
-            );
+        border_image.sprite = sprTalkingBorder;
+        character_image.rectTransform.sizeDelta = new Vector2(360, 360);
+        character_image.rectTransform.anchoredPosition = new Vector2(-4, -8);
+        settledIn();
+
+        //GM_.Instance.tween_manager.StartTweenInstance(
+        //    startTalkingTween,
+        //    new TypeRef<float>[] { scaleVal},
+        //    tweenCompleteDelegate_: settledIn,
+        //    tweenUpdatedDelegate_: portraitTransitionUpdate
+        //    );
     }
 
 
@@ -111,12 +130,17 @@ public class UICharacterPortrait : MonoBehaviour
 
         is_talking = false;
         transitioning = true;
-        GM_.Instance.tween_manager.StartTweenInstance(
-            stopTalkingTween,
-            new TypeRef<float>[] { scaleVal },
-            tweenCompleteDelegate_: settledIn,
-            tweenUpdatedDelegate_: portraitTransitionUpdate
-            );
+        border_image.sprite = sprNotTalkingBorder;
+        character_image.rectTransform.anchoredPosition = new Vector2(0, -13);
+        character_image.rectTransform.sizeDelta = new Vector2(270, 270);
+
+        settledIn();
+        //GM_.Instance.tween_manager.StartTweenInstance(
+        //    stopTalkingTween,
+        //    new TypeRef<float>[] { scaleVal },
+        //    tweenCompleteDelegate_: settledIn,
+        //    tweenUpdatedDelegate_: portraitTransitionUpdate
+        //    );
     }
 
     void finishedAppearing()
@@ -146,8 +170,9 @@ public class UICharacterPortrait : MonoBehaviour
 
         rectTransform.localScale = new Vector3(scaleVal.value, scaleVal.value , 1);
 
-        image.color = imageColour;
+        character_image.color = imageColour;
         rectTransform.anchoredPosition = positionOffset + showingPosition;
+        
     }
 
 
@@ -162,20 +187,12 @@ public class UICharacterPortrait : MonoBehaviour
 
         transitioning = true;
 
-        if (is_talking)
-        {
-            is_talking = false;
-            GM_.Instance.tween_manager.StartTweenInstance(
-                stopTalkingTween,
-                new TypeRef<float>[] { scaleVal }
-                );
-        }
+        NotTalking();
 
 
-        transitioning = true;
         GM_.Instance.tween_manager.StartTweenInstance(
-            dissapearTween,
-            new TypeRef<float>[] { alphaVal, positionValX, positionValY },
+            changeCharacterTween,
+            new TypeRef<float>[] { alphaVal},
             tweenCompleteDelegate_: changingCharacterFinished,
             tweenUpdatedDelegate_: portraitTransitionUpdate
             );
@@ -190,10 +207,11 @@ public class UICharacterPortrait : MonoBehaviour
         {
             changingCharacterStep2Flag = true;
 
-            image.sprite = changingCharacter.characterIcon;
+            character_image.sprite = changingCharacter.characterIcon;
+
             GM_.Instance.tween_manager.StartTweenInstance(
-                dissapearTween,
-                new TypeRef<float>[] { alphaVal, positionValX, positionValY },
+                changeCharacterTween,
+                new TypeRef<float>[] { alphaVal},
                 tweenCompleteDelegate_: changingCharacterFinished,
                 tweenUpdatedDelegate_: portraitTransitionUpdate,
                 startingDirection_: TweenManager.DIRECTION.END_TO_START

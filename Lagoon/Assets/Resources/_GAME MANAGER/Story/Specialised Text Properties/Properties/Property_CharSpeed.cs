@@ -16,13 +16,13 @@ namespace SpecialText
                     new TweenManager.TweenPart_Start(0.5f, 1, 1, TweenManager.CURVE_PRESET.EASE_OUT)                       // Alpha
                     ),
                 new TweenManager.TweenPath(
-                    new TweenManager.TweenPart_Start(-45, 0, 1, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")  // Rotation
+                    new TweenManager.TweenPart_Start(-45, 0, 1, TweenManager.CURVE_PRESET.EASE_OUT)  // Rotation
                     ),
                 new TweenManager.TweenPath(
-                    new TweenManager.TweenPart_Start(0, 1, 1, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")  // Scale
+                    new TweenManager.TweenPart_Start(0, 1, 1, TweenManager.CURVE_PRESET.EASE_OUT)  // Scale
                     ),
                 new TweenManager.TweenPath(
-                    new TweenManager.TweenPart_Start(-2.0f, 0, 1, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")  // Y Position
+                    new TweenManager.TweenPart_Start(-2.0f, 0, 1, TweenManager.CURVE_PRESET.EASE_OUT)  // Y Position
                     )
                 );
 

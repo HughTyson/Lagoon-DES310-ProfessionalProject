@@ -151,7 +151,7 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
-  barriers: 01000000
+  barriers: 02000000
   output: 0
   input: 0
 --- !u!114 &-6660801044633476709
@@ -237,12 +237,12 @@ MonoBehaviour:
   - whoIsTalking: 1
     dialog_text: '[CharSpeed(5)]...[/CharSpeed]'
   - whoIsTalking: 1
-    dialog_text: '[Colour(112, 112, 112)][WaveScaled(1,2,1)]*Sigh*[/WaveScaled][/Colour][#Delay(1)]
+    dialog_text: '[Colour(200, 200, 200)][WaveScaled(1,2,1)]*Sigh*[/WaveScaled][/Colour][#Delay(1)]
       Over...'
   - whoIsTalking: 0
     dialog_text: Bravo 3 1,[#Delay(0.5)] Yes I am haha.
   - whoIsTalking: 1
-    dialog_text: '[Shiver(0.1,20)]...[/Shiver]'
+    dialog_text: '[CharSpeed(5)][Shiver(0.2,20)]...[/Shiver][/CharSpeed]'
   input: 0
   output: 0
   nodeWidth: 300
@@ -370,8 +370,8 @@ MonoBehaviour:
   input: 0
   outputA: 0
   outputB: 0
-  LeftDecision: '[Colour(112, 112, 112)][AppearAtOnce]*Wait for Jacob to say over*[/Colour][/AppearAtOnce]'
-  RightDecision: Yeah sorry.[#Delay(0.5)] It never goes away does it...
+  LeftDecision: '[Colour(200, 200, 200)][AppearAtOnce]*Wait for Jacob to say over*[/Colour][/AppearAtOnce]'
+  RightDecision: '[#Delay(2)]Yeah sorry.[#Delay(0.5)] It never goes away does it...'
   nodeWidth: 300
 --- !u!114 &11400000
 MonoBehaviour:
@@ -627,8 +627,8 @@ MonoBehaviour:
   outputB: 0
   LeftDecision: Hey [Colour(119, 45, 194)]Jacob[/Colour].[#Delay(0.5)] Getting [Colour(220,0,0)][Shiver(0.05,20)]sick
     of fish[/Colour][/Shiver] to be honest,[#Delay(0.25)] over.
-  RightDecision: Hasn't changed from the last time [Colour(119, 45, 194)]Jacob[/Colour].[#Delay(0.5)]
-    How are those tools coming along?
+  RightDecision: '[#Delay(4)]Hasn''t changed from the last time [Colour(119, 45, 194)]Jacob[/Colour].[#Delay(0.5)]
+    How are those tools coming along?'
   nodeWidth: 300
 --- !u!114 &3482819492227612262
 MonoBehaviour:
@@ -643,11 +643,14 @@ MonoBehaviour:
   m_Name: Global Properties
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -216, y: -200}
+  position: {x: -232, y: -280}
   ports:
     keys: []
     values: []
   DefaultSpeedPerTextCharacter: 30
+  DefaultColour:
+    serializedVersion: 2
+    rgba: 4294967295
 --- !u!114 &3921328313252676980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -741,10 +744,10 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
   - whoIsTalking: 1
-    dialog_text: '[AppearAtOnce][Scale(1.1)]Ha![/Scale][/AppearAtOnce][#Delay(0.5)]
+    dialog_text: '[AppearAtOnce][Scale(1.3)]Ha![/Scale][/AppearAtOnce][#Delay(0.5)]
       Better than the food the''re serving back shipside!'
   - whoIsTalking: 0
-    dialog_text: '[WaveScaled(1,3,1)][AppearAtOnce]Ah[/AppearAtOnce][#Delay(0.25)][AppearAtOnce]ah[/AppearAtOnce][#Delay(0.25)][AppearAtOnce]ah[/AppearAtOnce][#Delay(0.25)][/WaveScaled]
+    dialog_text: '[WaveScaled(1,3,1)][AppearAtOnce]Ha[/AppearAtOnce][#Delay(0.25)][AppearAtOnce]ha[/AppearAtOnce][#Delay(0.25)][AppearAtOnce]ha[/AppearAtOnce][#Delay(0.25)][/WaveScaled]
       maybe try having no salt to season it...'
   - whoIsTalking: 1
     dialog_text: Sounds rough...
@@ -854,7 +857,8 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: d3e1b4c88d0156245b0f08062593e928, type: 2}
   Dialog:
   - whoIsTalking: 0
-    dialog_text: It'll be good to start fixing up the plane properly...
+    dialog_text: '[Colour(200,200,200)](Ahh..[#Delay(0.5)]It''ll be good to start
+      fixing up the plane properly...)[/Colour]'
   input: 0
   output: 0
   nodeWidth: 300

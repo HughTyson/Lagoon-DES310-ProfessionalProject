@@ -31,6 +31,8 @@ public class GlobalPropertiesNodeEditor : NodeEditor
         GUILayout.BeginVertical();
         GUILayout.Label("Default Speed Per Text Character");
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("DefaultSpeedPerTextCharacter"), empty_text);
+        GUILayout.Label("Default Text Colour");
+        NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("DefaultColour"), empty_text);
         GUILayout.EndVertical();
 
 

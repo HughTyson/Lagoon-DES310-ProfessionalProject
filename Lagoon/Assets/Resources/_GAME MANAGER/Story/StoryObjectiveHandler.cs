@@ -33,6 +33,11 @@ public class StoryObjectiveHandler
                         objectives.Add(new Objective_NextDay());
                         break;
                     }
+                case BarrierNode.BARRIER_STATE.END:
+                    {
+                        objectives.Add(new Objective_End());
+                        break;
+                    }
             }
         }
     }
@@ -76,4 +81,13 @@ public class StoryObjectiveHandler
             return GM_.Instance.stats.dayNumber > initDayNumber;
         }
     }
+
+    class Objective_End : BaseObjective
+    {
+        public override bool ObjectiveComplete()
+        {
+            return false;
+        }
+    }
+
 }
