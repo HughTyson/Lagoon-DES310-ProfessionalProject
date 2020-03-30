@@ -15,7 +15,8 @@ public class RootNode : BaseNodeType
     public enum BARRIER_STATE
     {
         NEXT_DAY,
-        CATCH_A_FISH
+        CATCH_A_FISH,
+        END
     }
 
     [NodeEnum]

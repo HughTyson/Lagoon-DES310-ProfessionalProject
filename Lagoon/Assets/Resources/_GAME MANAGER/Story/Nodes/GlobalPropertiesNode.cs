@@ -13,4 +13,5 @@ public class GlobalPropertiesNode : BaseNodeType
 
 
     public float DefaultSpeedPerTextCharacter = 20.0f;
+    public Color32 DefaultColour = new Color32(0, 0, 0,1);
 }

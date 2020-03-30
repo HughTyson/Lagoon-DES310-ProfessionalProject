@@ -60,6 +60,9 @@ public class UIStateConversation : MonoBehaviour
         leftCharacter = args.leftCharacter;
         rightCharacter = args.rightCharacter;
 
+        leftPortrait.NotTalking();
+        rightPortrait.NotTalking();
+
         leftPortrait.Appear(leftCharacter);
         rightPortrait.Appear(rightCharacter);
     }
@@ -109,14 +112,7 @@ public class UIStateConversation : MonoBehaviour
            
             if (leftCharacter != args.leftCharacter)
             {
-                if (args.leftCharacter == null)
-                {
-                    leftPortrait.Disappear();
-                }
-                else
-                { 
-                    leftPortrait.ChangeCharacter(args.leftCharacter);                
-                }
+                leftPortrait.ChangeCharacter(args.leftCharacter);                
                 leftCharacter = args.leftCharacter;
             }
             else if (!leftPortrait.IsTransitioning())
@@ -126,14 +122,7 @@ public class UIStateConversation : MonoBehaviour
 
             if (rightCharacter != args.rightCharacter)
             {
-                if (args.rightCharacter == null)
-                {
-                    rightPortrait.Disappear();
-                }
-                else
-                {
-                    rightPortrait.ChangeCharacter(args.rightCharacter);
-                }
+                rightPortrait.ChangeCharacter(args.rightCharacter);
                 rightCharacter = args.rightCharacter;
             }
             else if (!rightPortrait.IsTransitioning())

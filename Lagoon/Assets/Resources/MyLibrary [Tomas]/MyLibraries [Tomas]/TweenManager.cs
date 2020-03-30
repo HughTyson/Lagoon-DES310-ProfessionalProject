@@ -705,11 +705,13 @@ public class TweenManager
             duration = duration_;
             preset = preset_;
         }
-        public TweenPart_Continue(float end_, float duration_, AnimationCurve curve_)
+        public TweenPart_Continue(float end_, float duration_, TweenCurveLibrary curve_library_, string curveID_, bool inverse_curve_ = false)
         {
             end = end_;
             duration = duration_;
-            curve = curve_;
+            curve_library = curve_library_;
+            curveID = curveID_;
+            inverse_curve = inverse_curve_;
         }
         public override void FillMissedInfo(TweenPart_Start referenceTween)
         {

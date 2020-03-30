@@ -43,13 +43,13 @@ public class UIChoiceBoxes : MonoBehaviour
     {
         showTween_inversed = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(                                                                                                                         //   Left Option Y 
-                new TweenManager.TweenPart_Start(0, -300, 0.75f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT", inverse_curve_: true)                   //
+                new TweenManager.TweenPart_Start(0, -400, 0.75f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT", inverse_curve_: true)                   //
                 ),                                                                                                                                              //
             new TweenManager.TweenPath(                                                                                                                         //   Left Option Alpha
                 new TweenManager.TweenPart_Start(1, 0, 0.75f, TweenManager.CURVE_PRESET.LINEAR)                                                                  //
                 ),                                                                                                                                              //
             new TweenManager.TweenPath(                                                                                                                         //   Right Option Y
-                new TweenManager.TweenPart_Start(0, -300, 0.75f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT", inverse_curve_: true)              //                                                                                           //
+                new TweenManager.TweenPart_Start(0, -400, 0.75f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT", inverse_curve_: true)              //                                                                                           //
                 ),                                                                                                                                              //
             new TweenManager.TweenPath(                                                                                                                         //   Right Option Alpha
                 new TweenManager.TweenPart_Start(1, 0, 0.75f, TweenManager.CURVE_PRESET.LINEAR)                                                               //
@@ -57,14 +57,14 @@ public class UIChoiceBoxes : MonoBehaviour
             );
         optionSelectedTween = new TweenManager.TweenPathBundle(                                                         //
             new TweenManager.TweenPath(                                                                                 // Selected Option Scale
-                new TweenManager.TweenPart_Start(1, 1.2f, 0.25f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")  //
+                new TweenManager.TweenPart_Start(1, 1.15f, 0.25f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")  //
                 ),                                                                                                      //
-            new TweenManager.TweenPath(                                                                                 // Selected Option Alpha
-                new TweenManager.TweenPart_Start(1, 1, 1.5f, TweenManager.CURVE_PRESET.LINEAR),                            //
-                new TweenManager.TweenPart_Continue(0, 1.0f, TweenManager.CURVE_PRESET.LINEAR)                          //
+            new TweenManager.TweenPath(                                                                                 // Selected Option Y
+                new TweenManager.TweenPart_Start(0, 0, 1.5f, TweenManager.CURVE_PRESET.LINEAR),                            //
+                new TweenManager.TweenPart_Continue(-400, 0.75f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")                          //
                 ),                                                                                                      //
             new TweenManager.TweenPath(                                                                                 //
-                new TweenManager.TweenPart_Start(1, 0, 1.0f, TweenManager.CURVE_PRESET.LINEAR)                          // Not Selected Option Alpha
+                new TweenManager.TweenPart_Start(0, -400, 0.75f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")                          // Not Selected Option Y
                 )
             );
         buttonShowTween = new TweenManager.TweenPathBundle(
@@ -110,8 +110,8 @@ public class UIChoiceBoxes : MonoBehaviour
     TypeRef<float> RightOptionAlphaVal = new TypeRef<float>();
 
     TypeRef<float> SelectedOptionScaleVal = new TypeRef<float>();
-    TypeRef<float> SelectedOptionAlphaVal = new TypeRef<float>();
-    TypeRef<float> NotSelectedOptionAlphaVal = new TypeRef<float>();
+    TypeRef<float> SelectedOptionYVal = new TypeRef<float>();
+    TypeRef<float> NotSelectedOptionYVal = new TypeRef<float>();
 
     TypeRef<float> Ref_ButtonAlpha = new TypeRef<float>();
     TypeRef<float> Ref_ButtonXPos = new TypeRef<float>();
@@ -161,11 +161,11 @@ public class UIChoiceBoxes : MonoBehaviour
         rightOffset.y = RightOptionYVal.value;
 
         leftOptionImage.color = leftColour;
-        leftOptionText.color = new Color(0,0,0, leftColour.a);
+        leftOptionText.alpha = leftColour.a;
         leftOptionImage.rectTransform.anchoredPosition = leftOffset + leftOptionShowingPosition;
 
         rightOptionImage.color = rightColour;
-        rightOptionText.color = new Color(0, 0, 0, rightColour.a); ;
+        rightOptionText.alpha = rightColour.a ;
         rightOptionImage.rectTransform.anchoredPosition = rightOffset + rightOptionShowingPosition;
 
 
@@ -232,7 +232,7 @@ public class UIChoiceBoxes : MonoBehaviour
 
         GM_.Instance.tween_manager.StartTweenInstance(
             optionSelectedTween,
-            new TypeRef<float>[] { SelectedOptionScaleVal, SelectedOptionAlphaVal, NotSelectedOptionAlphaVal},
+            new TypeRef<float>[] { SelectedOptionScaleVal, SelectedOptionYVal, NotSelectedOptionYVal},
             tweenUpdatedDelegate_: selectingUpdate,
             tweenCompleteDelegate_: selectingFinished
             );
@@ -247,29 +247,29 @@ public class UIChoiceBoxes : MonoBehaviour
         {
             case BranchingNode.CHOICE.LEFT:
                 {
-                    leftColour.a = SelectedOptionAlphaVal.value;
+                    leftOffset.y = SelectedOptionYVal.value;
                     leftOptionImage.rectTransform.localScale = new Vector3(SelectedOptionScaleVal.value, SelectedOptionScaleVal.value, 1);
-                    rightColour.a = NotSelectedOptionAlphaVal.value;
+                    rightOffset.y = NotSelectedOptionYVal.value;
                     break;
                 }
             case BranchingNode.CHOICE.RIGHT:
                 {
-                    rightColour.a = SelectedOptionAlphaVal.value;
+                    rightOffset.y = SelectedOptionYVal.value;
                     rightOptionImage.rectTransform.localScale = new Vector3(SelectedOptionScaleVal.value, SelectedOptionScaleVal.value, 1);
-                    leftColour.a = NotSelectedOptionAlphaVal.value;
+                    leftOffset.y = NotSelectedOptionYVal.value;
                     break;
                 }        
         }
 
-        leftOptionImage.rectTransform.anchoredPosition = leftOptionShowingPosition;
+        leftOptionImage.rectTransform.anchoredPosition = leftOffset + leftOptionShowingPosition;
         leftOptionButtonImage.color = leftColour;
         leftOptionImage.color = leftColour;
-        leftOptionText.color = new Color(0, 0, 0, leftColour.a); 
+        leftOptionText.alpha = leftColour.a; 
 
         rightOptionImage.color = rightColour;
         rightOptionButtonImage.color = rightColour;
-        rightOptionText.color = new Color(0, 0, 0, rightColour.a); 
-        rightOptionImage.rectTransform.anchoredPosition = rightOptionShowingPosition;
+        rightOptionText.alpha = rightColour.a; 
+        rightOptionImage.rectTransform.anchoredPosition = rightOffset + rightOptionShowingPosition;
     }
 
     public void SkipTransition()
