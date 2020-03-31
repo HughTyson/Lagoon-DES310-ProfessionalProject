@@ -7,26 +7,22 @@ public class SupplyDrop : MonoBehaviour
 
     [SerializeField] SupplyBox box_prefab;
 
-    [SerializeField] public List<SupplyBox> box_list = new List<SupplyBox>();
+    List<SupplyBox> box_list = new List<SupplyBox>();
 
-    [SerializeField] List<GameObject> drop_points;
-
-    [Header("Plane Movement")]
-
-    [SerializeField] GameObject plane;
-    [SerializeField] Transform start_pos;
-    [SerializeField] Transform end_pos;
-
+    [SerializeField] List<DropPoint> drop_points;
 
     bool do_stuff = false;
+    int boxes_dropped;
 
-    //static public readonly TweenManager.TweenPathBundle plane_animation_tween = new TweenManager.TweenPathBundle(
+    [SerializeField] AnimationClip clip;
+    Animation animation;
 
-    //    //x pos
-    //    new TweenManager.TweenPath(
-    //        new TweenManager.TweenPart_Start(-27, )
-    //        ),
-    //    );
+    public void Start()
+    {
+        animation = GetComponent<Animation>();
+        animation.AddClip(clip, clip.name);
+        
+    }
 
     public void Awake()
     {
@@ -41,6 +37,14 @@ public class SupplyDrop : MonoBehaviour
             GM_.Instance.story.EventRequest_GameEventContinue += Blocker; //called when requesting the node to continue
 
             do_stuff = true;
+            animation.Play(clip.name);
+            boxes_dropped = 0;
+
+            for(int i = 0; i < drop_points.Count; i++)
+            {
+                drop_points[i].hit = false;
+                drop_points[i].already_dropped = false;
+            }
         }
     }
 
@@ -60,30 +64,26 @@ public class SupplyDrop : MonoBehaviour
 
     public void Update()
     {
-        
         if(do_stuff)
         {
+            for(int i = 0; i < drop_points.Count; i++)
+            {
+                if (drop_points[i].hit == true && drop_points[i].already_dropped == false)
+                {
+                    drop_points[i].already_dropped = true;
+                    SpawnBox(i);
+                    boxes_dropped += 1;
 
-
-            Spawn();
-
-
-
-            do_stuff = false;
-            GM_.Instance.story.EventRequest_GameEventContinue -= Blocker;
-            GM_.Instance.story.RequestGameEventContinue();
+                }
+            }
             
-
-
+            if(boxes_dropped == drop_points.Count)
+            {
+                do_stuff = false;
+                GM_.Instance.story.EventRequest_GameEventContinue -= Blocker;
+                GM_.Instance.story.RequestGameEventContinue();
+            }
         }
-
-
-
-    }
-
-    public void Spawn()
-    {
-        StartCoroutine(SpawnBoxes());
     }
 
     public void DestroyBox()
@@ -95,21 +95,14 @@ public class SupplyDrop : MonoBehaviour
         }
     }
 
-    public IEnumerator SpawnBoxes()
+    public void SpawnBox(int i)
     {
-        for (int i = 0; i < drop_points.Count; i++)
-        {
+        SupplyBox new_box = new SupplyBox();
 
-            SupplyBox new_box = new SupplyBox();
+        new_box = Instantiate(box_prefab);
+        new_box.box_state = SupplyBox.STATE.DROPPING;
 
-            new_box = Instantiate(box_prefab);
-            new_box.box_state = SupplyBox.STATE.DROPPING;
-
-            Vector3 spawn_pos = drop_points[i].transform.position;
-            new_box.transform.position = spawn_pos;
-
-            yield return new WaitForSeconds(0.7f);
-
-        }
+        Vector3 spawn_pos = drop_points[i].transform.position;
+        new_box.transform.position = spawn_pos;
     }
 }
