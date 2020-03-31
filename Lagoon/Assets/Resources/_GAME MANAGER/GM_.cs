@@ -91,7 +91,6 @@ public class GM_ : MonoBehaviour
         members.tween_manager.Update();
         members.input.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
         members.ui.ManagerUpdate();
-       // members.story.Update();
         members.pause.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
 
     }
@@ -103,6 +102,7 @@ public class GM_ : MonoBehaviour
             members.input.SetVibrationBoth(0, 0); // prevents controller vibrating even if Unity game closes
             members.input.FixedUpdate();
         }
+        members = null;
         instance_ = null;
     }
 }

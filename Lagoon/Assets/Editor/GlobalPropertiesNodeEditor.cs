@@ -16,15 +16,11 @@ public class GlobalPropertiesNodeEditor : NodeEditor
     public override void OnBodyGUI()
     {
         DialogNode node = target as DialogNode;
-        //if (simpleNode == null) simpleNode = node as DialogNode;
 
         // Update serialized object's representation
         serializedObject.Update();
 
-        // NodeEditorGUILayout.DrawPortHandle(new Rect(0, 0, 5, 5), Color.green, Color.yellow) ;
         GUIStyle testStyle = new GUIStyle();
-
-       // GUI.contentColor // use this to make intelisense parser!
 
         GUIContent empty_text = new GUIContent();
 
