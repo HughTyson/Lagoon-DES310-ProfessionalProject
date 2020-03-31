@@ -279,6 +279,9 @@ public class UnselectableButton : MonoBehaviour
 
     public void Selected()
     {
+
+        GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
+
         if (current_tweenInstance.Exists)
         {
             current_tweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);

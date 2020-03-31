@@ -199,6 +199,7 @@ public class SelectableButton : MenuSelectableBase
 
     public override void Selected()
     {
+        GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
         specialText.Revert();
         state = STATE.NONE;
         currentTweenWrapper = tweenBundle_select;
@@ -291,6 +292,7 @@ public class SelectableButton : MenuSelectableBase
                 {
                     if (current_optionswap_timer < 0)
                     {
+                        GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_CHANGE_SELECTION);
                         EndHovered();
                         siblingUp.HoveredOver();
                     }
@@ -305,6 +307,7 @@ public class SelectableButton : MenuSelectableBase
                 {
                     if (current_optionswap_timer < 0)
                     {
+                        GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_CHANGE_SELECTION);
                         EndHovered();
                         siblingDown.HoveredOver();
                     }
@@ -325,6 +328,7 @@ public class SelectableButton : MenuSelectableBase
                 {
                     if (current_optionswap_timer < 0)
                     {
+                        GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_CHANGE_SELECTION);
                         EndHovered();
                         siblingRight.HoveredOver();
                     }
@@ -337,6 +341,7 @@ public class SelectableButton : MenuSelectableBase
                 {
                     if (current_optionswap_timer < 0)
                     {
+                        GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_CHANGE_SELECTION);
                         EndHovered();
                         siblingLeft.HoveredOver();
                     }
@@ -350,8 +355,10 @@ public class SelectableButton : MenuSelectableBase
 
 
     }
+
     void EndHovered()
     {
+        
         specialText.Revert();
         state = STATE.NONE;
     }
