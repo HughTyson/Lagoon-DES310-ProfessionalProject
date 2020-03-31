@@ -17,7 +17,8 @@ public class TagsScript : MonoBehaviour
     WATER,
     TRIGGER,
     INVISIBLE_WALL,
-    CAMERA
+    CAMERA,
+    SUPPLY_CRATE
     };
 
     

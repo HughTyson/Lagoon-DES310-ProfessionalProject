@@ -220,6 +220,7 @@ public class StoryManager
         {
             if (current_node.GetNodeType() == BaseNodeType.NODE_TYPE.DIALOG)
             {
+                    GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                     if (((DialogNode)current_node).IsOnLastDialog())
                     {
                         current_node = ((DialogNode)current_node).NextNode();
@@ -247,6 +248,7 @@ public class StoryManager
         {
             if (current_node.GetNodeType() == BaseNodeType.NODE_TYPE.BRANCH)
             {
+                GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                 Event_BranchChoiceMade?.Invoke(new BranchChoiceMadeArgs(BranchingNode.CHOICE.LEFT));
                 current_node = ((BranchingNode)current_node).NextNode(BranchingNode.CHOICE.LEFT);
                 EnteredNewNode();
@@ -262,6 +264,7 @@ public class StoryManager
         {
             if (current_node.GetNodeType() == BaseNodeType.NODE_TYPE.BRANCH)
             {
+                GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                 Event_BranchChoiceMade?.Invoke(new BranchChoiceMadeArgs(BranchingNode.CHOICE.RIGHT));
                 current_node = ((BranchingNode)current_node).NextNode(BranchingNode.CHOICE.RIGHT);
                 EnteredNewNode();

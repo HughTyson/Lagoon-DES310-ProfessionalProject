@@ -322,6 +322,7 @@ public class UIStateConversation : MonoBehaviour
         {
             if (request.RequestedButton == InputManager.BUTTON.A || request.RequestedButton == InputManager.BUTTON.X || request.RequestedButton == InputManager.BUTTON.B)
             {
+                GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                 leftPortrait.SkipTransition();
                 rightPortrait.SkipTransition();
                 dialogBox.SkipTransition();

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7384223150735055443}
   - component: {fileID: 5722030885340485631}
   - component: {fileID: 6368437206185863001}
+  - component: {fileID: 1917913883538135175}
   m_Layer: 0
   m_Name: SupplyBox
   m_TagString: Untagged
@@ -79,6 +80,19 @@ MonoBehaviour:
   defaultWaterDrag: 10
   defaultAirDrag: 0
   equilibriumAcceptance: 0.2
+--- !u!114 &1917913883538135175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136562277402395918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8806654c6f90147bf0d3a0f428eaeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tags: 0300000008000000
 --- !u!65 &5575186348151988384
 BoxCollider:
   m_ObjectHideFlags: 0

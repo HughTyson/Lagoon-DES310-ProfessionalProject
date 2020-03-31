@@ -52,7 +52,8 @@ public class InputManager // input manager for a single player controller game
 
     public enum VIBRATION_PRESET
     { 
-    MENU_BUTTON_PRESSED  
+    MENU_BUTTON_PRESSED  ,
+    MENU_CHANGE_SELECTION ,
     };
 
 
@@ -196,6 +197,13 @@ public class InputManager // input manager for a single player controller game
                 {
                     SetVibrationPulse(VIBRATION_MOTOR.LEFT, 0.1f, 0.5f);
                     SetVibrationPulse(VIBRATION_MOTOR.RIGHT, 0.1f, 0.5f);
+
+                    break;
+                }
+            case VIBRATION_PRESET.MENU_CHANGE_SELECTION:
+                {
+                    SetVibrationPulse(VIBRATION_MOTOR.LEFT, 0.05f, 0.5f);
+                    SetVibrationPulse(VIBRATION_MOTOR.RIGHT, 0.05f, 0.5f);
 
                     break;
                 }
