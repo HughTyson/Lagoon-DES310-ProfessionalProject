@@ -19,6 +19,8 @@ public class PlayerRepairState : BaseState
 
     float counter;
 
+    bool text = false;
+
     enum RepairState
     {
         FULLPLANE,
@@ -53,6 +55,12 @@ public class PlayerRepairState : BaseState
 
         GM_.Instance.ui.state_repair.Show();
 
+        if(text)
+        {
+           GM_.Instance.ui.state_repair.Complete(plane_segments[selected_part].segment_complete);
+        }
+
+        text = true;
     }
 
     public void OnDisable()
@@ -61,7 +69,6 @@ public class PlayerRepairState : BaseState
         third_person_camera.enabled = true;
 
         GM_.Instance.ui.state_repair.Hide();
-
     }
 
     public override void StateUpdate()
@@ -81,11 +88,8 @@ public class PlayerRepairState : BaseState
                                 plane_camera.current_look_at = plane_segments[selected_part].transform;
 
                                 GM_.Instance.ui.helperButtons.DisableAll();
-                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "PROPELLER");
+                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Propeller");
                                 
-
-                                //set the camera's new position and look at based on the segment that has been selected
-
                             }
                             break;
                         case PlaneSegments.SegmentType.ENGINE_FRONT:
@@ -105,7 +109,7 @@ public class PlayerRepairState : BaseState
                                 plane_camera.current_look_at = plane_segments[selected_part].transform;
 
                                 GM_.Instance.ui.helperButtons.DisableAll();
-                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "TOP FUSELAGE");
+                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Top Fuselage");
                             }
                             break;
                         case PlaneSegments.SegmentType.COCKPIT:
@@ -115,7 +119,7 @@ public class PlayerRepairState : BaseState
                                 plane_camera.current_look_at = plane_segments[selected_part].transform;
 
                                 GM_.Instance.ui.helperButtons.DisableAll();
-                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "COCKPIT");
+                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Cockpit");
                             }
                             break;
                         case PlaneSegments.SegmentType.LEFTWING:
@@ -135,7 +139,7 @@ public class PlayerRepairState : BaseState
                                 plane_camera.current_look_at = plane_segments[selected_part].transform;
 
                                 GM_.Instance.ui.helperButtons.DisableAll();
-                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "RIGHTWING");
+                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Rightwing");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_LEFT_FRONT:
@@ -145,7 +149,7 @@ public class PlayerRepairState : BaseState
                                 plane_camera.current_look_at = plane_segments[selected_part].transform;
 
                                 GM_.Instance.ui.helperButtons.DisableAll();
-                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "FRONT FUSELAGE");
+                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Front Fuselage");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_LEFT_MID:
@@ -156,7 +160,7 @@ public class PlayerRepairState : BaseState
 
 
                                 GM_.Instance.ui.helperButtons.DisableAll();
-                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "REAR MANIFOLD");
+                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Rear Manifold");
                             }
                             break;
                         case PlaneSegments.SegmentType.TAIL:
@@ -166,7 +170,7 @@ public class PlayerRepairState : BaseState
                                 plane_camera.current_look_at = plane_segments[selected_part].transform;
 
                                 GM_.Instance.ui.helperButtons.DisableAll();
-                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "TAIL");
+                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Tail");
                             }
                             break;
                         case PlaneSegments.SegmentType.FUSELAGE_RIGHT_FRONT:
@@ -195,10 +199,15 @@ public class PlayerRepairState : BaseState
                 }
 
                 GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.B, "Exit");
+                GM_.Instance.ui.helperButtons.EnableLeftStick(true, true, false, false, "Change Segment");
 
                 break;
             case RepairState.SEGMENT:
                 {
+
+                    GM_.Instance.ui.helperButtons.DisableAll();
+                    GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.B, "Exit");
+
                     HandelInput();
 
                     //update the segment that has been selected by the player
