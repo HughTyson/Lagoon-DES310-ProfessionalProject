@@ -97,18 +97,16 @@ public class InputManager // input manager for a single player controller game
     {
     }
 
-    public void FixedUpdate()
-    {
-        UpdateMotor(leftMotor);
-        UpdateMotor(rightMotor);
 
-        GamePad.SetVibration(playerIndex, leftMotor.currentAmplitude, rightMotor.currentAmplitude); // set in fixed update to keep consistent vibration
-    }
     public void Update()
     {
         ConnectController();
         UpdateControllerValues();
 
+        UpdateMotor(leftMotor);
+        UpdateMotor(rightMotor);
+
+        GamePad.SetVibration(playerIndex, leftMotor.currentAmplitude, rightMotor.currentAmplitude); 
     }
 
 
@@ -148,21 +146,21 @@ public class InputManager // input manager for a single player controller game
         currentAxis[(int)AXIS.RH] = state.ThumbSticks.Right.X;
         currentAxis[(int)AXIS.RV] = state.ThumbSticks.Right.Y;
 
-        currentButtons[(int)BUTTON.X] = (state.Buttons.X == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.Y] = (state.Buttons.Y == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.A] = (state.Buttons.A == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.B] = (state.Buttons.B == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.BACK] = (state.Buttons.Back == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.DPAD_DOWN] = (state.DPad.Down == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.DPAD_LEFT] = (state.DPad.Left == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.DPAD_RIGHT] = (state.DPad.Right == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.DPAD_UP] = (state.DPad.Up == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.GUIDE] = (state.Buttons.Guide == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.LB] = (state.Buttons.LeftShoulder == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.L_STICK] = (state.Buttons.LeftStick == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.RB] = (state.Buttons.RightShoulder == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.R_STICK] = (state.Buttons.RightStick == ButtonState.Pressed) ? true : false;
-        currentButtons[(int)BUTTON.START] = (state.Buttons.Start == ButtonState.Pressed) ? true : false;
+        currentButtons[(int)BUTTON.X] = (state.Buttons.X == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.Y] = (state.Buttons.Y == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.A] = (state.Buttons.A == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.B] = (state.Buttons.B == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.BACK] = (state.Buttons.Back == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.DPAD_DOWN] = (state.DPad.Down == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.DPAD_LEFT] = (state.DPad.Left == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.DPAD_RIGHT] = (state.DPad.Right == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.DPAD_UP] = (state.DPad.Up == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.GUIDE] = (state.Buttons.Guide == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.LB] = (state.Buttons.LeftShoulder == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.L_STICK] = (state.Buttons.LeftStick == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.RB] = (state.Buttons.RightShoulder == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.R_STICK] = (state.Buttons.RightStick == ButtonState.Pressed);
+        currentButtons[(int)BUTTON.START] = (state.Buttons.Start == ButtonState.Pressed);
     }
     public bool IsControllerConnected()
     {
@@ -306,7 +304,7 @@ public class InputManager // input manager for a single player controller game
             case VibrationMotor.VIBRATION_STATE.RANDOM_PULSE:
                 {
 
-                    motor.timer -= Time.fixedDeltaTime;
+                    motor.timer -= Time.unscaledDeltaTime;
                     
                     if (motor.timer <= 0)
                     {
@@ -324,7 +322,7 @@ public class InputManager // input manager for a single player controller game
                 }
             case VibrationMotor.VIBRATION_STATE.SINGLE_PULSE:
                 {
-                    motor.pulseDuration -= Time.fixedDeltaTime;
+                    motor.pulseDuration -= Time.unscaledDeltaTime;
                     if (motor.pulseDuration < 0)
                     {
                         motor.currentAmplitude = 0;

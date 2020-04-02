@@ -163,6 +163,15 @@ public class TweenManager
             }
         }
 
+        public DIRECTION Direction
+        { 
+            get
+            {
+                return instance.direction;
+            }
+        
+        }
+
 
         /// <summary>
         /// 0 = 0%
@@ -273,7 +282,7 @@ public class TweenManager
 
             direction = starting_direction;
             if (direction == DIRECTION.START_TO_END)
-                current_time = 0 + (Mathf.Clamp01(startingPercentageOfCompletion_) * duration);
+                current_time = (Mathf.Clamp01(startingPercentageOfCompletion_) * duration);
             else if (direction == DIRECTION.END_TO_START)
                 current_time = duration - (Mathf.Clamp01(startingPercentageOfCompletion_) * duration);
 

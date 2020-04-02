@@ -48,7 +48,7 @@ namespace SpecialText
                 }
                 public override void EndlessUpdate()
                 {
-                    time += Time.deltaTime;
+                    time += Time.unscaledDeltaTime;
 
                     for (int i = 0; i < specialTextCharacters.Count; i++)
                     {

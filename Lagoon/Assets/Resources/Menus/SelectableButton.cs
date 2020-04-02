@@ -78,6 +78,7 @@ public class SelectableButton : MenuSelectableBase
             0,
             TMProText.text.Length
             );
+
     }
 
     public void Start()
@@ -226,6 +227,7 @@ public class SelectableButton : MenuSelectableBase
     public override void Show()
     {
         gameObject.SetActive(true);
+        specialText.Revert();
         state = STATE.NONE;
         currentTweenWrapper = tweenBundle_show;
 
@@ -235,6 +237,8 @@ public class SelectableButton : MenuSelectableBase
             tweenCompleteDelegate_: finishedShow,
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA);
     }
+   
+
     void finishedShow()
     {
         Invoke_FinishedShow();

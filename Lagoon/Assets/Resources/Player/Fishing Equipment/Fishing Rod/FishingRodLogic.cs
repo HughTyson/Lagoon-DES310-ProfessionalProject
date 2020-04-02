@@ -48,7 +48,9 @@ public class FishingRodLogic : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        if (GM_.Instance.pause.GetPausedState() == PauseManager.PAUSED_STATE.PAUSED)
+            return;
+
        GetComponent<Rigidbody>().AddForceAtPosition(-fishingLineLogic.EndOfLineForce()*1000.0f, FixedFishingTip.position);
     }
 

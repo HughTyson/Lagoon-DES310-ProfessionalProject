@@ -42,7 +42,7 @@ namespace SpecialText
             }
             public override void EndlessUpdate()
             {
-                time += Time.deltaTime;
+                time += Time.unscaledDeltaTime;
                 for (int i = 0; i < specialTextCharacters.Count; i++)
                 {
                     specialTextCharacters[i].centrePositionOffset.y += amplitude * Mathf.Sin((specialTextCharacters[i].index * Mathf.PI * frequency) + (time * speed * Mathf.PI));

@@ -545,6 +545,63 @@ public class TweenAnimator
 
         }
 
+        public abstract class TriggerProperty : Property
+        {
+            float triggerPoint;
+            
+            bool flipFlop_TriggerWhenGreater = false;
+
+            int tweenOutputIndex;
+
+            bool isFirstUpdate;
+            protected abstract void Triggered();
+            public sealed override void Start()
+            {
+                isFirstUpdate = true;
+            }
+            public sealed override void UpdateProperty()
+            {
+                float value = tweenLinks[tweenOutputIndex].value;
+
+                if (isFirstUpdate)
+                {
+                    isFirstUpdate = false;
+                    if (value > triggerPoint)
+                    {
+                        flipFlop_TriggerWhenGreater = false;
+                    }
+                    else
+                    {
+                        flipFlop_TriggerWhenGreater = true;
+                    }
+                }
+                else
+                {
+                    if (flipFlop_TriggerWhenGreater)
+                    {
+                        if (value - 0.0001f > triggerPoint)
+                        {
+                            flipFlop_TriggerWhenGreater = !flipFlop_TriggerWhenGreater;
+                            Triggered();
+                        }
+                    }
+                    else
+                    {
+                        if (value + 0.0001f < triggerPoint)
+                        {
+                            flipFlop_TriggerWhenGreater = !flipFlop_TriggerWhenGreater;
+                            Triggered();
+                        }
+
+                    }
+                }               
+            }
+            protected void ConstructorInit(int tweenOutputIndex_, float triggerPoint_)
+            {
+                triggerPoint = triggerPoint_;
+                tweenOutputIndex = tweenOutputIndex_;
+            }
+        }
     }
 
 
@@ -581,6 +638,11 @@ public class TweenAnimator
         {
             changingProperties.Add(intType);
             changingProperties[0].Init(intReference);
+        }
+        public Generic_(System.Action actionReference, Trigger_ triggerType)
+        {
+            changingProperties.Add(triggerType);
+            changingProperties[0].Init(actionReference);
         }
 
         public class Float_ : Base.FloatProperty
@@ -656,7 +718,17 @@ public class TweenAnimator
                 set { ((TypeRef<bool>)reference).value = value; }
             }
         }
-
+        public class Trigger_ : Base.TriggerProperty
+        {
+            public Trigger_(int tweenOutputIndex_, float triggerPoint)
+            {
+                ConstructorInit(tweenOutputIndex_, triggerPoint);
+            }
+            protected override void Triggered()
+            {
+                ((System.Action)reference)?.Invoke();
+            }
+        }
     }
 
     public class Transf_ : Animatable

@@ -14,12 +14,21 @@ namespace SpecialText
         
         bool isOn = false;
         System.Action TextCompleted;
+
+        bool isTimeUnscaled;
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="specialTextData_"></param>
+        /// <param name="textCompleted_"> Optional Param: Called when Text is finished being shown</param>
         public void Begin(SpecialTextData specialTextData_, System.Action textCompleted_ = null)
         {
             textCompletedEventCalled = false;
             text.enabled = true;
             Revert();
-            specialTextManager.Begin(specialTextData_, text);
+            specialTextManager.Begin(specialTextData_,  text);
             TextCompleted = textCompleted_;
             isOn = true;
             Update();

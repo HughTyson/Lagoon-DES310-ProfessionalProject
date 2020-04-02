@@ -163,6 +163,8 @@ public class FishingLineLogic : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        if (GM_.Instance.pause.GetPausedState() == PauseManager.PAUSED_STATE.PAUSED)
+            return;
 
         // Collisions
 
