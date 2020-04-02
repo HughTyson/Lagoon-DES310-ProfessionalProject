@@ -22,7 +22,7 @@ public class PagePair_Pause : BasePagePair
         optionsButton.Event_Selected += request_GoToOptionsPair;
         exitButton.Event_Selected += request_GoToAreYouSurePair;
 
-        exitToJournalButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.B });
+        exitToJournalButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.B});
     }
 
 

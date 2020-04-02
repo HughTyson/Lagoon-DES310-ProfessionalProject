@@ -60,14 +60,17 @@ public class BasePagePair : MonoBehaviour
     {
 
     }
-    public virtual void BegunExitingPage()
-    {
-
-    }
     public virtual void FinishedEnteringPage()
     {
 
     }
+
+
+    public virtual void BegunExitingPage()
+    {
+
+    }
+ 
     public virtual void FinishedExitingPage()
     {
 
