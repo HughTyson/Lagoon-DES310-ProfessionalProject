@@ -74,16 +74,25 @@ public class PlayerScriptManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (GM_.Instance.pause.GetPausedState() == PauseManager.PAUSED_STATE.PAUSED)
+            return;
+
         currentState.StateUpdate();
     }
 
     private void FixedUpdate()
     {
+        if (GM_.Instance.pause.GetPausedState() == PauseManager.PAUSED_STATE.PAUSED)
+            return;
+
         currentState.StateFixedUpdate();
     }
 
     private void LateUpdate()
     {
+        if (GM_.Instance.pause.GetPausedState() == PauseManager.PAUSED_STATE.PAUSED)
+            return;
+
         currentState.StateLateUpdate();
     }
 

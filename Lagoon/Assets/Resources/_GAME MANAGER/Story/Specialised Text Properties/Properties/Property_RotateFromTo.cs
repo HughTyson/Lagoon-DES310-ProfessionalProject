@@ -98,7 +98,7 @@ namespace SpecialText
                 
                 public void Update()
                 {
-                    time += Time.deltaTime;
+                    time += Time.unscaledDeltaTime;
                 }
             }
             public override void Init()

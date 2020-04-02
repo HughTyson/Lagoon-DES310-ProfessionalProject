@@ -48,7 +48,7 @@ namespace SpecialText
             }
             public override bool TransitionUpdate(int highestHoldBackIndex)
             {
-                current_time -= Time.deltaTime;
+                current_time -= Time.unscaledDeltaTime;
 
                 if (current_time >= 0)
                 {

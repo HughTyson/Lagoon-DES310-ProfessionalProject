@@ -81,10 +81,6 @@ public class GM_ : MonoBehaviour
         members.story.Begin();
     }
 
-    private void FixedUpdate()
-    {
-        members.input.FixedUpdate();
-    }
 
     void Update() // the execution order of this is set to first so it will call before any other game objects
     {
@@ -100,7 +96,7 @@ public class GM_ : MonoBehaviour
         if (members != null)
         {
             members.input.SetVibrationBoth(0, 0); // prevents controller vibrating even if Unity game closes
-            members.input.FixedUpdate();
+            members.input.Update();
         }
         members = null;
         instance_ = null;

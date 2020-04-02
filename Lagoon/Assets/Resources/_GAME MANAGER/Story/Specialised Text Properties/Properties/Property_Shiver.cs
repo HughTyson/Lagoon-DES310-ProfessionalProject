@@ -48,7 +48,7 @@ namespace SpecialText
             }
             public override void EndlessUpdate()
             {
-                time += Time.deltaTime;
+                time += Time.unscaledDeltaTime;
                 for (int i = 0; i < specialTextCharacters.Count; i++)
                 {
                     specialTextCharacters[i].centrePositionScaledOffset += new Vector2((Mathf.PerlinNoise(time * speed, x_seed + (float)i) - 0.5f) * 2.0f * intensity, ((Mathf.PerlinNoise(time * speed, y_seed + (float)i) - 0.5f) * intensity * 2.0f));

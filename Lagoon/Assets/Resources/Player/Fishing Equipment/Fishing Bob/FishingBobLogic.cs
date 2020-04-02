@@ -135,8 +135,11 @@ public class FishingBobLogic : MonoBehaviour
         }
         return false;
     }
-    private void FixedUpdate()
+    private void Update()
     {
+        if (GM_.Instance.pause.GetPausedState() == PauseManager.PAUSED_STATE.PAUSED)
+            return;
+
         float XZVelocityMag = new Vector2(GetComponentInParent<Rigidbody>().velocity.x, GetComponentInParent<Rigidbody>().velocity.z).magnitude;
 
         switch (current_state)

@@ -122,7 +122,7 @@ namespace SpecialText
 
                 if (float_startingIndex + (time * speed) <= lowestHoldBackIndex)
                 {
-                    time += Time.deltaTime;
+                    time += Time.unscaledDeltaTime;
                     transitioningFloat = float_startingIndex + (time * speed);
 
                     uncompleteCharacterTransitions.RemoveAll(y =>
@@ -139,7 +139,8 @@ namespace SpecialText
                                 transitionVarsList[y.indexInList].YPositionRef
                                 },
                                 tweenCompleteDelegate_: characterFinished,
-                                speed_: 1.0f / transition_in_duration
+                                speed_: 1.0f / transition_in_duration,
+                                TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
                             );
                             return true;
                         }

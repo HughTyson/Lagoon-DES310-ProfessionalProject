@@ -50,6 +50,7 @@ abstract public class MenuSelectableBase : MonoBehaviour
 
     }
 
+
     public virtual void Activate()
     {
         gameObject.SetActive(false);
