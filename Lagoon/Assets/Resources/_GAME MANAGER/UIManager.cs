@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     public UITransition transition;
     public UIStateFishVictory state_fishVictory;
     public UIStateConversation state_conversation;
+    public UIStateRepair state_repair;
     // Start is called before the first frame update
     
 
