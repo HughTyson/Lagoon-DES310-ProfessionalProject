@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-struct OnSegment
+class OnSegment
 {
     [SerializeField] public RepairGameBase game;
-    
+    [SerializeField] public GameObject hatch;
+
+    [SerializeField] public GameObject hatch_move_pos;
+
+
+    public Transitions tween_transition;
+
 }
 
 
@@ -42,12 +48,8 @@ public class PlaneSegments : MonoBehaviour
     //              Visible Variables
     //===========================================
 
-
-
     [SerializeField] public SegmentType type;
     [SerializeField] float transition_time;
-
-
 
     [SerializeField] List<OnSegment> games;
 
@@ -111,7 +113,7 @@ public class PlaneSegments : MonoBehaviour
                                         GM_.Instance.ui.helperButtons.DisableAll();
                                         if (!game_selected)
                                         {
-                                            GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Switch Game");
+                                            GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Open Segment");
                                         }
                                     }
 
@@ -125,6 +127,13 @@ public class PlaneSegments : MonoBehaviour
                         {
                             games[selected_game].game.GameInit(games[selected_game].game.transform.position);   //call the init function
                             needs_init = false;
+
+
+                            //needs to open the hatch
+                            //games[selected_game].hatch
+                            
+
+
                             return;
                         }
 

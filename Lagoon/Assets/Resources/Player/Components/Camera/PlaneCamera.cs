@@ -15,7 +15,8 @@ class Transitions
         COCKPIT_FUSELM,
         FUSELM_ENGMID,
         ENGMID_TAIL,
-        TAIL_PROP
+        TAIL_PROP,
+        OTHER
     }
 
     [Tooltip("Defines transition betweentwo parts. Zoom occurs on part before underscore")]
