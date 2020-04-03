@@ -98,15 +98,23 @@ public class UnselectableButton : MonoBehaviour
 
     }
 
-    public void Start()
+
+    bool hasBeenInit = false;
+    void Init()
     {
-        tweenBundle_hide.SetDefaults(image.color,image.rectTransform.anchoredPosition, image.rectTransform.localScale, TMProText.color, TMProText.rectTransform.anchoredPosition, TMProText.rectTransform.localScale, rectTransform.anchoredPosition, rectTransform.localScale);
+        hasBeenInit = true;
+        tweenBundle_hide.SetDefaults(image.color, image.rectTransform.anchoredPosition, image.rectTransform.localScale, TMProText.color, TMProText.rectTransform.anchoredPosition, TMProText.rectTransform.localScale, rectTransform.anchoredPosition, rectTransform.localScale);
         tweenBundle_show.SetDefaults(image.color, image.rectTransform.anchoredPosition, image.rectTransform.localScale, TMProText.color, TMProText.rectTransform.anchoredPosition, TMProText.rectTransform.localScale, rectTransform.anchoredPosition, rectTransform.localScale);
         tweenBundle_select.SetDefaults(image.color, image.rectTransform.anchoredPosition, image.rectTransform.localScale, TMProText.color, TMProText.rectTransform.anchoredPosition, TMProText.rectTransform.localScale, rectTransform.anchoredPosition, rectTransform.localScale);
 
         tweenBundle_hide.CreateParameterFormat(default_hideTween, TWEEN_PARAMETERS.TEXT_ALPHA, TWEEN_PARAMETERS.IMAGE_ALPHA);
         tweenBundle_show.CreateParameterFormat(default_showTween, TWEEN_PARAMETERS.TEXT_ALPHA, TWEEN_PARAMETERS.IMAGE_ALPHA);
         tweenBundle_select.CreateParameterFormat(default_selectedTween, TWEEN_PARAMETERS.IMAGE_SCALE_X, TWEEN_PARAMETERS.IMAGE_SCALE_Y, TWEEN_PARAMETERS.IMAGE_COLOUR_R, TWEEN_PARAMETERS.IMAGE_COLOUR_G, TWEEN_PARAMETERS.IMAGE_COLOUR_B, TWEEN_PARAMETERS.TEXT_COLOUR_R, TWEEN_PARAMETERS.TEXT_COLOUR_G, TWEEN_PARAMETERS.TEXT_COLOUR_B);
+    }
+    public void Start()
+    {
+        if (!hasBeenInit)
+            Init();
     }
 
 
@@ -333,6 +341,9 @@ public class UnselectableButton : MonoBehaviour
     //}
     public void Show()
     {
+        if (!hasBeenInit)
+            Init();
+
         if (current_tweenInstance.Exists)
         {
             current_tweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);

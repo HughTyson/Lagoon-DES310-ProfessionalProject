@@ -27,6 +27,12 @@ public class ActionTimer
         current_time = 0;
     }
 
+    public void Clear()
+    {
+        totalActions.Clear();
+        uncalledActions.Clear();
+    }
+
     public void Update()
     {
         current_time += Time.unscaledDeltaTime;

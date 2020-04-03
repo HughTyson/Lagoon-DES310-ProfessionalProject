@@ -34,8 +34,19 @@ public class BasePagePair : MonoBehaviour
     public void SetupPageInfo()
     {
 
-        leftPage = transform.GetChild(0).gameObject.AddComponent<PageContent>();
-        rightPage = transform.GetChild(1).gameObject.AddComponent<PageContent>();
+
+        // order from GetChild isn't determenistic
+        if (transform.GetChild(0).name == "Left Page Canvas")
+        {
+            leftPage = transform.GetChild(0).gameObject.AddComponent<PageContent>();
+            rightPage = transform.GetChild(1).gameObject.AddComponent<PageContent>();
+        }
+        else
+        {
+            leftPage = transform.GetChild(1).gameObject.AddComponent<PageContent>();
+            rightPage = transform.GetChild(0).gameObject.AddComponent<PageContent>();
+        }
+
 
         if (transform.childCount != 2)
         {
@@ -43,7 +54,6 @@ public class BasePagePair : MonoBehaviour
             Debug.Break();
         }
     }
-
 
     public event System.Action<RequestToChangePage> EventRequest_ChangePage;
     public event System.Action EventRequest_CloseJournal;
@@ -72,6 +82,13 @@ public class BasePagePair : MonoBehaviour
     }
  
     public virtual void FinishedExitingPage()
+    {
+
+    }
+
+
+    // Called when page is passed by when scimming through pages. It is visible, but not stopped at.
+    public virtual void PassingBy()
     {
 
     }

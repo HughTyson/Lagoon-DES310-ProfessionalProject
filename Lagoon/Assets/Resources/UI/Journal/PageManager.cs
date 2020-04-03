@@ -5,33 +5,35 @@ using UnityEngine;
 public class PageManager : MonoBehaviour
 {
 
-    public enum PAGE
-    { 
-    BOOK_LEFT,
-    PAGE_LEFT,
-    PAGE_RIGHT,
-    BOOK_RIGHT    
-    }
 
 
-    [SerializeField] Transform bookLeftPage;
-    [SerializeField] Transform pageLeftPage;
-    [SerializeField] Transform pageRightPage;
-    [SerializeField] Transform bookRightPage;
 
 
-    BasePagePair current_pair = null;
-    BasePagePair new_pair = null;
+    //public enum BOOK_PAGE
+    //{ 
+    //    BOOK_LEFT,
+    //    BOOK_RIGHT    
+    //}
 
-    bool isDirty = false;
 
-    PagePositionerManager pagePositionerManager;
+    //[SerializeField] Transform bookLeftPage;
+    //[SerializeField] Transform pageLeftPage;
+    //[SerializeField] Transform pageRightPage;
+    //[SerializeField] Transform bookRightPage;
 
+
+    //BasePagePair current_pair = null;
+
+    //bool isDirty = false;
+
+    //PagePositionerManager pagePositionerManager;
+
+
+    List<BasePagePair> AllPairs = new List<BasePagePair>();
 
     // Start is called before the first frame update
     void Start()
     {
-        pagePositionerManager = new PagePositionerManager();
         Quaternion no_rotation = Quaternion.Euler(0, 0, 0);
         // Setup distance between the pairs
         for (int i = 0; i < transform.childCount; i++)
@@ -42,132 +44,266 @@ public class PageManager : MonoBehaviour
                 Debug.LogError("Error, children of PageManager Object must have BasePagePairs!");
                 Debug.Break();
             }
-            new_pair.SetupPageInfo();
-            new_pair.transform.position = transform.position + new Vector3(2*i, 0, 0);
+            new_pair.transform.position = transform.position + new Vector3(2 * i, 0, 0);
             new_pair.transform.rotation = no_rotation;
             new_pair.gameObject.SetActive(false);
-        }
-
-        pagePositionerManager.AddPagePosition(PAGE.BOOK_LEFT, bookLeftPage);
-        pagePositionerManager.AddPagePosition(PAGE.PAGE_LEFT, pageLeftPage);
-        pagePositionerManager.AddPagePosition(PAGE.PAGE_RIGHT, pageRightPage);
-        pagePositionerManager.AddPagePosition(PAGE.BOOK_RIGHT, bookRightPage);
+            new_pair.SetupPageInfo();
+            AllPairs.Add(new_pair);
+        }        
     }
 
-    public event System.Action<BasePagePair.RequestToChangePage> EventRequest_CurrentPage_WantsToChange;
-    public event System.Action EventRequest_CurrentPage_WantsToCloseJournal;
 
-    public void PrepareNewPair(BasePagePair new_pair_)
+    public class PairToPairInfo
     {
-        isDirty = true;
-        new_pair = new_pair_;
-
-        if (current_pair != null)
-        {
-            current_pair.EventRequest_ChangePage -= EventRequest_CurrentPage_WantsToChange;
-            current_pair.EventRequest_CloseJournal -= EventRequest_CurrentPage_WantsToCloseJournal;
+        public enum DIRECTION
+        { 
+        GOING_RIGHT,
+        GOING_LEFT,
+        ON_TARGET
         }
-
-        if (new_pair != null)
-            new_pair.gameObject.SetActive(true);
-        if (current_pair != null)
-            current_pair.BegunExitingPage();
-        if (new_pair != null)
-            new_pair.BegunEnteringPage();
-    }
-    public void ApplyNewPair()
-    {
-        isDirty = false;
-        if (current_pair != null)
-        {
-            current_pair.FinishedExitingPage();
-        }
-
-        setPageBasePair(new_pair);
-        if (current_pair != null)
-        {
-            current_pair.EventRequest_ChangePage += EventRequest_CurrentPage_WantsToChange;
-            current_pair.EventRequest_CloseJournal += EventRequest_CurrentPage_WantsToCloseJournal;
-            current_pair.FinishedEnteringPage();
-        }
-
-        new_pair = null;
-
-    }
-
+        public DIRECTION direction;
+        public List<BasePagePair> basePagePairs = new List<BasePagePair>(); // note. pairs are stored from closest to use at the end of the list
     
-    void setPageBasePair(BasePagePair pair)
-    {
-        if (isDirty)
-        {
-            Debug.LogError("Error, page manager attempt to change pages but pages where transitioning!");
-            Debug.Break();
-        }
-        isDirty = false;
-        if (current_pair != null)
-            current_pair.gameObject.SetActive(false);
-
-        current_pair = pair;
-        pagePositionerManager.DetachAllPages();
-
-        if (current_pair != null)
-        {
-            current_pair.gameObject.SetActive(true);
-
-            pagePositionerManager.AttachPage(PAGE.BOOK_LEFT, current_pair.LeftPage);
-            pagePositionerManager.AttachPage(PAGE.BOOK_RIGHT, current_pair.RightPage);
-        }
     }
 
-    public int CompareCurrentPairToPair(BasePagePair pair)
+    public PairToPairInfo GetInfoFromPairToPair(BasePagePair from_pair, BasePagePair to_pair)
     {
-        if (current_pair == null || pair == null)
-            return 0;
+        PairToPairInfo pairToPair = new PairToPairInfo();
+
+        if (from_pair == null || to_pair == null)
+        {
+            pairToPair.direction = PairToPairInfo.DIRECTION.ON_TARGET;
+            return pairToPair;
+        }
+
+
+        int from_pair_index = -1;
+        int to_pair_index = -1;
+        for (int i = 0; i < AllPairs.Count; i++)
+        {
+            if (AllPairs[i] == from_pair)
+                from_pair_index = i;
+
+            if (AllPairs[i] == to_pair)
+                to_pair_index = i;
+
+            if (from_pair_index != -1 && to_pair_index != -1)
+                break;
+        }
+
+
+        if (from_pair_index < to_pair_index)
+        {
+            pairToPair.direction = PairToPairInfo.DIRECTION.GOING_RIGHT;
+            for (int i = to_pair_index; i > from_pair_index; i--)
+                pairToPair.basePagePairs.Add(AllPairs[i]);
+
+        }
+        else if (from_pair_index > to_pair_index)
+        {
+            pairToPair.direction = PairToPairInfo.DIRECTION.GOING_LEFT;
+            for (int i = to_pair_index; i < from_pair_index; i++)
+                pairToPair.basePagePairs.Add(AllPairs[i]);
+        }
         else
-            return pair.transform.GetSiblingIndex() - current_pair.transform.GetSiblingIndex();
-    }
+            pairToPair.direction = PairToPairInfo.DIRECTION.ON_TARGET;
 
-    public void HidePages()
-    {
-        if (isDirty)
-        {
-            Debug.LogError("Error, page manager attempt to hide pages but pages where transitioning!");
-            Debug.Break();
-        }
-
-        if (current_pair != null)
-        {
-            current_pair.gameObject.SetActive(false);
-            current_pair = null;
-        }
-        pagePositionerManager.DetachAllPages();
-    }
-
-
-    public void SwapAttachedPages(PAGE from, PAGE to )
-    {
-        isDirty = true;
-        pagePositionerManager.SwapAttachedPages(to, from);
-    }
-    public void HidePage(PAGE page)
-    {
-        isDirty = true;
-        pagePositionerManager.HidePage(page);
-    }
-    public void ShowPage(PAGE page)
-    {
-        isDirty = true;
-        pagePositionerManager.ShowPage(page);
+        return pairToPair;
 
     }
-    public void SetPage(PAGE page, PageContent pageInfo)
-    {
-        isDirty = true;
-        pagePositionerManager.AttachPage(page, pageInfo);
-    }
+    
 
-    public void Update()
-    {
-        pagePositionerManager.Update();
-    }
+    //public event System.Action<BasePagePair.RequestToChangePage> EventRequest_CurrentPage_WantsToChange;
+    //public event System.Action EventRequest_CurrentPage_WantsToCloseJournal;
+
+
+
+    //public void Init(List<PageObject> pageObjects)
+    //{
+    //    for (int i = 0; i < pageObjects.Count; i++)
+    //    {
+    //        pagePositionerManager.AddPagePosition(pageObjects[i].LeftSide, pageObjects[i].LeftSide);
+    //        pagePositionerManager.AddPagePosition(pageObjects[i].RightSide, pageObjects[i].RightSide);
+    //    }
+    //}
+
+
+    //struct UnappliedPage
+    //{
+    //    public UnappliedPage(BasePagePair pagePair_, PageObject pageObjectSide_)
+    //    {
+    //        pagePair = pagePair_;
+    //        pageObject = pageObjectSide_;
+    //    }
+
+    //    public BasePagePair pagePair;
+    //    public PageObject pageObject;
+
+    //}
+
+    //BasePagePair finalPagePair = null;
+    //List<UnappliedPage> unappliedPages = new List<UnappliedPage>();
+
+
+    //int pageChanging_PagesLeft  = 0;
+    //public void StartPageChangingMode(BasePagePair finalPagePair_)
+    //{
+    //    if (isDirty)
+    //    {
+    //        Debug.LogError("Error! tried to start page changing mode while already in that mode");
+    //        Debug.Break();
+    //    }
+    //    finalPagePair = finalPagePair_;
+    //    pageChanging_PagesLeft = CompareCurrentPairToPair(finalPagePair);
+    //    isDirty = true;
+
+
+
+    //    if (current_pair != null)
+    //    {
+    //        current_pair.EventRequest_ChangePage -= EventRequest_CurrentPage_WantsToChange;
+    //        current_pair.EventRequest_CloseJournal -= EventRequest_CurrentPage_WantsToCloseJournal;
+    //    }
+
+    //    if (current_pair != null)
+    //        current_pair.BegunExitingPage();
+
+    //}
+
+    //BasePagePair new_pair = null;
+    //public void PrepareNewPair(PageObject pageObjectReference)
+    //{
+    //    if (pageChanging_PagesLeft != 0)
+    //    {
+    //        new_pair = AllPairs[finalPagePair.transform.GetSiblingIndex() + pageChanging_PagesLeft];
+
+    //        unappliedPages.Add(new UnappliedPage(new_pair, pageObjectReference));
+
+    //        new_pair.gameObject.SetActive(true);
+    //        new_pair.BegunEnteringPage();
+    //        isDirty = true;
+
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("Error, PerpareNewPair was called, but the iterated pair is the final pair!");
+    //    }
+
+
+    //    if (pageChanging_PagesLeft < 0)
+    //    {
+    //        pageChanging_PagesLeft++;
+    //    }
+    //    else if (pageChanging_PagesLeft > 0)
+    //    {
+    //        pageChanging_PagesLeft--;
+    //    }
+
+
+
+
+    //}
+    //public void ApplyNewPair()
+    //{
+    //    unappliedPages[0].pagePair.FinishedExitingPage();
+    //    unappliedPages.RemoveAt(0);
+    //}
+
+    //public void FinalizeNewPair()
+    //{
+    //    if (unappliedPages.Count > 0)
+    //    {
+    //        Debug.LogError("Error! FinalizeNewPair occurred, but there are still unapplied pages!");
+    //        Debug.Break();
+    //    }
+    //    isDirty = false;
+    //    if (current_pair != null)
+    //    {
+    //        current_pair.FinishedExitingPage();
+    //    }
+
+    //    setPageBasePair(finalPagePair);
+    //    if (current_pair != null)
+    //    {
+    //        current_pair.EventRequest_ChangePage += EventRequest_CurrentPage_WantsToChange;
+    //        current_pair.EventRequest_CloseJournal += EventRequest_CurrentPage_WantsToCloseJournal;
+    //        current_pair.FinishedEnteringPage();
+    //    }
+
+    //    finalPagePair = null;
+    //}
+
+
+    //void setPageBasePair(BasePagePair pair)
+    //{
+    //    if (isDirty)
+    //    {
+    //        Debug.LogError("Error, page manager attempt to change pages but pages where transitioning!");
+    //        Debug.Break();
+    //    }
+    //    isDirty = false;
+    //    if (current_pair != null)
+    //        current_pair.gameObject.SetActive(false);
+
+    //    current_pair = pair;
+    //    pagePositionerManager.DetachAllPages();
+
+    //    if (current_pair != null)
+    //    {
+    //        current_pair.gameObject.SetActive(true);
+
+    //        pagePositionerManager.AttachPage(BOOK_PAGE.BOOK_LEFT, current_pair.LeftPage);
+    //        pagePositionerManager.AttachPage(BOOK_PAGE.BOOK_RIGHT, current_pair.RightPage);
+    //    }
+    //}
+
+    //public int CompareCurrentPairToPair(BasePagePair pair)
+    //{
+    //    if (current_pair == null || pair == null)
+    //        return 0;
+    //    else
+    //        return pair.transform.GetSiblingIndex() - current_pair.transform.GetSiblingIndex();
+    //}
+
+    //public void HidePages()
+    //{
+    //    if (isDirty)
+    //    {
+    //        Debug.LogError("Error, page manager attempt to hide pages but pages where transitioning!");
+    //        Debug.Break();
+    //    }
+
+    //    if (current_pair != null)
+    //    {
+    //        current_pair.gameObject.SetActive(false);
+    //        current_pair = null;
+    //    }
+    //    pagePositionerManager.DetachAllPages();
+    //}
+
+    //public void SwapAttachedPages(object from, object to )
+    //{
+    //    isDirty = true;        
+    //    pagePositionerManager.SwapAttachedPages(to, from);
+    //}
+    //public void HidePage(object page)
+    //{
+    //    isDirty = true;
+    //    pagePositionerManager.HidePage(page);
+    //}
+    //public void ShowPage(object page)
+    //{
+    //    isDirty = true;
+    //    pagePositionerManager.ShowPage(page);
+
+    //}
+    //public void SetPage(object page, PageContent pageInfo)
+    //{
+    //    isDirty = true;
+    //    pagePositionerManager.AttachPage(page, pageInfo);
+    //}
+    //public void Update()
+    //{
+    //    pagePositionerManager.Update();
+    //}
 }
