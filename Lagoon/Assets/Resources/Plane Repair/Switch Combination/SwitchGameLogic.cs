@@ -20,9 +20,14 @@ public class SwitchGameLogic : RepairGameBase
 
     [SerializeField] SwitchInformation[] switch_info = new SwitchInformation[4];
 
+    [Tooltip("First 4 are switches, 2nd 4 are lights")]
+    [SerializeField] List<Vector3> positions;
+
     bool[] l_active = new bool[4];
 
     [SerializeField] bool[] light_active = new bool[4];
+
+    
 
     int selected_switch = 0;
     float counter;
@@ -37,8 +42,10 @@ public class SwitchGameLogic : RepairGameBase
         {
             //Instantiate the switches
 
-            switchs[i] = Instantiate(switch_prefab, this.transform);
-            switchs[i].transform.position = new Vector3(transform.position.x + (i * 0.1f), transform.position.y, transform.position.z);
+            switchs[i] = Instantiate(switch_prefab);
+            switchs[i].transform.position = positions[i]; //new Vector3(transform.position.x + (i * 0.25f), transform.position.y, transform.position.z);
+
+            switchs[i].transform.rotation = switch_prefab.transform.rotation;
 
             switchs[i].activate = switch_info[i].activates;
             switchs[i].deactivate = switch_info[i].deactivates;
@@ -47,7 +54,7 @@ public class SwitchGameLogic : RepairGameBase
 
             lights[i] = Instantiate(light_prefab, this.transform);
             lights[i].SetMatOff();
-            lights[i].transform.position = new Vector3(transform.position.x + (i * 0.1f), transform.position.y + 0.1f, transform.position.z);
+            lights[i].transform.position = positions[i + 4];//new Vector3(transform.position.x + (i * 0.25f), transform.position.y + 0.1f, transform.position.z + (i + 0.25f));
 
 
             l_active[i] = light_active[i];
@@ -60,14 +67,13 @@ public class SwitchGameLogic : RepairGameBase
     {
 
         HandelInput();
-        
+
         for (int i = 0; i < 4; i++)
         {
 
             if(i == selected_switch)
             {
                 switchs[selected_switch].SetMatOn();
-
             }
             else
             {
@@ -89,6 +95,9 @@ public class SwitchGameLogic : RepairGameBase
                         {
                             l_active[switchs[i].activate[l]] = true;
                         }
+
+                        switchs[selected_switch].state = Switch.SwitchState.ON;
+
                     }
                     else if (!switchs[i].on)
                     {
@@ -100,6 +109,8 @@ public class SwitchGameLogic : RepairGameBase
                         {
                             l_active[switchs[i].activate[l]] = false;
                         }
+
+                        switchs[selected_switch].state = Switch.SwitchState.OFF;
                     }
 
 
@@ -130,7 +141,6 @@ public class SwitchGameLogic : RepairGameBase
 
     public override void GameCleanUp()
     {
-
         for (int i = 0; i < 4; i++)
         {
             Destroy(switchs[i].gameObject);
