@@ -54,6 +54,9 @@ public class PlayerFishingState : BaseState
 
     [SerializeField] Animator fixedRodAnimator;
 
+    [SerializeField] JournalLogic journal;
+    [SerializeField] BasePagePair testPageForSupplyDrop;
+
     enum FISHING_STATE
     {
         PREPAIRING_ROD,
@@ -65,7 +68,9 @@ public class PlayerFishingState : BaseState
         INTERACTING_FISH,
         BITING_FISH,
         FISH_FIGHTING,
-        FISHING_VICTORY
+        FISHING_VICTORY,
+        HOOKED_TO_SUPPLY_CRATE,
+        SUPPLY_DROP_CONTENT
     };
 
 
@@ -109,10 +114,15 @@ public class PlayerFishingState : BaseState
         GM_.Instance.ui.helperButtons.DisableAll();
         GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.B, "Cancel Fishing");
         GM_.Instance.ui.helperButtons.EnableLeftStick(false, false, false, true, "Begin Cast");
+
+        fishingBob.GetComponent<FishingBobCollisionEvent>().Event_HitSupplyDrop += supplyCrateHit;
     }
 
     public void OnDisable()
     {
+
+        fishingBob.GetComponent<FishingBobCollisionEvent>().Event_HitSupplyDrop -= supplyCrateHit;
+
         if (fishingLineLogic != null)
             fishingLineLogic.gameObject.SetActive(false);
 
@@ -137,6 +147,8 @@ public class PlayerFishingState : BaseState
         GM_.Instance.ui.helperButtons.DisableAll();
 
         thirdPersonCamera.look_at_target = transform; // set target back to player
+
+
     }
 
     // Update is called once per frame
@@ -241,13 +253,15 @@ public class PlayerFishingState : BaseState
                             previousFrameIncludedAttractedFish = true;
                         }
                     }
-                    else
+                    else  if (!fishingBob.GetComponentInChildren<FishingBobLogic>().IsFishInteracting())
                     {
-                        if (!fishingBob.GetComponentInChildren<FishingBobLogic>().IsFishInteracting())
-                        {
-                            GM_.Instance.input.SetVibration(InputManager.VIBRATION_MOTOR.LEFT ,0);
-                            previousFrameIncludedAttractedFish = false;
-                        }
+                        GM_.Instance.input.SetVibration(InputManager.VIBRATION_MOTOR.LEFT ,0);
+                        previousFrameIncludedAttractedFish = false;
+                    }
+                    else if (fishingBob.GetComponentInChildren<FishingBobLogic>().HasHookedToCrate())
+                    {
+
+
                     }
 
                     GM_.Instance.input.SetVibration(InputManager.VIBRATION_MOTOR.RIGHT, reelAxis *0.1f);
@@ -270,29 +284,31 @@ public class PlayerFishingState : BaseState
             case FISHING_STATE.INTERACTING_FISH:
                 {
 
+                    float reelAxis = GM_.Instance.input.GetAxis(InputManager.AXIS.RT);
 
                     if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.B))
                     {
                         CancelCasted();
                         GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                     }
-                    else if (GM_.Instance.input.GetAxis(InputManager.AXIS.RT) > 0.5f)
+                    else if (reelAxis > 0.1f)
                     {
+                        GM_.Instance.input.SetVibration(InputManager.VIBRATION_MOTOR.RIGHT, reelAxis * 0.1f);
+                        ReelIn(reelAxis);
+
                         if (interactingFishWontFrightenTime < 0.0f)
                         {
                             FailedHookAttempt();
                         }
                     }
+
+                    if (interactingFish.IsInStateInteracting())
+                    {
+                        FishInteractingUpdate();
+                    }
                     else
                     {
-                        if (interactingFish.IsInStateInteracting())
-                        {
-                            FishInteractingUpdate();
-                        }
-                        else
-                        {
-                            FishInteractingFailed();
-                        }
+                        FishInteractingFailed();
                     }
                     break;
                 }
@@ -355,8 +371,47 @@ public class PlayerFishingState : BaseState
                     FishingVictoryUpdate();
                     break;
                 }
+            case FISHING_STATE.HOOKED_TO_SUPPLY_CRATE:
+                {
+                    if (GM_.Instance.ui.transition.IsInWaitingTransition())
+                    {
+                        fishingBob.GetComponentInChildren<FishingBobLogic>().DetachFromSupplyCrate();
+                        CancelCasted();
+                        fishing_state = FISHING_STATE.SUPPLY_DROP_CONTENT;
+                        hookedSupplyBox.gameObject.SetActive(false);
+                    }
+                    break;
+                }
+            case FISHING_STATE.SUPPLY_DROP_CONTENT:
+                {
+                    if (!GM_.Instance.ui.transition.IsTransitioning())
+                    {
+                        fishing_state = FISHING_STATE.IDLE;
+
+                        hookedSupplyBox.GetBoxContents();
+                       
+                        journal.RequestJournalShow(testPageForSupplyDrop); // change test page to know it's type, so additional arguments can be added
+                        Destroy(hookedSupplyBox.gameObject);                  
+                    }
+                    break;
+                }
         }
     }
+
+
+    SupplyBox hookedSupplyBox;
+    void supplyCrateHit(SupplyBox supplyBox)
+    {
+        hookedSupplyBox = supplyBox;
+        fishing_state = FISHING_STATE.HOOKED_TO_SUPPLY_CRATE;
+        fishingBob.GetComponentInChildren<FishingBobLogic>().AttachToSupplyBox(supplyBox);
+        GM_.Instance.ui.transition.FadeInOut(0.5f,2,0.5f);
+        GM_.Instance.input.SetVibrationBoth(0, 0);
+        GM_.Instance.input.SetVibrationPulse(InputManager.VIBRATION_MOTOR.LEFT, 0.15f, 1.0f);
+        GM_.Instance.input.SetVibrationPulse(InputManager.VIBRATION_MOTOR.RIGHT, 0.15f, 1.0f);
+    }
+
+
 
     public override void StateFixedUpdate()
     {
@@ -386,6 +441,8 @@ public class PlayerFishingState : BaseState
         fishingProjectileIndicator.SetActive(false);
         fishing_state = FISHING_STATE.FISHING;
         GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.RT, "Reel In / Hook Fish");
+
+
     }
     void BeginPowerUpThrow()
     {

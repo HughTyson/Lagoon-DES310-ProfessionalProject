@@ -41,7 +41,20 @@ public class PagePair_Pause : BasePagePair
     }
     public override void FinishedEnteringPage()
     {
-        resumeButton.HoveredOver();
+        InfoRequest_CameraFromPage_Args info = Invoke_InfoRequest_CameFromPage();
+
+        if (info.pageType == typeof(PagePair_Options))
+        {
+            optionsButton.HoveredOver();
+        }
+        else if (info.pageType == typeof(PagePair_ExitAYS))
+        {
+            exitButton.HoveredOver();
+        }
+        else
+        {
+            resumeButton.HoveredOver();
+        }
     }
 
 

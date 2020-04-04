@@ -10,8 +10,6 @@ public class PagePair_ExitAYS : BasePagePair
 
     [SerializeField] UnselectableButton goBackButton;
 
-    [SerializeField] BasePagePair pagePair_Pause;
-
 
 
     void Awake()
@@ -45,7 +43,7 @@ public class PagePair_ExitAYS : BasePagePair
 
     void request_GoBack()
     {
-        Invoke_EventRequest_ChangePage(new RequestToChangePage(pagePair_Pause));
+        Invoke_EventRequest_GoToPreviousPage();
     }
 
 

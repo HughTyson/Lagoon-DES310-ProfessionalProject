@@ -27,15 +27,14 @@ public class FishingBobLogic : MonoBehaviour
     [SerializeField] FishingBobCollisionEvent collisionEvent;
 
 
-    public FishingBobCollisionEvent CollisionEvents => collisionEvent;
     public enum STATE
     {
         NOT_ACTIVE,
         CASTING,
         CASTED,
         FISH_INTERACTING,
-        FIGHTING_FISH
-
+        FIGHTING_FISH,
+        HOOKED_TO_CRATE
     }
     STATE current_state = STATE.NOT_ACTIVE;
 
@@ -58,6 +57,7 @@ public class FishingBobLogic : MonoBehaviour
         GetComponentInParent<Rigidbody>().isKinematic = false;
         GetComponentInParent<Rigidbody>().useGravity = true;
         meshObject.SetActive(true);
+        gameObject.transform.parent.SetParent(null, true);
     }
 
     private void OnDisable()
@@ -65,10 +65,24 @@ public class FishingBobLogic : MonoBehaviour
         ScareNearbyFish(0.0f);
         current_state = STATE.NOT_ACTIVE;
         interactingFish = null;
+
         nearbyFish.Clear();
     }
 
-
+    public void AttachToSupplyBox(SupplyBox supplyBox)
+    {
+        gameObject.transform.parent.SetParent(supplyBox.transform, true);
+        current_state = STATE.HOOKED_TO_CRATE;
+        GetComponentInParent<Rigidbody>().isKinematic = true;
+        GetComponentInParent<Rigidbody>().useGravity = false;
+    }
+    public void DetachFromSupplyCrate()
+    {
+        gameObject.transform.parent.SetParent(null, true);
+        current_state = STATE.NOT_ACTIVE;
+        GetComponentInParent<Rigidbody>().isKinematic = true;
+        GetComponentInParent<Rigidbody>().useGravity = false;
+    }
     public void CastBob(Vector3 initialPosition, Vector3 initialVelocity)
     {
         physicsBuoyancy.SetToDefaultAirDrag();
@@ -192,6 +206,7 @@ public class FishingBobLogic : MonoBehaviour
                         AttractionPulse();
                         current_attration_time = attractionPulseTimeInterval;
                     }
+
                     break;
                 }
             case STATE.FISH_INTERACTING: // a fish is interacting with the bob
@@ -210,6 +225,11 @@ public class FishingBobLogic : MonoBehaviour
             case STATE.FIGHTING_FISH:
                 {
                     transform.parent.transform.position = interactingFish.GetComponent<FishLogic>().GetHeadPosition();
+                    break;
+                }
+            case STATE.HOOKED_TO_CRATE:
+                {
+
                     break;
                 }
         }
@@ -238,7 +258,10 @@ public class FishingBobLogic : MonoBehaviour
     {
         return interactingFish;
     }
-
+    public bool HasHookedToCrate()
+    {
+        return (current_state == STATE.HOOKED_TO_CRATE);
+    }
 
     public void FishBitLure()
     {

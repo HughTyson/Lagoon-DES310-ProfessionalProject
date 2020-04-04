@@ -2,27 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PagePair_Options : BasePagePair
+public class PagePair_Inventory : BasePagePair
 {
 
     [SerializeField] UnselectableButton goBackButton;
 
-
-
-    void Awake()
+    private void Awake()
     {
-        goBackButton.Event_Selected += request_GoBack;
+        goBackButton.Event_Selected += requestGoBack;
         goBackButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.B });
+
     }
 
     public override void BegunEnteringPage()
     {
         goBackButton.Show();
     }
-
-    void request_GoBack()
+    void requestGoBack()
     {
         Invoke_EventRequest_GoToPreviousPage();
+    }
+
+    public override void FinishedExitingPage()
+    {
+        GM_.Instance.inventory.SetNewItemsToNonNew();
     }
 
 }

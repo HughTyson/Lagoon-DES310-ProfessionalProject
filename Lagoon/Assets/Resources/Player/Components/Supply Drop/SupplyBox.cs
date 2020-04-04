@@ -59,5 +59,11 @@ public class SupplyBox : MonoBehaviour
 
 
     }
+    
 
+    // returns what the box contains. Will not be a void once a format for the box content is created.
+    public void GetBoxContents()
+    {
+
+    }
 }
