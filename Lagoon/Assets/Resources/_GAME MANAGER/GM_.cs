@@ -47,6 +47,7 @@ public class GM_ : MonoBehaviour
         public UpdateEventSystem update_events;
         public TweenCurveLibrary tween_curveLibrary_Tomas;
         public TweenCurveLibrary tween_curveLibrary_Hugh;
+        public Inventory inventory;
     };
 
     private void Awake()
@@ -67,6 +68,7 @@ public class GM_ : MonoBehaviour
         members.stats = new StatsManager();
         members.story = new StoryManager((convoGraph.Root)); // should be barrier node.);
         members.story_objective = new StoryObjectiveHandler();
+        members.inventory = new Inventory();
         members.ui = uiManager;
         members.ui.helperButtons.HideButtons();
 

@@ -64,6 +64,7 @@ MonoBehaviour:
   fishingLineLogic: {fileID: 0}
   meshObject: {fileID: 6459527258584881292}
   lineLoop: {fileID: 7388039165482567705}
+  collisionEvent: {fileID: 0}
 --- !u!1 &4170572976050226227
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +131,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &9029681542718308180
 MonoBehaviour:
   m_ObjectHideFlags: 0

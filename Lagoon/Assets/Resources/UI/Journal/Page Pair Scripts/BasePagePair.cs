@@ -33,8 +33,6 @@ public class BasePagePair : MonoBehaviour
 
     public void SetupPageInfo()
     {
-
-
         // order from GetChild isn't determenistic
         if (transform.GetChild(0).name == "Left Page Canvas")
         {
@@ -55,15 +53,35 @@ public class BasePagePair : MonoBehaviour
         }
     }
 
+    public class InfoRequest_CameraFromPage_Args
+    {
+        public System.Type pageType;
+    }
+
+
+
     public event System.Action<RequestToChangePage> EventRequest_ChangePage;
     public event System.Action EventRequest_CloseJournal;
+    public event System.Action EventRequest_GoToPreviousPage;
+    public event System.Action<InfoRequest_CameraFromPage_Args> InfoRequest_CameFromPage;
     protected void Invoke_EventRequest_ChangePage(RequestToChangePage args)
     {
         EventRequest_ChangePage?.Invoke(args);
     }
+    protected void Invoke_EventRequest_GoToPreviousPage()
+    {
+        EventRequest_GoToPreviousPage?.Invoke();
+    }
+    
     protected void Invoke_EventRequest_CloseJournal()
     {
         EventRequest_CloseJournal?.Invoke();
+    }
+    protected InfoRequest_CameraFromPage_Args Invoke_InfoRequest_CameFromPage()
+    {
+        InfoRequest_CameraFromPage_Args args = new InfoRequest_CameraFromPage_Args();
+        InfoRequest_CameFromPage?.Invoke(args);
+        return args;
     }
 
     public virtual void BegunEnteringPage()

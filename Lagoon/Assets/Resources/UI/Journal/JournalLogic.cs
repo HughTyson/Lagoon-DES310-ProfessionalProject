@@ -163,25 +163,53 @@ public class JournalLogic : MonoBehaviour
     BasePagePair futurePair;
     ActionTimer multiplePageIterator = new ActionTimer();
 
+
+    BasePagePair previousPair;
+
+
+    void requestedInfoOnPreviousPage(BasePagePair.InfoRequest_CameraFromPage_Args args)
+    {
+        if (previousPair != null)
+            args.pageType = previousPair.GetType();
+    }
+
+    void requestedGoBackToPreviousPage()
+    {
+        requestedToChangePage(new BasePagePair.RequestToChangePage(previousPair));
+    }
     void requestedToChangePage(BasePagePair.RequestToChangePage args)
     {       
         if (pairsRemaining.Count == 0 && availablePageObjects.Count == pooledPageObjectCount)
         {
+            if (args.changeToPagePair == null)
+            {
+                requestedToCloseJournal();
+                return;
+            }
+
             pairsRemaining.Clear();
             pairToPairInfo = pageManager.GetInfoFromPairToPair(currentPair, args.changeToPagePair);
 
 
             startingPair = currentPair;
+
             futurePair = args.changeToPagePair;
 
             if (startingPair != null)
             {
                 startingPair.EventRequest_ChangePage -= requestedToChangePage;
                 startingPair.EventRequest_CloseJournal -= requestedToCloseJournal;
+                startingPair.EventRequest_GoToPreviousPage -= requestedGoBackToPreviousPage;
+
                 startingPair.BegunExitingPage();
+                startingPair.InfoRequest_CameFromPage -= requestedInfoOnPreviousPage;
             }
+
+            previousPair = currentPair;
+
             if (futurePair != null)
             {
+                futurePair.InfoRequest_CameFromPage += requestedInfoOnPreviousPage;
                 futurePair.BegunEnteringPage();
             }
 
@@ -337,6 +365,7 @@ public class JournalLogic : MonoBehaviour
         {
             currentPair.EventRequest_ChangePage += requestedToChangePage;
             currentPair.EventRequest_CloseJournal += requestedToCloseJournal;
+            currentPair.EventRequest_GoToPreviousPage += requestedGoBackToPreviousPage;
             currentPair.FinishedEnteringPage();
         }
     }
@@ -362,6 +391,31 @@ public class JournalLogic : MonoBehaviour
     }
    
 
+
+    public void RequestJournalShow(BasePagePair pagePaitToAppearFrom)
+    {
+        if (!isShowing)
+        {
+            if (!showAnimation.IsPlaying)
+            {
+
+                if (!journal.activeSelf)
+                {
+                    journal.SetActive(true);
+                }
+
+                showAnimation.PlayAnimation(TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA, animationCompleteDelegate_: completedShowJournal);
+
+                requestedToChangePage(new BasePagePair.RequestToChangePage(pagePaitToAppearFrom));
+
+                GM_.Instance.ui.gameObject.SetActive(false);
+                GM_.Instance.pause.Pause();
+
+                isShowing = true;
+            }
+
+        }
+    }
 
     // Update is called once per frame
     void Update()
