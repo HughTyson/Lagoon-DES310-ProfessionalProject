@@ -81,15 +81,29 @@ public class SelectableButton : MenuSelectableBase
 
     }
 
-    public void Start()
+
+
+    bool hasBeenInit = false;
+    void Init()
     {
+        hasBeenInit = true;
+
         tweenBundle_hide.SetDefaults(Text.color, rectTransform.anchoredPosition, rectTransform.localScale);
         tweenBundle_show.SetDefaults(Text.color, rectTransform.anchoredPosition, rectTransform.localScale);
         tweenBundle_select.SetDefaults(Text.color, rectTransform.anchoredPosition, rectTransform.localScale);
 
-        tweenBundle_hide.CreateParameterFormat(default_hideTween,TWEEN_PARAMETERS.ALPHA);
+        tweenBundle_hide.CreateParameterFormat(default_hideTween, TWEEN_PARAMETERS.ALPHA);
         tweenBundle_show.CreateParameterFormat(default_showTween, TWEEN_PARAMETERS.ALPHA);
         tweenBundle_select.CreateParameterFormat(default_selectedTween, TWEEN_PARAMETERS.SCALE_X, TWEEN_PARAMETERS.SCALE_Y, TWEEN_PARAMETERS.COLOUR_R, TWEEN_PARAMETERS.COLOUR_G, TWEEN_PARAMETERS.COLOUR_B);
+    }
+
+    public void Start()
+    {
+
+        if (!hasBeenInit)
+        {
+            Init();
+        }
     }
 
     enum STATE
@@ -227,6 +241,9 @@ public class SelectableButton : MenuSelectableBase
     public override void Show()
     {
         gameObject.SetActive(true);
+        if (!hasBeenInit)
+            Init();
+
         specialText.Revert();
         state = STATE.NONE;
         currentTweenWrapper = tweenBundle_show;
