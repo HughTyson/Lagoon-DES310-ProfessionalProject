@@ -18,7 +18,6 @@ public class DayNightCycle : MonoBehaviour
 
     [SerializeField] private ClampedFloatParameter override_atmosphere;
 
-
     [SerializeField] float max_sleep_speed = 50;
 
     bool sleep = false;
@@ -27,7 +26,6 @@ public class DayNightCycle : MonoBehaviour
 
     [HideInInspector] public float secondsInFullDay = 600f;
     public float current_time;
-    [SerializeField] public float time_multiplyer = 1f;
 
     TweenManager.TweenPathBundle atmosphere_tween;
     TweenManager.TweenPathBundle sun_intensity_tween;
@@ -78,7 +76,6 @@ public class DayNightCycle : MonoBehaviour
         ChangeAtmosphereTweenTime(6f);
 
         secondsInFullDay = 600f;
-
     }
 
     // Update is called once per frame
@@ -87,11 +84,9 @@ public class DayNightCycle : MonoBehaviour
 
         //rotate the object by a value - predetermined by the designers(not) - this value can also be changed if time is being pushed forward (use tween manager)
 
-
-
         UpdateLight();
 
-        current_time += (Time.deltaTime / secondsInFullDay) * time_multiplyer;
+        current_time += (Time.deltaTime / secondsInFullDay) * GM_.Instance.time.GetTime();
 
         if (current_time >= 1)
         {
@@ -227,6 +222,8 @@ public class DayNightCycle : MonoBehaviour
 
         moon.enabled = true;
 
+        GM_.Instance.time.SetSolar(TimeMovement.Solar.NIGHT);
+
         GM_.Instance.tween_manager.StartTweenInstance(
             moon_intensity_tween,
             new TypeRef<float>[] { moon_intesity },
@@ -242,6 +239,8 @@ public class DayNightCycle : MonoBehaviour
         moon.enabled = false;
 
         sun.enabled = true;
+
+        GM_.Instance.time.SetSolar(TimeMovement.Solar.DAY);
 
         GM_.Instance.tween_manager.StartTweenInstance(
             sun_intensity_tween,
@@ -269,9 +268,9 @@ public class DayNightCycle : MonoBehaviour
     public void ChangeAtmosphereTweenTime(float time)
     {
         atmosphere_tween = new TweenManager.TweenPathBundle(
-    new TweenManager.TweenPath(
-        new TweenManager.TweenPart_Start(1, 0.3f, 6.0f, TweenManager.CURVE_PRESET.LINEAR)
-    )
-);
+                new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(1, 0.3f, 6.0f, TweenManager.CURVE_PRESET.LINEAR)
+            )
+        );
     }
 }

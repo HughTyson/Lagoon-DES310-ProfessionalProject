@@ -33,6 +33,8 @@ public class PlayerExploreState : BaseState
         camera_third_person.current_state = ThirdPersonCamera.STATE.FREE;
         camera_celebration.enabled = false;
         camera_third_person.look_at_target = transform;
+
+        GM_.Instance.time.SetTime(1.0f);
     }
 
     public void OnDisable()

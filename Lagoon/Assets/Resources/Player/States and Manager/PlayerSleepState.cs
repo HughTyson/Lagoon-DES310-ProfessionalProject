@@ -24,7 +24,7 @@ public class PlayerSleepState : BaseState
     // Start is called before the first frame update
     void Start()
     {
-        base_speed = cycle.time_multiplyer;
+        base_speed = GM_.Instance.time.GetTime();
 
         multiplyer.value = base_speed;
 
@@ -94,7 +94,7 @@ public class PlayerSleepState : BaseState
 
     private void time_update()
     {
-        cycle.time_multiplyer = multiplyer.value;
+        GM_.Instance.time.SetTime(multiplyer.value);
     }
 
     private void sleep_done()

@@ -13,6 +13,8 @@ public class GM_ : MonoBehaviour
     [SerializeField]
     TweenCurveLibrary HughCurveLibrary;
 
+    [SerializeField] TimeMovement time;
+
     static GM_ instance_ = null;
 
     static Members members = null;
@@ -47,6 +49,7 @@ public class GM_ : MonoBehaviour
         public UpdateEventSystem update_events;
         public TweenCurveLibrary tween_curveLibrary_Tomas;
         public TweenCurveLibrary tween_curveLibrary_Hugh;
+        public TimeMovement time;
     };
 
     private void Awake()
@@ -72,6 +75,9 @@ public class GM_ : MonoBehaviour
 
         members.tween_curveLibrary_Hugh = HughCurveLibrary;
         members.tween_curveLibrary_Tomas = TomasCurveLibrary;
+
+        members.time = time;
+        members.time.SetTime(1.0f);
     }
 
 
