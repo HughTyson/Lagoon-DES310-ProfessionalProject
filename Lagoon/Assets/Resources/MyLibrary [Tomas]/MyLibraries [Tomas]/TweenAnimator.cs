@@ -898,10 +898,14 @@ public class TweenAnimator
 
     public class HDRP_Animator_ : Animatable
     {
-        public HDRP_Animator_(HDRP_Unlit_ManualAnimator animatorReference, Frame_ frame = null)
+        public HDRP_Animator_(HDRP_Unlit_ManualAnimator animatorReference, Frame_ frame = null, FlipX_ flipX = null, FlipY_ flipY = null)
         {
             if (frame != null)
                 changingProperties.Add(frame);
+            if (flipX != null)
+                changingProperties.Add(flipX);
+            if (flipY != null)
+                changingProperties.Add(flipY);
 
             for (int i = 0; i < changingProperties.Count; i++)
             {
@@ -973,6 +977,126 @@ public class TweenAnimator
             }
         }
     }
+
+    public class AudioSFXInstanceInterface_ : Animatable
+    {
+        public AudioSFXInstanceInterface_(AudioManager.SFXInstanceInterface instanceInterfaceReference, Loop_ loop = null, Mute_ mute = null, Pitch_ pitch = null, SpatialBlend_ spatialBlend = null, Panning_ panning = null, Priority_ priority = null, Volume_ volume = null )
+        {
+            if (loop != null)
+                changingProperties.Add(loop);
+            if (mute != null)
+                changingProperties.Add(mute);
+            if (pitch != null)
+                changingProperties.Add(pitch);
+            if (spatialBlend != null)
+                changingProperties.Add(spatialBlend);
+            if (panning != null)
+                changingProperties.Add(panning);
+            if (priority != null)
+                changingProperties.Add(priority);
+            if (volume != null)
+                changingProperties.Add(volume);
+
+            for (int i = 0; i < changingProperties.Count; i++)
+            {
+                changingProperties[i].Init(instanceInterfaceReference);
+            }
+        }
+
+        public class Loop_ : Base.BoolProperty
+        {
+            public Loop_(int tweenOutputIndex_, float on_off_level_, bool on_whenHigherThanLevel)
+            {
+                ConstructorInit(tweenOutputIndex_, on_off_level_, on_whenHigherThanLevel);
+            }
+            protected override bool ReferenceValue
+            {
+                get { return ((AudioManager.SFXInstanceInterface)reference).Loop; }
+                set { ((AudioManager.SFXInstanceInterface)reference).Loop = value; }
+            }
+
+        }
+
+        public class Mute_ : Base.BoolProperty
+        {
+            public Mute_(int tweenOutputIndex_, float on_off_level_, bool on_whenHigherThanLevel)
+            {
+                ConstructorInit(tweenOutputIndex_, on_off_level_, on_whenHigherThanLevel);
+            }
+            protected override bool ReferenceValue
+            {
+                get { return ((AudioManager.SFXInstanceInterface)reference).Mute; }
+                set { ((AudioManager.SFXInstanceInterface)reference).Mute = value; }
+            }
+
+        }
+
+        public class Pitch_ : Base.FloatProperty
+        {
+            public Pitch_(int tweenOutputIndex_)
+            {
+                ConstructorInit(tweenOutputIndex_, MOD_TYPE.ABSOLUTE);
+            }
+            protected override float ReferenceValue
+            {
+                get { return ((AudioManager.SFXInstanceInterface)reference).Pitch; }
+                set { ((AudioManager.SFXInstanceInterface)reference).Pitch = value; }
+            }
+        }
+
+        public class SpatialBlend_ : Base.FloatProperty
+        {
+            public SpatialBlend_(int tweenOutputIndex_)
+            {
+                ConstructorInit(tweenOutputIndex_, MOD_TYPE.ABSOLUTE);
+            }
+            protected override float ReferenceValue
+            {
+                get { return ((AudioManager.SFXInstanceInterface)reference).SpatialBlend; }
+                set { ((AudioManager.SFXInstanceInterface)reference).SpatialBlend = value; }
+            }
+
+        }
+
+        public class Panning_ : Base.FloatProperty
+        {
+            public Panning_(int tweenOutputIndex_)
+            {
+                ConstructorInit(tweenOutputIndex_, MOD_TYPE.ABSOLUTE);
+            }
+            protected override float ReferenceValue
+            {
+                get { return ((AudioManager.SFXInstanceInterface)reference).Panning; }
+                set { ((AudioManager.SFXInstanceInterface)reference).Panning = value; }
+            }
+        }
+        public class Priority_ : Base.IntProperty
+        {
+            public Priority_(int tweenOutputIndex_, INT_SELECTION_METHOD int_selection_method_)
+            {
+                ConstructorInit(tweenOutputIndex_, int_selection_method_, MOD_TYPE.ABSOLUTE);
+            }
+            protected override int ReferenceValue
+            {
+                get { return ((AudioManager.SFXInstanceInterface)reference).Priority; }
+                set { ((AudioManager.SFXInstanceInterface)reference).Priority = value; }
+            }
+        }
+
+        public class Volume_ : Base.FloatProperty
+        {
+            public Volume_(int tweenOutputIndex_)
+            {
+                ConstructorInit(tweenOutputIndex_, MOD_TYPE.ABSOLUTE);
+            }
+            protected override float ReferenceValue
+            {
+                get { return ((AudioManager.SFXInstanceInterface)reference).Volume; }
+                set { ((AudioManager.SFXInstanceInterface)reference).Volume = value; }
+            }
+        }
+    }
+
 }
 
 

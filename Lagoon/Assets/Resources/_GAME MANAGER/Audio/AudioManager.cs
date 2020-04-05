@@ -75,16 +75,18 @@ public class AudioManager : MonoBehaviour
     {
         if (instance.isCompleted)
         {
-            GameObject sfxInstance;
+            GameObject sfxInstanceObj;
 
             if (instance.source == null) // hooked on object was destroyed
-                sfxInstance = new GameObject("SFX Instance", typeof(AudioSource));
+                sfxInstanceObj = new GameObject("SFX Instance", typeof(AudioSource));
             else
-                sfxInstance = instance.source.gameObject;
+                sfxInstanceObj = instance.source.gameObject;
 
-            sfxInstance.transform.SetParent(transform, false);
-            sfxInstance.SetActive(false);
-            availableSFXInstanceObjs.Add(sfxInstance);
+            sfxInstanceObj.transform.SetParent(transform, false);
+            sfxInstanceObj.SetActive(false);
+            availableSFXInstanceObjs.Add(sfxInstanceObj);
+
+            instance.source = null;
             return true;
         }
         return false;
@@ -107,6 +109,22 @@ public class AudioManager : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// Play a sound effect
+    /// Return an interface to the SFX Instance. You can further change settings via the interface however, note that a change to a setting via the interface will remove the setting class applied to that setting.
+    /// With the interface it is possible to use the TweenAnimator to create complex modulations to the audio instance.
+    /// </summary>
+    /// <param name="audioSFX"> The audioSFX scriptable object. THis can be gained either by using the GetSFX, or by linking the reference</param>
+    /// <param name="sourceTransform"> what object the audio source will become the audio sources parent. This is where 3D sounds will come from</param>
+    /// <param name="IsMenuSound"> Is this sound part of a menu?</param>
+    /// <param name="settingLoop"></param>
+    /// <param name="settingMute"></param>
+    /// <param name="settingPanning"></param>
+    /// <param name="settingPitch"></param>
+    /// <param name="settingPriority"></param>
+    /// <param name="settingSpatialBlend"></param>
+    /// <param name="settingVolume"></param>
     public SFXInstanceInterface PlaySFX(AudioSFX audioSFX, Transform sourceTransform, bool IsMenuSound = false, SFXSettings.Loop.Base settingLoop = null, SFXSettings.Mute.Base settingMute = null, SFXSettings.Panning.Base settingPanning = null, SFXSettings.Pitch.Base settingPitch = null, SFXSettings.Priority.Base settingPriority = null, SFXSettings.SpatialBlend.Base settingSpatialBlend = null, SFXSettings.Volume.Base settingVolume = null)
     {
         AudioMixerGroup mixerGroup = (IsMenuSound) ? masterFXMixerGroup : nonMenuFXMixerGroup;
