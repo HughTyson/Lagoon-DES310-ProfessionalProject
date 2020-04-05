@@ -8,6 +8,8 @@ public class GM_ : MonoBehaviour
     [SerializeField] ConvoGraph convoGraph;
     [SerializeField] UIManager uiManager;
 
+    [SerializeField] AudioManager audioManager;
+
     [SerializeField]
     TweenCurveLibrary TomasCurveLibrary;
     [SerializeField]
@@ -51,7 +53,7 @@ public class GM_ : MonoBehaviour
         public TweenCurveLibrary tween_curveLibrary_Hugh;
         public TimeMovement time;
         public Inventory inventory;
-
+        public AudioManager audio;
     };
 
     private void Awake()
@@ -74,6 +76,7 @@ public class GM_ : MonoBehaviour
         members.story_objective = new StoryObjectiveHandler();
         members.inventory = new Inventory();
         members.ui = uiManager;
+        members.audio = audioManager;
         members.ui.helperButtons.HideButtons();
 
         members.tween_curveLibrary_Hugh = HughCurveLibrary;
