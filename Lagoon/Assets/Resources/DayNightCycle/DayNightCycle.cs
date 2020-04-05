@@ -76,6 +76,9 @@ public class DayNightCycle : MonoBehaviour
         ChangeAtmosphereTweenTime(6f);
 
         secondsInFullDay = 600f;
+
+        GM_.Instance.DayNightCycle.SetSolar(TimeMovement.Solar.DAY);
+
     }
 
     // Update is called once per frame
@@ -86,7 +89,7 @@ public class DayNightCycle : MonoBehaviour
 
         UpdateLight();
 
-        current_time += (Time.deltaTime / secondsInFullDay) * GM_.Instance.time.GetTime();
+        current_time += (Time.deltaTime / secondsInFullDay) * GM_.Instance.DayNightCycle.GetTime();
 
         if (current_time >= 1)
         {
@@ -222,7 +225,7 @@ public class DayNightCycle : MonoBehaviour
 
         moon.enabled = true;
 
-        GM_.Instance.time.SetSolar(TimeMovement.Solar.NIGHT);
+        GM_.Instance.DayNightCycle.SetSolar(TimeMovement.Solar.NIGHT);
 
         GM_.Instance.tween_manager.StartTweenInstance(
             moon_intensity_tween,
@@ -240,7 +243,7 @@ public class DayNightCycle : MonoBehaviour
 
         sun.enabled = true;
 
-        GM_.Instance.time.SetSolar(TimeMovement.Solar.DAY);
+        GM_.Instance.DayNightCycle.SetSolar(TimeMovement.Solar.DAY);
 
         GM_.Instance.tween_manager.StartTweenInstance(
             sun_intensity_tween,

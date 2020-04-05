@@ -13,7 +13,7 @@ public class GM_ : MonoBehaviour
     [SerializeField]
     TweenCurveLibrary HughCurveLibrary;
 
-    [SerializeField] TimeMovement time;
+    [SerializeField] TimeMovement DayNightValues;
 
     static GM_ instance_ = null;
 
@@ -49,7 +49,7 @@ public class GM_ : MonoBehaviour
         public UpdateEventSystem update_events;
         public TweenCurveLibrary tween_curveLibrary_Tomas;
         public TweenCurveLibrary tween_curveLibrary_Hugh;
-        public TimeMovement time;
+        public TimeMovement DayNightCycle;
         public Inventory inventory;
 
     };
@@ -79,8 +79,8 @@ public class GM_ : MonoBehaviour
         members.tween_curveLibrary_Hugh = HughCurveLibrary;
         members.tween_curveLibrary_Tomas = TomasCurveLibrary;
 
-        members.time = time;
-        members.time.SetTime(1.0f);
+        members.DayNightCycle = DayNightValues;
+        members.DayNightCycle.SetTime(0.0f);
     }
 
 

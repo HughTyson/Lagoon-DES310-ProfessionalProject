@@ -243,7 +243,7 @@ GameObject:
   - component: {fileID: 2043296029431764873}
   - component: {fileID: 9090822290763063923}
   m_Layer: 0
-  m_Name: Time
+  m_Name: DayNightValues
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -463,7 +463,7 @@ RectTransform:
   - {fileID: 4392500166654674795}
   - {fileID: 2375885750088899163}
   m_Father: {fileID: 6703217912128351165}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3807,7 +3807,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6703217912128351165}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &4997042609143966540
 AudioSource:
@@ -4112,7 +4112,7 @@ MonoBehaviour:
   uiManager: {fileID: 5273871260055037157}
   TomasCurveLibrary: {fileID: 11400000, guid: 53c738a917645f042b0e458e72c3f74b, type: 2}
   HughCurveLibrary: {fileID: 11400000, guid: fdc2f2ccfa6371442b1d0d0e507750bd, type: 2}
-  time: {fileID: 9090822290763063923}
+  DayNightValues: {fileID: 9090822290763063923}
 --- !u!1 &6791852377375833879
 GameObject:
   m_ObjectHideFlags: 0

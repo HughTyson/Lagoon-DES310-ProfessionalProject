@@ -34,7 +34,7 @@ public class PlayerExploreState : BaseState
         camera_celebration.enabled = false;
         camera_third_person.look_at_target = transform;
 
-        GM_.Instance.time.SetTime(1.0f);
+        GM_.Instance.DayNightCycle.SetTime(1.0f);
     }
 
     public void OnDisable()
@@ -93,9 +93,14 @@ public class PlayerExploreState : BaseState
                     break;
                 case INTERACTION_TYPE.REPAIR:
                     { 
-                        StateManager.ChangeState(PlayerScriptManager.STATE.REPAIR); 
-                      //  Debug.Log("REPIAR"); 
-                        GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED); 
+
+                        if(GM_.Instance.DayNightCycle.GetSolar() == TimeMovement.Solar.DAY)
+                        {
+                            StateManager.ChangeState(PlayerScriptManager.STATE.REPAIR); 
+                            //  Debug.Log("REPIAR"); 
+                            GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED); 
+                        }
+
                         break;
                     }
                 default:
@@ -145,10 +150,18 @@ public class PlayerExploreState : BaseState
                             break;
                         case TriggerType.TRIGGER_TYPE.REPAIR:
                             {
-                                interaction_type = INTERACTION_TYPE.REPAIR;
 
-                                GM_.Instance.ui.helperButtons.DisableAll();
-                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Plane Repair");
+                                if (GM_.Instance.DayNightCycle.GetSolar() == TimeMovement.Solar.DAY)
+                                {
+                                    interaction_type = INTERACTION_TYPE.REPAIR;
+
+                                    GM_.Instance.ui.helperButtons.DisableAll();
+                                    GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Plane Repair");
+                                }
+                                else
+                                {
+                                    GM_.Instance.ui.helperButtons.DisableAll();
+                                }
 
                                 break;
                             }
