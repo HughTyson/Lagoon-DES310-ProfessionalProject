@@ -61,6 +61,8 @@ public class PlayerRepairState : BaseState
         }
 
         text = true;
+
+        GM_.Instance.DayNightCycle.SetTime(0.0f);
     }
 
     public void OnDisable()
