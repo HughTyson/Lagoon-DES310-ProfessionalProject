@@ -13,8 +13,29 @@ public class AudioManager : MonoBehaviour
     List<GameObject> availableSFXInstanceObjs = new List<GameObject>();
 
     List<SFXInstance> sfxInstances = new List<SFXInstance>();
+
+
+    AudioMixer masterMixer;
+    AudioMixer nonMenuMixer;
+
+
+    AudioMixerGroup masterFXMixerGroup;
+    AudioMixerGroup masterMusicMixerGroup;
+    AudioMixerGroup nonMenuFXMixerGroup;
+
+
+
+    AudioSource musicSource_Current;
     void Start()
     {
+        masterMixer = (AudioMixer)Resources.Load("Sound FX/MasterMixer");
+        masterMusicMixerGroup = masterMixer.FindMatchingGroups("Music")[0];
+        masterFXMixerGroup = masterMixer.FindMatchingGroups("Sound FX")[0];
+
+        nonMenuMixer = (AudioMixer)Resources.Load("Sound FX/NonMenuFXMixer");
+        nonMenuFXMixerGroup = nonMenuMixer.FindMatchingGroups("Master")[0];
+
+
         Object[] sFXes = Resources.LoadAll("", typeof(AudioSFX));
 
         for (int i = 0; i < sFXes.Length; i++)
@@ -29,13 +50,22 @@ public class AudioManager : MonoBehaviour
             sfxInstance.SetActive(false);
             availableSFXInstanceObjs.Add(sfxInstance);
         }
+
+
+        musicSource_Current = gameObject.AddComponent<AudioSource>();
+        musicSource_Current.priority = 0;
     }
 
     private void Update()
     {
+        bool isPaused = (GM_.Instance.pause.GetPausedState() == PauseManager.PAUSED_STATE.PAUSED); 
        sfxInstances.RemoveAll( y =>
        {
-           y.Update();
+           if (!isPaused)
+               y.Update();
+           else if (y.source?.outputAudioMixerGroup == masterFXMixerGroup)
+               y.Update();
+
            return completedSFXInstanceCheck(y);
        }           
        );      
@@ -68,9 +98,19 @@ public class AudioManager : MonoBehaviour
     }
 
 
-
-    public SFXInstanceInterface PlaySFX(AudioSFX audioSFX, Transform sourceTransform, SFXSettings.Loop.Base settingLoop = null, SFXSettings.Mute.Base settingMute = null, SFXSettings.Panning.Base settingPanning = null, SFXSettings.Pitch.Base settingPitch = null, SFXSettings.Priority.Base settingPriority = null, SFXSettings.SpatialBlend.Base settingSpatialBlend = null, SFXSettings.Volume.Base settingVolume = null)
+    public void PlayMusic(AudioClip musicClip, TweenManager.TweenPath currentMusicFadeOutVolumeTween = null, TweenManager.TweenPath newMusicFadeInVolumeTween = null)
     {
+
+    }
+    public void StopMusic(TweenManager.TweenPath fadeOutVolumeTween = null)
+    {
+
+    }
+
+    public SFXInstanceInterface PlaySFX(AudioSFX audioSFX, Transform sourceTransform, bool IsMenuSound = false, SFXSettings.Loop.Base settingLoop = null, SFXSettings.Mute.Base settingMute = null, SFXSettings.Panning.Base settingPanning = null, SFXSettings.Pitch.Base settingPitch = null, SFXSettings.Priority.Base settingPriority = null, SFXSettings.SpatialBlend.Base settingSpatialBlend = null, SFXSettings.Volume.Base settingVolume = null)
+    {
+        AudioMixerGroup mixerGroup = (IsMenuSound) ? masterFXMixerGroup : nonMenuFXMixerGroup;
+
         SFXInstanceInterface instanceInterface = null;
         if (availableSFXInstanceObjs.Count != 0)
         {
@@ -79,7 +119,7 @@ public class AudioManager : MonoBehaviour
 
             sfxInstanceObj.transform.SetParent(sourceTransform,false);
             sfxInstanceObj.SetActive(true);
-            SFXInstance instance = new SFXInstance(audioSFX, sfxInstanceObj.GetComponent<AudioSource>(), settingLoop, settingMute, settingPanning, settingPitch, settingPriority, settingSpatialBlend, settingVolume);
+            SFXInstance instance = new SFXInstance(audioSFX, sfxInstanceObj.GetComponent<AudioSource>(), mixerGroup, settingLoop, settingMute, settingPanning, settingPitch, settingPriority, settingSpatialBlend, settingVolume);
             sfxInstances.Add(instance);
             instanceInterface = new SFXInstanceInterface(instance);
         }
@@ -101,7 +141,7 @@ public class AudioManager : MonoBehaviour
 
                     sfxInstanceObj.transform.SetParent(sourceTransform, false);
                     sfxInstanceObj.SetActive(true);
-                    SFXInstance instance = new SFXInstance(audioSFX, sfxInstanceObj.GetComponent<AudioSource>(), settingLoop, settingMute, settingPanning, settingPitch, settingPriority, settingSpatialBlend, settingVolume);
+                    SFXInstance instance = new SFXInstance(audioSFX, sfxInstanceObj.GetComponent<AudioSource>(), mixerGroup, settingLoop, settingMute, settingPanning, settingPitch, settingPriority, settingSpatialBlend, settingVolume);
                     sfxInstances.Add(instance);
                     instanceInterface = new SFXInstanceInterface(instance);
                     break;
@@ -241,6 +281,7 @@ public class AudioManager : MonoBehaviour
         public float spatialBlend2DTo3D;
         public float volume;
         public float panning;
+
         public AudioSFX audioSFX;
         public AudioSource source;
 
@@ -252,7 +293,7 @@ public class AudioManager : MonoBehaviour
         public SFXSettings.SpatialBlend.Base settingSpatialBlend = null;
         public SFXSettings.Volume.Base settingVolume = null;
 
-        public SFXInstance(AudioSFX audioSFX_,AudioSource source_, SFXSettings.Loop.Base settingLoop_ = null, SFXSettings.Mute.Base settingMute_ = null, SFXSettings.Panning.Base settingPanning_ = null, SFXSettings.Pitch.Base settingPitch_ = null, SFXSettings.Priority.Base settingPriority_ = null, SFXSettings.SpatialBlend.Base settingSpatialBlend_ = null, SFXSettings.Volume.Base settingVolume_ = null)
+        public SFXInstance(AudioSFX audioSFX_,AudioSource source_, AudioMixerGroup mixerGroup = null, SFXSettings.Loop.Base settingLoop_ = null, SFXSettings.Mute.Base settingMute_ = null, SFXSettings.Panning.Base settingPanning_ = null, SFXSettings.Pitch.Base settingPitch_ = null, SFXSettings.Priority.Base settingPriority_ = null, SFXSettings.SpatialBlend.Base settingSpatialBlend_ = null, SFXSettings.Volume.Base settingVolume_ = null)
         {
             isCompleted = false;
 
@@ -265,7 +306,7 @@ public class AudioManager : MonoBehaviour
             settingPriority = settingPriority_;
             settingSpatialBlend = settingSpatialBlend_;
             settingVolume = settingVolume_;
-
+         
 
             if (settingPriority != null)
             {
@@ -352,6 +393,7 @@ public class AudioManager : MonoBehaviour
             source.spatialBlend = spatialBlend2DTo3D;
             source.pitch = pitch;
             source.priority = priority;
+            source.outputAudioMixerGroup = mixerGroup;
             source.Play();
         }
 

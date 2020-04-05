@@ -10,7 +10,7 @@ public class testScript : MonoBehaviour
     {
         if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))
         {
-            GM_.Instance.audio.PlaySFX(GM_.Instance.audio.GetSFX("TestFX"),transform);
+            GM_.Instance.audio.PlaySFX(GM_.Instance.audio.GetSFX("TestFX"),transform, false);
         }
 
     }
