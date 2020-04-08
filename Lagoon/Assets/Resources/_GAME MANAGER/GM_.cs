@@ -8,6 +8,8 @@ public class GM_ : MonoBehaviour
     [SerializeField] ConvoGraph convoGraph;
     [SerializeField] UIManager uiManager;
 
+    [SerializeField] AudioManager audioManager;
+
     [SerializeField]
     TweenCurveLibrary TomasCurveLibrary;
     [SerializeField]
@@ -51,7 +53,7 @@ public class GM_ : MonoBehaviour
         public TweenCurveLibrary tween_curveLibrary_Hugh;
         public TimeMovement DayNightCycle;
         public Inventory inventory;
-
+        public AudioManager audio;
     };
 
     private void Awake()
@@ -76,6 +78,7 @@ public class GM_ : MonoBehaviour
         members.inventory = new Inventory();
 
         members.ui = uiManager;
+        members.audio = audioManager;
         members.ui.helperButtons.HideButtons();
 
         members.tween_curveLibrary_Hugh = HughCurveLibrary;
