@@ -7,10 +7,10 @@ public class MenuScreen_MainMenu : MenuScreenBase
 {
 
     [SerializeField] UnityEngine.UI.Image fadeInOutImage;
-    [SerializeField] SelectableButton startButton;
-    [SerializeField] SelectableButton optionsButton;
-    [SerializeField] SelectableButton creditsButton;
-    [SerializeField] SelectableButton exitButton;
+    [SerializeField] SelectableButton_ startButton;
+    [SerializeField] SelectableButton_ optionsButton;
+    [SerializeField] SelectableButton_ creditsButton;
+    [SerializeField] SelectableButton_ exitButton;
 
 
     [SerializeField] MenuScreenBase creditsMenu;
@@ -26,17 +26,8 @@ public class MenuScreen_MainMenu : MenuScreenBase
             )
         );
 
-    TweenManager.TweenPathBundle showButtonTween;
-
     void Awake()
     {
-        showButtonTween = new TweenManager.TweenPathBundle(
-            // button X position
-            new TweenManager.TweenPath
-            (
-                new TweenManager.TweenPart_Start(-1100, -700, 1, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
-            )
-        );
 
         startButton.Event_Selected += buttonPressed;
         optionsButton.Event_Selected += buttonPressed;
@@ -60,11 +51,6 @@ public class MenuScreen_MainMenu : MenuScreenBase
     private void Start()
     {
         SetupTypeRefArray();
-
-        startButton.SetShowTweenBundle(showButtonTween, SelectableButton.TWEEN_PARAMETERS.POS_X);
-        optionsButton.SetShowTweenBundle(showButtonTween, SelectableButton.TWEEN_PARAMETERS.POS_X);
-        creditsButton.SetShowTweenBundle(showButtonTween, SelectableButton.TWEEN_PARAMETERS.POS_X);
-        exitButton.SetShowTweenBundle(showButtonTween, SelectableButton.TWEEN_PARAMETERS.POS_X);
 
         fadeInOutImage.color = new Color(0, 0, 0, 1);
 
@@ -98,7 +84,7 @@ public class MenuScreen_MainMenu : MenuScreenBase
     }
     void init_finished()
     {
-        startButton.HoveredOver();
+        startButton.HoverOver();
     }
 
 
@@ -117,8 +103,8 @@ public class MenuScreen_MainMenu : MenuScreenBase
 
     void show_startButton()
     {
+        startButton.Event_CompletedShow += showButtonsCompleted;
         startButton.Show();
-        startButton.HoveredOver();
     }
     void show_optionButton()
     {
@@ -134,6 +120,12 @@ public class MenuScreen_MainMenu : MenuScreenBase
         GM_.Instance.update_events.UpdateEvent -= actionTimer.Update;
     }
 
+
+    void showButtonsCompleted()
+    {
+        startButton.Event_CompletedShow -= showButtonsCompleted;
+        startButton.HoverOver();
+    }
     void buttonPressed()
     {
         GM_.Instance.update_events.UpdateEvent -= actionTimer.Update;

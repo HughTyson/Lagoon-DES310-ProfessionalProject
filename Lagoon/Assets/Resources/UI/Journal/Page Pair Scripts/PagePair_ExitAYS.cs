@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class PagePair_ExitAYS : BasePagePair
 {
-    [SerializeField] SelectableButton yesButton;
-    [SerializeField] SelectableButton noButton;
+    [SerializeField] SelectableButton_ yesButton;
+    [SerializeField] SelectableButton_ noButton;
 
     [SerializeField] UnselectableButton goBackButton;
 
@@ -30,10 +30,20 @@ public class PagePair_ExitAYS : BasePagePair
     }
     public override void FinishedEnteringPage()
     {
-        yesButton.HoveredOver();
+        yesButton.HoverOver();
     }
 
-
+    public override void BegunExitingPage()
+    {
+        if (noButton.SelectableState == Selectable_.SELECTABLE_STATE.HOVERED_OVER)
+        {
+            noButton.UnHoverOver();
+        }
+        else if (yesButton.SelectableState == Selectable_.SELECTABLE_STATE.HOVERED_OVER)
+        {
+            yesButton.UnHoverOver();
+        }
+    }
 
     void closeDownToMainMenu()
     {

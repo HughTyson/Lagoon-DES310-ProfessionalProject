@@ -4,14 +4,23 @@ using UnityEngine;
 
 public class testScript : MonoBehaviour
 {
-
     // Update is called once per frame
+
+
+    private void Start()
+    {
+
+    }
     void Update()
     {
-        if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))
-        {
-            GM_.Instance.audio.PlaySFX(GM_.Instance.audio.GetSFX("TestFX"),transform, false);
-        }
 
+        if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.LB))
+        {
+
+        }
+        else if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.RB))
+        {
+
+        }
     }
 }

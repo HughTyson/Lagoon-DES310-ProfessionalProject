@@ -40,12 +40,12 @@ public class PageObject : MonoBehaviour
             new TweenAnimator.Generic_(
                fireCloseToLeftToRightStart
                ,
-               new TweenAnimator.Generic_.Trigger_(6, 0.2f)
+               new TweenAnimator.Generic_.Trigger_(6, 0.2f, TweenAnimator.Base.TriggerProperty.TRIGGER_TYPE.FLIP_FLOP)
                ),
             new TweenAnimator.Generic_(
                fireCloseToLeftToRightEnd
                ,
-               new TweenAnimator.Generic_.Trigger_(6, 0.8f)
+               new TweenAnimator.Generic_.Trigger_(6, 0.8f, TweenAnimator.Base.TriggerProperty.TRIGGER_TYPE.FLIP_FLOP)
                )
             );
 
@@ -62,12 +62,12 @@ public class PageObject : MonoBehaviour
                new TweenAnimator.Generic_(
                    fireCloseToRightToLeftStart
                    ,
-                   new TweenAnimator.Generic_.Trigger_(6, 0.8f)
+                   new TweenAnimator.Generic_.Trigger_(6, 0.8f, TweenAnimator.Base.TriggerProperty.TRIGGER_TYPE.FLIP_FLOP)
                    ),
                new TweenAnimator.Generic_(
                    fireCloseToRightToLeftEnd
                    ,
-                   new TweenAnimator.Generic_.Trigger_(6, 0.2f)
+                   new TweenAnimator.Generic_.Trigger_(6, 0.2f, TweenAnimator.Base.TriggerProperty.TRIGGER_TYPE.FLIP_FLOP)
                    )
                 );
     }

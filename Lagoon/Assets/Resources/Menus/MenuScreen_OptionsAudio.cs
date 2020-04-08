@@ -134,7 +134,7 @@ public class MenuScreen_OptionsAudio : MenuScreenBase
         SpecialText_Title.End();
 
         TweenManager.TweenInstanceInterface inter = GM_.Instance.tween_manager.StartTweenInstance(
-            SelectableButton.default_hideTween,
+            default_hideTween,
             new TypeRef<float>[] { textAlpha },
             tweenUpdatedDelegate_: textHideUpdate,
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
