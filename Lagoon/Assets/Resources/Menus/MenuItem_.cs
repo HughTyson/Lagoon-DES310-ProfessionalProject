@@ -52,8 +52,9 @@ public class MenuItem_ : MonoBehaviour
         System.Action externalComplete;
 
         System.Action ForceCompleteAllAnimations;
-        public Transitioner(System.Action forceCompleteAllAnimations)
+        public Transitioner(MenuItem_ parent_, System.Action forceCompleteAllAnimations)
         {
+            parent = parent_;
             ForceCompleteAllAnimations = forceCompleteAllAnimations;
         }
         public enum STATE
@@ -66,6 +67,8 @@ public class MenuItem_ : MonoBehaviour
         STATE state = STATE.NO_STATE;
 
         public STATE State => state;
+
+        MenuItem_ parent;
 
         public void RequestBegin(CMD_Base myCMD, System.Action<InteruptArgs, InteruptReturn> interuptionCallBack_, System.Action internalBegin_, System.Action internalUpdate_, System.Action internalEnd_, System.Action externalComplete_)
         {
@@ -98,6 +101,7 @@ public class MenuItem_ : MonoBehaviour
                     case InteruptReturn.INTERUPT_RESOLUTION.END_CURRENT__START_INTERUPTED_BY:
                         {
                             GM_.Instance.update_events.UpdateEvent -= internalUpdate;
+                            GM_.Instance.update_events.UpdateEvent -= updateCheck;
                             internalBegin = null;
                             internalUpdate = null;
                             internalEnd = null;
@@ -114,7 +118,22 @@ public class MenuItem_ : MonoBehaviour
             }
         }
 
-       public void RequestContinue(System.Action unsubscribeFunction)
+
+        void updateCheck()
+        {
+            if (!parent.gameObject.activeInHierarchy)
+            {
+                GM_.Instance.update_events.UpdateEvent -= internalUpdate;
+                GM_.Instance.update_events.UpdateEvent -= updateCheck;
+                internalBegin = null;
+                internalUpdate = null;
+                internalEnd = null;
+                ForceCompleteAllAnimations?.Invoke();
+                state = STATE.NO_STATE;
+            }
+        }
+
+        public void RequestContinue(System.Action unsubscribeFunction)
         {
             switch (state)
             {
@@ -125,8 +144,8 @@ public class MenuItem_ : MonoBehaviour
                         if (internalBegin == null)
                         {
                             state = STATE.UPDATE;
+                            GM_.Instance.update_events.UpdateEvent += updateCheck;
                             GM_.Instance.update_events.UpdateEvent += internalUpdate;
-
                             if (internalUpdate == null)
                             {
                                 RequestContinue(null);
@@ -147,7 +166,7 @@ public class MenuItem_ : MonoBehaviour
                         if (internalUpdate == null)
                         {
                             state = STATE.END;
-
+                            GM_.Instance.update_events.UpdateEvent -= updateCheck;
                             if (internalEnd == null)
                             {
                                 RequestContinue(null);
@@ -210,6 +229,8 @@ public class MenuItem_ : MonoBehaviour
     }
 
 
+
+
     void internalBeginHide()
     {
         if (animationHide != null)
@@ -261,7 +282,7 @@ public class MenuItem_ : MonoBehaviour
 
     protected void Init()
     {
-        transitioner = new Transitioner(ForceCompleteAllAnimations);
+        transitioner = new Transitioner(this,ForceCompleteAllAnimations);
         InternalEvent_BeginHide += internalBeginHide;
         InternalEvent_EndHide += internalEndHide;
         InternalEvent_EndShow += internalEndShow;
@@ -286,6 +307,7 @@ public class MenuItem_ : MonoBehaviour
         transitioner.RequestBegin(cmdShow, InteruptedShow, InternalEvent_BeginShow, InternalEvent_UpdateShow, InternalEvent_EndShow, Event_CompletedShow);
     }
 
+    
     public void OverrideHideAnimation(TweenAnimator.Animation animation, TweenAnimator.Animation.PlayArgs args)
     {
         animationHide = animation;

@@ -33,6 +33,17 @@ public class PagePair_ExitAYS : BasePagePair
         yesButton.HoverOver();
     }
 
+    public override void BegunExitingPage()
+    {
+        if (noButton.SelectableState == Selectable_.SELECTABLE_STATE.HOVERED_OVER)
+        {
+            noButton.UnHoverOver();
+        }
+        else if (yesButton.SelectableState == Selectable_.SELECTABLE_STATE.HOVERED_OVER)
+        {
+            yesButton.UnHoverOver();
+        }
+    }
 
     void closeDownToMainMenu()
     {

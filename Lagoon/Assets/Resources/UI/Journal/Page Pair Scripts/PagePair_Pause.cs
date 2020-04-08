@@ -58,9 +58,20 @@ public class PagePair_Pause : BasePagePair
     }
 
 
-    public override void FinishedExitingPage()
+    public override void BegunExitingPage()
     {
-
+        if (optionsButton.SelectableState == Selectable_.SELECTABLE_STATE.HOVERED_OVER)
+        {
+            optionsButton.UnHoverOver();
+        }
+        else if (exitButton.SelectableState == Selectable_.SELECTABLE_STATE.HOVERED_OVER)
+        {
+            exitButton.UnHoverOver();
+        }
+        else if (resumeButton.SelectableState == Selectable_.SELECTABLE_STATE.HOVERED_OVER)
+        {
+            resumeButton.UnHoverOver();
+        }
     }
 
 
