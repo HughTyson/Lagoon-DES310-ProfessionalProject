@@ -53,7 +53,7 @@ namespace SpecialText
             new PropertyInfo(
                 "CharSpeed",
                 typeof(CharSpeed),
-                soft_incompatibles_: new Type[] {typeof(AppearAtOnce)},
+                soft_incompatibles_: new Type[] {typeof(AppearAtOnce), typeof(StaticAppear)},
                 functionName_: "CharSpeed(S)",
                 description_: "The speed of showing the characters of the text.",
                 parameters_: "S: Speed of showing characters.",
@@ -86,7 +86,7 @@ namespace SpecialText
             new PropertyInfo(
                 "AppearAtOnce",
                 typeof(AppearAtOnce),
-                soft_incompatibles_: new Type[] {typeof(CharSpeed) },
+                soft_incompatibles_: new Type[] {typeof(CharSpeed) , typeof(StaticAppear) },
                 functionName_: "AppearAtOnce",
                 description_: "Shows the text at the same.",
                 parameters_: "None",

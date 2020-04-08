@@ -5,7 +5,7 @@ using UnityEngine;
 public class MenuScreen_Credits : MenuScreenBase
 {
 
-    [SerializeField] SelectableButton extraCreditsButton;
+    [SerializeField] SelectableButton_ extraCreditsButton;
     [SerializeField] UnselectableButton goBackButton;
 
 
@@ -140,12 +140,10 @@ public class MenuScreen_Credits : MenuScreenBase
 
 
         extraCreditsButton.Event_Selected += start_transitionToExtraCredits;
-        extraCreditsButton.SetShowTweenBundle(tweenShowButton, SelectableButton.TWEEN_PARAMETERS.POS_Y);
 
         goBackButton.SetButtonsToCheckForPress(InputManager.BUTTON.B);
         goBackButton.Event_Selected += start_transitionToMainMenu;
 
-        extraCreditsButton.Deactivate();
 
         gameObject.SetActive(false);
     }
@@ -155,6 +153,12 @@ public class MenuScreen_Credits : MenuScreenBase
 
 
         gameObject.SetActive(true);
+
+        extraCreditsButton.Event_CompletedShow += finishedShowingButtons;
+        extraCreditsButton.Show();
+
+        goBackButton.Show();
+
 
         SpecialText_CreditsTitle.Begin(TextData_CreditsTitle);
 
@@ -166,7 +170,8 @@ public class MenuScreen_Credits : MenuScreenBase
         SpecialText_artistNames.Begin(TextData_artistNames);
         SpecialText_designerNames.Begin(TextData_designerNames);
 
-        entered_showButton();
+
+
 
     }
 
@@ -188,14 +193,16 @@ public class MenuScreen_Credits : MenuScreenBase
 
     void end_transitionToExtraCredits()
     {
+        gameObject.SetActive(false);
         extraCreditsMenu.EnteredMenu();
     }
 
-    public void entered_showButton()
+
+
+    public void finishedShowingButtons()
     {
-        extraCreditsButton.Show();
-        extraCreditsButton.HoveredOver();
-        goBackButton.Show();
+        extraCreditsButton.Event_CompletedShow -= finishedShowingButtons;
+        extraCreditsButton.HoverOver();
     }
 
 
@@ -210,7 +217,7 @@ public class MenuScreen_Credits : MenuScreenBase
         SpecialText_designerNames.End();
 
         GM_.Instance.tween_manager.StartTweenInstance(
-            SelectableButton.default_hideTween,
+            default_hideTween,
             new TypeRef<float>[] { textAlpha },
             tweenUpdatedDelegate_: textHideUpdate,
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
@@ -259,8 +266,6 @@ public class MenuScreen_Credits : MenuScreenBase
     }
     void transitionUpdate()
     {
-      //  Color new_colour = new Color(1, 1, 1, refButtonAlpha.value);
-      //  nextPrevButton.Text.color = new_colour;
 
         current_cameraPosition.x = cameraPositionRef_X.value;
         current_cameraPosition.y = cameraPositionRef_Y.value;

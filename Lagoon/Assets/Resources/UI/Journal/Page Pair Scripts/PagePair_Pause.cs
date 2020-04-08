@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PagePair_Pause : BasePagePair
 {
-    [SerializeField] SelectableButton resumeButton;
-    [SerializeField] SelectableButton optionsButton;
-    [SerializeField] SelectableButton exitButton;
+    [SerializeField] SelectableButton_ resumeButton;
+    [SerializeField] SelectableButton_ optionsButton;
+    [SerializeField] SelectableButton_ exitButton;
     [SerializeField] UnselectableButton exitToJournalButton;
 
     [SerializeField] BasePagePair pagePair_gameOptions;
@@ -26,7 +26,6 @@ public class PagePair_Pause : BasePagePair
 
     private void Start()
     {
-
     }
 
 
@@ -41,24 +40,36 @@ public class PagePair_Pause : BasePagePair
     {
         InfoRequest_CameraFromPage_Args info = Invoke_InfoRequest_CameFromPage();
 
+
         if (info.pageType == typeof(PagePair_Options))
         {
-            optionsButton.HoveredOver();
+            optionsButton.HoverOver();
         }
         else if (info.pageType == typeof(PagePair_ExitAYS))
         {
-            exitButton.HoveredOver();
+            exitButton.HoverOver();
         }
         else
         {
-            resumeButton.HoveredOver();
+            resumeButton.HoverOver();
         }
     }
 
 
-    public override void FinishedExitingPage()
+    public override void BegunExitingPage()
     {
-
+        if (optionsButton.SelectableState == Selectable_.SELECTABLE_STATE.HOVERED_OVER)
+        {
+            optionsButton.UnHoverOver();
+        }
+        else if (exitButton.SelectableState == Selectable_.SELECTABLE_STATE.HOVERED_OVER)
+        {
+            exitButton.UnHoverOver();
+        }
+        else if (resumeButton.SelectableState == Selectable_.SELECTABLE_STATE.HOVERED_OVER)
+        {
+            resumeButton.UnHoverOver();
+        }
     }
 
 

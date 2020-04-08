@@ -1008,6 +1008,26 @@ PrefabInstance:
       propertyPath: pagePair_Pause
       value: 
       objectReference: {fileID: 8705232888694461318}
+    - target: {fileID: 229173409631023841, guid: c56049ab4e16ad84d98d0df7aec15844,
+        type: 3}
+      propertyPath: m_text
+      value: Yes
+      objectReference: {fileID: 0}
+    - target: {fileID: 229173409631023841, guid: c56049ab4e16ad84d98d0df7aec15844,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336568360941926898, guid: c56049ab4e16ad84d98d0df7aec15844,
+        type: 3}
+      propertyPath: m_text
+      value: No
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336568360941926898, guid: c56049ab4e16ad84d98d0df7aec15844,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c56049ab4e16ad84d98d0df7aec15844, type: 3}
 --- !u!4 &8290436241075302568 stripped
@@ -1105,6 +1125,36 @@ PrefabInstance:
       propertyPath: pagePair_AreYouSure_Exit
       value: 
       objectReference: {fileID: 8380702592174999737}
+    - target: {fileID: 7098169141204651296, guid: 8787c1d1bbc711142bb65e6bd0d66404,
+        type: 3}
+      propertyPath: m_text
+      value: Exit
+      objectReference: {fileID: 0}
+    - target: {fileID: 7098169141204651296, guid: 8787c1d1bbc711142bb65e6bd0d66404,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8809552980735771290, guid: 8787c1d1bbc711142bb65e6bd0d66404,
+        type: 3}
+      propertyPath: m_text
+      value: Options
+      objectReference: {fileID: 0}
+    - target: {fileID: 8809552980735771290, guid: 8787c1d1bbc711142bb65e6bd0d66404,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8133936719917522827, guid: 8787c1d1bbc711142bb65e6bd0d66404,
+        type: 3}
+      propertyPath: m_text
+      value: Resume
+      objectReference: {fileID: 0}
+    - target: {fileID: 8133936719917522827, guid: 8787c1d1bbc711142bb65e6bd0d66404,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8787c1d1bbc711142bb65e6bd0d66404, type: 3}
 --- !u!4 &2952295473003605066 stripped

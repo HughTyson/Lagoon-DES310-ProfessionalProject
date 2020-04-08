@@ -45,6 +45,7 @@ namespace SpecialText
         }
         public void Begin(SpecialTextData specialTextData_, TMPro.TextMeshProUGUI tmp_)
         {
+
             isReverted = false;
             for (int i = 0; i < specialTextData_.propertyDataList.Count; i++)
             {
@@ -61,7 +62,15 @@ namespace SpecialText
 
             tmp.alpha = 1.0f;
             tmp.text = specialTextData_.fullTextString;
-            tmp.ForceMeshUpdate(false);
+            tmp.ForceMeshUpdate();
+
+
+            
+
+            // This line is required, as using the normal shader channel in worldspace stops rendering the text, which is applied after a ForceMeshUpdate...
+
+              //  tmp.canvas.additionalShaderChannels = AdditionalCanvasShaderChannels.Tangent | AdditionalCanvasShaderChannels.TexCoord1 | AdditionalCanvasShaderChannels.TexCoord2 | AdditionalCanvasShaderChannels.TexCoord3;
+
 
             TMPro.TMP_TextInfo info = tmp.textInfo;
             int charIndex;
@@ -193,6 +202,7 @@ namespace SpecialText
             }
 
             tmp.UpdateVertexData(TMPro.TMP_VertexDataUpdateFlags.All);
+
 
         }
     }
