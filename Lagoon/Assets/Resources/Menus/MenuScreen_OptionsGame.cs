@@ -14,13 +14,19 @@ public class MenuScreen_OptionsGame : MenuScreenBase
     [SerializeField] UnselectableButton goToAudioOptionsButton;
     [SerializeField] UnselectableButton goToControlOptionsButton;
 
+    [SerializeField] Slider_ xSensitivitySlider;
+    [SerializeField] Slider_ ySensitivitySlider;
+
+    [SerializeField] TMPro.TextMeshProUGUI text_xSensitivitySlider;
+    [SerializeField] TMPro.TextMeshProUGUI text_ySensitivitySlider;
+
     SpecialText.SpecialTextData SpecialTextData_Title = new SpecialText.SpecialTextData();
     void Start()
     {
         Color32 default_colour_programmerTitle = ColourExtension.ColourtoColour32(SpecialText_Title.GetComponent<TMPro.TextMeshProUGUI>().color);
 
         SetupTypeRefArray();
-        //hiddenButton.Event_CancelledWhileHovering += start_transitionToMain;
+
 
         SpecialTextData_Title.CreateCharacterData(SpecialText_Title.GetComponent<TMPro.TextMeshProUGUI>().text);
 
@@ -45,7 +51,7 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         goToAudioOptionsButton.SetButtonsToCheckForPress(InputManager.BUTTON.RB);
         goToControlOptionsButton.SetButtonsToCheckForPress(InputManager.BUTTON.LB);
 
-        goBackButton.Event_Selected += start_transitionToMain;
+        
         goToAudioOptionsButton.Event_Selected += start_transitionToAudio;
         goToControlOptionsButton.Event_Selected += start_transitionToControls;
 
@@ -53,11 +59,39 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         goBackButton.AssignToGroup(buttonGrouper);
         goToAudioOptionsButton.AssignToGroup(buttonGrouper);
         goToControlOptionsButton.AssignToGroup(buttonGrouper);
+
+
+
+
+        xSensitivitySlider.Event_CompletedShow += finishedShowingSlider;
+
+        xSensitivitySlider.Event_Selected += sliderSelected;
+        ySensitivitySlider.Event_Selected += sliderSelected;
+
+
+        xSensitivitySlider.Event_UnSelected += sliderUnSelected;
+        ySensitivitySlider.Event_UnSelected += sliderUnSelected;
+
+    }
+
+    void sliderSelected()
+    {
+        goBackButton.Event_Selected -= start_transitionToMain;
+    }
+    void sliderUnSelected()
+    {
+        goBackButton.Event_Selected += start_transitionToMain;
+    }
+
+    void finishedShowingSlider()
+    {
+        xSensitivitySlider.HoverOver();
     }
 
 
     public override void EnteredMenu()
     {
+        goBackButton.Event_Selected += start_transitionToMain;
 
 
         gameObject.SetActive(true);
@@ -66,19 +100,49 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         goToAudioOptionsButton.Show();
         goToControlOptionsButton.Show();
 
+
+        xSensitivitySlider.Event_ValueChanged += setXSensitivity;
+        ySensitivitySlider.Event_ValueChanged += setYSensitivity;
+
+        xSensitivitySlider.Show();
+        ySensitivitySlider.Show();
+
+        ShowText();
+
         SpecialText_Title.Begin(SpecialTextData_Title);
 
     }
 
+    void setXSensitivity(Slider_.EventArgs_ValueChanged args)
+    {
+        
+    }
+    void setYSensitivity(Slider_.EventArgs_ValueChanged args)
+    {
+
+    }
 
 
     void start_transitionToMain()
     {
+        goBackButton.Event_Selected -= start_transitionToMain; 
+        ySensitivitySlider.Event_CompletedHide += continue_transitionToMain;
+
         goBackButton.Hide();
         goToAudioOptionsButton.Hide();
         goToControlOptionsButton.Hide();
 
+        xSensitivitySlider.Hide();
+        ySensitivitySlider.Hide();
+
         HideText();
+
+
+    }
+    void continue_transitionToMain()
+    {
+
+        ySensitivitySlider.Event_CompletedHide -= continue_transitionToMain;
 
         GM_.Instance.tween_manager.StartTweenInstance(
             MenuTransitions.transition_GameOptionsToMain,
@@ -89,13 +153,26 @@ public class MenuScreen_OptionsGame : MenuScreenBase
             );
     }
 
+
     void start_transitionToAudio()
     {
+        goBackButton.Event_Selected -= start_transitionToMain;
+        ySensitivitySlider.Event_CompletedHide += continue_transitionToAudio;
+
         goBackButton.Hide();
         goToAudioOptionsButton.Hide();
         goToControlOptionsButton.Hide();
 
+        xSensitivitySlider.Hide();
+        ySensitivitySlider.Hide();
+
         HideText();
+
+
+    }
+    void continue_transitionToAudio()
+    {
+        ySensitivitySlider.Event_CompletedHide -= continue_transitionToAudio;
 
         GM_.Instance.tween_manager.StartTweenInstance(
             MenuTransitions.transition_GameOptionsToAudio,
@@ -105,14 +182,24 @@ public class MenuScreen_OptionsGame : MenuScreenBase
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
             );
     }
-
     void start_transitionToControls()
     {
+        goBackButton.Event_Selected -= start_transitionToMain;
+        ySensitivitySlider.Event_CompletedHide += continue_transitionToControls;
         goBackButton.Hide();
         goToAudioOptionsButton.Hide();
         goToControlOptionsButton.Hide();
 
+        xSensitivitySlider.Hide();
+        ySensitivitySlider.Hide();
+
         HideText();
+
+
+    }
+    void continue_transitionToControls()
+    {
+        ySensitivitySlider.Event_CompletedHide -= continue_transitionToControls;
 
         GM_.Instance.tween_manager.StartTweenInstance(
             MenuTransitions.transition_GameOptionsToControls,
@@ -122,7 +209,6 @@ public class MenuScreen_OptionsGame : MenuScreenBase
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
             );
     }
-
 
     void HideText()
     {
@@ -135,12 +221,33 @@ public class MenuScreen_OptionsGame : MenuScreenBase
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
             );
     }
+    void ShowText()
+    {
+        TweenManager.TweenInstanceInterface inter = GM_.Instance.tween_manager.StartTweenInstance(
+            default_hideTween,
+            new TypeRef<float>[] { textAlpha },
+            tweenUpdatedDelegate_: textShowUpdate,
+            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA,
+            startingDirection_: TweenManager.DIRECTION.END_TO_START
+            );
+    }
+
+
     TypeRef<float> textAlpha = new TypeRef<float>();
 
     void textHideUpdate()
     {
         Color new_colour = new Color(textAlpha.value, textAlpha.value, textAlpha.value, textAlpha.value);
         SpecialText_Title.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
+        text_xSensitivitySlider.color = new_colour;
+        text_ySensitivitySlider.color = new_colour;
+    }
+
+    void textShowUpdate()
+    {
+        Color new_colour = new Color(textAlpha.value, textAlpha.value, textAlpha.value, textAlpha.value);
+        text_xSensitivitySlider.color = new_colour;
+        text_ySensitivitySlider.color = new_colour;
     }
 
     void end_transitionToMain()

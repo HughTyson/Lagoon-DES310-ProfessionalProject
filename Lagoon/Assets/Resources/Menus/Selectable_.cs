@@ -12,18 +12,21 @@ public class Selectable_ : MenuItem_
     public event System.Action Event_Selected;
     public event System.Action Event_HoveredOver;
     public event System.Action Event_UnHoveredOver;
+    public event System.Action Event_UnSelected;
 
     public class CMD_Select : CMD_Base { };
     public class CMD_HoverOver : CMD_Base { };
     public class CMD_UnHoverOver : CMD_Base { };
+    public class CMD_UnSelect : CMD_Base { };
 
     static CMD_Select cmdSelect = new CMD_Select();
     static CMD_HoverOver cmdHoverOver = new CMD_HoverOver();
     static CMD_UnHoverOver cmdUnHoverOver = new CMD_UnHoverOver();
+    static CMD_UnSelect cmdUnSelect = new CMD_UnSelect();
 
 
     protected static readonly float OPTION_SWAP_COOLDOWN = 0.3f;
-    protected static readonly float OPTION_SWAP_DEADZONE = 0.3f;
+    protected static readonly float OPTION_SWAP_DEADZONE = 0.1f;
 
     protected void SetupNavigation(Selectable_ up = null, Selectable_ down = null, Selectable_ left = null, Selectable_ right = null)
     {
@@ -47,6 +50,14 @@ public class Selectable_ : MenuItem_
     }
 
 
+    /// <summary>
+    /// Transitions from Unselected, to hovered
+    /// </summary>
+    public void UnSelect()
+    {
+        _Transitioner.RequestBegin(cmdUnSelect, InteruptedUnSelect, InternalEvent_BeginUnSelect, InternalEvent_UpdateUnSelect, InternalEvent_EndUnSelect, Event_UnSelected);
+    }
+
     protected event System.Action InternalEvent_BeginHoverOver;
     protected event System.Action InternalEvent_UpdateHoverOver;
     protected event System.Action InternalEvent_EndHoverOver;
@@ -61,6 +72,10 @@ public class Selectable_ : MenuItem_
     protected event System.Action InternalEvent_UpdateUnHoverOver;
     protected event System.Action InternalEvent_EndUnHoverOver;
 
+    protected event System.Action InternalEvent_BeginUnSelect;
+    protected event System.Action InternalEvent_UpdateUnSelect;
+    protected event System.Action InternalEvent_EndUnSelect;
+
     protected virtual void InteruptedSelect(InteruptArgs args, InteruptReturn returns)
     {
 
@@ -73,6 +88,11 @@ public class Selectable_ : MenuItem_
     {
 
     }
+    protected virtual void InteruptedUnSelect(InteruptArgs args, InteruptReturn returns)
+    {
+
+    }
+
 
     public enum SELECTABLE_STATE 
         {
@@ -125,7 +145,43 @@ public class Selectable_ : MenuItem_
     {
         _Transitioner.RequestContinue(internalBeginHoverOver);
     }
+    void internalBeginUnSelected()
+    {
+        selectable_state = SELECTABLE_STATE.HOVERED_OVER;
+        if (animationUnSelect != null)
+        {
+            if (animationUnSelect_DelayEvent)
+            {
+                animationUnSelect.PlayAnimation(animationUnSelectArgs, unique_animationCompleteDelegate_: _completedBeginUnSelectedAnimation);
+            }
+            else
+            {
+                animationUnSelect.PlayAnimation(animationUnSelectArgs);
+                _Transitioner.RequestContinue(internalBeginUnSelected);
+            }
+        }
+        else
+        {
+            _Transitioner.RequestContinue(internalBeginUnSelected);
+        }
+    }
+    void _completedBeginUnSelectedAnimation()
+    {
+        _Transitioner.RequestContinue(internalBeginUnSelected);
+    }
 
+
+    void internalUpdateSelected()
+    {
+        if (animationSelectUpdate != null)
+        {
+            animationSelectUpdate.PlayAnimation(animationSelectUpdateArgs);
+        }
+
+
+        _Transitioner.RequestContinue(internalUpdateSelected);
+
+    }
 
     void internalBeginUnHoverOver()
     {
@@ -155,6 +211,14 @@ public class Selectable_ : MenuItem_
     TweenAnimator.Animation animationSelect;
     TweenAnimator.Animation.PlayArgs animationSelectArgs;
 
+
+    TweenAnimator.Animation animationUnSelect;
+    TweenAnimator.Animation.PlayArgs animationUnSelectArgs;
+    bool animationUnSelect_DelayEvent;
+
+    TweenAnimator.Animation animationSelectUpdate;
+    TweenAnimator.Animation.PlayArgs animationSelectUpdateArgs;
+
     public void OverrideBeginHoverOverAnimation(TweenAnimator.Animation animation, bool doesAnimationDelayEvent, TweenAnimator.Animation.PlayArgs args)
     {
         animationHoverOver = animation;
@@ -171,7 +235,17 @@ public class Selectable_ : MenuItem_
         animationSelect = animation;
         animationSelectArgs = args;
     }
-
+    public void OverrideBeginUnSelectAnimation(TweenAnimator.Animation animation,bool doesAnimationDelayEvent, TweenAnimator.Animation.PlayArgs args)
+    {
+        animationUnSelect = animation;
+        animationUnSelectArgs = args;
+        animationUnSelect_DelayEvent = doesAnimationDelayEvent;
+    }
+    public void OverrideUpdateSelectedAnimation(TweenAnimator.Animation animation, TweenAnimator.Animation.PlayArgs args)
+    {
+        animationSelectUpdate = animation;
+        animationSelectUpdateArgs = args;
+    }
 
     private void Awake()
     {
@@ -183,6 +257,9 @@ public class Selectable_ : MenuItem_
         InternalEvent_BeginHoverOver += internalBeginHoverOver;
         InternalEvent_BeginUnHoverOver += internalBeginUnHoverOver;
         InternalEvent_BeginSelected += internalBeginSelect;
+        InternalEvent_BeginUnSelect += internalBeginUnSelected;
+        InternalEvent_UpdateSelected += internalUpdateSelected;
+
         selectable_state = SELECTABLE_STATE.UNHOVERED_OVER;
         ThisInit_Layer2();
     }
@@ -193,12 +270,18 @@ public class Selectable_ : MenuItem_
 
     protected sealed override void ForceCompleteAnimations_Layer1()
     {
+        if (animationSelectUpdate != null)
+            animationUnSelect.StopAnimation(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
+
         if (animationHoverOver != null)
             animationHoverOver.StopAnimation(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
         if (animationUnHoverOver != null)
             animationUnHoverOver.StopAnimation(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
         if (animationSelect != null)
             animationSelect.StopAnimation(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
+        if (animationUnSelect != null)
+            animationUnSelect.StopAnimation(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
+
 
     }
 }
