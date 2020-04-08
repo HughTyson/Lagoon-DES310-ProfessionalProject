@@ -78,7 +78,6 @@ namespace SpecialText
 
             public virtual bool TransitionUpdate(int lowestHoldBackIndex)
             {
-                EndlessUpdate();
                 return true;
             }
             public virtual void EndlessUpdate() { }

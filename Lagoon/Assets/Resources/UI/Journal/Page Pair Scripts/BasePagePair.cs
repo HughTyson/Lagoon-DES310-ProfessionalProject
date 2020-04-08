@@ -61,6 +61,7 @@ public class BasePagePair : MonoBehaviour
 
 
     public event System.Action<RequestToChangePage> EventRequest_ChangePage;
+    public event System.Action EventRequest_CloseJournal;
     public event System.Action EventRequest_GoToPreviousPage;
     public event System.Action<InfoRequest_CameraFromPage_Args> InfoRequest_CameFromPage;
     protected void Invoke_EventRequest_ChangePage(RequestToChangePage args)
@@ -74,7 +75,7 @@ public class BasePagePair : MonoBehaviour
     
     protected void Invoke_EventRequest_CloseJournal()
     {
-        EventRequest_ChangePage?.Invoke(new RequestToChangePage(null));
+        EventRequest_CloseJournal?.Invoke();
     }
     protected InfoRequest_CameraFromPage_Args Invoke_InfoRequest_CameFromPage()
     {

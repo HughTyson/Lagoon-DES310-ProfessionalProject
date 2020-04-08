@@ -18,6 +18,8 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
 
         SetupTypeRefArray();
 
+        //hiddenButton.Event_CancelledWhileHovering += start_transitionToCredits;
+
         SpecialTextData_Title.CreateCharacterData(SpecialText_Title.GetComponent<TMPro.TextMeshProUGUI>().text);
 
 
@@ -72,7 +74,7 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
         SpecialText_Title.End();
 
         TweenManager.TweenInstanceInterface inter = GM_.Instance.tween_manager.StartTweenInstance(
-            default_hideTween,
+            SelectableButton.default_hideTween,
             new TypeRef<float>[] { textAlpha },
             tweenUpdatedDelegate_: textHideUpdate,
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA

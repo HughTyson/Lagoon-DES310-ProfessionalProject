@@ -5,7 +5,6 @@ using UnityEngine;
 public class PageContentSlot : MonoBehaviour
 {
 
-
     // Update is called once per frame
     void Update()
     {

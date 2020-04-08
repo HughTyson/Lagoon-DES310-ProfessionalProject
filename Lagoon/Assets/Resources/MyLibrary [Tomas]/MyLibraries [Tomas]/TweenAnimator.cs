@@ -1,34 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TweenAnimator
 {
     public class Animation
     {
-        public class PlayArgs
-        {
-            public readonly System.Action animationUpdatedDelegate;
-            public readonly System.Action animationCompleteDelegate;
-            public readonly TweenManager.PATH path;
-            public readonly TweenManager.DIRECTION startingDirection;
-            public readonly TweenManager.TIME_FORMAT TimeFormat;
-            public readonly float speed;
-            public readonly object instanceID;
-            public readonly float startingPercentageOfCompletion;
-            public PlayArgs(System.Action animationUpdatedDelegate_ = null, System.Action animationCompleteDelegate_ = null, TweenManager.PATH path_ = TweenManager.PATH.NORMAL, TweenManager.DIRECTION startingDirection_ = TweenManager.DIRECTION.START_TO_END, TweenManager.TIME_FORMAT TimeFormat_ = TweenManager.TIME_FORMAT.DELTA, float speed_ = 1, object instanceID_ = null, float startingPercentageOfCompletion_ = 0.0f)
-            {
-                animationUpdatedDelegate = animationUpdatedDelegate_;
-                animationCompleteDelegate = animationCompleteDelegate_;
-                path = path_;
-                startingDirection = startingDirection_;
-                TimeFormat = TimeFormat_;
-                speed = speed_;
-                instanceID = instanceID_;
-                startingPercentageOfCompletion = startingPercentageOfCompletion_;
-            }
-        }
-
-
         TweenManager.TweenInstanceInterface tweenInterface;
         public TweenManager.TweenInstanceInterface TweenInterface => tweenInterface;
         public bool IsPlaying { 
@@ -84,23 +61,6 @@ public class TweenAnimator
             animationCompleteDelegate = animationCompleteDelegate_;
             tweenInterface = GM_.Instance.tween_manager.StartTweenInstance(tweenBundle, tweenOutputs, Update, Completed, path_: path_, startingDirection_: startingDirection_, TimeFormat_: TimeFormat_, speed_: speed_, instanceID: instanceID, startingPercentageOfCompletion: startingPercentageOfCompletion);// include other parameters
         }
-        public void PlayAnimation(PlayArgs args, System.Action unique_animationUpdatedDelegate_ = null, System.Action unique_animationCompleteDelegate_ = null)
-        {
-            if (IsPlaying)
-            {
-                tweenInterface.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE);
-            }
-
-            for (int i = 0; i < changingProperties.Length; i++)
-            {
-                changingProperties[i].Start();
-            }
-            animationUpdatedDelegate = args.animationUpdatedDelegate + unique_animationUpdatedDelegate_;
-            animationCompleteDelegate = args.animationCompleteDelegate + unique_animationCompleteDelegate_;
-            tweenInterface = GM_.Instance.tween_manager.StartTweenInstance(tweenBundle, tweenOutputs, Update, Completed, path_: args.path, startingDirection_: args.startingDirection, TimeFormat_: args.TimeFormat, speed_: args.speed, instanceID: args.instanceID, startingPercentageOfCompletion: args.startingPercentageOfCompletion);// include other parameters
-        }
-
-
         public void StopAnimation(TweenManager.STOP_COMMAND stopCommand)
         {
             if (IsPlaying)
@@ -587,15 +547,6 @@ public class TweenAnimator
 
         public abstract class TriggerProperty : Property
         {
-
-            public enum TRIGGER_TYPE
-            { 
-            GREATEREQUAL_THAN,
-            LESSEQUAL_THAN,
-            FLIP_FLOP            
-            }
-
-            TRIGGER_TYPE trigger_type;
             float triggerPoint;
             
             bool flipFlop_TriggerWhenGreater = false;
@@ -603,102 +554,50 @@ public class TweenAnimator
             int tweenOutputIndex;
 
             bool isFirstUpdate;
-
-            bool shouldTrigger = false;
             protected abstract void Triggered();
             public sealed override void Start()
             {
                 isFirstUpdate = true;
-                shouldTrigger = true;
             }
             public sealed override void UpdateProperty()
             {
                 float value = tweenLinks[tweenOutputIndex].value;
 
-
-                switch (trigger_type)
+                if (isFirstUpdate)
                 {
-                    case TRIGGER_TYPE.FLIP_FLOP:
-                        {
-                            if (isFirstUpdate)
-                            {
-                                isFirstUpdate = false;
-                                if (value > triggerPoint)
-                                {
-                                    flipFlop_TriggerWhenGreater = false;
-                                }
-                                else
-                                {
-                                    flipFlop_TriggerWhenGreater = true;
-                                }
-                            }
-                            else
-                            {
-                                if (flipFlop_TriggerWhenGreater)
-                                {
-                                    if (value - 0.0001f > triggerPoint)
-                                    {
-                                        flipFlop_TriggerWhenGreater = !flipFlop_TriggerWhenGreater;
-                                        Triggered();
-                                    }
-                                }
-                                else
-                                {
-                                    if (value + 0.0001f < triggerPoint)
-                                    {
-                                        flipFlop_TriggerWhenGreater = !flipFlop_TriggerWhenGreater;
-                                        Triggered();
-                                    }
-
-                                }
-                            }
-                            break;
-                        }
-                    case TRIGGER_TYPE.GREATEREQUAL_THAN:
-                        {
-                            if (shouldTrigger)
-                            {
-                                if (value >= triggerPoint)
-                                {
-                                    shouldTrigger = false;
-                                    Triggered();
-                                }
-                            }
-                            else
-                            {
-                                if (value < triggerPoint)
-                                {
-                                    shouldTrigger = true;
-                                }
-                            }
-                            break;
-                        }
-                    case TRIGGER_TYPE.LESSEQUAL_THAN:
-                        {
-                            if (shouldTrigger)
-                            {
-                                if (value <= triggerPoint)
-                                {
-                                    shouldTrigger = false;
-                                    Triggered();
-                                }
-                            }
-                            else
-                            {
-                                if (value > triggerPoint)
-                                {
-                                    shouldTrigger = true;
-                                }
-                            }
-                            break;
-                        }
+                    isFirstUpdate = false;
+                    if (value > triggerPoint)
+                    {
+                        flipFlop_TriggerWhenGreater = false;
+                    }
+                    else
+                    {
+                        flipFlop_TriggerWhenGreater = true;
+                    }
                 }
+                else
+                {
+                    if (flipFlop_TriggerWhenGreater)
+                    {
+                        if (value - 0.0001f > triggerPoint)
+                        {
+                            flipFlop_TriggerWhenGreater = !flipFlop_TriggerWhenGreater;
+                            Triggered();
+                        }
+                    }
+                    else
+                    {
+                        if (value + 0.0001f < triggerPoint)
+                        {
+                            flipFlop_TriggerWhenGreater = !flipFlop_TriggerWhenGreater;
+                            Triggered();
+                        }
 
-               
+                    }
+                }               
             }
-            protected void ConstructorInit(int tweenOutputIndex_, float triggerPoint_, TRIGGER_TYPE trigger_type_)
+            protected void ConstructorInit(int tweenOutputIndex_, float triggerPoint_)
             {
-                trigger_type = trigger_type_;
                 triggerPoint = triggerPoint_;
                 tweenOutputIndex = tweenOutputIndex_;
             }
@@ -821,9 +720,9 @@ public class TweenAnimator
         }
         public class Trigger_ : Base.TriggerProperty
         {
-            public Trigger_(int tweenOutputIndex_, float triggerPoint, TRIGGER_TYPE trigger_type)
+            public Trigger_(int tweenOutputIndex_, float triggerPoint)
             {
-                ConstructorInit(tweenOutputIndex_, triggerPoint, trigger_type);
+                ConstructorInit(tweenOutputIndex_, triggerPoint);
             }
             protected override void Triggered()
             {
@@ -919,12 +818,10 @@ public class TweenAnimator
 
     public class TransfRect_ : Animatable
     {
-        public TransfRect_(UnityEngine.RectTransform rectTransformReference, AnchorPosition_ anchor_position = null, Scale_ scale = null ) // add all potential transform options
+        public TransfRect_(UnityEngine.RectTransform rectTransformReference, AnchorPosition_ anchor_position = null ) // add all potential transform options
         {
             if (anchor_position != null)
                 changingProperties.Add(anchor_position);
-            if (scale != null)
-                changingProperties.Add(scale);
 
             for (int i = 0; i < changingProperties.Count; i++)
             {
@@ -944,26 +841,6 @@ public class TweenAnimator
                 set { ((RectTransform)reference).anchoredPosition = value; }
             }
         }
-
-        public class Scale_ : Base.Vector2Property
-        {
-            Vector3 _3Dversion = new Vector3(0,0,1);
-            public Scale_(bool modify_X, int tweenOutputIndex_X_, bool modify_Y, int tweenOutputIndex_Y_, MOD_TYPE modification_type_)
-            {
-                ConstructorInit(modify_X, tweenOutputIndex_X_, modify_Y, tweenOutputIndex_Y_, modification_type_);
-            }
-            protected override Vector2 ReferenceValue
-            {
-                get { return ((RectTransform)reference).localScale; }
-                set 
-                {
-                    _3Dversion.x = value.x;
-                    _3Dversion.y = value.y;
-                    ((RectTransform)reference).localScale = _3Dversion;                 
-                }
-            }
-        }
-
     }
 
     public class TMPText_ : Animatable
@@ -1220,89 +1097,6 @@ public class TweenAnimator
         }
     }
 
-
-    public class SpecialText_ : Animatable
-    {
-        public SpecialText_(SpecialText.SpecialText specialTextReference, Begin_ beginCall = null, End_ endCall = null, ForceAll_ forceAllCall = null, Revert_ revertCall = null, Hide_ hideCall = null)
-        {
-            if (beginCall != null)
-                changingProperties.Add(beginCall);
-            if (endCall != null)
-                changingProperties.Add(endCall);
-            if (forceAllCall != null)
-                changingProperties.Add(forceAllCall);
-            if (revertCall != null)
-                changingProperties.Add(revertCall);
-            if (hideCall != null)
-                changingProperties.Add(hideCall);
-
-            for (int i = 0; i < changingProperties.Count; i++)
-            {
-                changingProperties[i].Init(specialTextReference);
-            }
-
-        }
-        public class Begin_ : Base.TriggerProperty
-        {
-            SpecialText.SpecialTextData arg1;
-            System.Action arg2;
-            public Begin_(int tweenOutputIndex_, float triggerPoint,TRIGGER_TYPE triggerType, SpecialText.SpecialTextData arg1_SpecialTextData_, System.Action arg2_textCompleted_ = null)
-            {
-                arg1 = arg1_SpecialTextData_;
-                arg2 = arg2_textCompleted_;
-                ConstructorInit(tweenOutputIndex_, triggerPoint, triggerType);
-            }
-            protected override void Triggered()
-            {
-                ((SpecialText.SpecialText)reference).Begin(arg1, arg2);
-            }
-        }
-
-        public class End_ : Base.TriggerProperty
-        {
-            public End_(int tweenOutputIndex_, float triggerPoint, TRIGGER_TYPE triggerType)
-            {
-                ConstructorInit(tweenOutputIndex_, triggerPoint, triggerType);
-            }
-            protected override void Triggered()
-            {
-                ((SpecialText.SpecialText)reference).End();
-            }
-        }
-        public class ForceAll_ : Base.TriggerProperty
-        {
-            public ForceAll_(int tweenOutputIndex_, float triggerPoint, TRIGGER_TYPE triggerType)
-            {
-                ConstructorInit(tweenOutputIndex_, triggerPoint, triggerType);
-            }
-            protected override void Triggered()
-            {
-                ((SpecialText.SpecialText)reference).ForceAll();
-            }
-        }
-        public class Revert_ : Base.TriggerProperty
-        {
-            public Revert_(int tweenOutputIndex_, float triggerPoint, TRIGGER_TYPE triggerType)
-            {
-                ConstructorInit(tweenOutputIndex_, triggerPoint, triggerType);
-            }
-            protected override void Triggered()
-            {
-                ((SpecialText.SpecialText)reference).Revert();
-            }
-        }
-        public class Hide_ : Base.TriggerProperty
-        {
-            public Hide_(int tweenOutputIndex_, float triggerPoint, TRIGGER_TYPE triggerType)
-            {
-                ConstructorInit(tweenOutputIndex_, triggerPoint, triggerType);
-            }
-            protected override void Triggered()
-            {
-                ((SpecialText.SpecialText)reference).Hide();
-            }
-        }
-    }
 }
 
 

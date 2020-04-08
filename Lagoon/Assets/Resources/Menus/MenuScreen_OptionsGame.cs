@@ -129,7 +129,7 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         SpecialText_Title.End();
 
         TweenManager.TweenInstanceInterface inter = GM_.Instance.tween_manager.StartTweenInstance(
-            default_hideTween,
+            SelectableButton.default_hideTween,
             new TypeRef<float>[] { textAlpha },
             tweenUpdatedDelegate_: textHideUpdate,
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
