@@ -6,6 +6,7 @@ namespace SpecialText
 {
     public class SpecialText : MonoBehaviour
     {
+
         [SerializeField]
         TMPro.TextMeshProUGUI text;
 
@@ -28,7 +29,7 @@ namespace SpecialText
             textCompletedEventCalled = false;
             text.enabled = true;
             Revert();
-            specialTextManager.Begin(specialTextData_,  text);
+            specialTextManager.Begin(specialTextData_, text);
             TextCompleted = textCompleted_;
             isOn = true;
             Update();
@@ -63,6 +64,8 @@ namespace SpecialText
             text.enabled = false;
             isOn = false; 
         }
+
+
         private void Update()
         {
             if (isOn)

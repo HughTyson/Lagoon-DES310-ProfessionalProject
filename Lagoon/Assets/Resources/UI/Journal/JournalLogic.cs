@@ -209,6 +209,10 @@ public class JournalLogic : MonoBehaviour
 
             if (futurePair != null)
             {
+                futurePair.gameObject.SetActive(true);
+                futurePair.transform.GetChild(0).gameObject.SetActive(true);
+                futurePair.transform.GetChild(1).gameObject.SetActive(true);
+
                 futurePair.InfoRequest_CameFromPage += requestedInfoOnPreviousPage;
                 futurePair.BegunEnteringPage();
             }
@@ -274,7 +278,6 @@ public class JournalLogic : MonoBehaviour
                         }
                         if (futurePair != null)
                         {
-                            futurePair.gameObject.SetActive(true);
 
                             FirstPageContentSlot.AttachContent(futurePair.LeftPage);
                             FirstPageContentSlot.ShowContent();
@@ -406,9 +409,11 @@ public class JournalLogic : MonoBehaviour
 
                 showAnimation.PlayAnimation(TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA, animationCompleteDelegate_: completedShowJournal);
 
+                GM_.Instance.ui.gameObject.SetActive(false);
+
                 requestedToChangePage(new BasePagePair.RequestToChangePage(pagePaitToAppearFrom));
 
-                GM_.Instance.ui.gameObject.SetActive(false);
+
                 GM_.Instance.pause.Pause();
 
                 isShowing = true;
