@@ -177,35 +177,28 @@ public class JournalLogic : MonoBehaviour
     {
         requestedToChangePage(new BasePagePair.RequestToChangePage(previousPair));
     }
-
-
-
-    public void RequestShowPage(BasePagePair pagePair)
-    {
-        requestedToChangePage(new BasePagePair.RequestToChangePage(pagePair));
-    }
     void requestedToChangePage(BasePagePair.RequestToChangePage args)
-    {
-
-        if (!journal.activeSelf)
-        {
-            journal.SetActive(true);
-        }
-
-
+    {       
         if (pairsRemaining.Count == 0 && availablePageObjects.Count == pooledPageObjectCount)
         {
+            if (args.changeToPagePair == null)
+            {
+                requestedToCloseJournal();
+                return;
+            }
 
             pairsRemaining.Clear();
             pairToPairInfo = pageManager.GetInfoFromPairToPair(currentPair, args.changeToPagePair);
 
 
             startingPair = currentPair;
+
             futurePair = args.changeToPagePair;
 
             if (startingPair != null)
             {
                 startingPair.EventRequest_ChangePage -= requestedToChangePage;
+                startingPair.EventRequest_CloseJournal -= requestedToCloseJournal;
                 startingPair.EventRequest_GoToPreviousPage -= requestedGoBackToPreviousPage;
 
                 startingPair.BegunExitingPage();
@@ -216,10 +209,6 @@ public class JournalLogic : MonoBehaviour
 
             if (futurePair != null)
             {
-                futurePair.gameObject.SetActive(true);
-                futurePair.transform.GetChild(0).gameObject.SetActive(true);
-                futurePair.transform.GetChild(1).gameObject.SetActive(true);
-
                 futurePair.InfoRequest_CameFromPage += requestedInfoOnPreviousPage;
                 futurePair.BegunEnteringPage();
             }
@@ -276,32 +265,25 @@ public class JournalLogic : MonoBehaviour
                     }
                 case PageManager.PairToPairInfo.DIRECTION.ON_TARGET:
                     {
-                        if (futurePair == null)
+                        if (startingPair != null)
                         {
-                            isShowing = false;
- 
-                            currentPair = futurePair;
-
-                            showAnimation.PlayAnimation(startingDirection_: TweenManager.DIRECTION.END_TO_START, TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA, animationCompleteDelegate_: completedHideJournal);
-                        }
-                        else if (currentPair == null)
-                        {
-                            GM_.Instance.ui.gameObject.SetActive(false);
-                            GM_.Instance.pause.Pause();
-                            isShowing = true;
-
-                            currentPair = futurePair;
+                            startingPair.gameObject.SetActive(false);
 
                             FirstPageContentSlot.DetachContent();
                             LastPageContentSlot.DetachContent();
+                        }
+                        if (futurePair != null)
+                        {
+                            futurePair.gameObject.SetActive(true);
 
-                            FirstPageContentSlot.AttachContent(currentPair.LeftPage);
-                            LastPageContentSlot.AttachContent(currentPair.RightPage);
-
-
-                            showAnimation.PlayAnimation(TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA, animationCompleteDelegate_: pagePairFinalize);
+                            FirstPageContentSlot.AttachContent(futurePair.LeftPage);
+                            FirstPageContentSlot.ShowContent();
+                            LastPageContentSlot.AttachContent(futurePair.RightPage);
+                            LastPageContentSlot.ShowContent();
                         }
 
+                        currentPair = futurePair;
+                        pagePairFinalize();
                         break;
                     }     
             }
@@ -382,13 +364,58 @@ public class JournalLogic : MonoBehaviour
         if (currentPair != null)
         {
             currentPair.EventRequest_ChangePage += requestedToChangePage;
+            currentPair.EventRequest_CloseJournal += requestedToCloseJournal;
             currentPair.EventRequest_GoToPreviousPage += requestedGoBackToPreviousPage;
             currentPair.FinishedEnteringPage();
         }
     }
 
+    void requestedToCloseJournal()
+    {
+        if (usedPageObjects.Count == 0 && !showAnimation.IsPlaying)
+        {
+            if (currentPair != null)
+            {
+
+                currentPair.EventRequest_ChangePage -= requestedToChangePage;
+                currentPair.EventRequest_CloseJournal -= requestedToCloseJournal;
+                currentPair.BegunExitingPage();
+
+            }
+
+
+            showAnimation.PlayAnimation(startingDirection_: TweenManager.DIRECTION.END_TO_START, TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA, animationCompleteDelegate_: completedHideJournal);
+
+            isShowing = false;
+        }
+    }
    
 
+
+    public void RequestJournalShow(BasePagePair pagePaitToAppearFrom)
+    {
+        if (!isShowing)
+        {
+            if (!showAnimation.IsPlaying)
+            {
+
+                if (!journal.activeSelf)
+                {
+                    journal.SetActive(true);
+                }
+
+                showAnimation.PlayAnimation(TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA, animationCompleteDelegate_: completedShowJournal);
+
+                requestedToChangePage(new BasePagePair.RequestToChangePage(pagePaitToAppearFrom));
+
+                GM_.Instance.ui.gameObject.SetActive(false);
+                GM_.Instance.pause.Pause();
+
+                isShowing = true;
+            }
+
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -400,9 +427,25 @@ public class JournalLogic : MonoBehaviour
             {
                 if (!showAnimation.IsPlaying)
                 {
+
+                    if (!journal.activeSelf)
+                    {
+                        journal.SetActive(true);
+                    }
+
+                    showAnimation.PlayAnimation(TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA, animationCompleteDelegate_: completedShowJournal);
+
                     requestedToChangePage(new BasePagePair.RequestToChangePage(pausePage));
+
                     GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
+
+
+                    GM_.Instance.ui.gameObject.SetActive(false);
+                    GM_.Instance.pause.Pause();
+
+                    isShowing = true;
                 }
+
             }
         }
 
@@ -413,7 +456,13 @@ public class JournalLogic : MonoBehaviour
             {
                 if (!showAnimation.IsPlaying)
                 {
-                    requestedToChangePage(new BasePagePair.RequestToChangePage(null));
+
+                    if (!journal.activeSelf)
+                    {
+                        journal.SetActive(true);
+                    }
+
+                    requestedToCloseJournal();
 
                     GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                  
@@ -423,13 +472,24 @@ public class JournalLogic : MonoBehaviour
         }
     }
 
+    void completedShowJournal()
+    {
+
+    }
 
     void completedHideJournal()
     {
-        FirstPageContentSlot.DetachContent();
         LastPageContentSlot.DetachContent();
+        FirstPageContentSlot.DetachContent();
 
-        pagePairFinalize();
+        currentPair.gameObject.SetActive(false);
+
+        if (currentPair != null)
+        {
+            currentPair.FinishedExitingPage();
+        }
+
+        currentPair = null;
 
         GM_.Instance.ui.gameObject.SetActive(true);
         GM_.Instance.pause.UnPause();

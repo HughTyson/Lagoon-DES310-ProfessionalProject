@@ -33,7 +33,7 @@ namespace SpecialText
             public override bool TransitionUpdate(int lowestHoldBackIndex)
             {
 
-                bool allComplete = true;
+                bool allComplete = false;
                 for (int i = 0; i < specialTextCharacters.Count; i++)
                 {
                     if (specialTextCharacters[i].index <= lowestHoldBackIndex)
@@ -42,7 +42,7 @@ namespace SpecialText
                     }
                     else
                     {
-                        allComplete = false;
+                        allComplete = true;
                         break;
                     }
                 }

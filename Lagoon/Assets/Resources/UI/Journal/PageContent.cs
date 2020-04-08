@@ -16,10 +16,4 @@ public class PageContent : MonoBehaviour
         unactivePosition = transform.position;
         unactiveRotation = transform.rotation;
     }
-
-    public void LateUpdate()
-    {
-
-        
-    }
 }

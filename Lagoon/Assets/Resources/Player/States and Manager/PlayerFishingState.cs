@@ -390,7 +390,7 @@ public class PlayerFishingState : BaseState
 
                         hookedSupplyBox.GetBoxContents();
                        
-                        journal.RequestShowPage(testPageForSupplyDrop); // change test page to know it's type, so additional arguments can be added
+                        journal.RequestJournalShow(testPageForSupplyDrop); // change test page to know it's type, so additional arguments can be added
                         Destroy(hookedSupplyBox.gameObject);                  
                     }
                     break;

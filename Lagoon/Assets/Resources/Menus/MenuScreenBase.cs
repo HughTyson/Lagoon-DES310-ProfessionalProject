@@ -7,12 +7,6 @@ abstract public class MenuScreenBase : MonoBehaviour
     [SerializeField] protected Camera camera_;
     public abstract void EnteredMenu();
 
-    static public readonly TweenManager.TweenPathBundle default_hideTween = new TweenManager.TweenPathBundle(
-                new TweenManager.TweenPath(
-            new TweenManager.TweenPart_Start(1, 0, 0.3f, TweenManager.CURVE_PRESET.LINEAR)
-            )
-        );
-
 
     protected TypeRef<float> cameraPositionRef_X = new TypeRef<float>();
     protected TypeRef<float> cameraPositionRef_Y = new TypeRef<float>();
