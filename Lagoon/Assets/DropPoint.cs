@@ -18,7 +18,7 @@ public class DropPoint : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
        hit = true;
-        Debug.Log("hit");
+        //Debug.Log("hit");
     }
 
 

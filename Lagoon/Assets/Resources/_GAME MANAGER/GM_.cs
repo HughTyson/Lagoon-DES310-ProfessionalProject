@@ -72,7 +72,9 @@ public class GM_ : MonoBehaviour
         members.stats = new StatsManager();
         members.story = new StoryManager((convoGraph.Root)); // should be barrier node.);
         members.story_objective = new StoryObjectiveHandler();
+
         members.inventory = new Inventory();
+
         members.ui = uiManager;
         members.ui.helperButtons.HideButtons();
 

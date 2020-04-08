@@ -12,8 +12,6 @@ public class PagePair_Pause : BasePagePair
     [SerializeField] BasePagePair pagePair_gameOptions;
     [SerializeField] BasePagePair pagePair_AreYouSure_Exit;
 
-
-
     void Awake()
     {
         resumeButton.Event_Selected += request_PutAwayBook;

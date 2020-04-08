@@ -13,7 +13,7 @@ public class EventNode : BaseNodeType
 
     public enum EVENT_TYPE
     {
-        SUPPLY_DROP,
+        FIRST_SUPPLY_DROP,
         SOMETHING
     }
 

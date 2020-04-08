@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using System.Reflection;
+using System.Linq;
+
 public class PlayerExploreState : BaseState
 {
 
@@ -26,6 +29,10 @@ public class PlayerExploreState : BaseState
     {
         GM_.Instance.story.Event_BarrierOpened += ConversationStateAvailable;
         GM_.Instance.story.Event_ConvoEnter += ConversationStateUnavailalble;
+
+
+
+
     }
     public void OnEnable()
     {

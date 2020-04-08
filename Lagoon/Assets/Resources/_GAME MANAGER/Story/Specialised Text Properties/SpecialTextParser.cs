@@ -63,6 +63,16 @@ namespace SpecialText
                 properties[i].AddCharacterReference(specialTextCharacters.GetRange(start_index, start_index + (count - start_index)));
             }
         }
+
+        public void AddCharacterData(string text)
+        {
+            fullTextString += text;
+
+            int starting_index = fullTextString.Length;
+
+            for (int i = 0; i < text.Length; i++)
+                specialTextCharacters.Add(new SpecialTextCharacterData(i + starting_index, text[i]));
+        }
       
         public void CreateCharacterData(string text)
         {

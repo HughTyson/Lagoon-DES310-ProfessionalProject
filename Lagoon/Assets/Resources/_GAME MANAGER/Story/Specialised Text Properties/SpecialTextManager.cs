@@ -61,7 +61,7 @@ namespace SpecialText
 
             tmp.alpha = 1.0f;
             tmp.text = specialTextData_.fullTextString;
-            tmp.ForceMeshUpdate();
+            tmp.ForceMeshUpdate(false);
 
             TMPro.TMP_TextInfo info = tmp.textInfo;
             int charIndex;

@@ -11,6 +11,8 @@ public class SupplyDrop : MonoBehaviour
 
     [SerializeField] List<DropPoint> drop_points;
 
+    List<System.Type> required_items;
+
     bool do_stuff = false;
     int boxes_dropped;
 
@@ -31,7 +33,7 @@ public class SupplyDrop : MonoBehaviour
 
     public void SupplyStart(StoryManager.GameEventTriggeredArgs args)
     {
-        if(args.event_type == EventNode.EVENT_TYPE.SUPPLY_DROP)
+        if(args.event_type == EventNode.EVENT_TYPE.FIRST_SUPPLY_DROP)
         {
             //start the update and act as OnEnable()
             GM_.Instance.story.EventRequest_GameEventContinue += Blocker; //called when requesting the node to continue
@@ -45,6 +47,13 @@ public class SupplyDrop : MonoBehaviour
                 drop_points[i].hit = false;
                 drop_points[i].already_dropped = false;
             }
+
+            required_items = new List<System.Type>();
+
+            required_items.Add(typeof(SwitchItem));
+            required_items.Add(typeof(Wrench));
+            required_items.Add(typeof(ScrewDriver));
+            
         }
     }
 
@@ -101,6 +110,9 @@ public class SupplyDrop : MonoBehaviour
 
         new_box = Instantiate(box_prefab);
         new_box.box_state = SupplyBox.STATE.DROPPING;
+
+        new_box.Fill(required_items.ToArray());
+        required_items.Clear();
 
         Vector3 spawn_pos = drop_points[i].transform.position;
         new_box.transform.position = spawn_pos;
