@@ -81,9 +81,32 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         ySensitivitySlider.Event_ValueChanged += setYSensitivity;
 
 
-        //xInvertCheckBox
-        //yInvertCheckBox
+        xSensitivitySlider.ChangeSliderRange(PlayerSettings.MINMAX_X_SENSITIVITY);
+        ySensitivitySlider.ChangeSliderRange(PlayerSettings.MINMAX_Y_SENSITIVITY);
 
+
+        xSensitivitySlider.Event_ValueChanged += changeXSense;
+        ySensitivitySlider.Event_ValueChanged += changeYSense;
+        xInvertCheckBox.Event_ToggleChanged += toggledXInvert;
+        yInvertCheckBox.Event_ToggleChanged += toggledYInvert;
+    }
+
+    void changeXSense(Slider_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.settings.XSensitivity = args.newValue;
+    }
+    void changeYSense(Slider_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.settings.YSensitivity = args.newValue;
+    }
+
+    void toggledXInvert(Checkbox_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.settings.IsXInverted = args.newValue;
+    }
+    void toggledYInvert(Checkbox_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.settings.IsYInverted = args.newValue;
     }
 
     void sliderSelected()
@@ -105,6 +128,10 @@ public class MenuScreen_OptionsGame : MenuScreenBase
     {
         goBackButton.Event_Selected += start_transitionToMain;
 
+        xSensitivitySlider.SetValue(GM_.Instance.settings.XSensitivity);
+        ySensitivitySlider.SetValue(GM_.Instance.settings.YSensitivity);
+        xInvertCheckBox.SetToggle(GM_.Instance.settings.IsXInverted);
+        yInvertCheckBox.SetToggle(GM_.Instance.settings.IsYInverted);
 
         gameObject.SetActive(true);
 

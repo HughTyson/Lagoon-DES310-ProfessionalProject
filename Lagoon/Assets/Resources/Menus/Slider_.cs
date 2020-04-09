@@ -92,7 +92,12 @@ public class Slider_ : Selectable_
         _Transitioner.RequestNonTransitionCall(InternalEventWrapper_ValueChanged.wrappedAction, EventWrapper_ValueChanged.wrappedAction);
     }
 
-
+    public void ChangeSliderRange(Vector2 start_end)
+    {
+        startValue = start_end.x;
+        endValue = start_end.y;
+        SetValue(Value);
+    }
     void internalHoveredOverBegin()
     {
         current_optionswap_timer = OPTION_SWAP_COOLDOWN;

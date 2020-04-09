@@ -54,6 +54,7 @@ public class GM_ : MonoBehaviour
         public TimeMovement DayNightCycle;
         public Inventory inventory;
         public AudioManager audio;
+        public PlayerSettings settings;
     };
 
     private void Awake()
@@ -74,7 +75,7 @@ public class GM_ : MonoBehaviour
         members.stats = new StatsManager();
         members.story = new StoryManager((convoGraph.Root)); // should be barrier node.);
         members.story_objective = new StoryObjectiveHandler();
-
+        members.settings = new PlayerSettings();
         members.inventory = new Inventory();
 
         members.ui = uiManager;

@@ -33,14 +33,20 @@ public class PagePair_OptionsGame : BasePagePair
         controlsButton.AssignToGroup(grouper);
         audioButton.AssignToGroup(grouper);
 
-
-
-
+        vibrationCheckbox.Event_ToggleChanged += vibrationToggled;
     }
 
 
+    void vibrationToggled(Checkbox_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.input.VibrationsEnabled = args.newValue;
+    }
+
     public override void BegunEnteringPage()
     {
+        vibrationCheckbox.SetToggle(GM_.Instance.input.VibrationsEnabled);
+
+
         goBackButton.Event_Selected += request_GoBack;
 
         goBackButton.Show();
@@ -49,6 +55,8 @@ public class PagePair_OptionsGame : BasePagePair
         vibrationCheckbox.Show();
         back_SButton.Show();
     }
+
+
 
     public override void FinishedEnteringPage()
     {

@@ -44,11 +44,26 @@ public class PagePair_OptionsControl : BasePagePair
         xSenseSlider.Event_UnSelected += sliderUnSelected;
         ySenseSlider.Event_UnSelected += sliderUnSelected;
 
+        xSenseSlider.ChangeSliderRange(PlayerSettings.MINMAX_X_SENSITIVITY);
+        ySenseSlider.ChangeSliderRange(PlayerSettings.MINMAX_Y_SENSITIVITY);
+
+        xSenseSlider.Event_ValueChanged += changeXSense;
+        ySenseSlider.Event_ValueChanged += changeYSense;
+        xInvSlider.Event_ToggleChanged += toggledXInvert;
+        yInvSlider.Event_ToggleChanged += toggledYInvert;
     }
 
     public override void BegunEnteringPage()
     {
+
+
         goBackButton.Event_Selected += request_GoBack;
+
+        xSenseSlider.SetValue(GM_.Instance.settings.XSensitivity);
+        ySenseSlider.SetValue(GM_.Instance.settings.YSensitivity);
+        xInvSlider.SetToggle(GM_.Instance.settings.IsXInverted);
+        yInvSlider.SetToggle(GM_.Instance.settings.IsYInverted);
+
 
         goBackButton.Show();
         controlsButton.Show();
@@ -59,6 +74,38 @@ public class PagePair_OptionsControl : BasePagePair
         yInvSlider.Show();
         back_SButton.Show();
     }
+    public override void PassingBy()
+    {
+        goBackButton.Show();
+        controlsButton.Show();
+        audioButton.Show();
+        xSenseSlider.Show();
+        ySenseSlider.Show();
+        xInvSlider.Show();
+        yInvSlider.Show();
+        back_SButton.Show();
+    }
+
+
+    void changeXSense(Slider_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.settings.XSensitivity = args.newValue;
+    }
+    void changeYSense(Slider_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.settings.YSensitivity = args.newValue;
+    }
+
+    void toggledXInvert(Checkbox_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.settings.IsXInverted = args.newValue;
+    }
+    void toggledYInvert(Checkbox_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.settings.IsYInverted = args.newValue;
+    }
+
+
     public override void FinishedEnteringPage()
     {
         xSenseSlider.HoverOver();

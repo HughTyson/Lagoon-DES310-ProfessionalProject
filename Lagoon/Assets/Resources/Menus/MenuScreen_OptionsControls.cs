@@ -62,13 +62,21 @@ public class MenuScreen_OptionsControls : MenuScreenBase
 
 
         vibrationsCheckBox.Event_CompletedShow += completeShowVibrationCheckBox;
+
+        vibrationsCheckBox.Event_ToggleChanged += vibrationToggled;
+    }
+
+
+    void vibrationToggled(Checkbox_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.input.VibrationsEnabled = args.newValue;
     }
 
 
     bool firstTimeEnterd = true;
     public override void EnteredMenu()
     {
-
+        vibrationsCheckBox.SetToggle(GM_.Instance.input.VibrationsEnabled);
 
         gameObject.SetActive(true);
 

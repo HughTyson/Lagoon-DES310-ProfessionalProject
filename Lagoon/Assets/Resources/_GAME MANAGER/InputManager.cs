@@ -16,6 +16,28 @@ public class InputManager // input manager for a single player controller game
 
     float[] currentAxis = new float[6];
 
+
+    bool vibrationEnabled = true;
+
+    public bool VibrationsEnabled
+    { 
+        get
+        {
+            return vibrationEnabled;
+        }
+        set
+        {
+            vibrationEnabled = value;
+            if (!vibrationEnabled)
+                SetVibrationBoth(0, 0);
+        }
+    
+    }
+
+
+
+
+
     public enum BUTTON
     {
         A,
@@ -95,9 +117,13 @@ public class InputManager // input manager for a single player controller game
 
     public InputManager()
     {
+        fixedTime = Time.fixedUnscaledDeltaTime;
     }
 
 
+
+    float fixedTime;
+    float currentTick = 0;
     public void Update()
     {
         ConnectController();
@@ -106,7 +132,15 @@ public class InputManager // input manager for a single player controller game
         UpdateMotor(leftMotor);
         UpdateMotor(rightMotor);
 
-        GamePad.SetVibration(playerIndex, leftMotor.currentAmplitude, rightMotor.currentAmplitude); 
+        currentTick += Time.unscaledDeltaTime;
+
+        if (currentTick >= fixedTime) // this is done to keep a relatively consistent vibrate. Fixed Update is not used as it is not called when TimeScale is 0, e.i when the game is paused.
+        {
+            if (vibrationEnabled)
+                GamePad.SetVibration(playerIndex, leftMotor.currentAmplitude, rightMotor.currentAmplitude);
+            currentTick = 0;
+        }
+        
     }
 
 

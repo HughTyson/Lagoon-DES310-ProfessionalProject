@@ -38,6 +38,10 @@ public class PagePair_OptionsAudio : BasePagePair
         gameButton.AssignToGroup(grouper);
 
 
+        masterSlider.Event_ValueChanged += setMasterVolume;
+        musicSlider.Event_ValueChanged += setMusicVolume;
+        sfxSlider.Event_ValueChanged += setSFXVolume;
+
         masterSlider.Event_Selected += sliderSelected;
         musicSlider.Event_Selected += sliderSelected;
         sfxSlider.Event_Selected += sliderSelected;
@@ -45,10 +49,31 @@ public class PagePair_OptionsAudio : BasePagePair
         masterSlider.Event_UnSelected += sliderUnSelected;
         musicSlider.Event_UnSelected += sliderUnSelected;
         sfxSlider.Event_UnSelected += sliderUnSelected;
+
+
+
     }
 
+
+
+    void setMasterVolume(Slider_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.audio.MasterVolume = args.newValue;
+    }
+    void setMusicVolume(Slider_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.audio.MusicVolume = args.newValue;
+    }
+    void setSFXVolume(Slider_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.audio.SFXVolume = args.newValue;
+    }
     public override void BegunEnteringPage()
     {
+        masterSlider.SetValue(GM_.Instance.audio.MasterVolume);
+        musicSlider.SetValue(GM_.Instance.audio.MusicVolume);
+        sfxSlider.SetValue(GM_.Instance.audio.SFXVolume);
+
         goBackButton.Event_Selected += request_GoBack;
 
         goBackButton.Show();
@@ -59,6 +84,21 @@ public class PagePair_OptionsAudio : BasePagePair
         sfxSlider.Show();
         back_SButton.Show();
     }
+    public override void PassingBy()
+    {
+        masterSlider.SetValue(GM_.Instance.audio.MasterVolume);
+        musicSlider.SetValue(GM_.Instance.audio.MusicVolume);
+        sfxSlider.SetValue(GM_.Instance.audio.SFXVolume);
+
+        goBackButton.Show();
+        controlsButton.Show();
+        gameButton.Show();
+        masterSlider.Show();
+        musicSlider.Show();
+        sfxSlider.Show();
+        back_SButton.Show();
+    }
+
     public override void FinishedEnteringPage()
     {
         masterSlider.HoverOver();
@@ -97,5 +137,8 @@ public class PagePair_OptionsAudio : BasePagePair
     {
         Invoke_EventRequest_ChangePage(new RequestToChangePage(goBackPair));
     }
+
+
+
 
 }
