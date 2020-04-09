@@ -5,8 +5,8 @@ using UnityEngine;
 public class SupplyDropCamera : MonoBehaviour
 {
 
-    Vector3 base_pos = new Vector3(0, 2, 0);
-    public Vector3 look_at = new Vector3(-10, 2, 0);
+    Vector3 base_pos = new Vector3(15, 5, 0);
+    public Vector3 look_at = new Vector3(-31, 55, 0);
 
 
     TweenManager.TweenPathBundle init_movement;
@@ -41,14 +41,14 @@ public class SupplyDropCamera : MonoBehaviour
 
             init_movement = new TweenManager.TweenPathBundle(
                     new TweenManager.TweenPath(
-                        new TweenManager.TweenPart_Start(transform.position.x, base_pos.x, 1, TweenManager.CURVE_PRESET.LINEAR)
+                        new TweenManager.TweenPart_Start(transform.position.x, base_pos.x, 4, TweenManager.CURVE_PRESET.LINEAR)
                     ),
                     new TweenManager.TweenPath(
-                        new TweenManager.TweenPart_Start(transform.position.y, base_pos.y, 1, TweenManager.CURVE_PRESET.LINEAR)
+                        new TweenManager.TweenPart_Start(transform.position.y, base_pos.y, 4, TweenManager.CURVE_PRESET.LINEAR)
 
                     ),
                     new TweenManager.TweenPath(
-                        new TweenManager.TweenPart_Start(transform.position.z, base_pos.z, 1.0f, TweenManager.CURVE_PRESET.LINEAR)
+                        new TweenManager.TweenPart_Start(transform.position.z, base_pos.z, 4.0f, TweenManager.CURVE_PRESET.LINEAR)
                     )
             );
 
@@ -79,7 +79,7 @@ public class SupplyDropCamera : MonoBehaviour
     {
         transform.position = new Vector3(x.value, y.value, z.value);
 
-        Quaternion rot = Quaternion.LookRotation(look_at - transform.position);
+        Quaternion rot = Quaternion.LookRotation(transform.position - look_at);
 
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime);
     }
