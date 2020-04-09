@@ -6,6 +6,8 @@ using TMPro;
 
 public class PagePair_Inventory : BasePagePair
 {
+    [SerializeField] BasePagePair goBackPair;
+
 
     [SerializeField] UnselectableButton goBackButton;
 
@@ -71,7 +73,14 @@ public class PagePair_Inventory : BasePagePair
 
     void requestGoBack()
     {
-        Invoke_EventRequest_GoToPreviousPage();
+        if (Invoke_InfoRequest_CameFromPage().pageType == null)
+        {
+            Invoke_EventRequest_CloseJournal();
+        }
+        else
+        {
+            Invoke_EventRequest_ChangePage(new RequestToChangePage(goBackPair));
+        }
     }
 
     public override void FinishedExitingPage()

@@ -49,7 +49,11 @@ public class Selectable_ : MenuItem_
         _Transitioner.RequestBegin(cmdUnHoverOver, InteruptedUnHoverOver, InternalEvent_BeginUnHoverOver, InternalEvent_UpdateUnHoverOver, InternalEvent_EndUnHoverOver, Event_UnHoveredOver);
     }
 
-
+    public void SafeUnHoverOver()
+    {
+        if (selectable_state == SELECTABLE_STATE.HOVERED_OVER || selectable_state == SELECTABLE_STATE.SELECTED)
+            UnHoverOver();
+    }
     /// <summary>
     /// Transitions from Unselected, to hovered
     /// </summary>
