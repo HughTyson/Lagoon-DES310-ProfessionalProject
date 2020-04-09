@@ -85,7 +85,7 @@ public class GM_ : MonoBehaviour
         members.tween_curveLibrary_Tomas = TomasCurveLibrary;
 
         members.DayNightCycle = DayNightValues;
-        members.DayNightCycle.SetTime(0.0f);
+        members.DayNightCycle.SetBaseTime(10.0f);
     }
 
 

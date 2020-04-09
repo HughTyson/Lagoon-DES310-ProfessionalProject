@@ -40,6 +40,21 @@ public class DayNightCycle : MonoBehaviour
 
     bool change = true;
 
+
+    private void Awake()
+    {
+    }
+
+    public void TillNextDay(StoryManager.BarrierStartArgs args)
+    {
+
+       
+
+
+        
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -244,6 +259,7 @@ public class DayNightCycle : MonoBehaviour
         sun.enabled = true;
 
         GM_.Instance.DayNightCycle.SetSolar(TimeMovement.Solar.DAY);
+        GM_.Instance.stats.DayCountIncrease();
 
         GM_.Instance.tween_manager.StartTweenInstance(
             sun_intensity_tween,

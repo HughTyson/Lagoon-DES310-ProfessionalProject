@@ -24,7 +24,7 @@ public class FishingUI : MonoBehaviour
     TweenManager.TweenPathBundle fishBiteIndicatorTween;
     TweenManager.TweenPathBundle fishTestIndicatorTween;
 
-    TweenAnimator.Animation fishBiteIndicatorAnimation;
+    public TweenAnimator.Animation fishBiteIndicatorAnimation;
     TweenAnimator.Animation fishTestIndicatorAnimation;
     HDRP_Unlit_ManualAnimator manualSpriteAnimator;
     Material material;
@@ -157,6 +157,7 @@ public class FishingUI : MonoBehaviour
                 {
                     manualSpriteAnimator.SetAnimation(spriteSheet_FishBite.Animations[0]);
                     fishBiteIndicatorAnimation.PlayAnimation();
+                    
                     break;
                 }
             case ANIMATION_STATE.FISH_TEST:

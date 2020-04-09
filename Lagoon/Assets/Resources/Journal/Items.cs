@@ -12,7 +12,7 @@ public class Apple : InventoryItem
         SetDescription("A delicious snack");
         SetQuanity(Random.Range(1, 7));
         setBaseCommonality(45.0f);
-        SetUpdate(true);
+        SetIsNew(true);
     }
 }
 
@@ -26,7 +26,7 @@ public class Chocolate : InventoryItem
         SetDescription("A sugar rush");
         SetQuanity(1);
         setBaseCommonality(5.0f);
-        SetUpdate(true);
+        SetIsNew(true);
     }
 }
 
@@ -40,7 +40,7 @@ public class SunTanLotion : InventoryItem
         SetDescription("Factor 50, it's hot");
         SetQuanity(1);
         setBaseCommonality(10.0f);
-        SetUpdate(true);
+        SetIsNew(true);
     }
 }
 
@@ -54,7 +54,7 @@ public class Puzzle : InventoryItem
         SetDescription("A way to pass the time");
         SetQuanity(1);
         setBaseCommonality(30.0f);
-        SetUpdate(true);
+        SetIsNew(true);
     }
 }
 
@@ -68,7 +68,7 @@ public class RemoteControlHelicopter : InventoryItem
         SetDescription("A fun way to pass the time");
         SetQuanity(1);
         setBaseCommonality(0.1f);
-        SetUpdate(true);
+        SetIsNew(true);
     }
 }
 
@@ -81,7 +81,7 @@ public class SwitchItem: InventoryItem
         SetItemType(ItemType.SPECIFIC);
         SetDescription("Will help fix the plane");
         SetQuanity(1);
-        SetUpdate(true);
+        SetIsNew(true);
     }
 }
 
@@ -94,7 +94,7 @@ public class Wrench : InventoryItem
         SetItemType(ItemType.SPECIFIC);
         SetDescription("A tool to fix the plane");
         SetQuanity(1);
-        SetUpdate(true);
+        SetIsNew(true);
     }
 }
 
@@ -107,7 +107,7 @@ public class ScrewDriver : InventoryItem
         SetItemType(ItemType.SPECIFIC);
         SetDescription("A tool to fix the plane");
         SetQuanity(1);
-        SetUpdate(true);
+        SetIsNew(true);
     }
 }
 
@@ -120,6 +120,6 @@ public class Salt : InventoryItem
         SetItemType(ItemType.SPECIFIC);
         SetDescription("For a bit of flavour");
         SetQuanity(1);
-        SetUpdate(true);
+        SetIsNew(true);
     }
 }

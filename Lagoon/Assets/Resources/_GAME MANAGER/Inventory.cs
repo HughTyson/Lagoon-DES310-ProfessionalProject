@@ -53,6 +53,7 @@ public class Inventory
             if(items[i].GetType() == new_item.GetType())
             {
                 items[i].SetQuanity(items[i].GetQuantity() + new_item.GetQuantity());
+                items[i].SetIsNew(true);
                 unkown_item = true;
                 break;
             }

@@ -60,6 +60,8 @@ public class CharacterControllerMovement : MonoBehaviour
         current_state = STATE.FREE_MOVEMENT;
 
         test_drop = GetComponent<SupplyDrop>();
+
+        //Physics.IgnoreLayerCollision(13, 15);
         
     }
 

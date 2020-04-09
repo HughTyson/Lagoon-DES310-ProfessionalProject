@@ -84,7 +84,7 @@ public abstract class InventoryItem
         return type;
     }
 
-    public void SetUpdate(bool is_updated_)
+    public void SetIsNew(bool is_updated_)
     {
         is_updated = is_updated_;
     }
