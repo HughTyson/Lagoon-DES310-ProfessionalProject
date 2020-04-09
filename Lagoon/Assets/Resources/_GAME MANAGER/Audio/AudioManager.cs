@@ -23,10 +23,51 @@ public class AudioManager : MonoBehaviour
     AudioMixerGroup masterMusicMixerGroup;
     AudioMixerGroup nonMenuFXMixerGroup;
 
-
-
     AudioSource musicSource_Current;
-    void Start()
+
+    public float MasterVolume
+    { 
+    get
+        {
+            float output;
+            masterMixer.GetFloat("MasterVolume",out output);
+            return output;
+        }
+    set
+        {
+            masterMixer.SetFloat("MasterVolume", value);
+        }
+    }
+    public float MusicVolume
+    {
+        get
+        {
+            float output;
+            masterMixer.GetFloat("MusicVolume", out output);
+            return output;
+        }
+        set
+        {
+            masterMixer.SetFloat("MusicVolume", value);
+        }
+    }
+    public float SFXVolume
+    {
+        get
+        {
+            float output;
+            masterMixer.GetFloat("SFXVolume", out output);
+            return output;
+        }
+        set
+        {
+            masterMixer.SetFloat("SFXVolume", value);
+        }
+    }
+
+
+
+    void Awake()
     {
         masterMixer = (AudioMixer)Resources.Load("Sound FX/MasterMixer");
         masterMusicMixerGroup = masterMixer.FindMatchingGroups("Music")[0];
@@ -46,7 +87,7 @@ public class AudioManager : MonoBehaviour
         for (int i = 0; i < maxAudioSources; i++)
         {
             GameObject sfxInstance = new GameObject("SFX Instance", typeof(AudioSource));
-            sfxInstance.transform.SetParent(transform,false);
+            sfxInstance.transform.SetParent(transform, false);
             sfxInstance.SetActive(false);
             availableSFXInstanceObjs.Add(sfxInstance);
         }

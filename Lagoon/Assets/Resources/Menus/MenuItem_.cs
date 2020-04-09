@@ -146,6 +146,9 @@ public class MenuItem_ : MonoBehaviour
                             state = STATE.UPDATE;
                             GM_.Instance.update_events.UpdateEvent += updateCheck;
                             GM_.Instance.update_events.UpdateEvent += internalUpdate;
+
+                            externalComplete?.Invoke();
+
                             if (internalUpdate == null)
                             {
                                 RequestContinue(null);
@@ -186,7 +189,6 @@ public class MenuItem_ : MonoBehaviour
                         if (internalEnd == null)
                         {
                             state = STATE.NO_STATE;
-                            externalComplete?.Invoke();
                         }
                         break;
                     }
@@ -200,7 +202,11 @@ public class MenuItem_ : MonoBehaviour
 
         }
       
-
+        public void RequestNonTransitionCall(System.Action internalCall, System.Action externalCall)
+        {
+            internalCall?.Invoke();
+            externalCall?.Invoke();
+        }
 
         //void End()
         //{

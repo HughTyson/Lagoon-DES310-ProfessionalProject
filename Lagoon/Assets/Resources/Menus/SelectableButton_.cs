@@ -97,6 +97,8 @@ public class SelectableButton_ : Selectable_
             }
             else if (horizontal < -OPTION_SWAP_DEADZONE)
             {
+                current_optionswap_timer -= Time.unscaledDeltaTime;
+
                 if (siblingLeft != null)
                 {
                     if (current_optionswap_timer < 0)

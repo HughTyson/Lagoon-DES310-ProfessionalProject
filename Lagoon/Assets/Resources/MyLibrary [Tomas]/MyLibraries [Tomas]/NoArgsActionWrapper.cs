@@ -19,6 +19,13 @@ public class NoArgsActionWrapper<T1>
         realAction = action_;
         arg1 = arg1_;       
     }
+    public NoArgsActionWrapper(System.Action<T1> action_)
+    {
+        wrappedAction = SafeInvoke;
+        realAction = action_;
+        arg1 = default(T1);
+    }
+
     public void SafeInvoke()
     {
         realAction?.Invoke(arg1);

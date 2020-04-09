@@ -15,6 +15,10 @@ public class MenuScreen_OptionsControls : MenuScreenBase
     [SerializeField] UnselectableButton goToGameOptionsButton;
     [SerializeField] UnselectableButton goToAudioOptionsButton;
 
+    [SerializeField] Checkbox_ vibrationsCheckBox;
+    [SerializeField] TMPro.TextMeshProUGUI text_vibrationsCheckBox;
+    [SerializeField] TMPro.TextMeshProUGUI textnote_vibrationsCheckBox;
+
     SpecialText.SpecialTextData SpecialTextData_Title = new SpecialText.SpecialTextData();
     void Start()
     {
@@ -54,6 +58,10 @@ public class MenuScreen_OptionsControls : MenuScreenBase
         goBackButton.AssignToGroup(buttonGrouper);
         goToGameOptionsButton.AssignToGroup(buttonGrouper);
         goToAudioOptionsButton.AssignToGroup(buttonGrouper);
+
+
+
+        vibrationsCheckBox.Event_CompletedShow += completeShowVibrationCheckBox;
     }
 
 
@@ -67,38 +75,63 @@ public class MenuScreen_OptionsControls : MenuScreenBase
         goBackButton.Show();
         goToGameOptionsButton.Show();
         goToAudioOptionsButton.Show();
+        vibrationsCheckBox.Show();
 
         SpecialText_Title.Begin(SpecialTextData_Title);
 
+        ShowText();
+    }
+    void completeShowVibrationCheckBox()
+    {
+        vibrationsCheckBox.HoverOver();
     }
 
 
 
     void start_transitionToMain()
     {
+        vibrationsCheckBox.Event_CompletedHide += continue_transitionToMain;
+
         goBackButton.Hide();
         goToGameOptionsButton.Hide();
         goToAudioOptionsButton.Hide();
+        vibrationsCheckBox.Hide();
 
         HideText();
 
-        GM_.Instance.tween_manager.StartTweenInstance(
+
+    }
+    void continue_transitionToMain()
+    {
+        vibrationsCheckBox.Event_CompletedHide -= continue_transitionToMain;
+
+                GM_.Instance.tween_manager.StartTweenInstance(
             MenuTransitions.transition_ControlsToMain,
             transitionOutputs,
             tweenUpdatedDelegate_: transitionUpdate,
             tweenCompleteDelegate_: end_transitionToMain,
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
             );
+
     }
 
     void start_transitionToGame()
     {
+        vibrationsCheckBox.Event_CompletedHide += continue_transitionToGame;
+
         goBackButton.Hide();
         goToGameOptionsButton.Hide();
         goToAudioOptionsButton.Hide();
+        vibrationsCheckBox.Hide();
 
         HideText();
 
+
+
+    }
+    void continue_transitionToGame()
+    {
+        vibrationsCheckBox.Event_CompletedHide -= continue_transitionToGame;
         GM_.Instance.tween_manager.StartTweenInstance(
             MenuTransitions.transition_ControlsToGameOptions,
             transitionOutputs,
@@ -107,15 +140,23 @@ public class MenuScreen_OptionsControls : MenuScreenBase
             TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
             );
     }
-
     void start_transitionToAudio()
     {
+        vibrationsCheckBox.Event_CompletedHide += continue_transitionToAudio;
+
         goBackButton.Hide();
         goToGameOptionsButton.Hide();
         goToAudioOptionsButton.Hide();
+        vibrationsCheckBox.Hide();
 
         HideText();
 
+
+
+    }
+    void continue_transitionToAudio()
+    {
+        vibrationsCheckBox.Event_CompletedHide -= continue_transitionToAudio;
         GM_.Instance.tween_manager.StartTweenInstance(
             MenuTransitions.transition_ControlsToAudio,
             transitionOutputs,
@@ -125,7 +166,24 @@ public class MenuScreen_OptionsControls : MenuScreenBase
             );
     }
 
+    void ShowText()
+    {
 
+        TweenManager.TweenInstanceInterface inter = GM_.Instance.tween_manager.StartTweenInstance(
+            default_hideTween,
+            new TypeRef<float>[] { textAlpha },
+            tweenUpdatedDelegate_: textShowUpdate,
+            startingDirection_: TweenManager.DIRECTION.END_TO_START,
+            TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA
+            );
+    }
+    void textShowUpdate()
+    {
+        Color new_colour = new Color(textAlpha.value, textAlpha.value, textAlpha.value, textAlpha.value);
+
+        text_vibrationsCheckBox.color = new_colour;
+        textnote_vibrationsCheckBox.color = new_colour;
+    }
     void HideText()
     {
         SpecialText_Title.End();
@@ -143,6 +201,9 @@ public class MenuScreen_OptionsControls : MenuScreenBase
     {
         Color new_colour = new Color(textAlpha.value, textAlpha.value, textAlpha.value, textAlpha.value);
         SpecialText_Title.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
+
+        text_vibrationsCheckBox.color = new_colour;
+        textnote_vibrationsCheckBox.color = new_colour;
     }
 
     void end_transitionToMain()
