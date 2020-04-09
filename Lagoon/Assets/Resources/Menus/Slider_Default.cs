@@ -28,7 +28,7 @@ public class Slider_Default : Slider_
     protected override void ThisInit_Layer3()
     {
         InternalEvent_ValueChanged += valueChanged;
-        InternalEvent_ValueChanged += valueSet;
+        InternalEvent_ValueSet += valueSet;
     }
 
     protected override void ApplyDefaults()

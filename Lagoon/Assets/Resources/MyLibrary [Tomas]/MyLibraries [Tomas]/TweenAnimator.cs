@@ -919,12 +919,14 @@ public class TweenAnimator
 
     public class TransfRect_ : Animatable
     {
-        public TransfRect_(UnityEngine.RectTransform rectTransformReference, AnchorPosition_ anchor_position = null, Scale_ scale = null ) // add all potential transform options
+        public TransfRect_(UnityEngine.RectTransform rectTransformReference, AnchorPosition_ anchor_position = null, Scale_ scale = null, Rotation_ rotation = null ) // add all potential transform options
         {
             if (anchor_position != null)
                 changingProperties.Add(anchor_position);
             if (scale != null)
                 changingProperties.Add(scale);
+            if (rotation != null)
+                ChangingProperties.Add(rotation);
 
             for (int i = 0; i < changingProperties.Count; i++)
             {
@@ -963,7 +965,25 @@ public class TweenAnimator
                 }
             }
         }
-
+        public class Rotation_ : Base.FloatProperty
+        {
+            Vector3 _3Dversion = new Vector3(0, 0, 0);
+            Quaternion quaternion = new Quaternion();
+            public Rotation_(int outputIndex, MOD_TYPE modification_type_)
+            {
+                ConstructorInit(outputIndex, modification_type_);
+            }
+            protected override float ReferenceValue
+            {
+                get { return ((RectTransform)reference).localRotation.eulerAngles.z; }
+                set
+                {
+                    _3Dversion.z = value;
+                    quaternion.eulerAngles = _3Dversion;
+                    ((RectTransform)reference).localRotation = quaternion;
+                }
+            }
+        }
     }
 
     public class TMPText_ : Animatable

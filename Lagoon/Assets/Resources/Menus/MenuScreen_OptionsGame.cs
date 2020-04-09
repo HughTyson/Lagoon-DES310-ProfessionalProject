@@ -17,8 +17,13 @@ public class MenuScreen_OptionsGame : MenuScreenBase
     [SerializeField] Slider_ xSensitivitySlider;
     [SerializeField] Slider_ ySensitivitySlider;
 
+    [SerializeField] Checkbox_ xInvertCheckBox;
+    [SerializeField] Checkbox_ yInvertCheckBox;
+
     [SerializeField] TMPro.TextMeshProUGUI text_xSensitivitySlider;
     [SerializeField] TMPro.TextMeshProUGUI text_ySensitivitySlider;
+    [SerializeField] TMPro.TextMeshProUGUI text_xInvertCheckBox;
+    [SerializeField] TMPro.TextMeshProUGUI text_yInvertCheckBox;
 
     SpecialText.SpecialTextData SpecialTextData_Title = new SpecialText.SpecialTextData();
     void Start()
@@ -72,6 +77,13 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         xSensitivitySlider.Event_UnSelected += sliderUnSelected;
         ySensitivitySlider.Event_UnSelected += sliderUnSelected;
 
+        xSensitivitySlider.Event_ValueChanged += setXSensitivity;
+        ySensitivitySlider.Event_ValueChanged += setYSensitivity;
+
+
+        //xInvertCheckBox
+        //yInvertCheckBox
+
     }
 
     void sliderSelected()
@@ -101,9 +113,9 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         goToControlOptionsButton.Show();
 
 
-        xSensitivitySlider.Event_ValueChanged += setXSensitivity;
-        ySensitivitySlider.Event_ValueChanged += setYSensitivity;
 
+        xInvertCheckBox.Show();
+        yInvertCheckBox.Show();
         xSensitivitySlider.Show();
         ySensitivitySlider.Show();
 
@@ -134,6 +146,8 @@ public class MenuScreen_OptionsGame : MenuScreenBase
 
         xSensitivitySlider.Hide();
         ySensitivitySlider.Hide();
+        xInvertCheckBox.Hide();
+        yInvertCheckBox.Hide();
 
         HideText();
 
@@ -165,6 +179,8 @@ public class MenuScreen_OptionsGame : MenuScreenBase
 
         xSensitivitySlider.Hide();
         ySensitivitySlider.Hide();
+        xInvertCheckBox.Hide();
+        yInvertCheckBox.Hide();
 
         HideText();
 
@@ -192,6 +208,8 @@ public class MenuScreen_OptionsGame : MenuScreenBase
 
         xSensitivitySlider.Hide();
         ySensitivitySlider.Hide();
+        xInvertCheckBox.Hide();
+        yInvertCheckBox.Hide();
 
         HideText();
 
@@ -241,6 +259,8 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         SpecialText_Title.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
         text_xSensitivitySlider.color = new_colour;
         text_ySensitivitySlider.color = new_colour;
+        text_xInvertCheckBox.color = new_colour;
+        text_yInvertCheckBox.color = new_colour;
     }
 
     void textShowUpdate()
@@ -248,6 +268,8 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         Color new_colour = new Color(textAlpha.value, textAlpha.value, textAlpha.value, textAlpha.value);
         text_xSensitivitySlider.color = new_colour;
         text_ySensitivitySlider.color = new_colour;
+        text_xInvertCheckBox.color = new_colour;
+        text_yInvertCheckBox.color = new_colour;
     }
 
     void end_transitionToMain()
