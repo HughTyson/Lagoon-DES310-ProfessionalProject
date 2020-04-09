@@ -10,7 +10,7 @@ public class PagePair_ExitAYS : BasePagePair
 
     [SerializeField] UnselectableButton goBackButton;
 
-
+    [SerializeField] BasePagePair goBackPair;
 
     void Awake()
     {
@@ -35,14 +35,8 @@ public class PagePair_ExitAYS : BasePagePair
 
     public override void BegunExitingPage()
     {
-        if (noButton.SelectableState == Selectable_.SELECTABLE_STATE.HOVERED_OVER)
-        {
-            noButton.UnHoverOver();
-        }
-        else if (yesButton.SelectableState == Selectable_.SELECTABLE_STATE.HOVERED_OVER)
-        {
-            yesButton.UnHoverOver();
-        }
+            noButton.SafeUnHoverOver();
+            yesButton.SafeUnHoverOver();
     }
 
     void closeDownToMainMenu()
@@ -53,7 +47,7 @@ public class PagePair_ExitAYS : BasePagePair
 
     void request_GoBack()
     {
-        Invoke_EventRequest_GoToPreviousPage();
+           Invoke_EventRequest_ChangePage(new RequestToChangePage(goBackPair));
     }
 
 

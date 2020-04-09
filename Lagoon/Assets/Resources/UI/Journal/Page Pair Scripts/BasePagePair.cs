@@ -67,10 +67,7 @@ public class BasePagePair : MonoBehaviour
     {
         EventRequest_ChangePage?.Invoke(args);
     }
-    protected void Invoke_EventRequest_GoToPreviousPage()
-    {
-        EventRequest_GoToPreviousPage?.Invoke();
-    }
+
     
     protected void Invoke_EventRequest_CloseJournal()
     {
