@@ -31,9 +31,13 @@ public class SupplyDrop : MonoBehaviour
         GM_.Instance.story.Event_GameEventStart += SupplyStart;       //start plane moving and setup
     }
 
+
     public void SupplyStart(StoryManager.GameEventTriggeredArgs args)
     {
-        if(args.event_type == EventNode.EVENT_TYPE.FIRST_SUPPLY_DROP)
+
+        
+
+        if(args.event_type == EventNode.EVENT_TYPE.SUPPLY_DROP)
         {
             //start the update and act as OnEnable()
             GM_.Instance.story.EventRequest_GameEventContinue += Blocker; //called when requesting the node to continue
@@ -53,7 +57,7 @@ public class SupplyDrop : MonoBehaviour
             required_items.Add(typeof(SwitchItem));
             required_items.Add(typeof(Wrench));
             required_items.Add(typeof(ScrewDriver));
-            
+
         }
     }
 
@@ -112,6 +116,7 @@ public class SupplyDrop : MonoBehaviour
         new_box.box_state = SupplyBox.STATE.DROPPING;
 
         new_box.Fill(required_items.ToArray());
+        new_box.SetTransform();
         required_items.Clear();
 
         Vector3 spawn_pos = drop_points[i].transform.position;

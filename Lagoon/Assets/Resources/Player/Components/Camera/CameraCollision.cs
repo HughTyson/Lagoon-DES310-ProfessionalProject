@@ -13,7 +13,7 @@ public class CameraCollision : MonoBehaviour
     
     //collision detection variables 
 
-    float collision_box_size = 0.3f;
+    float collision_box_size = 3.0f;
 
 
     [HideInInspector] public bool collision = false;
@@ -33,7 +33,7 @@ public class CameraCollision : MonoBehaviour
         adjusted_cp_pos = new Vector3[5]; //4 clip points and the cameras position
         desired_cp_pos = new Vector3[5];
 
-        camera_collisison_layer = (1 << 5) |(1 << 9) | (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13) | (1 << 14);
+        camera_collisison_layer = (1 << 5) |(1 << 9) | (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13) | (1 << 14) /*| (1 << 15)*/;
 
         camera_collisison_layer = ~camera_collisison_layer;
 

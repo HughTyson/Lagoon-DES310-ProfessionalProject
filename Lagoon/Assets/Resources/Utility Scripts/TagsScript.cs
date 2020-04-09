@@ -18,7 +18,8 @@ public class TagsScript : MonoBehaviour
     TRIGGER,
     INVISIBLE_WALL,
     CAMERA,
-    SUPPLY_CRATE
+    SUPPLY_CRATE,
+    FISHING_BOB
     };
 
     

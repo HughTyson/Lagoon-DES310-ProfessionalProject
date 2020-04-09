@@ -77,7 +77,7 @@ public class StoryObjectiveHandler
 
         public override bool ObjectiveComplete()
         {
-            return true;
+            //return true;
             return GM_.Instance.stats.dayNumber > initDayNumber;
         }
     }

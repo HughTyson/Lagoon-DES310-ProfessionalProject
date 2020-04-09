@@ -10,10 +10,18 @@ public class PagePair_Inventory : BasePagePair
     [SerializeField] UnselectableButton goBackButton;
 
     [SerializeField] TextMeshProUGUI left_text_box;
-    //[SerializeField] TextMeshProUGUI right_text_box;
-    [SerializeField] SpecialText.SpecialText special_text;
+    [SerializeField] TextMeshProUGUI right_text_box;
 
-   
+    [SerializeField] SpecialText.SpecialText special_text_left;
+    [SerializeField] SpecialText.SpecialText special_text_right;
+
+   SpecialText.SpecialTextData left_special_text = new SpecialText.SpecialTextData();
+   SpecialText.SpecialTextData right_special_text = new SpecialText.SpecialTextData();
+
+    int left_character_data = 0;
+    int right_character_data = 0;
+
+    InventoryItem[] items;
 
     private void Awake()
     {
@@ -29,70 +37,35 @@ public class PagePair_Inventory : BasePagePair
     public override void BegunEnteringPage()
     {
         goBackButton.Show();    //show the go back button
-        Show();
-
-
-        //text_box.text = "";
-
-        ///text_box.text += GM_.Instance.inventory.items[0].GetName() + System.Environment.NewLine;// + " x" + GM_.Instance.inventory.items[i].GetQuantity() + " - " + GM_.Instance.inventory.items[i].GetDescription() + System.Environment.NewLine;
-        //special_text.Begin(text_data);
+       
 
         //clear the text_boxes
-        left_text_box.text = "";     
-        //right_text_box.text = "";
+        left_text_box.text = "";
+        right_text_box.text = "";
 
-        int left_character_data = 0;
-        int right_character_data = 0;
+        left_character_data = 0;
+        right_character_data = 0;
 
-        SpecialText.SpecialTextData left_special_text = new SpecialText.SpecialTextData();
-        SpecialText.SpecialTextData right_special_text = new SpecialText.SpecialTextData();
+        left_special_text = new SpecialText.SpecialTextData();
+        right_special_text = new SpecialText.SpecialTextData();
 
-        InventoryItem[] items = GM_.Instance.inventory.items.ToArray();
+        items = GM_.Instance.inventory.items.ToArray();
 
-
-        for (int i = 0; i < items.Length; i++)     //loop for the amount of items in the inventory
+        for (int i = 0; i < GM_.Instance.inventory.items.Count; i++)     //loop for the amount of items in the inventory
         {
 
-            if (items[i].isNew())     //if the item is new
+            if(GM_.Instance.inventory.items[i].GetItemType() == InventoryItem.ItemType.GENERIC)
             {
-
-                //left_special_text.CreateCharacterData(items[i].GetName());
-                //left_special_text.AddPropertyToText(
-                //        new List<SpecialText.TextProperties.Base>()
-                //        {
-
-                //            new SpecialText.TextProperties.Colour(0,255,0),
-                //            new SpecialText.TextProperties.AppearAtOnce(),
-                //            new SpecialText.TextProperties.WaveScaled(1,2,5)
-                //        },
-                //        character_data,
-                //        items[i].GetName().Length
-                //    );
-
-                left_character_data += items[i].GetName().Length;
-
-                left_text_box.text += items[i].GetName() + System.Environment.NewLine;// + " x" + items[i].GetQuantity() + " - " + items[i].GetDescription() + System.Environment.NewLine;
-
-                GM_.Instance.inventory.items[i].SetUpdate(false);   //set the item to not new
-
+                AddToLeft(i);
             }
-            else if (!items[i].isNew())   //if the items is not new
+            else if(GM_.Instance.inventory.items[i].GetItemType() == InventoryItem.ItemType.SPECIFIC)
             {
-                if(items[i].GetItemType() == InventoryItem.ItemType.GENERIC)
-                {
-                    left_character_data += items[i].GetName().Length;
-                    left_text_box.text += items[i].GetName() + " x" + items[i].GetQuantity() + " - " + items[i].GetDescription() + "\n";
-                }
-                else if(items[i].GetItemType() == InventoryItem.ItemType.SPECIFIC)
-                {
-                    right_character_data += items[i].GetName().Length;
-                    //right_text_box.text += items[i].GetName() + " x" + items[i].GetQuantity() + " - " + items[i].GetDescription() + "\n";
-                }
-
+                AddToRight(i);
             }
         }
 
-        //special_text.Begin(special_text_data_new);
+        special_text_left.Begin(left_special_text);
+        special_text_right.Begin(right_special_text);
 
     }
 
@@ -106,13 +79,88 @@ public class PagePair_Inventory : BasePagePair
         
     }
 
-    public void Hide()
+    void AddToLeft(int i)
     {
-       // text_box.SetActive(false);
+
+        if (GM_.Instance.inventory.items[i].isNew())     //if the item is new
+        {
+
+            left_special_text.AddCharacterData(GM_.Instance.inventory.items[i].GetName() + " x" + items[i].GetQuantity() + " - " + System.Environment.NewLine + items[i].GetDescription() + System.Environment.NewLine);
+            left_special_text.AddPropertyToText(
+                    new List<SpecialText.TextProperties.Base>()
+                    {
+
+                            new SpecialText.TextProperties.Colour(218,165,32),
+                            new SpecialText.TextProperties.StaticAppear(),
+                            new SpecialText.TextProperties.WaveScaled(1,0.5f,5)
+                    },
+                    left_character_data,
+                    GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length
+                );
+
+            left_character_data += GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length;
+
+            GM_.Instance.inventory.items[i].SetIsNew(false);   //set the item to not new
+
+        }
+        else if (!GM_.Instance.inventory.items[i].isNew())   //if the items is not new
+        {
+            left_special_text.AddCharacterData(GM_.Instance.inventory.items[i].GetName() + " x" + items[i].GetQuantity() + " - " + System.Environment.NewLine + items[i].GetDescription() + System.Environment.NewLine);
+            left_special_text.AddPropertyToText(
+                    new List<SpecialText.TextProperties.Base>()
+                    {
+                            new SpecialText.TextProperties.Colour(255,255,255),
+                            new SpecialText.TextProperties.StaticAppear()
+                    },
+                    left_character_data,
+                    GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length
+                );
+
+            left_character_data += GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length;
+
+        }
     }
 
-    public void Show()
+    void AddToRight(int i)
     {
-       // text_box.SetActive(true);
+
+        if (GM_.Instance.inventory.items[i].isNew())     //if the item is new
+        {
+
+            right_special_text.AddCharacterData(GM_.Instance.inventory.items[i].GetName() + " x" + items[i].GetQuantity() + " - " + System.Environment.NewLine + items[i].GetDescription() + System.Environment.NewLine);
+            right_special_text.AddPropertyToText(
+                    new List<SpecialText.TextProperties.Base>()
+                    {
+
+                            new SpecialText.TextProperties.Colour(218,165,32),
+                            new SpecialText.TextProperties.StaticAppear(),
+                            new SpecialText.TextProperties.WaveScaled(1,0.5f,5)
+                    },
+                    right_character_data,
+                    GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length
+                );
+
+            right_character_data += GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length;
+
+            GM_.Instance.inventory.items[i].SetIsNew(false);   //set the item to not new
+
+        }
+        else if (!GM_.Instance.inventory.items[i].isNew())   //if the items is not new
+        {
+            right_special_text.AddCharacterData(GM_.Instance.inventory.items[i].GetName() + " x" + items[i].GetQuantity() + " - " + System.Environment.NewLine + items[i].GetDescription() + System.Environment.NewLine);
+            right_special_text.AddPropertyToText(
+                    new List<SpecialText.TextProperties.Base>()
+                    {
+                            new SpecialText.TextProperties.Colour(255,255,255),
+                            new SpecialText.TextProperties.StaticAppear()
+                    },
+                    right_character_data,
+                    GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length
+                );
+
+            right_character_data += GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length;
+
+        }
+
     }
 }

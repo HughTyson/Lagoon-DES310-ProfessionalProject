@@ -13,4 +13,11 @@ public class StatsManager
     public BiggestFishStats bigestFishStats = new BiggestFishStats();
     public int dayNumber = 0;
 
+
+    public void DayCountIncrease()
+    {
+        dayNumber += 1;
+        Debug.Log(dayNumber);
+    }
+
 }

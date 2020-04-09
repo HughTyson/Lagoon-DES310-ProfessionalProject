@@ -6,6 +6,7 @@ public class PlayerConversationState : BaseState
 {
 
     [SerializeField] CharacterControllerMovement movement_;
+    [SerializeField] SupplyDropCamera supply_cam;
     [SerializeField] ThirdPersonCamera camera_;
 
     private void Start()
@@ -16,10 +17,11 @@ public class PlayerConversationState : BaseState
     public void OnEnable()
     {
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
-        camera_.current_state = ThirdPersonCamera.STATE.FREE;
+        camera_.enabled = false;
+        supply_cam.enabled = true;
         GM_.Instance.ui.helperButtons.HideButtons();
-    }
 
+    }
 
     void ExitConversation()
     {
@@ -30,6 +32,8 @@ public class PlayerConversationState : BaseState
     public void OnDisable()
     {
         GM_.Instance.ui.helperButtons.ShowButtons();
+        supply_cam.enabled = false;
+        camera_.enabled = true;
     }
 
     // Update is called once per frame
