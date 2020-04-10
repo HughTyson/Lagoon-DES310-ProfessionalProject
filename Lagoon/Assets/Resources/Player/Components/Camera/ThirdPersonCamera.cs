@@ -182,7 +182,7 @@ public class ThirdPersonCamera : MonoBehaviour
         {
             x_invert = -1;
         }
-        else if(!GM_.Instance.settings.IsXInverted)
+        else
         {
             x_invert = 1;
         }
@@ -191,7 +191,7 @@ public class ThirdPersonCamera : MonoBehaviour
         {
             y_invert = -1;
         }
-        else if(GM_.Instance.settings.IsYInverted)
+        else
         {
             y_invert = 1;
         }
