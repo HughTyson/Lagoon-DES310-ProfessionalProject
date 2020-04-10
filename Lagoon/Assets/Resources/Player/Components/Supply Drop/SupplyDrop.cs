@@ -23,6 +23,8 @@ public class SupplyDrop : MonoBehaviour
     {
         animation = GetComponent<Animation>();
         animation.AddClip(clip, clip.name);
+
+        
         
     }
 
@@ -92,9 +94,16 @@ public class SupplyDrop : MonoBehaviour
             
             if(boxes_dropped == drop_points.Count)
             {
-                do_stuff = false;
-                GM_.Instance.story.EventRequest_GameEventContinue -= Blocker;
-                GM_.Instance.story.RequestGameEventContinue();
+
+                if(!animation.isPlaying)
+                {
+                    do_stuff = false;
+                    GM_.Instance.story.EventRequest_GameEventContinue -= Blocker;
+                    GM_.Instance.story.RequestGameEventContinue();
+                }
+
+
+
             }
         }
     }

@@ -21,8 +21,6 @@ struct Hatch
     public void Init()
     {
 
-        Debug.Log(hatch.transform.position);
-
         tweens = new List<TweenManager.TweenPathBundle>();
         x_ref = new List<TypeRef<float>>();
         y_ref = new List<TypeRef<float>>();

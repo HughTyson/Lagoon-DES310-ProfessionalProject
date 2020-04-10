@@ -67,6 +67,9 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private Vector3 temp_eular;
 
+    int x_invert = 1;
+    int y_invert = -1;
+
     public enum STATE
     {
         FREE,                 //Camera has free rotation around target
@@ -79,6 +82,10 @@ public class ThirdPersonCamera : MonoBehaviour
     void Start()
     {
         _camera = transform;
+
+
+        
+
 
         target_pos = rot_target.position;
         destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
@@ -169,7 +176,27 @@ public class ThirdPersonCamera : MonoBehaviour
 
     private void HandleInput()
     {
-        camera_input += new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.RH) * camera_rotation_speed, GM_.Instance.input.GetAxis(InputManager.AXIS.RV) * camera_rotation_speed) * Time.fixedDeltaTime; //get the input from the left stick
+
+
+        if(GM_.Instance.settings.IsXInverted)
+        {
+            x_invert = -1;
+        }
+        else if(!GM_.Instance.settings.IsXInverted)
+        {
+            x_invert = 1;
+        }
+
+        if(GM_.Instance.settings.IsYInverted)
+        {
+            y_invert = -1;
+        }
+        else if(GM_.Instance.settings.IsYInverted)
+        {
+            y_invert = 1;
+        }
+
+        camera_input += new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.RH) * (((GM_.Instance.settings.XSensitivity * 10) + 30) * x_invert) /*camera_rotation_speed*/, GM_.Instance.input.GetAxis(InputManager.AXIS.RV) * (((GM_.Instance.settings.YSensitivity * 10) + 30) * y_invert) /*camera_rotation_speed*/) * Time.fixedDeltaTime; //get the input from the left stick
 
         //limit the camera between 0 and 360 - this is to stop the camera jumping when fixing
         //use .01 to combat floating point problems that may arise
