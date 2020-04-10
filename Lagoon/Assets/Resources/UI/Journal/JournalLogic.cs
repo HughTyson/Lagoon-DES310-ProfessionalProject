@@ -286,7 +286,7 @@ public class JournalLogic : MonoBehaviour
                         }
                         else if (currentPair == null)
                         {
-                            GM_.Instance.ui.gameObject.SetActive(false);
+                            GAME_UI.Instance.DisableAll();
                             GM_.Instance.pause.Pause();
                             isShowing = true;
 
@@ -431,9 +431,8 @@ public class JournalLogic : MonoBehaviour
 
         pagePairFinalize();
 
-        GM_.Instance.ui.gameObject.SetActive(true);
+        GAME_UI.Instance.EnableAll();
         GM_.Instance.pause.UnPause();
     }
-
 
 }

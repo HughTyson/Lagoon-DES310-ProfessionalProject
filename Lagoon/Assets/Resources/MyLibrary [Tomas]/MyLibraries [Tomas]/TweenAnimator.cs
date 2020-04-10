@@ -97,7 +97,7 @@ public class TweenAnimator
             }
             animationUpdatedDelegate = args.animationUpdatedDelegate + unique_animationUpdatedDelegate_;
             animationCompleteDelegate = args.animationCompleteDelegate + unique_animationCompleteDelegate_;
-            tweenInterface = GM_.Instance.tween_manager.StartTweenInstance(tweenBundle, tweenOutputs, Update, Completed, path_: args.path, startingDirection_: args.startingDirection, TimeFormat_: args.TimeFormat, speed_: args.speed, instanceID: args.instanceID, startingPercentageOfCompletion: args.startingPercentageOfCompletion);// include other parameters
+            tweenInterface = GM_.Instance.tween_manager.StartTweenInstance(tweenBundle, tweenOutputs,tweenUpdatedDelegate_: Update,tweenCompleteDelegate_: Completed, path_: args.path, startingDirection_: args.startingDirection, TimeFormat_: args.TimeFormat, speed_: args.speed, instanceID: args.instanceID, startingPercentageOfCompletion: args.startingPercentageOfCompletion);// include other parameters
         }
 
 

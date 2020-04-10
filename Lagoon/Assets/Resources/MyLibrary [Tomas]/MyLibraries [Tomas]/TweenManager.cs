@@ -9,7 +9,7 @@ public class TweenManager
 
     public TweenManager()
     {
-
+        GM_.Instance.scene_manager.Event_AboutToChangeScene += FlagToClear;
     }
 
 
@@ -68,7 +68,9 @@ public class TweenManager
         ///<summary>Go from start to end.</summary>
         NORMAL,
         ///<summary>Go from start to end to start until told to stop using a STOP_COMMAND.</summary>
-        PING_PONG
+        PING_PONG,
+        ///<summary>Go from start to end infinitely</summary>
+        LOOP
     }
 
 
@@ -86,8 +88,15 @@ public class TweenManager
     public void Update()
     {
         int count = currentTweens.Count;
+
         for (int i = count - 1; i >= 0; i--)
         {
+            if (FLAG_Clear)
+            {
+                FLAG_Clear = false;
+                return;
+            }
+
             if (currentTweens[i].flagComplete)
             {
                 currentTweens.RemoveAt(i);
@@ -96,13 +105,36 @@ public class TweenManager
             {
                 if (currentTweens[i].Update())
                 {
+                    if (FLAG_Clear)
+                    {
+                        FLAG_Clear = false;
+                        return;
+                    }
+
                     currentTweens[i].flagComplete = true;
                     currentTweens[i].actionTweenComplete?.Invoke();
+
+                    if (FLAG_Clear)
+                    {
+                        FLAG_Clear = false;
+                        return;
+                    }
+
                     currentTweens.RemoveAt(i);
                 }
             }
 
         }
+
+
+
+    }
+
+    bool FLAG_Clear = false;
+     void FlagToClear()
+    {
+        FLAG_Clear = true;
+        currentTweens.Clear();
     }
 
 
@@ -447,7 +479,26 @@ public class TweenManager
                                     }
                             }
                             break;
-                        }     
+                        }
+                        case PATH.LOOP:
+                        {
+                            switch (direction)
+                            {
+                                case DIRECTION.START_TO_END:
+                                    {
+                                        if (current_time > duration)
+                                            current_time = 0;
+                                        break;
+                                    }
+                                case DIRECTION.END_TO_START:
+                                    {
+                                        if (current_time < 0)
+                                            current_time = duration;
+                                        break;
+                                    }
+                            }
+                            break;
+                        }
                     }
                 }
             return false;
