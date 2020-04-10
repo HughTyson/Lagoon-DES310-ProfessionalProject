@@ -101,9 +101,6 @@ public class SupplyDrop : MonoBehaviour
                     GM_.Instance.story.EventRequest_GameEventContinue -= Blocker;
                     GM_.Instance.story.RequestGameEventContinue();
                 }
-
-
-
             }
         }
     }

@@ -5,8 +5,8 @@ using UnityEngine;
 public class SupplyDropCamera : MonoBehaviour
 {
 
-    Vector3 base_pos = new Vector3(12, 5, 0);
-    Vector3 look_at = new Vector3(-31, 22, 0);
+    Vector3 base_pos = new Vector3(8, 3, 0);
+    Vector3 look_at = new Vector3(0, 3, 1);
 
 
     TweenManager.TweenPathBundle init_movement;
@@ -36,7 +36,7 @@ public class SupplyDropCamera : MonoBehaviour
 
         magnitude = new TweenManager.TweenPathBundle(
                             new TweenManager.TweenPath(
-                                new TweenManager.TweenPart_Start(0, 0.1f, 3.0f, TweenManager.CURVE_PRESET.EASE_IN)
+                                new TweenManager.TweenPart_Start(0, 0.15f, 1.0f, TweenManager.CURVE_PRESET.EASE_IN)
                             )
                         );
 
