@@ -209,10 +209,10 @@ public class PlaneSegments : MonoBehaviour
                                     //change the button ui
                                     if(!games[selected_game].game.game_complete)
                                     {
-                                        GM_.Instance.ui.helperButtons.DisableAll();
+                                        GAME_UI.Instance.helperButtons.DisableAll();
                                         if (!game_selected)
                                         {
-                                            GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Open Segment");
+                                            GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Open Segment");
                                         }
                                     }
 

@@ -19,19 +19,19 @@ public class PlayerConversationState : BaseState
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
         camera_.enabled = false;
         supply_cam.enabled = true;
-        GM_.Instance.ui.helperButtons.HideButtons();
+        GAME_UI.Instance.helperButtons.HideButtons();
 
     }
 
     void ExitConversation()
     {
         StateManager.ChangeState(PlayerScriptManager.STATE.EXPLORING);
-        GM_.Instance.ui.helperButtons.ShowButtons();
+        GAME_UI.Instance.helperButtons.ShowButtons();
     }
 
     public void OnDisable()
     {
-        GM_.Instance.ui.helperButtons.ShowButtons();
+        GAME_UI.Instance.helperButtons.ShowButtons();
         supply_cam.enabled = false;
         camera_.enabled = true;
     }

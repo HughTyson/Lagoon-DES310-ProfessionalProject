@@ -6,7 +6,6 @@ using UnityEngine;
 public class GM_ : MonoBehaviour
 {
     [SerializeField] ConvoGraph convoGraph;
-    [SerializeField] UIManager uiManager;
 
     [SerializeField] AudioManager audioManager;
 
@@ -16,11 +15,12 @@ public class GM_ : MonoBehaviour
     TweenCurveLibrary HughCurveLibrary;
 
     [SerializeField] TimeMovement DayNightValues;
+    [SerializeField] CustomSceneManager sceneManager;
 
     static GM_ instance_ = null;
 
-    static Members members = null;
-    public static Members Instance
+    Members members = null;
+    static public Members Instance
     {
         get
         {
@@ -34,7 +34,7 @@ public class GM_ : MonoBehaviour
                     instance_ = test.GetComponent<GM_>();                   
                 }
             }
-            return members; // returns an interface to the GM_ to hide MonoBehavour methods
+            return instance_.members; // returns an interface to the GM_ to hide MonoBehavour methods
         }
     }
 
@@ -46,7 +46,6 @@ public class GM_ : MonoBehaviour
         public StatsManager stats;
         public StoryManager story;
         public StoryObjectiveHandler story_objective; // might not need to be here
-        public UIManager ui;
         public TweenManager tween_manager;
         public UpdateEventSystem update_events;
         public TweenCurveLibrary tween_curveLibrary_Tomas;
@@ -55,38 +54,47 @@ public class GM_ : MonoBehaviour
         public Inventory inventory;
         public AudioManager audio;
         public PlayerSettings settings;
+        public CustomSceneManager scene_manager;
     };
 
     private void Awake()
     {
-        if (instance_ != null && instance_ != this)
+        if (instance_ == null)
         {
-            Debug.LogError("Error, multiple GAME MANAGERS!");
-            Debug.Break();
+            DontDestroyOnLoad(gameObject);
+
+            if (instance_ != null && instance_ != this)
+            {
+                Debug.LogError("Error, multiple GAME MANAGERS!");
+                Debug.Break();
+            }
+
+            instance_ = this;
+
+            members = new Members();
+            members.scene_manager = sceneManager;
+            members.update_events = gameObject.AddComponent<UpdateEventSystem>();
+            members.tween_manager = new TweenManager();
+            members.input = new InputManager();
+            members.pause = new PauseManager();
+            members.stats = new StatsManager();
+            members.story = new StoryManager((convoGraph.Root)); // should be barrier node.);
+            members.story_objective = new StoryObjectiveHandler();
+            members.settings = new PlayerSettings();
+            members.inventory = new Inventory();
+            members.audio = audioManager;
+
+            members.tween_curveLibrary_Hugh = HughCurveLibrary;
+            members.tween_curveLibrary_Tomas = TomasCurveLibrary;
+
+            members.DayNightCycle = DayNightValues;
+            members.DayNightCycle.SetBaseTime(1.0f);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
 
-        instance_ = this;
-
-        members = new Members();
-        members.update_events = gameObject.AddComponent<UpdateEventSystem>();
-        members.tween_manager = new TweenManager();
-        members.input = new InputManager();
-        members.pause = new PauseManager();
-        members.stats = new StatsManager();
-        members.story = new StoryManager((convoGraph.Root)); // should be barrier node.);
-        members.story_objective = new StoryObjectiveHandler();
-        members.settings = new PlayerSettings();
-        members.inventory = new Inventory();
-
-        members.ui = uiManager;
-        members.audio = audioManager;
-        members.ui.helperButtons.HideButtons();
-
-        members.tween_curveLibrary_Hugh = HughCurveLibrary;
-        members.tween_curveLibrary_Tomas = TomasCurveLibrary;
-
-        members.DayNightCycle = DayNightValues;
-        members.DayNightCycle.SetBaseTime(1.0f);
     }
 
 
@@ -101,7 +109,6 @@ public class GM_ : MonoBehaviour
     {
         members.tween_manager.Update();
         members.input.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
-        members.ui.ManagerUpdate();
         members.pause.Update(); // called in late update so it isn't called inbetween objects, potentially causing weird behaviour
 
     }
@@ -113,8 +120,8 @@ public class GM_ : MonoBehaviour
             members.input.SetVibrationBoth(0, 0); // prevents controller vibrating even if Unity game closes
             members.input.Update();
         }
-        members = null;
-        instance_ = null;
+        if (instance_ == this)
+            instance_ = null;
     }
 }
 

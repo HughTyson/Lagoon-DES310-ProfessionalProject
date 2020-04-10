@@ -71,6 +71,12 @@ public class MenuScreen_MainMenu : MenuScreenBase
         camera_.transform.position = MenuTransitions.MainMenuVals.position;
         camera_.transform.rotation = new_rotation;
 
+
+
+
+        GM_.Instance.DayNightCycle.SetSolar(TimeMovement.Solar.DAY);
+        GM_.Instance.DayNightCycle.SetTime(0);
+        GM_.Instance.DayNightCycle.SetBaseTime(0);
     }
 
 
@@ -148,7 +154,7 @@ public class MenuScreen_MainMenu : MenuScreenBase
     }
     void game_startFinsihed()
     {
-        SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
+        GM_.Instance.scene_manager.ChangeScene(1);
     }
     void start_transitionToCredits()
     {

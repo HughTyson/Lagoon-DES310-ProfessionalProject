@@ -13,6 +13,14 @@ public class PauseManager
         
     */
 
+    public PauseManager()
+    {
+        GM_.Instance.scene_manager.Event_AboutToChangeScene += ChangeSceneReset;
+    }
+    void ChangeSceneReset()
+    {
+        UnPause();
+    }
 
     public enum PAUSED_EVENTS
     { 

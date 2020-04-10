@@ -80,7 +80,7 @@ public class PlayerExploreState : BaseState
                         if (GM_.Instance.story.RequestConversationEnter())
                         {
                             interaction_type = INTERACTION_TYPE.NONE;
-                            GM_.Instance.ui.helperButtons.DisableAll();
+                            GAME_UI.Instance.helperButtons.DisableAll();
                             GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                             StateManager.ChangeState(PlayerScriptManager.STATE.CONVERSATION);
                         }
@@ -133,8 +133,8 @@ public class PlayerExploreState : BaseState
                             {
                                 interaction_type = INTERACTION_TYPE.FISH;
 
-                                GM_.Instance.ui.helperButtons.DisableAll();
-                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Start Fishing");
+                                GAME_UI.Instance.helperButtons.DisableAll();
+                                GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Start Fishing");
                             }
                             break;
                         case TriggerType.TRIGGER_TYPE.RADIO:
@@ -142,8 +142,8 @@ public class PlayerExploreState : BaseState
                                 if (radioIsAvailable)
                                 {
                                     interaction_type = INTERACTION_TYPE.RADIO;
-                                    GM_.Instance.ui.helperButtons.DisableAll();
-                                    GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Talk to Radio");
+                                    GAME_UI.Instance.helperButtons.DisableAll();
+                                    GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Talk to Radio");
                                 }
                             }
                             break;
@@ -151,8 +151,8 @@ public class PlayerExploreState : BaseState
                             {
                                 interaction_type = INTERACTION_TYPE.SLEEP;
 
-                                GM_.Instance.ui.helperButtons.DisableAll();
-                                GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Go to Sleep");
+                                GAME_UI.Instance.helperButtons.DisableAll();
+                                GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Go to Sleep");
                             }
                             break;
                         case TriggerType.TRIGGER_TYPE.REPAIR:
@@ -162,12 +162,12 @@ public class PlayerExploreState : BaseState
                                 {
                                     interaction_type = INTERACTION_TYPE.REPAIR;
 
-                                    GM_.Instance.ui.helperButtons.DisableAll();
-                                    GM_.Instance.ui.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Plane Repair");
+                                    GAME_UI.Instance.helperButtons.DisableAll();
+                                    GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Plane Repair");
                                 }
                                 else
                                 {
-                                    GM_.Instance.ui.helperButtons.DisableAll();
+                                    GAME_UI.Instance.helperButtons.DisableAll();
                                 }
 
                                 break;
@@ -175,7 +175,7 @@ public class PlayerExploreState : BaseState
                         default:
                             {
                                 interaction_type = INTERACTION_TYPE.NONE;
-                                GM_.Instance.ui.helperButtons.DisableAll();
+                                GAME_UI.Instance.helperButtons.DisableAll();
 
                             }
                             break;
@@ -188,7 +188,7 @@ public class PlayerExploreState : BaseState
     private void OnTriggerExit(Collider other)
     {
         interaction_type = INTERACTION_TYPE.NONE;
-        GM_.Instance.ui.helperButtons.DisableAll();
+        GAME_UI.Instance.helperButtons.DisableAll();
     }
 
 }

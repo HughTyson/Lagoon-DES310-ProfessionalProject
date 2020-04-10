@@ -41,8 +41,7 @@ public class PagePair_ExitAYS : BasePagePair
 
     void closeDownToMainMenu()
     {
-        // Create scene manager for Game Manager which cleans up game manager when scene changed (e.i, unpause, clear all tweens, apply loading screen, ect.)
-       // SceneManager.LoadSceneAsync(0, LoadSceneMode.Single);
+        GM_.Instance.scene_manager.ChangeScene(0);
     }
 
     void request_GoBack()

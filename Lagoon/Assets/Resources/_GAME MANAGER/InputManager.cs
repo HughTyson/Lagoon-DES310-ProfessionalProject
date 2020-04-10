@@ -33,7 +33,13 @@ public class InputManager // input manager for a single player controller game
         }
     
     }
+    bool inputEnabled = true;
 
+    public bool InputEnabled
+    {
+        get => inputEnabled;
+        set => inputEnabled = value;
+    }
 
 
 
@@ -203,21 +209,29 @@ public class InputManager // input manager for a single player controller game
 
     public bool GetButtonDown(BUTTON button)
     {
-        return (!prevButtons[(int)button] && currentButtons[(int)button]);
+        if (inputEnabled)
+            return (!prevButtons[(int)button] && currentButtons[(int)button]);
+        return false;
     }
     public bool GetButtonUp(BUTTON button)
     {
-        return (prevButtons[(int)button] && !currentButtons[(int)button]);
+        if (inputEnabled)
+            return (prevButtons[(int)button] && !currentButtons[(int)button]);
+        return false;
     }
 
     public bool GetButton(BUTTON button)
     {
-        return currentButtons[(int)button];
+        if (inputEnabled)
+            return currentButtons[(int)button];
+        return false;
     }
 
     public float GetAxis(AXIS axis)
     {
-        return currentAxis[(int)axis];
+        if (inputEnabled)
+            return currentAxis[(int)axis];
+        return 0;
     }
 
 
