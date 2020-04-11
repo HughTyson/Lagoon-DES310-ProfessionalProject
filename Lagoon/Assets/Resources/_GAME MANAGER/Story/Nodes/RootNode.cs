@@ -25,7 +25,7 @@ public class RootNode : BaseNodeType
     [Output(ShowBackingValue.Never, ConnectionType.Override)]  public int output;
     
 
-    public BaseNodeType NextNode()
+    protected override BaseNodeType NextNode_Internal()
     {
         XNode.NodePort port = GetPort("output");
         if (port.Connection != null)

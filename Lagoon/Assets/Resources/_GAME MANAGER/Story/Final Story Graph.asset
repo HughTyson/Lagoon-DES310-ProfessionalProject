@@ -18,6 +18,7 @@ MonoBehaviour:
     keys:
     - input
     - output
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: -8756275064080166972}
@@ -43,6 +44,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -8756275064080166972}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
@@ -74,6 +85,7 @@ MonoBehaviour:
     keys:
     - input
     - output
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: -7316123089433433898}
@@ -99,6 +111,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -7316123089433433898}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
@@ -129,6 +151,7 @@ MonoBehaviour:
     keys:
     - input
     - output
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: -7171491494866776571}
@@ -151,6 +174,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -7171491494866776571}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   barriers: 02000000
   output: 0
   input: 0
@@ -167,10 +200,11 @@ MonoBehaviour:
   m_Name: Root
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -648, y: 40}
+  position: {x: -696, y: -24}
   ports:
     keys:
     - output
+    - additionalInfo
     values:
     - _fieldName: output
       _node: {fileID: -6660801044633476709}
@@ -184,6 +218,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -6660801044633476709}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   barriers: 00000000
   output: 0
 --- !u!114 &-5575307375619232555
@@ -204,6 +248,7 @@ MonoBehaviour:
     keys:
     - input
     - output
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: -5575307375619232555}
@@ -229,6 +274,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -5575307375619232555}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
@@ -264,6 +319,7 @@ MonoBehaviour:
     keys:
     - input
     - output
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: -2166667912325943365}
@@ -292,6 +348,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -2166667912325943365}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
@@ -330,6 +396,7 @@ MonoBehaviour:
     - input
     - outputA
     - outputB
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: -128976973167867780}
@@ -367,6 +434,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -128976973167867780}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   input: 0
   outputA: 0
   outputB: 0
@@ -403,6 +480,7 @@ MonoBehaviour:
   - {fileID: 3921328313252676980}
   - {fileID: -7316123089433433898}
   - {fileID: -7171491494866776571}
+  - {fileID: 6925705680755287335}
 --- !u!114 &1924276598092847580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,6 +499,7 @@ MonoBehaviour:
     keys:
     - input
     - output
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: 1924276598092847580}
@@ -449,6 +528,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 1924276598092847580}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
@@ -474,11 +563,12 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -264, y: -24}
+  position: {x: -200, y: -24}
   ports:
     keys:
     - input
     - output
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: 2005244941897501164}
@@ -504,6 +594,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 2005244941897501164}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
@@ -533,6 +633,7 @@ MonoBehaviour:
     keys:
     - input
     - output
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: 2534978486118315163}
@@ -558,6 +659,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 2534978486118315163}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
@@ -585,6 +696,7 @@ MonoBehaviour:
     - input
     - outputA
     - outputB
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: 3306803106393969010}
@@ -622,6 +734,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 3306803106393969010}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   input: 0
   outputA: 0
   outputB: 0
@@ -645,8 +767,19 @@ MonoBehaviour:
   graph: {fileID: 11400000}
   position: {x: -232, y: -280}
   ports:
-    keys: []
-    values: []
+    keys:
+    - additionalInfo
+    values:
+    - _fieldName: additionalInfo
+      _node: {fileID: 3482819492227612262}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   DefaultSpeedPerTextCharacter: 30
   DefaultColour:
     serializedVersion: 2
@@ -669,6 +802,7 @@ MonoBehaviour:
     keys:
     - input
     - output
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: 3921328313252676980}
@@ -694,6 +828,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 3921328313252676980}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   input: 0
   output: 0
   event_occured: 0
@@ -715,6 +859,7 @@ MonoBehaviour:
     keys:
     - input
     - output
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: 4644727102309361052}
@@ -740,6 +885,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 4644727102309361052}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
@@ -772,6 +927,7 @@ MonoBehaviour:
     keys:
     - input
     - output
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: 5205990802003093248}
@@ -797,6 +953,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 5205990802003093248}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
@@ -828,6 +994,7 @@ MonoBehaviour:
     keys:
     - input
     - output
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: 5540207552757832514}
@@ -853,6 +1020,16 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 5540207552757832514}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
   rightCharacter: {fileID: 11400000, guid: d3e1b4c88d0156245b0f08062593e928, type: 2}
   Dialog:
@@ -880,6 +1057,7 @@ MonoBehaviour:
     keys:
     - input
     - output
+    - additionalInfo
     values:
     - _fieldName: input
       _node: {fileID: 6135918871787102249}
@@ -905,6 +1083,45 @@ MonoBehaviour:
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 6135918871787102249}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
   barriers: 00000000
   output: 0
   input: 0
+--- !u!114 &6925705680755287335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 974e7624c5782e74da9e91b42d1160dc, type: 3}
+  m_Name: Help
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -456, y: 1000}
+  ports:
+    keys:
+    - additionalInfo
+    values:
+    - _fieldName: additionalInfo
+      _node: {fileID: 6925705680755287335}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  page: 2

@@ -24,8 +24,34 @@ public class EventNode : BaseNodeType
     [NodeEnum]
     public EVENT_TYPE event_occured;
 
-    public BaseNodeType NextNode()
+    protected override BaseNodeType NextNode_Internal()
     {
         return (BaseNodeType)GetPort("output").Connection.node;
+    }
+
+    public override List<BaseAdditionalInfoNode.AdditionalInfo> TakeUsedAdditionalInfo()
+    {
+        List<BaseAdditionalInfoNode.AdditionalInfo> output = new List<BaseAdditionalInfoNode.AdditionalInfo>();
+        switch (event_occured)
+        {
+            case EVENT_TYPE.SUPPLY_DROP:
+                {
+                    travellingAdditionalInfo.RemoveAll(
+                        y =>
+                        {
+                            if (y.GetType() == typeof(AdditionalInfoNode_CertainItemsInNextSupplyDrop.CertainNextSupplyDropItems))
+                            {
+                                output.Add(y);
+                                return true;
+                            }
+                            return false;
+                        }
+                        );
+                    break;
+                }
+        
+        }
+
+        return output;
     }
 }

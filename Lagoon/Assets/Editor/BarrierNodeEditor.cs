@@ -30,6 +30,7 @@ public class BarrierNodeEditor : NodeEditor
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("input"));
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("output"));
         GUILayout.EndHorizontal();
+        NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("additionalInfo"));
 
         SerializedProperty barrier_list = serializedObject.FindProperty("barriers");
 

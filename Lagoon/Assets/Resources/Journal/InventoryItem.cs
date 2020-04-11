@@ -1,9 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 public abstract class InventoryItem
 {
+    static Dictionary<string,System.Type> _inventoryItemTypes_Dictionary = null;
+    public static Dictionary<string, System.Type> InventoryItemsTypes_Dictionary
+    { 
+        get
+        {
+            if (_inventoryItemTypes_Dictionary == null)
+            {
+                _inventoryItemTypes_Dictionary = ReflectiveEnumerator.GetSubClassesOfType<InventoryItem>().ToDictionary(key => key.Name, data => data);
+            }
+            return _inventoryItemTypes_Dictionary;
+        }
+    }
+
+    public static string MostSimilarInventoryItemName(string input)
+    {
+        string mostSimilar = "";
+        int mostResemblenceValue = int.MaxValue;
+        foreach (KeyValuePair<string, System.Type> pair in InventoryItemsTypes_Dictionary)
+        {
+            int resemblenceVal = StringDistance.GetLevenshteinDistance(input, pair.Key);
+            if (resemblenceVal < mostResemblenceValue)
+            {
+                mostResemblenceValue = resemblenceVal;
+                mostSimilar = pair.Key;
+            }
+        }
+        return mostSimilar;
+    }
+
 
     public enum ItemType
     {

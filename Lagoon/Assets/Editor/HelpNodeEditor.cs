@@ -12,8 +12,62 @@ public class HelpNodeEditor : NodeEditor
     {
         HelpNode node = target as HelpNode;
 
+        GUIStyle headerStyle = new GUIStyle();
+        headerStyle.alignment = TextAnchor.MiddleLeft;
+        headerStyle.fontStyle = FontStyle.Bold;
+        headerStyle.fontSize = 14;
+
+        GUILayout.Label("Pages", headerStyle);
+        if (GUILayout.Button("Main"))
+        {
+            node.page = 0;
+
+        }
+        if (GUILayout.Button("Properties"))
+        {
+            node.page = 1;
+        }
+        if (GUILayout.Button("Supply Drop Items"))
+        {
+            node.page = 2;
+        }
+
+
         // Update serialized object's representation
         serializedObject.Update();
+
+        switch (node.page)
+        {
+            case 0:
+                {
+                    DrawMainPage();
+                    break;
+                }
+            case 1:
+                {
+                    DrawPropertiesPage();
+                    break;
+                }
+            case 2:
+                {
+                    DrawAdditionalInfoPage();
+                    break;
+                }
+        
+        }
+
+        // Apply property modifications
+        serializedObject.ApplyModifiedProperties();
+    }
+
+
+
+    void DrawMainPage()
+    {
+
+    }
+    void DrawPropertiesPage()
+    {
 
         // NodeEditorGUILayout.DrawPortHandle(new Rect(0, 0, 5, 5), Color.green, Color.yellow) ;
         GUIStyle titleStyle = new GUIStyle();
@@ -21,7 +75,7 @@ public class HelpNodeEditor : NodeEditor
         titleStyle.fontStyle = FontStyle.Bold;
         titleStyle.fontSize = 14;
 
-    
+
         GUIStyle normalStyle = GUI.skin.box;
         normalStyle.fixedWidth = 560;
         normalStyle.alignment = TextAnchor.UpperLeft;
@@ -90,7 +144,29 @@ public class HelpNodeEditor : NodeEditor
             GUILayout.Label("Example: " + info.example, GUI.skin.box);
         }
 
-        // Apply property modifications
-        serializedObject.ApplyModifiedProperties();
+    }
+
+    void DrawAdditionalInfoPage()
+    {
+
+        GUIStyle titleStyle = new GUIStyle();
+        titleStyle.alignment = TextAnchor.MiddleCenter;
+        titleStyle.fontStyle = FontStyle.Bold;
+        titleStyle.fontSize = 14;
+
+        GUIStyle boldStyle = new GUIStyle();
+
+        boldStyle.alignment = TextAnchor.UpperLeft;
+        boldStyle.fontSize = 12;
+        boldStyle.padding = new RectOffset(10, 10, 5, 0);
+        boldStyle.fontStyle = FontStyle.Bold;
+
+
+        GUILayout.Label("Item Types", titleStyle);
+        GUILayout.Label("", titleStyle);
+        foreach (KeyValuePair<string, System.Type> pair in InventoryItem.InventoryItemsTypes_Dictionary)
+        {
+            GUILayout.Label(pair.Key, titleStyle);
+        }
     }
 }

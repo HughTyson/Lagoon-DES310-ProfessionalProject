@@ -128,10 +128,20 @@ public class StoryManager
     public class GameEventTriggeredArgs
     {
         public readonly EventNode.EVENT_TYPE event_type;
+        public readonly List<AdditionalInfoNode_CertainItemsInNextSupplyDrop.ItemData> certainItemDrops = new List<AdditionalInfoNode_CertainItemsInNextSupplyDrop.ItemData>();
 
-        public GameEventTriggeredArgs(EventNode.EVENT_TYPE event_type_)
+        public GameEventTriggeredArgs(EventNode.EVENT_TYPE event_type_, List<BaseAdditionalInfoNode.AdditionalInfo> usedAdditionalInfoOfEvents)
         {
             event_type = event_type_;
+
+            for (int i = 0; i < usedAdditionalInfoOfEvents.Count; i++)
+            {
+                if (typeof(AdditionalInfoNode_CertainItemsInNextSupplyDrop.CertainNextSupplyDropItems) == usedAdditionalInfoOfEvents[i].GetType())
+                {
+                    certainItemDrops.AddRange(((AdditionalInfoNode_CertainItemsInNextSupplyDrop.CertainNextSupplyDropItems)usedAdditionalInfoOfEvents[i]).items);
+                }
+            }
+
         }
 
     }
@@ -250,7 +260,8 @@ public class StoryManager
             {
                 GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                 Event_BranchChoiceMade?.Invoke(new BranchChoiceMadeArgs(BranchingNode.CHOICE.LEFT));
-                current_node = ((BranchingNode)current_node).NextNode(BranchingNode.CHOICE.LEFT);
+                ((BranchingNode)current_node).SetChoice(BranchingNode.CHOICE.LEFT);
+                current_node = ((BranchingNode)current_node).NextNode();
                 EnteredNewNode();
             }
         }
@@ -266,7 +277,8 @@ public class StoryManager
             {
                 GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                 Event_BranchChoiceMade?.Invoke(new BranchChoiceMadeArgs(BranchingNode.CHOICE.RIGHT));
-                current_node = ((BranchingNode)current_node).NextNode(BranchingNode.CHOICE.RIGHT);
+                ((BranchingNode)current_node).SetChoice(BranchingNode.CHOICE.RIGHT);
+               current_node = ((BranchingNode)current_node).NextNode();
                 EnteredNewNode();
             }
         }
@@ -332,7 +344,8 @@ public class StoryManager
             case BaseNodeType.NODE_TYPE.EVENT:
                 {
                     EventNode node = ((EventNode)current_node);
-                    Event_GameEventStart?.Invoke(new GameEventTriggeredArgs(node.event_occured));
+
+                    Event_GameEventStart?.Invoke(new GameEventTriggeredArgs(node.event_occured, node.TakeUsedAdditionalInfo()));
                     break;
                 }
             case BaseNodeType.NODE_TYPE.BARRIER:
