@@ -27,7 +27,7 @@ public class AudioSFX : ScriptableObject
     float volume = 1;
     [Range(-1, 1)]
     [SerializeField]
-    float panning = 1;
+    float panning = 0;
 
     [Range(0,255)]
     [SerializeField]

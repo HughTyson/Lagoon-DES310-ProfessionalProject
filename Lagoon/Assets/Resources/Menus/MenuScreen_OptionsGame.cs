@@ -81,14 +81,16 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         ySensitivitySlider.Event_ValueChanged += setYSensitivity;
 
 
-        xSensitivitySlider.ChangeSliderRange(PlayerSettings.MINMAX_X_SENSITIVITY);
-        ySensitivitySlider.ChangeSliderRange(PlayerSettings.MINMAX_Y_SENSITIVITY);
 
 
         xSensitivitySlider.Event_ValueChanged += changeXSense;
         ySensitivitySlider.Event_ValueChanged += changeYSense;
         xInvertCheckBox.Event_ToggleChanged += toggledXInvert;
         yInvertCheckBox.Event_ToggleChanged += toggledYInvert;
+
+
+        xSensitivitySlider.ChangeSliderRange(PlayerSettings.MINMAX_X_SENSITIVITY);
+        ySensitivitySlider.ChangeSliderRange(PlayerSettings.MINMAX_Y_SENSITIVITY);
     }
 
     void changeXSense(Slider_.EventArgs_ValueChanged args)

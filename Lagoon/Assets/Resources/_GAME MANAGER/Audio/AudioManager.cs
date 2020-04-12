@@ -66,9 +66,10 @@ public class AudioManager : MonoBehaviour
     }
 
 
-
-    void Awake()
+    bool hasBeenInit = false;
+    void Init()
     {
+        hasBeenInit = true;
         masterMixer = (AudioMixer)Resources.Load("Sound FX/MasterMixer");
         masterMusicMixerGroup = masterMixer.FindMatchingGroups("Music")[0];
         masterFXMixerGroup = masterMixer.FindMatchingGroups("Sound FX")[0];
@@ -95,6 +96,12 @@ public class AudioManager : MonoBehaviour
 
         musicSource_Current = gameObject.AddComponent<AudioSource>();
         musicSource_Current.priority = 0;
+    }
+
+    void Awake()
+    {
+        if (!hasBeenInit)
+            Init();
     }
 
     private void Update()
@@ -135,6 +142,9 @@ public class AudioManager : MonoBehaviour
 
     public AudioSFX GetSFX(string name)
     {
+        if (!hasBeenInit)
+            Init();
+
         AudioSFX output;
         SFX.TryGetValue(name, out output);
         return output;
@@ -166,7 +176,8 @@ public class AudioManager : MonoBehaviour
     /// <param name="settingPriority"></param>
     /// <param name="settingSpatialBlend"></param>
     /// <param name="settingVolume"></param>
-    public SFXInstanceInterface PlaySFX(AudioSFX audioSFX, Transform sourceTransform, bool IsMenuSound = false, SFXSettings.Loop.Base settingLoop = null, SFXSettings.Mute.Base settingMute = null, SFXSettings.Panning.Base settingPanning = null, SFXSettings.Pitch.Base settingPitch = null, SFXSettings.Priority.Base settingPriority = null, SFXSettings.SpatialBlend.Base settingSpatialBlend = null, SFXSettings.Volume.Base settingVolume = null)
+    /// 
+    public SFXInstanceInterface PlaySFX(AudioSFX audioSFX, Transform sourceTransform, bool IsMenuSound = false, SFXSettings.AnyBoolSetting.BoolBase settingLoop = null, SFXSettings.AnyBoolSetting.BoolBase settingMute = null, SFXSettings.AnyFloatSetting.FloatBase settingPanning = null, SFXSettings.AnyFloatSetting.FloatBase settingPitch = null, SFXSettings.AnyIntSetting.IntBase settingPriority = null, SFXSettings.AnyFloatSetting.FloatBase settingSpatialBlend = null, SFXSettings.AnyFloatSetting.FloatBase settingVolume = null)
     {
         AudioMixerGroup mixerGroup = (IsMenuSound) ? masterFXMixerGroup : nonMenuFXMixerGroup;
 
@@ -184,7 +195,7 @@ public class AudioManager : MonoBehaviour
         }
         else // all sfx objs in the pool are being used
         {
-            int myPriority = (settingPriority == null) ? audioSFX.Priority : settingPriority.CurrentValue;
+            int myPriority = (settingPriority == null) ? audioSFX.Priority : settingPriority.Value;
 
             for (int i = 0; i < sfxInstances.Count; i++)
             {
@@ -210,8 +221,40 @@ public class AudioManager : MonoBehaviour
 
         return instanceInterface;
     }
+    public SFXInstanceInterface PlaySFX(SFXArgs args) // args wrapper
+    {
+        return PlaySFX(args.audioSFX, args.sourceTransform, args.IsMenuSound, args.settingLoop, args.settingMute, args.settingPanning, args.settingPitch, args.settingPriority, args.settingSpatialBlend, args.settingVolume);
+    }
 
-    
+    public class SFXArgs
+    {
+        public readonly AudioSFX audioSFX;
+        public readonly Transform sourceTransform;
+        public readonly bool IsMenuSound;
+        public readonly SFXSettings.AnyBoolSetting.BoolBase settingLoop;
+        public readonly SFXSettings.AnyBoolSetting.BoolBase settingMute;
+        public readonly SFXSettings.AnyFloatSetting.FloatBase settingPanning;
+        public readonly SFXSettings.AnyFloatSetting.FloatBase settingPitch;
+        public readonly SFXSettings.AnyIntSetting.IntBase settingPriority;
+        public readonly SFXSettings.AnyFloatSetting.FloatBase settingSpatialBlend;
+        public readonly SFXSettings.AnyFloatSetting.FloatBase settingVolume;
+        public SFXArgs(AudioSFX audioSFX_, Transform sourceTransform_, bool IsMenuSound_ = false, SFXSettings.AnyBoolSetting.BoolBase settingLoop_ = null, SFXSettings.AnyBoolSetting.BoolBase settingMute_ = null, SFXSettings.AnyFloatSetting.FloatBase settingPanning_ = null, SFXSettings.AnyFloatSetting.FloatBase settingPitch_ = null, SFXSettings.AnyIntSetting.IntBase settingPriority_ = null, SFXSettings.AnyFloatSetting.FloatBase settingSpatialBlend_ = null, SFXSettings.AnyFloatSetting.FloatBase settingVolume_ = null)
+        {
+            audioSFX = audioSFX_;
+            sourceTransform = sourceTransform_;
+            IsMenuSound = IsMenuSound_;
+            settingLoop = settingLoop_;
+            settingMute = settingMute_;
+            settingPanning = settingPanning_;
+            settingPitch = settingPitch_;
+            settingPriority = settingPriority_;
+            settingSpatialBlend = settingSpatialBlend_;
+            settingVolume = settingVolume_;
+        }
+    }
+
+
+
 
     public class SFXInstanceInterface
     {
@@ -344,15 +387,15 @@ public class AudioManager : MonoBehaviour
         public AudioSFX audioSFX;
         public AudioSource source;
 
-        public SFXSettings.Loop.Base settingLoop = null;
-        public SFXSettings.Mute.Base settingMute = null;
-        public SFXSettings.Panning.Base settingPanning = null;
-        public SFXSettings.Pitch.Base settingPitch = null;
-        public SFXSettings.Priority.Base settingPriority = null;
-        public SFXSettings.SpatialBlend.Base settingSpatialBlend = null;
-        public SFXSettings.Volume.Base settingVolume = null;
+        public SFXSettings.AnyBoolSetting.BoolBase settingLoop = null;
+        public SFXSettings.AnyBoolSetting.BoolBase settingMute = null;
+        public SFXSettings.AnyFloatSetting.FloatBase settingPanning = null;
+        public SFXSettings.AnyFloatSetting.FloatBase settingPitch = null;
+        public SFXSettings.AnyIntSetting.IntBase settingPriority = null;
+        public SFXSettings.AnyFloatSetting.FloatBase settingSpatialBlend = null;
+        public SFXSettings.AnyFloatSetting.FloatBase settingVolume = null;
 
-        public SFXInstance(AudioSFX audioSFX_,AudioSource source_, AudioMixerGroup mixerGroup = null, SFXSettings.Loop.Base settingLoop_ = null, SFXSettings.Mute.Base settingMute_ = null, SFXSettings.Panning.Base settingPanning_ = null, SFXSettings.Pitch.Base settingPitch_ = null, SFXSettings.Priority.Base settingPriority_ = null, SFXSettings.SpatialBlend.Base settingSpatialBlend_ = null, SFXSettings.Volume.Base settingVolume_ = null)
+        public SFXInstance(AudioSFX audioSFX_,AudioSource source_, AudioMixerGroup mixerGroup = null, SFXSettings.AnyBoolSetting.BoolBase settingLoop_ = null, SFXSettings.AnyBoolSetting.BoolBase settingMute_ = null, SFXSettings.AnyFloatSetting.FloatBase settingPanning_ = null, SFXSettings.AnyFloatSetting.FloatBase settingPitch_ = null, SFXSettings.AnyIntSetting.IntBase settingPriority_ = null, SFXSettings.AnyFloatSetting.FloatBase settingSpatialBlend_ = null, SFXSettings.AnyFloatSetting.FloatBase settingVolume_ = null)
         {
             isCompleted = false;
 
@@ -369,8 +412,8 @@ public class AudioManager : MonoBehaviour
 
             if (settingPriority != null)
             {
-                priority = settingPriority.CurrentValue;
-                if (settingPriority.GetType() == typeof(SFXSettings.Priority.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                priority = settingPriority.Value;
+                if (settingPriority.GetType() == typeof(SFXSettings.AnyIntSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingPriority = null;
             }
             else
@@ -380,8 +423,8 @@ public class AudioManager : MonoBehaviour
 
             if (settingLoop != null)
             {
-                isLooping = settingLoop.CurrentValue;
-                if (settingLoop.GetType() == typeof(SFXSettings.Loop.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                isLooping = settingLoop.Value;
+                if (settingLoop.GetType() == typeof(SFXSettings.AnyBoolSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingLoop = null;
             }
             else
@@ -391,8 +434,8 @@ public class AudioManager : MonoBehaviour
 
             if (settingPitch != null)
             {
-                pitch = settingPitch.CurrentValue;
-                if (settingPitch.GetType() == typeof(SFXSettings.Pitch.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                pitch = settingPitch.Value;
+                if (settingPitch.GetType() == typeof(SFXSettings.AnyFloatSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingPitch = null;
             }
             else
@@ -402,8 +445,8 @@ public class AudioManager : MonoBehaviour
 
             if (settingSpatialBlend != null)
             {
-                spatialBlend2DTo3D = settingSpatialBlend.CurrentValue;
-                if (settingSpatialBlend.GetType() == typeof(SFXSettings.SpatialBlend.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                spatialBlend2DTo3D = settingSpatialBlend.Value;
+                if (settingSpatialBlend.GetType() == typeof(SFXSettings.AnyFloatSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingSpatialBlend = null;
             }
             else
@@ -413,8 +456,8 @@ public class AudioManager : MonoBehaviour
 
             if (settingVolume != null)
             {
-                volume = settingVolume.CurrentValue;
-                if (settingVolume.GetType() == typeof(SFXSettings.Volume.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                volume = settingVolume.Value;
+                if (settingVolume.GetType() == typeof(SFXSettings.AnyFloatSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingVolume = null;
             }
             else
@@ -424,8 +467,8 @@ public class AudioManager : MonoBehaviour
 
             if (settingPanning != null)
             {
-                panning = settingPanning.CurrentValue;
-                if (settingPanning.GetType() == typeof(SFXSettings.Panning.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                panning = settingPanning.Value;
+                if (settingPanning.GetType() == typeof(SFXSettings.AnyFloatSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingPanning = null;
             }
             else
@@ -435,8 +478,8 @@ public class AudioManager : MonoBehaviour
 
             if (settingMute != null)
             {
-                isMuted = settingMute.CurrentValue;
-                if (settingMute.GetType() == typeof(SFXSettings.Mute.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                isMuted = settingMute.Value;
+                if (settingMute.GetType() == typeof(SFXSettings.AnyBoolSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingMute = null;
             }
             else
@@ -469,7 +512,7 @@ public class AudioManager : MonoBehaviour
             if (settingPriority != null)
             {
                 settingPriority.Update();
-                priority = settingPriority.CurrentValue;
+                priority = settingPriority.Value;
                 source.priority = priority;
 
                 if (settingPriority.IsCompleted)
@@ -479,7 +522,7 @@ public class AudioManager : MonoBehaviour
             if (settingLoop != null)
             {
                 settingLoop.Update();
-                isLooping = settingLoop.CurrentValue;
+                isLooping = settingLoop.Value;
                 source.loop = isLooping;
 
                 if (settingLoop.IsCompleted)
@@ -489,7 +532,7 @@ public class AudioManager : MonoBehaviour
             if (settingPitch != null)
             {
                 settingPitch.Update();
-                pitch = settingPitch.CurrentValue;
+                pitch = settingPitch.Value;
                 source.pitch = pitch;
 
                 if (settingPitch.IsCompleted)
@@ -499,7 +542,7 @@ public class AudioManager : MonoBehaviour
             if (settingSpatialBlend != null)
             {
                 settingSpatialBlend.Update();
-                spatialBlend2DTo3D = settingSpatialBlend.CurrentValue;
+                spatialBlend2DTo3D = settingSpatialBlend.Value;
                 source.spatialBlend = spatialBlend2DTo3D;
 
                 if (settingSpatialBlend.IsCompleted)
@@ -509,7 +552,7 @@ public class AudioManager : MonoBehaviour
             if (settingVolume != null)
             {
                 settingVolume.Update();
-                volume = settingVolume.CurrentValue;
+                volume = settingVolume.Value;
                 source.volume = volume;
 
                 if (settingVolume.IsCompleted)
@@ -519,7 +562,7 @@ public class AudioManager : MonoBehaviour
             if (settingPanning != null)
             {
                 settingPanning.Update();
-                panning = settingPanning.CurrentValue;
+                panning = settingPanning.Value;
                 source.panStereo = panning;
                 if (settingPanning.IsCompleted)
                     settingPanning = null;
@@ -528,7 +571,7 @@ public class AudioManager : MonoBehaviour
             if (settingMute != null)
             {
                 settingMute.Update();
-                isMuted = settingMute.CurrentValue;
+                isMuted = settingMute.Value;
                 source.mute = isMuted;
 
                 if (settingMute.IsCompleted)

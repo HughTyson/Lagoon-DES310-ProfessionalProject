@@ -10,8 +10,32 @@ public class SelectableButton_ : Selectable_
     }
 
 
+   // static readonly AudioSFX sfx_hoverChange = ;
+   // static readonly AudioSFX sfx_select =;
+
+     AudioManager.SFXArgs sfxArgs_hoverChange;
+     AudioManager.SFXArgs sfxArgs_select;
+
+
     protected sealed override void ThisInit_Layer2()
     {
+         sfxArgs_hoverChange = new AudioManager.SFXArgs
+        (
+            GM_.Instance.audio.GetSFX("UI_HoverChange"),
+            null,
+            IsMenuSound_: true
+        );
+
+       sfxArgs_select = new AudioManager.SFXArgs
+       (
+           GM_.Instance.audio.GetSFX("UI_ButtonSelect"),
+          null,
+          IsMenuSound_: true
+       );
+
+
+
+
         InternalEvent_BeginHoverOver += internalHoveredOverBegin;
         InternalEvent_UpdateHoverOver += internalHoveredOverUpdate;
         ThisInit_Layer3();
@@ -36,6 +60,8 @@ public class SelectableButton_ : Selectable_
         if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))
         {
             GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
+            GM_.Instance.audio.PlaySFX(sfxArgs_select);
+
             UnHoverOver();
             Select();
             return;
@@ -53,6 +79,8 @@ public class SelectableButton_ : Selectable_
                     if (current_optionswap_timer < 0)
                     {
                         GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_CHANGE_SELECTION);
+                        GM_.Instance.audio.PlaySFX(sfxArgs_hoverChange);
+
                         siblingUp.HoverOver();
                         UnHoverOver();
                     }
@@ -68,6 +96,8 @@ public class SelectableButton_ : Selectable_
                     if (current_optionswap_timer < 0)
                     {
                         GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_CHANGE_SELECTION);
+                        GM_.Instance.audio.PlaySFX(sfxArgs_hoverChange);
+
                         siblingDown.HoverOver();
                         UnHoverOver();
                     }
@@ -89,6 +119,8 @@ public class SelectableButton_ : Selectable_
                     if (current_optionswap_timer < 0)
                     {
                         GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_CHANGE_SELECTION);
+                        GM_.Instance.audio.PlaySFX(sfxArgs_hoverChange);
+
                         siblingRight.HoverOver();
                         UnHoverOver();
                     }
@@ -104,6 +136,8 @@ public class SelectableButton_ : Selectable_
                     if (current_optionswap_timer < 0)
                     {
                         GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_CHANGE_SELECTION);
+                        GM_.Instance.audio.PlaySFX(sfxArgs_hoverChange);
+
                         siblingLeft.HoverOver();
                         UnHoverOver();
                     }

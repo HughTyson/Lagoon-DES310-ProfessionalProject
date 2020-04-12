@@ -57,6 +57,13 @@ public class PlayerFishingState : BaseState
     [SerializeField] JournalLogic journal;
     [SerializeField] BasePagePair testPageForSupplyDrop;
 
+
+
+
+    AudioSFX sfx_reeling;
+    AudioManager.SFXInstanceInterface sfx_reeling_interface;
+    TypeRef<float> reelingDesiredPitch = new TypeRef<float>();
+
     enum FISHING_STATE
     {
         PREPAIRING_ROD,
@@ -92,7 +99,10 @@ public class PlayerFishingState : BaseState
     // third person camera
     // fishing indicator
 
-
+    private void Awake()
+    {
+        sfx_reeling = GM_.Instance.audio.GetSFX("Fishing_Reeling");
+    }
 
     public void OnEnable()
     {
@@ -116,12 +126,16 @@ public class PlayerFishingState : BaseState
         GAME_UI.Instance.helperButtons.EnableLeftStick(false, false, false, true, "Begin Cast");
 
         fishingBob.GetComponent<FishingBobCollisionEvent>().Event_HitSupplyDrop += supplyCrateHit;
+
+
+
     }
 
     public void OnDisable()
     {
+        sfx_reeling_interface?.Stop();
 
-        fishingBob.GetComponent<FishingBobCollisionEvent>().Event_HitSupplyDrop -= supplyCrateHit;
+
 
         if (fishingLineLogic != null)
             fishingLineLogic.gameObject.SetActive(false);
@@ -133,7 +147,10 @@ public class PlayerFishingState : BaseState
             fishingRodLogic.gameObject.SetActive(false);
 
         if (fishingBob != null)
+        {
+            fishingBob.GetComponent<FishingBobCollisionEvent>().Event_HitSupplyDrop -= supplyCrateHit;
             fishingBob.SetActive(false);
+        }
 
         if (fixedRodAnimator != null)
             fixedRodAnimator.enabled = false;
@@ -225,7 +242,13 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.BOB_IS_FLYING:
                 {
+                    
 
+                    float bob_velocity_magnitude = fishingBob.GetComponent<Rigidbody>().velocity.magnitude;
+                   
+                    reelingDesiredPitch.value = 1.2f;
+
+                    sfx_reeling_interface.Volume = Mathf.Min((sfx_reeling_interface.Pitch - 0.7f) / (0.95f - 0.7f), 0.6f);
 
                     if (fishingBob.GetComponentInChildren<BuoyancyPhysics>().GetCurrentState() == BuoyancyPhysics.STATE.IN_WATER || fishingBob.GetComponentInChildren<BuoyancyPhysics>().IsInEquilibrium() || GM_.Instance.input.GetAxis(InputManager.AXIS.RT) > 0.5f) // bob has settled
                     {
@@ -264,6 +287,9 @@ public class PlayerFishingState : BaseState
 
                     }
 
+                    sfx_reeling_interface.Volume = Mathf.Min((sfx_reeling_interface.Pitch - 0.7f) / (0.95f - 0.7f),0.6f);
+                    reelingDesiredPitch.value = Mathf.Lerp(0.7f, 1.2f , reelAxis);
+
                     GM_.Instance.input.SetVibration(InputManager.VIBRATION_MOTOR.RIGHT, reelAxis *0.1f);
                     if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.B))
                     {
@@ -285,6 +311,9 @@ public class PlayerFishingState : BaseState
                 {
 
                     float reelAxis = GM_.Instance.input.GetAxis(InputManager.AXIS.RT);
+
+                    sfx_reeling_interface.Volume = Mathf.Min((sfx_reeling_interface.Pitch - 0.7f) / (0.95f - 0.7f), 0.6f);
+                    reelingDesiredPitch.value = Mathf.Lerp(0.7f, 1.2f, reelAxis);
 
                     if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.B))
                     {
@@ -506,6 +535,8 @@ public class PlayerFishingState : BaseState
         fishingBob.GetComponent<FishingBobCollisionEvent>().Event_EnterCollision += StartFishing;
 
 
+
+        sfx_reeling_interface = GM_.Instance.audio.PlaySFX(sfx_reeling, transform, settingVolume: new SFXSettings.AnyFloatSetting.Constant(0), settingPitch: new SFXSettings.AnyFloatSetting.SmoothStep(reelingDesiredPitch, 0.7f, 5)); // create realling sound effect, but set volume to 0
 
         fishing_state = FISHING_STATE.BOB_IS_FLYING;
         thirdPersonCamera.look_at_target = fishingBob.transform;
