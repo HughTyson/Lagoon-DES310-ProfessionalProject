@@ -89,6 +89,7 @@ public class UnselectableButton : MonoBehaviour
     public TextMeshProUGUI Text { get { return TMProText; } }
 
 
+    AudioSFX sfx_Selected;
     public void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -96,6 +97,7 @@ public class UnselectableButton : MonoBehaviour
         TextRectTransform = TMProText.GetComponent<RectTransform>();
         image = GetComponentInChildren<Image>();
 
+        sfx_Selected = GM_.Instance.audio.GetSFX("UI_ButtonSelect");
     }
 
 
@@ -289,6 +291,11 @@ public class UnselectableButton : MonoBehaviour
     {
 
         GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
+        GM_.Instance.audio.PlaySFX(
+            sfx_Selected,
+            null,
+            IsMenuSound: true
+            );
 
         if (current_tweenInstance.Exists)
         {
@@ -409,6 +416,9 @@ public class UnselectableButton : MonoBehaviour
     {
         buttonsToCheck = button;
     }
+
+
+
     void Update()
     {
         if (!isGroupingButtonSelected.value)

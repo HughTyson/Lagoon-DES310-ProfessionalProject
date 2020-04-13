@@ -6,6 +6,13 @@ public class FishingBobCollisionEvent : MonoBehaviour
 {
     public event System.Action Event_EnterCollision;
     public event System.Action<SupplyBox> Event_HitSupplyDrop;
+
+ 
+    private void Awake()
+    {
+
+    }
+
     public void OnCollisionEnter(Collision collision)
     {
         Event_EnterCollision?.Invoke();
@@ -18,7 +25,9 @@ public class FishingBobCollisionEvent : MonoBehaviour
             {
                 Event_HitSupplyDrop?.Invoke(gameObject.GetComponent<SupplyBox>());
             }
+
         }
+
     }
 
 }

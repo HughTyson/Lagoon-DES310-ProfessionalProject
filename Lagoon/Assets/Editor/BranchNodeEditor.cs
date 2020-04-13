@@ -44,6 +44,7 @@ public class BranchNodeEditor : NodeEditor
         node.nodeWidth = GUILayout.HorizontalSlider(node.nodeWidth, 300, 1000);
 
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("input"));
+        NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("additionalInfo"));
 
         if (LeftPrevText != node.LeftDecision)
         {

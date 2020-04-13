@@ -65,7 +65,7 @@ public class DialogNode : CharacterHolderNode
         return Dialog[index];
     }
 
-    public BaseNodeType NextNode()
+    protected override BaseNodeType NextNode_Internal()
     {
         return (BaseNodeType)GetPort("output").Connection.node;
     }

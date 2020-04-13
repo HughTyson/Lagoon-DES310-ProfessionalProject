@@ -14,128 +14,143 @@ public static class SFXSettings
     }
 
 
-    public static class Loop
+    public static class AnyFloatSetting
     {
-        public abstract class Base : RootBase
+        public abstract class FloatBase : RootBase
         {
-            protected bool isLooping;
-            public bool CurrentValue => isLooping;
+            protected float value;
+            public float Value => value;
         }
 
-        public class Constant : Base
-        { 
-            public Constant(bool isLooping_)
+        public class Constant : FloatBase
+        {
+            public Constant(float value_)
             {
-                isLooping = isLooping_;
+                value = value_;
+            }
+        }
+
+        public class Velocity : FloatBase
+        {
+
+            TypeRef<float> velocity;
+            float min;
+            float max;
+
+
+            public Velocity(TypeRef<float> velocityRef, float startingValue, float minValue, float maxValue)
+            {
+                velocity = velocityRef;
+                min = minValue;
+                max = maxValue;
+                value = startingValue;
+            }
+
+            public override void Update()
+            {
+                value += velocity.value * Time.unscaledDeltaTime;
+                value = Mathf.Clamp(value, min, max);
+            }
+        }
+
+        public class SmoothStep : FloatBase
+        {
+
+            TypeRef<float> desiredValue;
+            float speed;
+
+            public SmoothStep(TypeRef<float> desiredValue_, float startingValue_, float speed_ = 1)
+            {
+                desiredValue = desiredValue_;
+                value = startingValue_;
+                speed = speed_;
+            }
+
+            public override void Update()
+            {
+                value = Mathf.Lerp(value, desiredValue.value, Time.deltaTime * speed);
+            }
+        }
+    }
+    public static class AnyBoolSetting
+    {
+        public abstract class BoolBase : RootBase
+        {
+            protected bool value;
+            public bool Value => value;
+        }
+
+        public class Constant : BoolBase
+        {
+            public Constant(bool value_)
+            {
+                value = value_;
+            }
+        }
+    }
+
+
+    public static class AnyIntSetting
+    {
+        public abstract class IntBase : RootBase
+        {
+            protected int value;
+            public int Value => value;
+        }
+
+        public class Constant : IntBase
+        {
+            public Constant(int value_)
+            {
+                value = value_;
             }
         }
 
     }
 
-    public static class Mute
-    {
-        public abstract class Base : RootBase
-        {
-            protected bool isMuted;
-            public bool CurrentValue => isMuted;
-        }
 
-        public class Constant : Base
-        {
-            public Constant(bool isMuted_)
-            {
-                isMuted = isMuted_;
-            }
-        }
+
+
+    public static class LoopOnly
+    {
+
 
     }
 
-    public static class Pitch
+    public static class MuteOnly
     {
-        public abstract class Base : RootBase
-        {
-            protected float pitch;
-            public float CurrentValue => pitch;
-        }
 
-        public class Constant : Base
-        {
-            public Constant(float pitch_)
-            {
-                pitch = pitch_;
-            }
-        }
 
     }
 
-    public static class SpatialBlend
+    public static class PitchOnly
     {
-        public abstract class Base : RootBase
-        {
-            protected float spatialBlend;
-            public float CurrentValue => spatialBlend;
-        }
+ 
 
-        public class Constant : Base
-        {
-            public Constant(float spatialBlend_)
-            {
-                spatialBlend = spatialBlend_;
-            }
-        }
+
+        // the Float Ref is an accelleration to pitch 
+       
 
     }
 
-    public static class Panning
+    public static class SpatialBlendOnly
     {
-        public abstract class Base : RootBase
-        {
-            protected float panning;
-            public float CurrentValue => panning;
-        }
 
-        public class Constant : Base
-        {
-            public Constant(float panning_)
-            {
-                panning = panning_;
-            }
-        }
+
+    }
+
+    public static class PanningOnly
+    {
+
 
     }
     public static class Priority
     {
-        public abstract class Base : RootBase
-        {
-            protected int priority;
-            public int CurrentValue => priority;
-        }
-
-        public class Constant : Base
-        {
-            public Constant(int priority_)
-            {
-                priority = priority_;
-            }
-        }
 
     }
 
-    public static class Volume
+    public static class VolumeOnly
     {
-        public abstract class Base : RootBase
-        {
-            protected float volume;
-            public float CurrentValue => volume;
-        }
-
-        public class Constant : Base
-        {
-            public Constant(float volume_)
-            {
-                volume = volume_;
-            }
-        }
 
     }
 

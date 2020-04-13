@@ -44,12 +44,20 @@ public class FishingBobLogic : MonoBehaviour
 
 
     List<GameObject> nearbyFish = new List<GameObject>(); // list of nearby fish
-    FishLogic interactingFish;                           // the current interacting fish            
+    FishLogic interactingFish;
+    // the current interacting fish            
 
+    AudioSFX sfx_hitWater;
+    void hitWater()
+    {
+        if (GetComponentInParent<Rigidbody>().velocity.magnitude > 3.0f)
+            GM_.Instance.audio.PlaySFX(sfx_hitWater, transform);
+    }
 
     private void Start()
     {
-
+        sfx_hitWater = GM_.Instance.audio.GetSFX("FishingBob_HitWater");
+        physicsBuoyancy.Event_HitWater += hitWater;
     }
 
     private void OnEnable()
@@ -196,6 +204,7 @@ public class FishingBobLogic : MonoBehaviour
                         current_attration_time = attractionPulseTimeInterval;
                         ScareNearbyFish(0.5f);
                     }
+
 
 
                     //   GetComponentInParent<Rigidbody>().AddForce((fishingLineLogic.EndOfLineForce()) / 1.0f, ForceMode.VelocityChange);

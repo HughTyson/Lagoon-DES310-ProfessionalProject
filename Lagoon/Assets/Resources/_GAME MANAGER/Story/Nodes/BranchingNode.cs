@@ -27,9 +27,15 @@ public class BranchingNode : BaseNodeType
 
     public float nodeWidth = 300;
 
-    public BaseNodeType NextNode(CHOICE chosen_choice)
+    CHOICE? choice = null;
+
+    public void SetChoice(CHOICE chosen_choice)
     {
-        switch (chosen_choice)
+        choice = (CHOICE?)chosen_choice;
+    }
+    protected override BaseNodeType NextNode_Internal()
+    {
+        switch (choice)
         {
             case CHOICE.LEFT:
                 {

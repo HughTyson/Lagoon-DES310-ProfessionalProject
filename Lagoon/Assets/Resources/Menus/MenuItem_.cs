@@ -22,16 +22,16 @@ public class MenuItem_ : MonoBehaviour
         }
         public readonly System.Type interuptedBy;
         public readonly Transitioner.STATE currentState;
-  
+
     }
     protected class InteruptReturn
     {
         public enum INTERUPT_RESOLUTION
-        { 
+        {
             END_CURRENT__START_INTERUPTED_BY,
             IGNORE,
-            
-            
+
+
         }
         public INTERUPT_RESOLUTION interuptResolution = INTERUPT_RESOLUTION.END_CURRENT__START_INTERUPTED_BY;
 
@@ -58,11 +58,11 @@ public class MenuItem_ : MonoBehaviour
             ForceCompleteAllAnimations = forceCompleteAllAnimations;
         }
         public enum STATE
-        { 
+        {
             NO_STATE,
             BEGIN,
             UPDATE,
-            END       
+            END
         }
         STATE state = STATE.NO_STATE;
 
@@ -201,7 +201,7 @@ public class MenuItem_ : MonoBehaviour
             }
 
         }
-      
+
         public void RequestNonTransitionCall(System.Action internalCall, System.Action externalCall)
         {
             internalCall?.Invoke();
@@ -219,7 +219,15 @@ public class MenuItem_ : MonoBehaviour
 
 
     Transitioner transitioner;
-    protected Transitioner _Transitioner => transitioner;
+    protected Transitioner _Transitioner
+    {
+        get
+        {
+            if (transitioner == null)
+                Init();
+            return transitioner;
+        }
+    }
 
 
     bool isShowing;
@@ -231,7 +239,8 @@ public class MenuItem_ : MonoBehaviour
 
     private void Awake()
     {
-        Init();
+        if (transitioner == null)
+            Init();
     }
 
 

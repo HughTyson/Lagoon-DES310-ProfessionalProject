@@ -15,9 +15,12 @@ public class BuoyancyPhysics : MonoBehaviour
 
     [SerializeField] float equilibriumAcceptance = 0.2f;
 
-
     float WaterDrag = 1;
     float AirDrag = 1;
+
+
+    public event System.Action Event_HitWater;
+
 
     public enum STATE
     {
@@ -26,6 +29,10 @@ public class BuoyancyPhysics : MonoBehaviour
     };
 
 
+    private void Awake()
+    {
+        bobHitWater = GM_.Instance.audio.GetSFX("FishingBob_HitWater");
+    }
     private void OnEnable()
     {
         WaterDrag = defaultWaterDrag;
@@ -93,12 +100,17 @@ public class BuoyancyPhysics : MonoBehaviour
     {
         return GetComponentInParent<Rigidbody>().velocity.magnitude < equilibriumAcceptance;
     }
+
+
+    AudioSFX bobHitWater;
     void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<WaterPhysics>() != null)
         {
             GetComponentInParent<Rigidbody>().drag = WaterDrag;
             current_state = STATE.IN_WATER;
+
+            Event_HitWater?.Invoke();
         }
     }
 

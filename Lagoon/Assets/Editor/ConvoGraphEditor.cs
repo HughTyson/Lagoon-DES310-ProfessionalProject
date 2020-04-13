@@ -38,6 +38,7 @@ public class ConvoGraphEditor : NodeGraphEditor
         AddContextMenuItem(typeof(EventNode), pos, ref menu);
         AddContextMenuItem(typeof(BarrierNode), pos, ref menu);
         AddContextMenuItem(typeof(HelpNode), pos, ref menu);
+        AddContextMenuItem(typeof(AdditionalInfoNode_CertainItemsInNextSupplyDrop), pos, ref menu);
 
         menu.AddSeparator("");
         menu.AddItem(new GUIContent("Preferences"), false, () => NodeEditorWindow.OpenPreferences());

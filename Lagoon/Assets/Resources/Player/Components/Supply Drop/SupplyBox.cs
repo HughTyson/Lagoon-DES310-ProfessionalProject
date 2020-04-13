@@ -33,12 +33,17 @@ public class SupplyBox : MonoBehaviour
 
     [SerializeField] FishingUI ui_logic;
 
+
+    AudioSFX sfx_waterSplash;
+
     private Rigidbody body;
     bool all_essentials_packed;
 
     // Start is called before the first frame update
     void Start()
     {
+        sfx_waterSplash = GM_.Instance.audio.GetSFX("SupplyCrate_WaterSplash");
+
         body = GetComponent<Rigidbody>();
 
 
@@ -157,6 +162,9 @@ public class SupplyBox : MonoBehaviour
     {
         if(other.gameObject.layer == 15)
         {
+            if (GetComponent<Rigidbody>().velocity.magnitude > 5)
+                GM_.Instance.audio.PlaySFX(sfx_waterSplash, transform, settingPitch: new SFXSettings.AnyFloatSetting.Constant(Random.Range(0.9f, 1.1f)), settingVolume: new SFXSettings.AnyFloatSetting.Constant(0.7f));
+
             box_state = STATE.IN_WATER;
         }
     }

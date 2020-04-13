@@ -24,8 +24,8 @@ public class JournalLogic : MonoBehaviour
     [SerializeField] PageContentSlot FirstPageContentSlot;
     [SerializeField] PageContentSlot LastPageContentSlot;
 
-    static float TIME_BOOK_SHOW = 1.0f;
-    static float TIME_TURN_PAGE = 1.0f;
+    static float TIME_BOOK_SHOW = 0.5f;
+    static float TIME_TURN_PAGE = 0.75f;
 
 
     [SerializeField] PageManager pageManager;
@@ -42,8 +42,14 @@ public class JournalLogic : MonoBehaviour
 
     TweenManager.TweenPathBundle turnPageLeftToRightTween;
 
+
+    AudioSFX sfx_open;
+    AudioSFX sfx_close;
+
     void Start()
     {
+        sfx_open = GM_.Instance.audio.GetSFX("Book_Open");
+        sfx_close = GM_.Instance.audio.GetSFX("Book_Close");
 
         turnPageLeftToRightTween = new TweenManager.TweenPathBundle(
             // Page X Position
@@ -276,15 +282,21 @@ public class JournalLogic : MonoBehaviour
                     }
                 case PageManager.PairToPairInfo.DIRECTION.ON_TARGET:
                     {
-                        if (futurePair == null)
+                        if (futurePair == null) // book close
                         {
                             isShowing = false;
  
                             currentPair = futurePair;
 
+
+                            GM_.Instance.audio.PlaySFX(
+                                sfx_close,
+                                null,
+                                IsMenuSound: true
+                                );
                             showAnimation.PlayAnimation(startingDirection_: TweenManager.DIRECTION.END_TO_START, TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA, animationCompleteDelegate_: completedHideJournal);
                         }
-                        else if (currentPair == null)
+                        else if (currentPair == null) // book open
                         {
                             GAME_UI.Instance.DisableAll();
                             GM_.Instance.pause.Pause();
@@ -298,6 +310,12 @@ public class JournalLogic : MonoBehaviour
                             FirstPageContentSlot.AttachContent(currentPair.LeftPage);
                             LastPageContentSlot.AttachContent(currentPair.RightPage);
 
+
+                            GM_.Instance.audio.PlaySFX(
+                                sfx_open,
+                                null,
+                                IsMenuSound: true
+                                );
 
                             showAnimation.PlayAnimation(TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA, animationCompleteDelegate_: pagePairFinalize);
                         }

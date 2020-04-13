@@ -44,13 +44,15 @@ public class PagePair_OptionsControl : BasePagePair
         xSenseSlider.Event_UnSelected += sliderUnSelected;
         ySenseSlider.Event_UnSelected += sliderUnSelected;
 
-        xSenseSlider.ChangeSliderRange(PlayerSettings.MINMAX_X_SENSITIVITY);
-        ySenseSlider.ChangeSliderRange(PlayerSettings.MINMAX_Y_SENSITIVITY);
+
 
         xSenseSlider.Event_ValueChanged += changeXSense;
         ySenseSlider.Event_ValueChanged += changeYSense;
         xInvSlider.Event_ToggleChanged += toggledXInvert;
         yInvSlider.Event_ToggleChanged += toggledYInvert;
+
+        xSenseSlider.ChangeSliderRange(PlayerSettings.MINMAX_X_SENSITIVITY);
+        ySenseSlider.ChangeSliderRange(PlayerSettings.MINMAX_Y_SENSITIVITY);
     }
 
     public override void BegunEnteringPage()

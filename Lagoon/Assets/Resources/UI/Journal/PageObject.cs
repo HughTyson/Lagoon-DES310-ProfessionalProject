@@ -20,10 +20,11 @@ public class PageObject : MonoBehaviour
     PageContentSlot lastPageContentSlot;
 
 
+    AudioSFX sfx_PageTurn;
+
     public void Init(TweenManager.TweenPathBundle leftToRightPageTurnTween, Transform leftBookReference_, Transform rightBookPageReference_, PageContentSlot firstPageContentSlot_, PageContentSlot lastPageContentSlot_)
     {
-
-
+        sfx_PageTurn = GM_.Instance.audio.GetSFX("Book_TurnPage");
 
         leftBookReference = leftBookReference_;
         rightBookReference = rightBookPageReference_;
@@ -107,6 +108,14 @@ public class PageObject : MonoBehaviour
             animationCompleteDelegate_: toLeftAnimationCompleted
             );
 
+
+        GM_.Instance.audio.PlaySFX(
+            sfx_PageTurn,
+            null,
+            IsMenuSound: true
+            );
+
+
         firstPageContentSlot.HideContent();
         leftSide.AttachContent(leftPageContent);
         leftSide.ShowContent();
@@ -142,6 +151,14 @@ public class PageObject : MonoBehaviour
             animationCompleteDelegate_:toRightAnimationCompleted,
             startingDirection_: TweenManager.DIRECTION.END_TO_START
             );
+
+
+        GM_.Instance.audio.PlaySFX(
+            sfx_PageTurn,
+            null,
+            IsMenuSound: true
+            );
+
 
         lastPageContentSlot.HideContent();
         leftSide.AttachContent(leftPageContent);

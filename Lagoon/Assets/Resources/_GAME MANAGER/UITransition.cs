@@ -32,7 +32,7 @@ public class UITransition : MonoBehaviour
     float timeWaitCurrent = 0;
     float timeOutCurrent = 0;
 
-    public void ManagerUpdate()
+    void Update()
     {
         float new_alpha = 0;
         switch (state)

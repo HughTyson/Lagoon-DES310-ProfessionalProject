@@ -46,6 +46,8 @@ public class DialogNodeEditor : NodeEditor
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("input"));
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("output"));
         GUILayout.EndHorizontal();
+        NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("additionalInfo"));
+
 
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("leftCharacter"));
         NodeEditorGUILayout.PropertyField(serializedObject.FindProperty("rightCharacter"));
