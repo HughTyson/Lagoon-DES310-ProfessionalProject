@@ -30,6 +30,7 @@ public class JournalLogic : MonoBehaviour
 
     [SerializeField] PageManager pageManager;
     [SerializeField] BasePagePair pausePage;
+    [SerializeField] BasePagePair inventoryPage;
 
     bool isShowing = false;
 
@@ -412,13 +413,24 @@ public class JournalLogic : MonoBehaviour
     void Update()
     {
         // Show Journal
-        if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.START) || GM_.Instance.input.GetButtonDown(InputManager.BUTTON.Y))
+        if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.START))
         {
             if (!isShowing)
             {
                 if (!showAnimation.IsPlaying)
                 {
                     requestedToChangePage(new BasePagePair.RequestToChangePage(pausePage));
+                    GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
+                }
+            }
+        }
+        else if( GM_.Instance.input.GetButtonDown(InputManager.BUTTON.Y))
+        {
+            if (!isShowing)
+            {
+                if (!showAnimation.IsPlaying)
+                {
+                    requestedToChangePage(new BasePagePair.RequestToChangePage(inventoryPage));
                     GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                 }
             }

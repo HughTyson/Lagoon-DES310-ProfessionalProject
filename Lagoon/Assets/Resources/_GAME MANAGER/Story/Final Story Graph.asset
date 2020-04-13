@@ -377,6 +377,100 @@ MonoBehaviour:
   input: 0
   output: 0
   nodeWidth: 300
+--- !u!114 &-1690183579352973713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c17560b2bec5147b9c087afea9d4cd, type: 3}
+  m_Name: Additional Info - Certain Supply Drop Item
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1752, y: 1016}
+  ports:
+    keys:
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: output
+      _node: {fileID: -1690183579352973713}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: additionalInfo
+        node: {fileID: 5540207552757832514}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -1690183579352973713}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  output: 0
+  items:
+  - s_ammount: 1
+    s_type: Wrench
+  - s_ammount: 1
+    s_type: SwitchItem
+  - s_ammount: 1
+    s_type: ScrewDriver
+--- !u!114 &-784954607781825925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c17560b2bec5147b9c087afea9d4cd, type: 3}
+  m_Name: Additional Info - Certain Supply Drop Item
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 376, y: -520}
+  ports:
+    keys:
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: output
+      _node: {fileID: -784954607781825925}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: additionalInfo
+        node: {fileID: 4644727102309361052}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -784954607781825925}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  output: 0
+  items:
+  - s_ammount: 10
+    s_type: Salt
 --- !u!114 &-128976973167867780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,7 +484,7 @@ MonoBehaviour:
   m_Name: Branching
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 3000, y: 456}
+  position: {x: 3032, y: 440}
   ports:
     keys:
     - input
@@ -481,6 +575,8 @@ MonoBehaviour:
   - {fileID: -7316123089433433898}
   - {fileID: -7171491494866776571}
   - {fileID: 6925705680755287335}
+  - {fileID: -784954607781825925}
+  - {fileID: -1690183579352973713}
 --- !u!114 &1924276598092847580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -690,7 +786,7 @@ MonoBehaviour:
   m_Name: Branching
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 200, y: 8}
+  position: {x: 152, y: -24}
   ports:
     keys:
     - input
@@ -854,7 +950,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 808, y: -264}
+  position: {x: 888, y: -264}
   ports:
     keys:
     - input
@@ -889,7 +985,10 @@ MonoBehaviour:
       _node: {fileID: 4644727102309361052}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
+      connections:
+      - fieldName: output
+        node: {fileID: -784954607781825925}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -989,7 +1088,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1752, y: 424}
+  position: {x: 1928, y: 424}
   ports:
     keys:
     - input
@@ -1024,7 +1123,10 @@ MonoBehaviour:
       _node: {fileID: 5540207552757832514}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
+      connections:
+      - fieldName: output
+        node: {fileID: -1690183579352973713}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
@@ -1052,7 +1154,7 @@ MonoBehaviour:
   m_Name: Barrier
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 2200, y: 376}
+  position: {x: 2264, y: 456}
   ports:
     keys:
     - input

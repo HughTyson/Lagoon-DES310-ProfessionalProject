@@ -45,16 +45,6 @@ public class DayNightCycle : MonoBehaviour
     {
     }
 
-    public void TillNextDay(StoryManager.BarrierStartArgs args)
-    {
-
-       
-
-
-        
-    }
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -76,8 +66,6 @@ public class DayNightCycle : MonoBehaviour
         moon.enabled = false;
 
         active = ACTIVE.SUN;
-
-
 
         sun_intesity.value = sun.intensity;
         base_sun_intensity = sun.intensity;

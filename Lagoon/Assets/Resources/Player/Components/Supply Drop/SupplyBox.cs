@@ -58,7 +58,7 @@ public class SupplyBox : MonoBehaviour
         ui_logic.AttachLookAtTransform(look_at);
     }
 
-    public void Fill(params System.Type[] required_items)
+    public void Fill(System.Type[] required_items, int[] required_amount)
     {
 
         int amount = Random.Range(required_items.Length + 1, 6);
@@ -77,7 +77,7 @@ public class SupplyBox : MonoBehaviour
 
             if(!all_essentials_packed)
             {
-                Generate(required_items[i]);
+                Generate(required_items[i], required_amount[i]);
 
                 if(i == required_items.Length - 1)
                 {
@@ -96,11 +96,11 @@ public class SupplyBox : MonoBehaviour
 
     }
 
-    void Generate(System.Type type)
+    void Generate(System.Type type, int? amount = null)
     {
            InventoryItem instance = (InventoryItem)System.Activator.CreateInstance(type);
 
-            instance.Init();
+            instance.Init(amount);
 
             stored_items.Add(instance);
     }

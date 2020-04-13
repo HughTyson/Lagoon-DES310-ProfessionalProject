@@ -20,6 +20,7 @@ public class SupplyDropCamera : MonoBehaviour
     bool move = false;
 
     bool should_shake = false;
+    bool look_up = false;
 
     TypeRef<float> shake_magnitude = new TypeRef<float>(0);
 
@@ -92,6 +93,18 @@ public class SupplyDropCamera : MonoBehaviour
 
     private void Update()
     {
+
+        if(look_up)
+        {
+            rot = Quaternion.LookRotation(look_at - transform.position);
+        }
+        else
+        {
+            rot = Quaternion.LookRotation(new Vector3(0,5,0) - transform.position);
+        }
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * 1.5f);
+
         if (should_shake)
         {
 
@@ -103,10 +116,6 @@ public class SupplyDropCamera : MonoBehaviour
     void PosUpdate()
     {
         transform.position = new Vector3(x.value, y.value, z.value);
-
-        rot = Quaternion.LookRotation(look_at - transform.position );
-
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime);
     }
 
     void SupplyStart(StoryManager.GameEventTriggeredArgs args)
@@ -120,6 +129,7 @@ public class SupplyDropCamera : MonoBehaviour
             );
 
             should_shake = true;
+            look_up = true;
         }
     }
 
@@ -133,7 +143,7 @@ public class SupplyDropCamera : MonoBehaviour
             tweenCompleteDelegate_: Finish
         );
 
-        
+        look_up = false;
 
         transform.position = base_pos;
     }

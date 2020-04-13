@@ -1,0 +1,411 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1877459741422041008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0db546e197ddf224499a61f9ca95a5ca, type: 3}
+  m_Name: Global Properties
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -1000, y: -360}
+  ports:
+    keys:
+    - additionalInfo
+    values:
+    - _fieldName: additionalInfo
+      _node: {fileID: -1877459741422041008}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  DefaultSpeedPerTextCharacter: 20
+  DefaultColour:
+    serializedVersion: 2
+    rgba: 16842551
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0aae3af77524dd4b92958ab3af801c9, type: 3}
+  m_Name: IntroductionGraph
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -1877459741422041008}
+  - {fileID: 6312505409594884039}
+  - {fileID: 3195776769164538217}
+  - {fileID: 7004136834959648932}
+  - {fileID: 6354913736863999315}
+  - {fileID: 4871140554129226415}
+  - {fileID: 4154028618989702088}
+  - {fileID: 2976986565526120986}
+--- !u!114 &2976986565526120986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d820c1cde8f8c4088dc535417700d3, type: 3}
+  m_Name: Barrier
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 488, y: -200}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: 2976986565526120986}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: 4154028618989702088}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 2976986565526120986}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 2976986565526120986}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  barriers: 02000000
+  output: 0
+  input: 0
+--- !u!114 &3195776769164538217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 974e7624c5782e74da9e91b42d1160dc, type: 3}
+  m_Name: Help
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 72, y: -392}
+  ports:
+    keys:
+    - additionalInfo
+    values:
+    - _fieldName: additionalInfo
+      _node: {fileID: 3195776769164538217}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  page: 0
+--- !u!114 &4154028618989702088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
+  m_Name: Dialog
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 120, y: -232}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: 4154028618989702088}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: 4871140554129226415}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 4154028618989702088}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 2976986565526120986}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 4154028618989702088}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
+  rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
+  Dialog:
+  - whoIsTalking: 1
+    dialog_text: No both boss, will get that sorted for you.  But what you going to
+      do in the mean time. Over.
+  - whoIsTalking: 0
+    dialog_text: "[CharSpeed(5)]Relaxing[/CharSpeed], I've been enjoying my time fishing.
+      Still waiting on that big catch tho. Will need to start trying harder. Over.\r\n"
+  - whoIsTalking: 1
+    dialog_text: '[CharSpeed(3)]Well... that''s good [/CharSpeed]. Anyway, will try
+      sort them parts out for you my friend. It was good to hear you again. Over and
+      out.'
+  input: 0
+  output: 0
+  nodeWidth: 300
+--- !u!114 &4871140554129226415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
+  m_Name: Dialog
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -248, y: -232}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: 4871140554129226415}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: 6354913736863999315}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 4871140554129226415}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 4154028618989702088}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 4871140554129226415}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
+  rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
+  Dialog:
+  - whoIsTalking: 1
+    dialog_text: Hey Buddy, how you been? Think you are almost ready to get back into
+      the air. We're missing you up here. Over.
+  - whoIsTalking: 0
+    dialog_text: "Doing good my friend, enjoying some time out. I need to fix the
+      plane since the [Shiver(0.05,20)] incident [/Shiver], butneed parts. Can you
+      source them? Over.\"\r"
+  input: 0
+  output: 0
+  nodeWidth: 300
+--- !u!114 &6312505409594884039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53d3cd0f939421f40b74af8aee90a7cd, type: 3}
+  m_Name: Root
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -952, y: -200}
+  ports:
+    keys:
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: output
+      _node: {fileID: 6312505409594884039}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 6354913736863999315}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 6312505409594884039}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  barriers: 03000000
+  output: 0
+--- !u!114 &6354913736863999315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
+  m_Name: Dialog
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -616, y: -232}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: 6354913736863999315}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: 6312505409594884039}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 6354913736863999315}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 4871140554129226415}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 6354913736863999315}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
+  rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
+  Dialog:
+  - whoIsTalking: 1
+    dialog_text: Lagoon 10, come in. This is Bravo 3 1, over.
+  - whoIsTalking: 0
+    dialog_text: This is Lagoon 10, over.
+  input: 0
+  output: 0
+  nodeWidth: 300
+--- !u!114 &7004136834959648932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 974e7624c5782e74da9e91b42d1160dc, type: 3}
+  m_Name: Help
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -888, y: 216}
+  ports:
+    keys:
+    - additionalInfo
+    values:
+    - _fieldName: additionalInfo
+      _node: {fileID: 7004136834959648932}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  page: 2

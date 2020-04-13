@@ -29,13 +29,15 @@ public class RadioSignal : MonoBehaviour
     private void BarrierStart(StoryManager.BarrierStartArgs obj)
     {
         run_ui = false;
+        GM_.Instance.DayNightCycle.SetBaseTime(1.0f);
+        GM_.Instance.DayNightCycle.SetTime();
     }
 
     private void Story_objective_Event_BarrierObjectiveComplete()
     {
         run_ui = true;
 
-        SetPosition();
+        GM_.Instance.DayNightCycle.SetBaseTime(0.0f);
 
     }
 
@@ -44,25 +46,12 @@ public class RadioSignal : MonoBehaviour
     void Start()
     {
 
+        SetPosition();
+
         radio_signal_tween = new TweenManager.TweenPathBundle(
             // frame index
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(0, (ui_signal_spritesheet.Animations[0].FrameIndexes.Count - 1) + 0.01f, 0.25f, TweenManager.CURVE_PRESET.EASE_IN),
-                new TweenManager.TweenPart_Delay(0.5f)
-                ),
-            // alpha
-            new TweenManager.TweenPath(
-                 new TweenManager.TweenPart_Start(0, 1, 0.25f, TweenManager.CURVE_PRESET.LINEAR),
-                 new TweenManager.TweenPart_Delay(0.5f),
-                 new TweenManager.TweenPart_Continue(0, 0.25f, TweenManager.CURVE_PRESET.LINEAR)
-                ),
-            // X scale
-            new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(transform.localScale.x * 2.0f, transform.localScale.x, 0.40f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
-                ),
-            // Y scale
-            new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start((transform.localScale.x * ui_signal_spritesheet.SpriteToHeightAspectRation) / 2.0f, transform.localScale.x * ui_signal_spritesheet.SpriteToHeightAspectRation, 0.40f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
+                new TweenManager.TweenPart_Start(0, (ui_signal_spritesheet.Animations[0].FrameIndexes.Count - 1) + 0.01f, ui_signal_spritesheet.Animations[0].Duration, TweenManager.CURVE_PRESET.LINEAR)
                 )
 
             );
@@ -70,10 +59,6 @@ public class RadioSignal : MonoBehaviour
 
         incoming_signal_animation = new TweenAnimator.Animation(
             radio_signal_tween,
-            new TweenAnimator.Transf_(
-                transform,
-                local_scale: new TweenAnimator.Transf_.LocalScale_(true, 2, true, 3, false, -1, TweenAnimator.MOD_TYPE.ABSOLUTE)
-                ),
             new TweenAnimator.HDRP_Animator_(
                 manual_sprite_animator,
                new TweenAnimator.HDRP_Animator_.Frame_(
@@ -81,13 +66,6 @@ public class RadioSignal : MonoBehaviour
                 TweenAnimator.Base.IntProperty.INT_SELECTION_METHOD.FLOOR,
                 TweenAnimator.MOD_TYPE.ABSOLUTE
                 )
-                ),
-            new TweenAnimator.HDRP_Unlit_Material_(
-                material,
-                new TweenAnimator.HDRP_Unlit_Material_.Color_(
-                    false, 0, false, 0, false, 0, true, 1,
-                    TweenAnimator.MOD_TYPE.ABSOLUTE
-                    )
                 )
                 );
     }
@@ -95,18 +73,18 @@ public class RadioSignal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         if(run_ui)
         {
 
             transform.rotation = Quaternion.LookRotation(look_at.position - transform.position , Vector3.up);
 
-            if(!incoming_signal_animation.IsPlaying)
+
+            if (!incoming_signal_animation.IsPlaying)
             {
                 manual_sprite_animator.SetAnimation(ui_signal_spritesheet.Animations[0]);
                 incoming_signal_animation.PlayAnimation();
             }
-
 
 
         }

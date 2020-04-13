@@ -16,7 +16,8 @@ public class RootNode : BaseNodeType
     {
         NEXT_DAY,
         CATCH_A_FISH,
-        END
+        END,
+        PASS_OVER
     }
 
     [NodeEnum]

@@ -18,6 +18,8 @@ public class StoryObjectiveHandler
     {
         GM_.Instance.update_events.UpdateEvent += BarrierBlockingUpdate;
 
+        GM_.Instance.DayNightCycle.SetBaseTime(1.0f);
+
         objectives.Clear();
         for (int i = 0; i < args.Barriers.Count; i++)
         {
@@ -67,7 +69,7 @@ public class StoryObjectiveHandler
         public override bool ObjectiveComplete()
         {
             return true;
-            return GM_.Instance.stats.fishCaught > initFishCaught;
+            //return GM_.Instance.stats.fishCaught > initFishCaught;
         }
 
     }
@@ -77,7 +79,7 @@ public class StoryObjectiveHandler
 
         public override bool ObjectiveComplete()
         {
-            return true;
+            //return true;
             return GM_.Instance.stats.dayNumber > initDayNumber;
         }
     }

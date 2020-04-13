@@ -42,6 +42,7 @@ public class PlayerSleepState : BaseState
         third_person_camera.enabled = false;
         sleep_camera.enabled = true;
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
+        GAME_UI.Instance.helperButtons.DisableAll();
 
         start_ = true;
 
@@ -80,7 +81,7 @@ public class PlayerSleepState : BaseState
             start_ = false;
         }
 
-        if(cycle.current_time > 0.3f && cycle.current_time < 0.31f)
+        if(cycle.current_time > 0.45f && cycle.current_time < 0.46f)
         {
             GM_.Instance.tween_manager.StartTweenInstance(
                             speed_tween,

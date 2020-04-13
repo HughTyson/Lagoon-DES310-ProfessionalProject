@@ -30,10 +30,8 @@ public class PlayerExploreState : BaseState
         GM_.Instance.story.Event_BarrierOpened += ConversationStateAvailable;
         GM_.Instance.story.Event_ConvoEnter += ConversationStateUnavailalble;
 
-
-
-
     }
+
     public void OnEnable()
     {
         movement_.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;

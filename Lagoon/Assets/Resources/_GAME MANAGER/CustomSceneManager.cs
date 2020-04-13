@@ -187,6 +187,7 @@ public class CustomSceneManager : MonoBehaviour
     {
         anim_continueLoading.StopAnimation(TweenManager.STOP_COMMAND.SEEMLESS_TO_END);
     }
+
     public void ChangeScene(int sceneID)
     {
         if (anim_continueLoading.IsPlaying || anim_startLoading.IsPlaying || anim_endLoading.IsPlaying)
