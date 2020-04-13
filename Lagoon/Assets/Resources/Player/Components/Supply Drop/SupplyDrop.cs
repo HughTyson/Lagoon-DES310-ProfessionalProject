@@ -24,8 +24,6 @@ public class SupplyDrop : MonoBehaviour
         animation = GetComponent<Animation>();
         animation.AddClip(clip, clip.name);
 
-        
-        
     }
 
     public void Awake()
@@ -94,7 +92,6 @@ public class SupplyDrop : MonoBehaviour
             
             if(boxes_dropped == drop_points.Count)
             {
-
                 if(!animation.isPlaying)
                 {
                     do_stuff = false;

@@ -5,8 +5,8 @@ using UnityEngine;
 public class SupplyDropCamera : MonoBehaviour
 {
 
-    Vector3 base_pos = new Vector3(8, 3, 0);
-    Vector3 look_at = new Vector3(0, 3, 1);
+    Vector3 base_pos = new Vector3(12, 5, 0);
+    Vector3 look_at = new Vector3(-31, 22, 0);
 
 
     TweenManager.TweenPathBundle init_movement;
@@ -82,7 +82,6 @@ public class SupplyDropCamera : MonoBehaviour
             GM_.Instance.tween_manager.StartTweenInstance(
                 init_movement,
                 new TypeRef<float>[] { x, y, z },
-                tweenCompleteDelegate_: AnimationStart,
                 tweenUpdatedDelegate_: PosUpdate
             );
         }
@@ -99,11 +98,6 @@ public class SupplyDropCamera : MonoBehaviour
             transform.rotation =  Quaternion.Lerp(transform.rotation, rot * Random.rotation /** shake_magnitude.value*/, Time.deltaTime * shake_magnitude.value);
 
         }
-    }
-
-    void AnimationStart()
-    {
-
     }
 
     void PosUpdate()
