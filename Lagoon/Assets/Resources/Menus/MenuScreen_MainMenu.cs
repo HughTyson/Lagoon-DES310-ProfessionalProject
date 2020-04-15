@@ -157,6 +157,9 @@ public class MenuScreen_MainMenu : MenuScreenBase
     {
 
         GM_.Instance.inventory.Reset();
+        GM_.Instance.story.StartOrReset(5.0f);
+        GM_.Instance.story_objective.Reset();
+ 
 
         GM_.Instance.scene_manager.ChangeScene(1);
     }

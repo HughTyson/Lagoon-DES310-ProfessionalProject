@@ -21,9 +21,11 @@ public class GAME_UI : MonoBehaviour
     static GAME_UI instance_ = null;
     Members members = null;
 
+
     public static Members Instance
     { 
         get
+        
         {
             if (instance_ == null)
             {
@@ -89,12 +91,10 @@ public class GAME_UI : MonoBehaviour
     {
         if (instance_ == this)
         {
+            for (int i = instance_.gameObject.transform.childCount - 1; i >= 0; i--)
+                Destroy(instance_.gameObject.transform.GetChild(i).gameObject);
             instance_ = null;
-            Destroy(helperButtons);
-            Destroy(transition);
-            Destroy(state_fishVictory);
-            Destroy(state_conversation);
-            Destroy(state_repair);
         }
     }
+
 }

@@ -10,6 +10,7 @@ public class UpdateEventSystem : MonoBehaviour
     public event System.Action FixedUpdateEvent;
     public event System.Action LateUpdateEvent;
 
+
     private void Update()
     {
         UpdateEvent?.Invoke();

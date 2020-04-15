@@ -25,6 +25,10 @@ public class PlayerExploreState : BaseState
 
     INTERACTION_TYPE interaction_type;
 
+    private void Awake()
+    {
+        Application.quitting += Quiting;
+    }
     public void Start()
     {
         GM_.Instance.story.Event_BarrierOpened += ConversationStateAvailable;
@@ -195,8 +199,18 @@ public class PlayerExploreState : BaseState
 
     private void OnDestroy()
     {
-        GM_.Instance.story.Event_BarrierOpened -= ConversationStateAvailable;
-        GM_.Instance.story.Event_ConvoEnter -= ConversationStateUnavailalble;
+        if (!quiting)
+        {
+            GM_.Instance.story.Event_BarrierOpened -= ConversationStateAvailable;
+            GM_.Instance.story.Event_ConvoEnter -= ConversationStateUnavailalble;
+        }
+
     }
 
+    bool quiting = false;
+
+    void Quiting()
+    {
+        quiting = true;
+    }
 }

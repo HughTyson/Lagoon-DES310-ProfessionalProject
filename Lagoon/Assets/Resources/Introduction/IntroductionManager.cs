@@ -99,12 +99,22 @@ public class IntroductionManager : MonoBehaviour
         }
     }
 
+
+    bool quiting = false;
+    private void OnApplicationQuit()
+    {
+        quiting = true;
+    }
     private void OnDestroy()
     {
-        GM_.Instance.story.Event_BarrierStart -= Story_EventRequest_BarrierStart;
+        if (!quiting)
+        {
+            GM_.Instance.story.Event_BarrierStart -= Story_EventRequest_BarrierStart;
 
-        GM_.Instance.story_objective.Event_BarrierObjectiveComplete -= IntroStart;
+            GM_.Instance.story_objective.Event_BarrierObjectiveComplete -= IntroStart;
 
-        GM_.Instance.story.Event_GameEventStart -= NextScene;
+            GM_.Instance.story.Event_GameEventStart -= NextScene;
+        }
     }
+
 }

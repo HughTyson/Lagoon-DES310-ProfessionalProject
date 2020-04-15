@@ -32,6 +32,9 @@ public class SupplyDrop : MonoBehaviour
     public void Awake()
     {
         GM_.Instance.story.Event_GameEventStart += SupplyStart;       //start plane moving and setup
+
+
+        Application.quitting += Quitting;
     }
 
     public void SupplyStart(StoryManager.GameEventTriggeredArgs args)
@@ -133,8 +136,18 @@ public class SupplyDrop : MonoBehaviour
         new_box.transform.position = spawn_pos;
     }
 
+
+    bool quitting = false;
+
+    void Quitting()
+    {
+        quitting = true;
+    }
     private void OnDestroy()
     {
+        if (!quitting)
+        {
         GM_.Instance.story.Event_GameEventStart -= SupplyStart;       //start plane moving and setup
+        }
     }
 }

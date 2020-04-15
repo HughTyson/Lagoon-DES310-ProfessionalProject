@@ -14,6 +14,10 @@ public class PlayerConversationState : BaseState
         GM_.Instance.story.Event_ConvoExit += ExitConversation;
     }
 
+    private void Awake()
+    {
+        Application.quitting += Quiting;
+    }
     public void OnEnable()
     {
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
@@ -55,6 +59,15 @@ public class PlayerConversationState : BaseState
 
     private void OnDestroy()
     {
+        if (!quiting)
+        {
         GM_.Instance.story.Event_ConvoExit -= ExitConversation;
+        }
+    }
+    bool quiting = false;
+
+    void Quiting()
+    {
+        quiting = true;
     }
 }

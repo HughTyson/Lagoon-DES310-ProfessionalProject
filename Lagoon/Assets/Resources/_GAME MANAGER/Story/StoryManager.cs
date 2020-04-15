@@ -1,12 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using XNode;
-using UnityEngine.UI;
+﻿using System.Collections.Generic;
 public class StoryManager
 {
 
-    [SerializeField] ConvoGraph convoGraph;
+     ConvoGraph convoGraph;
 
     BaseNodeType current_node;
 
@@ -175,22 +171,43 @@ public class StoryManager
         BRANCH_NODE,
         EVENT_NODE,
     }
-    public StoryManager(BaseNodeType current_node_)
+    public StoryManager(BaseNodeType current_node_,ConvoGraph convoGraph_ )
     {
+        convoGraph = convoGraph_;
         current_node = current_node_;
-    
+        
     }
 
+
     // called after other objects had a chance to setup actions
-    public void Begin()
+    public void Init()
     {
         GM_.Instance.story_objective.Event_BarrierObjectiveComplete += BarrierObjectivesComplete;
         Event_BarrierOpened += BarrierOpened;
 
-        Event_BarrierStart?.Invoke(new BarrierStartArgs(((RootNode)current_node).barriers));
+       
 
         specialTextParser = new SpecialText.Parser(((ConvoGraph)current_node.graph).GlobalProperties);
 
+    }
+    public void StartOrReset(float delay = 5.0f)
+    {
+        startDelay = delay;
+        GM_.Instance.update_events.LateUpdateEvent += resetDelay;
+
+
+    }
+    float startDelay = 0;
+    void resetDelay()
+    {
+        startDelay -= UnityEngine.Time.unscaledDeltaTime;
+        if (startDelay <= 0)
+        {
+            GM_.Instance.update_events.LateUpdateEvent -= resetDelay;
+            current_node = convoGraph.Root;
+            Event_BarrierStart?.Invoke(new BarrierStartArgs(((RootNode)current_node).barriers));
+        }
+        
     }
 
     public bool RequestConversationEnter()

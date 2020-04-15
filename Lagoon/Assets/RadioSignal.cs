@@ -24,6 +24,9 @@ public class RadioSignal : MonoBehaviour
 
         manual_sprite_animator = GetComponentInChildren<HDRP_Unlit_ManualAnimator>();
         material = GetComponentInChildren<MeshRenderer>().material;
+
+
+        Application.quitting += Quitting;
     }
 
     private void BarrierStart(StoryManager.BarrierStartArgs obj)
@@ -105,8 +108,16 @@ public class RadioSignal : MonoBehaviour
 
     private void OnDestroy()
     {
-        GM_.Instance.story_objective.Event_BarrierObjectiveComplete -= Story_objective_Event_BarrierObjectiveComplete;
-        GM_.Instance.story.Event_BarrierStart -= BarrierStart;
-    }
+        if (!quiting)
+        {
+            GM_.Instance.story_objective.Event_BarrierObjectiveComplete -= Story_objective_Event_BarrierObjectiveComplete;
+            GM_.Instance.story.Event_BarrierStart -= BarrierStart;
+        }
 
+    }
+    bool quiting = false;
+    void Quitting()
+    {
+        quiting = true;
+    }
 }
