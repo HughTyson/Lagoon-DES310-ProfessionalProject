@@ -143,6 +143,7 @@ public class TweenManager
     /// Create a self-dependant tween
     /// </summary>
     /// <returns>Returns an optional commander delgate. Allows the stopping of a tween by force</returns>
+    ///       
     public TweenInstanceInterface StartTweenInstance(TweenPathBundle pathBundle_, TypeRef<float>[] valueRefs_,  System.Action tweenUpdatedDelegate_ = null, System.Action tweenCompleteDelegate_ = null, PATH path_ = PATH.NORMAL, DIRECTION startingDirection_ = DIRECTION.START_TO_END, TIME_FORMAT TimeFormat_ = TIME_FORMAT.DELTA, float speed_ = 1, object instanceID = null, float startingPercentageOfCompletion = 0.0f)
     {
         TweenInstance instance = new TweenInstance(pathBundle_, tweenUpdatedDelegate_, tweenCompleteDelegate_, path_, startingDirection_, TimeFormat_, speed_, instanceID, generatedTweenID, startingPercentageOfCompletion, valueRefs_);

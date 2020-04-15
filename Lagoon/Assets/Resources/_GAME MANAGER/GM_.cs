@@ -45,7 +45,7 @@ public class GM_ : MonoBehaviour
         public PauseManager pause;
         public StatsManager stats;
         public StoryManager story;
-        public StoryObjectiveHandler story_objective; // might not need to be here
+        public StoryObjectiveHandler story_objective; 
         public TweenManager tween_manager;
         public UpdateEventSystem update_events;
         public TweenCurveLibrary tween_curveLibrary_Tomas;

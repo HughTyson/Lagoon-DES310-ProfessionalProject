@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using XInputDotNetPure; // Required in C#
+using XInputDotNetPure; 
 
 public class InputManager // input manager for a single player controller game
 {
@@ -133,6 +133,7 @@ public class InputManager // input manager for a single player controller game
     public void Update()
     {
         ConnectController();
+
         UpdateControllerValues();
 
         UpdateMotor(leftMotor);
@@ -167,8 +168,9 @@ public class InputManager // input manager for a single player controller game
                 }
             }
         }
-        state = GamePad.GetState(playerIndex);
 
+
+        state = GamePad.GetState(playerIndex);
         playerConnected = state.IsConnected;
    
     }
