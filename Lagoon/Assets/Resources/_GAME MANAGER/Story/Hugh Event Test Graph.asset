@@ -45,6 +45,8 @@ MonoBehaviour:
   items:
   - s_ammount: 2
     s_type: Puzzle
+  - s_ammount: 1
+    s_type: SwitchItem
 --- !u!114 &-7770361887431724211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,7 +529,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   additionalInfo: 0
-  barriers: 03000000
+  barriers: 01000000
   output: 0
 --- !u!114 &7004136834959648932
 MonoBehaviour:

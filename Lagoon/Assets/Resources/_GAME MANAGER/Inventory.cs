@@ -74,7 +74,7 @@ public class Inventory
     {
         for(int i = 0; i < items.Count; i++)
         {
-            if (items[0].GetType() == type)
+            if (items[i].GetType() == type)
             {
                 return true;
             }

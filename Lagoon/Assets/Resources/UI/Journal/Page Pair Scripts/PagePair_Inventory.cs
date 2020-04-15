@@ -10,6 +10,7 @@ public class PagePair_Inventory : BasePagePair
 
 
     [SerializeField] UnselectableButton goBackButton;
+    [SerializeField] UnselectableButton to_stats;
 
     [SerializeField] TextMeshProUGUI left_text_box;
     [SerializeField] TextMeshProUGUI right_text_box;
@@ -17,7 +18,9 @@ public class PagePair_Inventory : BasePagePair
     [SerializeField] SpecialText.SpecialText special_text_left;
     [SerializeField] SpecialText.SpecialText special_text_right;
 
-   SpecialText.SpecialTextData left_special_text = new SpecialText.SpecialTextData();
+    [SerializeField] PagePair_Stats stats_pair;
+
+    SpecialText.SpecialTextData left_special_text = new SpecialText.SpecialTextData();
    SpecialText.SpecialTextData right_special_text = new SpecialText.SpecialTextData();
 
     int left_character_data = 0;
@@ -30,6 +33,9 @@ public class PagePair_Inventory : BasePagePair
         goBackButton.Event_Selected += requestGoBack;
         goBackButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.B });
 
+        to_stats.Event_Selected += requestGoTo_Stats;
+        to_stats.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.RB });
+
     }
 
     private void Start()
@@ -39,7 +45,7 @@ public class PagePair_Inventory : BasePagePair
     public override void BegunEnteringPage()
     {
         goBackButton.Show();    //show the go back button
-       
+        to_stats.Show();
 
         //clear the text_boxes
         left_text_box.text = "";
@@ -73,14 +79,8 @@ public class PagePair_Inventory : BasePagePair
 
     void requestGoBack()
     {
-        if (Invoke_InfoRequest_CameFromPage().pageType == null)
-        {
+
             Invoke_EventRequest_CloseJournal();
-        }
-        else
-        {
-            Invoke_EventRequest_ChangePage(new RequestToChangePage(goBackPair));
-        }
     }
 
     public override void FinishedExitingPage()
@@ -171,5 +171,10 @@ public class PagePair_Inventory : BasePagePair
 
         }
 
+    }
+
+    void requestGoTo_Stats()
+    {
+        Invoke_EventRequest_ChangePage(new RequestToChangePage(stats_pair));
     }
 }

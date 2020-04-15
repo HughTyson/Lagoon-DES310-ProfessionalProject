@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+
+[System.Serializable]
 public abstract class InventoryItem
 {
     static Dictionary<string,System.Type> _inventoryItemTypes_Dictionary = null;

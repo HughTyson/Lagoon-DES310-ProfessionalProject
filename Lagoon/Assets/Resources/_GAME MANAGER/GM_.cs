@@ -89,6 +89,8 @@ public class GM_ : MonoBehaviour
 
             members.DayNightCycle = DayNightValues;
             members.DayNightCycle.SetBaseTime(1.0f);
+
+            members.stats.ResetStats();
         }
         else
         {

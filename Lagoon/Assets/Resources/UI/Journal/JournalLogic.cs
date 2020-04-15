@@ -31,6 +31,8 @@ public class JournalLogic : MonoBehaviour
     [SerializeField] PageManager pageManager;
     [SerializeField] BasePagePair pausePage;
     [SerializeField] BasePagePair inventoryPage;
+    [SerializeField] BasePagePair statsPage;
+    [SerializeField] BasePagePair tutorialPage;
 
     bool isShowing = false;
 

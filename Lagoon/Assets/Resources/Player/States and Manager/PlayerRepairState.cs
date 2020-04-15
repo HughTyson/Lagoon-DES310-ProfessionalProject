@@ -29,7 +29,11 @@ public class PlayerRepairState : BaseState
 
     RepairState state;
 
-    bool just_disabled = false;
+    bool update_stats = false;
+
+
+
+
     public void OnEnable()
     {
 
@@ -63,6 +67,12 @@ public class PlayerRepairState : BaseState
         text = true;
 
         GM_.Instance.DayNightCycle.SetTime(0.0f);
+
+        if(update_stats)
+        {
+            UpdateStats();
+        }
+            
     }
 
     public void OnDisable()
@@ -71,6 +81,13 @@ public class PlayerRepairState : BaseState
         third_person_camera.enabled = true;
 
         GAME_UI.Instance.state_repair.Hide();
+
+
+        UpdateStats();
+        
+
+        
+        update_stats = true;
     }
 
     public override void StateUpdate()
@@ -238,10 +255,16 @@ public class PlayerRepairState : BaseState
                 {
                     if (!plane_segments[selected_part].segment_complete)
                     {
-                        state = RepairState.SEGMENT;
 
-                        plane_camera.current_state = PlaneCamera.PlaneCameraStates.SEGMENT;
-                        plane_camera.zoom = true;
+                        if(GM_.Instance.inventory.SearchFor(typeof(SwitchItem)))    //this owuld need to be changed so that every plane segement would have required objects ot be acceses. However for time's sake this was the best option
+                        {
+
+                            state = RepairState.SEGMENT;
+
+                            plane_camera.current_state = PlaneCamera.PlaneCameraStates.SEGMENT;
+                            plane_camera.zoom = true;
+
+                        }
                     }
                 }
             }
@@ -321,5 +344,22 @@ public class PlayerRepairState : BaseState
                 }
             }
         }
+    }
+
+
+    void AddStats()
+    {
+
+    }
+
+
+    void UpdateStats()
+    {
+
+            for (int i = 0; i < plane_segments.Count; i++)
+            {
+                GM_.Instance.stats.UpdateSegment(plane_segments[i].segment_complete, plane_segments[i].type, plane_segments[i].segment_name, i);
+            }
+
     }
 }

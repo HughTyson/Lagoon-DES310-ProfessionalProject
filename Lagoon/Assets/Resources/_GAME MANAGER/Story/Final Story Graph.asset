@@ -228,7 +228,7 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   additionalInfo: 0
-  barriers: 00000000
+  barriers: 01000000
   output: 0
 --- !u!114 &-5575307375619232555
 MonoBehaviour:
@@ -370,8 +370,8 @@ MonoBehaviour:
   - whoIsTalking: 0
     dialog_text: Good.[#Delay(0.5)] Yeah it looks like it'll be an easy fix.
   - whoIsTalking: 1
-    dialog_text: Should be getting sent your way later today once we get cleared for
-      a plane to come out that way.
+    dialog_text: Should be getting sent your way once we get cleared for a plane to
+      come out that way.
   - whoIsTalking: 1
     dialog_text: I'll keep you posted[#Delay(0.5)] Bravo 3 1 out.
   input: 0
@@ -659,7 +659,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -200, y: -24}
+  position: {x: -312, y: -40}
   ports:
     keys:
     - input
@@ -786,7 +786,7 @@ MonoBehaviour:
   m_Name: Branching
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 152, y: -24}
+  position: {x: 264, y: -24}
   ports:
     keys:
     - input
@@ -1088,7 +1088,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1928, y: 424}
+  position: {x: 1896, y: 424}
   ports:
     keys:
     - input
@@ -1136,8 +1136,8 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: d3e1b4c88d0156245b0f08062593e928, type: 2}
   Dialog:
   - whoIsTalking: 0
-    dialog_text: '[Colour(200,200,200)](Ahh..[#Delay(0.5)]It''ll be good to start
-      fixing up the plane properly...)[/Colour]'
+    dialog_text: '[Colour(200,200,200)](Ahh..[#Delay(0.5)]It''ll be good to finally
+      finish fixing the plane properly...)[/Colour]'
   input: 0
   output: 0
   nodeWidth: 300

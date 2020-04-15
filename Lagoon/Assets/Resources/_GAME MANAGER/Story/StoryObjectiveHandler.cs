@@ -68,8 +68,8 @@ public class StoryObjectiveHandler
 
         public override bool ObjectiveComplete()
         {
-            return true;
-            //return GM_.Instance.stats.fishCaught > initFishCaught;
+            //return true;
+            return GM_.Instance.stats.fishCaught > initFishCaught;
         }
 
     }
