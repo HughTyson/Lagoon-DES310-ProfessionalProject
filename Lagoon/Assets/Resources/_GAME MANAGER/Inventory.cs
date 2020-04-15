@@ -74,7 +74,7 @@ public class Inventory
     {
         for(int i = 0; i < items.Count; i++)
         {
-            if (items[0].GetType() == type)
+            if (items[i].GetType() == type)
             {
                 return true;
             }
@@ -99,5 +99,18 @@ public class Inventory
         return null; //this should only be call if there are no entires
     }
 
+    public void Reset()
+    {
+        items.Clear();
 
+
+        Firewood wood = new Firewood();
+        wood.Init(15);
+
+        Puzzle puzzle = new Puzzle();
+        puzzle.Init(2);
+
+        items.Add(wood);
+        items.Add(puzzle);
+    }
 }

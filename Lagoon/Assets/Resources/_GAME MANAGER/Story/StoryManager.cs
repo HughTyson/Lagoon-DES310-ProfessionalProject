@@ -193,7 +193,6 @@ public class StoryManager
 
     }
 
-
     public bool RequestConversationEnter()
     {
         if (barrierIsOpen)

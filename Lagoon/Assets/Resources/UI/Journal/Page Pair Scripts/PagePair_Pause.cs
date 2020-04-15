@@ -63,8 +63,6 @@ public class PagePair_Pause : BasePagePair
             resumeButton.SafeUnHoverOver();
     }
 
-
-
     void request_PutAwayBook()
     {
         Invoke_EventRequest_CloseJournal();

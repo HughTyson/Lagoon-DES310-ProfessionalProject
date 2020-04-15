@@ -146,11 +146,13 @@ public class PlaneSegments : MonoBehaviour
 
     [SerializeField] List<OnSegment> games;
 
+    [SerializeField] public string segment_name;
+
     // ==========================================
     //              Hidden Variables
     //===========================================
 
-
+    
     State segment_state;
     int selected_game;
     float counter;
@@ -181,7 +183,9 @@ public class PlaneSegments : MonoBehaviour
        
         game_selected = false;
         needs_init = true;
-        
+
+        GM_.Instance.stats.AddPlaneSegment(segment_complete, type, segment_name);
+
     }
 
     //update the segment

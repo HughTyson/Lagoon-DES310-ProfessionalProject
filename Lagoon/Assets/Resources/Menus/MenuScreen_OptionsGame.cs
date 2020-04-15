@@ -330,4 +330,31 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         camera_.transform.position = current_cameraPosition;
         camera_.transform.rotation = new_rotation;
     }
+
+    private void OnDestroy()
+    {
+
+        goToAudioOptionsButton.Event_Selected -= start_transitionToAudio;
+        goToControlOptionsButton.Event_Selected -= start_transitionToControls;
+
+        xSensitivitySlider.Event_CompletedShow -= finishedShowingSlider;
+
+        xSensitivitySlider.Event_Selected -= sliderSelected;
+        ySensitivitySlider.Event_Selected -= sliderSelected;
+
+
+        xSensitivitySlider.Event_UnSelected -= sliderUnSelected;
+        ySensitivitySlider.Event_UnSelected -= sliderUnSelected;
+
+        xSensitivitySlider.Event_ValueChanged -= setXSensitivity;
+        ySensitivitySlider.Event_ValueChanged -= setYSensitivity;
+
+
+
+
+        xSensitivitySlider.Event_ValueChanged -= changeXSense;
+        ySensitivitySlider.Event_ValueChanged -= changeYSense;
+        xInvertCheckBox.Event_ToggleChanged -= toggledXInvert;
+        yInvertCheckBox.Event_ToggleChanged -= toggledYInvert;
+    }
 }

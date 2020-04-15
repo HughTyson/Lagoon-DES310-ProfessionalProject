@@ -12,6 +12,9 @@ public class SupplyDrop : MonoBehaviour
     [SerializeField] List<DropPoint> drop_points;
 
     List<System.Type> required_items;
+    List<int> required_amount;
+
+    List<AdditionalInfoNode_CertainItemsInNextSupplyDrop.ItemData> info;
 
     bool do_stuff = false;
     int boxes_dropped;
@@ -24,8 +27,6 @@ public class SupplyDrop : MonoBehaviour
         animation = GetComponent<Animation>();
         animation.AddClip(clip, clip.name);
 
-        
-        
     }
 
     public void Awake()
@@ -33,12 +34,8 @@ public class SupplyDrop : MonoBehaviour
         GM_.Instance.story.Event_GameEventStart += SupplyStart;       //start plane moving and setup
     }
 
-
     public void SupplyStart(StoryManager.GameEventTriggeredArgs args)
     {
-
-        
-
         if(args.event_type == EventNode.EVENT_TYPE.SUPPLY_DROP)
         {
             //start the update and act as OnEnable()
@@ -54,11 +51,19 @@ public class SupplyDrop : MonoBehaviour
                 drop_points[i].already_dropped = false;
             }
 
-            required_items = new List<System.Type>();
+            info = new List<AdditionalInfoNode_CertainItemsInNextSupplyDrop.ItemData>();
 
-            required_items.Add(typeof(SwitchItem));
-            required_items.Add(typeof(Wrench));
-            required_items.Add(typeof(ScrewDriver));
+            required_items = new List<System.Type>();
+            required_amount = new List<int>();
+
+            for (int i = 0; i < args.certainItemDrops.Count; i++)
+            {
+                info.Add(args.certainItemDrops[i]);
+
+                required_items.Add(args.certainItemDrops[i].type);
+                required_amount.Add(args.certainItemDrops[i].ammount);
+                
+            }
 
         }
     }
@@ -94,7 +99,6 @@ public class SupplyDrop : MonoBehaviour
             
             if(boxes_dropped == drop_points.Count)
             {
-
                 if(!animation.isPlaying)
                 {
                     do_stuff = false;
@@ -121,11 +125,16 @@ public class SupplyDrop : MonoBehaviour
         new_box = Instantiate(box_prefab);
         new_box.box_state = SupplyBox.STATE.DROPPING;
 
-        new_box.Fill(required_items.ToArray());
+        new_box.Fill(required_items.ToArray(), required_amount.ToArray());
         new_box.SetTransform();
         required_items.Clear();
 
         Vector3 spawn_pos = drop_points[i].transform.position;
         new_box.transform.position = spawn_pos;
+    }
+
+    private void OnDestroy()
+    {
+        GM_.Instance.story.Event_GameEventStart -= SupplyStart;       //start plane moving and setup
     }
 }

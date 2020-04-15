@@ -5,8 +5,8 @@ using UnityEngine;
 public class SupplyDropCamera : MonoBehaviour
 {
 
-    Vector3 base_pos = new Vector3(8, 3, 0);
-    Vector3 look_at = new Vector3(0, 3, 1);
+    Vector3 base_pos = new Vector3(12, 5, 0);
+    Vector3 look_at = new Vector3(-31, 22, 0);
 
 
     TweenManager.TweenPathBundle init_movement;
@@ -20,6 +20,7 @@ public class SupplyDropCamera : MonoBehaviour
     bool move = false;
 
     bool should_shake = false;
+    bool look_up = false;
 
     TypeRef<float> shake_magnitude = new TypeRef<float>(0);
 
@@ -82,7 +83,6 @@ public class SupplyDropCamera : MonoBehaviour
             GM_.Instance.tween_manager.StartTweenInstance(
                 init_movement,
                 new TypeRef<float>[] { x, y, z },
-                tweenCompleteDelegate_: AnimationStart,
                 tweenUpdatedDelegate_: PosUpdate
             );
         }
@@ -93,6 +93,18 @@ public class SupplyDropCamera : MonoBehaviour
 
     private void Update()
     {
+
+        if(look_up)
+        {
+            rot = Quaternion.LookRotation(look_at - transform.position);
+        }
+        else
+        {
+            rot = Quaternion.LookRotation(new Vector3(0,5,0) - transform.position);
+        }
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * 1.5f);
+
         if (should_shake)
         {
 
@@ -101,18 +113,9 @@ public class SupplyDropCamera : MonoBehaviour
         }
     }
 
-    void AnimationStart()
-    {
-
-    }
-
     void PosUpdate()
     {
         transform.position = new Vector3(x.value, y.value, z.value);
-
-        rot = Quaternion.LookRotation(look_at - transform.position );
-
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime);
     }
 
     void SupplyStart(StoryManager.GameEventTriggeredArgs args)
@@ -126,6 +129,7 @@ public class SupplyDropCamera : MonoBehaviour
             );
 
             should_shake = true;
+            look_up = true;
         }
     }
 
@@ -139,7 +143,7 @@ public class SupplyDropCamera : MonoBehaviour
             tweenCompleteDelegate_: Finish
         );
 
-        
+        look_up = false;
 
         transform.position = base_pos;
     }
@@ -152,6 +156,15 @@ public class SupplyDropCamera : MonoBehaviour
     void Finish()
     {
         should_shake = false;
+    }
+
+    private void OnDestroy()
+    {
+        GM_.Instance.story.Event_GameEventStart -= SupplyStart;
+
+        //GM_.Instance.story.EventRequest_GameEventContinue += SupplyFinish;
+
+        GM_.Instance.story.Event_GameEventEnd -= SupplyFinish;
     }
 
 }

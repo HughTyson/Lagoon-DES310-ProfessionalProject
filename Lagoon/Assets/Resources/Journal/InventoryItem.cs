@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+
+[System.Serializable]
 public abstract class InventoryItem
 {
     static Dictionary<string,System.Type> _inventoryItemTypes_Dictionary = null;
@@ -51,7 +53,7 @@ public abstract class InventoryItem
 
     bool is_updated = false;
 
-    public virtual void Init() { }
+    public virtual void Init(int? i = null) { }
 
     public void SetName(string n)
     {

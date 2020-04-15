@@ -152,10 +152,15 @@ public class MenuScreen_MainMenu : MenuScreenBase
             startingDirection_: TweenManager.DIRECTION.END_TO_START
             );
     }
+
     void game_startFinsihed()
     {
+
+        GM_.Instance.inventory.Reset();
+
         GM_.Instance.scene_manager.ChangeScene(1);
     }
+
     void start_transitionToCredits()
     {
         startButton.Hide();
@@ -228,5 +233,18 @@ public class MenuScreen_MainMenu : MenuScreenBase
         new_rotation.eulerAngles = current_cameraRotation;
         camera_.transform.position = current_cameraPosition;
         camera_.transform.rotation = new_rotation;
+    }
+
+    private void OnDestroy()
+    {
+        startButton.Event_Selected -= buttonPressed;
+        optionsButton.Event_Selected -= buttonPressed;
+        creditsButton.Event_Selected -= buttonPressed;
+        exitButton.Event_Selected -= buttonPressed;
+
+        startButton.Event_Selected -= start_transitionToGame;
+        optionsButton.Event_Selected -= start_transitionToOptions;
+        creditsButton.Event_Selected -= start_transitionToCredits;
+        exitButton.Event_Selected -= start_transitionToExit;
     }
 }

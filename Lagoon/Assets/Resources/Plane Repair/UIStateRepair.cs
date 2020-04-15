@@ -11,6 +11,7 @@ public class UIStateRepair : MonoBehaviour
     [SerializeField] SpecialText.SpecialText special_text;
     SpecialText.SpecialTextData special_text_data_fixed = new SpecialText.SpecialTextData();
     SpecialText.SpecialTextData special_text_data_not_fixed = new SpecialText.SpecialTextData();
+    SpecialText.SpecialTextData special_text_data_need_parts = new SpecialText.SpecialTextData();
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,18 @@ public class UIStateRepair : MonoBehaviour
         special_text_data_not_fixed.AddPropertyToText(
             new List<SpecialText.TextProperties.Base>()
             {
+                new SpecialText.TextProperties.Colour(255,165,0),
+                new SpecialText.TextProperties.StaticAppear(),
+                new SpecialText.TextProperties.WaveScaled(1,2,5)
+            },
+            0,
+            11
+            );
+
+        special_text_data_need_parts.CreateCharacterData("NEEDS PARTS");
+        special_text_data_need_parts.AddPropertyToText(
+            new List<SpecialText.TextProperties.Base>()
+            {
                 new SpecialText.TextProperties.Colour(255,0,0),
                 new SpecialText.TextProperties.StaticAppear(),
                 new SpecialText.TextProperties.WaveScaled(1,2,5)
@@ -42,6 +55,9 @@ public class UIStateRepair : MonoBehaviour
             );
 
         Hide();
+
+        
+        
 
     }
 
@@ -66,8 +82,18 @@ public class UIStateRepair : MonoBehaviour
         }
         else
         {
-            games_complete_text.GetComponent<TextMeshProUGUI>().text = "NEEDS FIXED";
-            special_text.Begin(special_text_data_not_fixed);
+
+
+            if(GM_.Instance.inventory.SearchFor(typeof(SwitchItem)))
+            {
+                games_complete_text.GetComponent<TextMeshProUGUI>().text = "NEEDS FIXED";
+                special_text.Begin(special_text_data_not_fixed);
+            }
+            else
+            {
+                games_complete_text.GetComponent<TextMeshProUGUI>().text = "NEEDS PARTS";
+                special_text.Begin(special_text_data_need_parts);
+            }
         }
 
     }

@@ -74,6 +74,7 @@ public class ThirdPersonCamera : MonoBehaviour
     {
         FREE,                 //Camera has free rotation around target
         CLAMPED_LOOK_AT,      //Camera rotates around the player, but will look at the position of the fishing bob
+        NO_MOVEMENT
     }
     [SerializeField] public STATE current_state;
 
@@ -118,6 +119,10 @@ public class ThirdPersonCamera : MonoBehaviour
                 {
                     camera_input.y = Mathf.Clamp(camera_input.y, ANGLE_MIN_Y, ANGLE_MAX_Y); //limit the y rotation
                     camera_input.x = Mathf.Clamp(camera_input.x, rot_target.localRotation.eulerAngles.y - ANGLE_MIN_X, rot_target.localRotation.eulerAngles.y + ANGLE_MAX_X);
+                }
+                break;
+            case STATE.NO_MOVEMENT:
+                {
                 }
                 break;
             default:

@@ -30,10 +30,8 @@ public class PlayerExploreState : BaseState
         GM_.Instance.story.Event_BarrierOpened += ConversationStateAvailable;
         GM_.Instance.story.Event_ConvoEnter += ConversationStateUnavailalble;
 
-
-
-
     }
+
     public void OnEnable()
     {
         movement_.current_state = CharacterControllerMovement.STATE.FREE_MOVEMENT;
@@ -60,6 +58,10 @@ public class PlayerExploreState : BaseState
     // Update is called once per frame
     public override void StateUpdate()
     {
+
+        
+
+
         if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))
         {
             switch (interaction_type)
@@ -189,6 +191,12 @@ public class PlayerExploreState : BaseState
     {
         interaction_type = INTERACTION_TYPE.NONE;
         GAME_UI.Instance.helperButtons.DisableAll();
+    }
+
+    private void OnDestroy()
+    {
+        GM_.Instance.story.Event_BarrierOpened -= ConversationStateAvailable;
+        GM_.Instance.story.Event_ConvoEnter -= ConversationStateUnavailalble;
     }
 
 }

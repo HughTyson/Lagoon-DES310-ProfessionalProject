@@ -278,4 +278,11 @@ public class MenuScreen_Credits : MenuScreenBase
         camera_.transform.position = current_cameraPosition;
         camera_.transform.rotation = new_rotation;
     }
+
+    private void OnDestroy()
+    {
+        extraCreditsButton.Event_Selected -= start_transitionToExtraCredits;
+        goBackButton.Event_Selected -= start_transitionToMainMenu;
+        extraCreditsButton.Event_CompletedShow -= finishedShowingButtons;
+    }
 }

@@ -111,4 +111,9 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
         camera_.transform.position = current_cameraPosition;
         camera_.transform.rotation = new_rotation;
     }
+
+    private void OnDestroy()
+    {
+        goBackButton.Event_Selected -= start_transitionToCredits;
+    }
 }
