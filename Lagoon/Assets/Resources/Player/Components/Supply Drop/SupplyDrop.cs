@@ -132,4 +132,9 @@ public class SupplyDrop : MonoBehaviour
         Vector3 spawn_pos = drop_points[i].transform.position;
         new_box.transform.position = spawn_pos;
     }
+
+    private void OnDestroy()
+    {
+        GM_.Instance.story.Event_GameEventStart -= SupplyStart;       //start plane moving and setup
+    }
 }

@@ -52,4 +52,9 @@ public class PlayerConversationState : BaseState
             GM_.Instance.story.RequestButtonPressX();
         }
     }
+
+    private void OnDestroy()
+    {
+        GM_.Instance.story.Event_ConvoExit -= ExitConversation;
+    }
 }

@@ -17,7 +17,10 @@ public class RootNode : BaseNodeType
         NEXT_DAY,
         CATCH_A_FISH,
         END,
-        PASS_OVER
+        PASS_OVER,
+        PLANE_SEGMENT_FINISHED,
+        NEW_SCENE_START,
+        CURRENT_SCENE_END
     }
 
     [NodeEnum]

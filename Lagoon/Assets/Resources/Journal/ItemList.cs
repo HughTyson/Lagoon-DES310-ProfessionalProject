@@ -30,6 +30,19 @@ public class Chocolate : InventoryItem
     }
 }
 
+public class Firewood : InventoryItem
+{
+    public override void Init(int? i = null)
+    {
+        SetName("Chocolate");
+        SetItemType(ItemType.GENERIC);
+        SetDescription("Sun of a birch");
+        SetQuanity((i == null ? 10 : (int)i));
+        setBaseCommonality(5.0f);
+        SetIsNew(true);
+    }
+}
+
 public class SunTanLotion : InventoryItem
 {
     // Start is called before the first frame update
@@ -65,7 +78,7 @@ public class RemoteControlHelicopter : InventoryItem
     {
         SetName("RemoteControl Helicopter");
         SetItemType(ItemType.GENERIC);
-        SetDescription("A fun way to pass the time");
+        SetDescription("They forgot to send batteries");
         SetQuanity((i == null ? 1 : (int)i));
         setBaseCommonality(0.1f);
         SetIsNew(true);

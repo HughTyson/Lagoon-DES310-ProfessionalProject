@@ -369,6 +369,12 @@ public class MenuItem_ : MonoBehaviour
 
     }
 
-
+    private void OnDestroy()
+    {
+        InternalEvent_BeginHide -= internalBeginHide;
+        InternalEvent_EndHide -= internalEndHide;
+        InternalEvent_EndShow -= internalEndShow;
+        InternalEvent_BeginShow -= internalBeginShow;
+    }
 
 }

@@ -218,4 +218,10 @@ public class Slider_Default : Slider_
         setupHandle();
     }
 
+    private void OnDestroy()
+    {
+        InternalEvent_ValueChanged -= valueChanged;
+        InternalEvent_ValueSet -= valueSet;
+    }
+
 }

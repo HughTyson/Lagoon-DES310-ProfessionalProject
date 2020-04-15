@@ -40,6 +40,21 @@ public class StoryObjectiveHandler
                         objectives.Add(new Objective_End());
                         break;
                     }
+                case BarrierNode.BARRIER_STATE.PLANE_SEGMENT_FINISHED:
+                    {
+                        objectives.Add(new Objective_PlaneSectionRepair());
+                        break;
+                    }
+                case BarrierNode.BARRIER_STATE.NEW_SCENE_START:
+                    {
+                        objectives.Add(new Objective_SceneStart());
+                        break;
+                    }
+                case BarrierNode.BARRIER_STATE.CURRENT_SCENE_END:
+                    {
+                        objectives.Add(new Objective_SceneEnd());
+                        break;
+                    }
             }
         }
     }
@@ -73,6 +88,7 @@ public class StoryObjectiveHandler
         }
 
     }
+
     class Objective_NextDay : BaseObjective
     {
         int initDayNumber = GM_.Instance.stats.dayNumber;
@@ -88,8 +104,47 @@ public class StoryObjectiveHandler
     {
         public override bool ObjectiveComplete()
         {
-            return false;
+            return true;
         }
     }
 
+    class Objective_PlaneSectionRepair : BaseObjective
+    {
+
+        int complete = GM_.Instance.stats.AmountOfSegmentsComplete();
+
+        public override bool ObjectiveComplete()
+        {
+            return GM_.Instance.stats.AmountOfSegmentsComplete() > complete;
+        }
+
+    }
+
+    class Objective_SceneStart : BaseObjective
+    {
+        public override bool ObjectiveComplete()
+        {
+            if(GM_.Instance.scene_manager.new_scene_loaded)
+            {
+                Debug.Log("Hello");
+            }
+
+            return GM_.Instance.scene_manager.new_scene_loaded;
+        }
+
+    }
+
+    class Objective_SceneEnd : BaseObjective
+    {
+        public override bool ObjectiveComplete()
+        {
+            if (GM_.Instance.scene_manager.new_scene_loaded)
+            {
+                Debug.Log("Hello");
+            }
+
+            return GM_.Instance.scene_manager.new_scene_loaded;
+        }
+
+    }
 }

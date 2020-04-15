@@ -243,4 +243,15 @@ public class MenuScreen_OptionsControls : MenuScreenBase
         camera_.transform.position = current_cameraPosition;
         camera_.transform.rotation = new_rotation;
     }
+
+    private void OnDestroy()
+    {
+        goBackButton.Event_Selected += start_transitionToMain;
+        goToGameOptionsButton.Event_Selected += start_transitionToGame;
+        goToAudioOptionsButton.Event_Selected += start_transitionToAudio;
+
+        vibrationsCheckBox.Event_CompletedShow += completeShowVibrationCheckBox;
+
+        vibrationsCheckBox.Event_ToggleChanged += vibrationToggled;
+    }
 }

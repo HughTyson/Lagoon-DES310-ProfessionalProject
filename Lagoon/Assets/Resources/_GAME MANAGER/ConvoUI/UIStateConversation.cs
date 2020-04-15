@@ -332,4 +332,28 @@ public class UIStateConversation : MonoBehaviour
             request.Block();
         }
     }
+
+    private void OnDestroy()
+    {
+        GM_.Instance.story.Event_ConvoCharactersShow -= ConvoCharactersShow;
+        GM_.Instance.story.Event_DialogStart -= DialogStart;
+        GM_.Instance.story.Event_DialogNewText -= DialogNewText;
+        GM_.Instance.story.Event_BranchChoiceMade -= BranchChoiceChosen;
+        GM_.Instance.story.Event_BranchStart -= BranchStart;
+        GM_.Instance.story.Event_ConvoExit -= ConversationExit;
+
+        GM_.Instance.story.EventRequest_BlockingButtonPress -= ShouldBlockButtons;
+        GM_.Instance.story.Event_GameEventStart -= GameEventTriggered;
+
+
+
+
+        dialogBox.Event_BoxFinishedAppearing -= dialogStartTextShouldShowIterate;
+
+        leftPortrait.Event_FinishedChanging -= dialogStartTextShouldShowIterate;
+        rightPortrait.Event_FinishedChanging -= dialogStartTextShouldShowIterate;
+
+        leftPortrait.Event_FinishedAppearing -= dialogStartTextShouldShowIterate;
+        rightPortrait.Event_FinishedAppearing -= dialogStartTextShouldShowIterate;
+    }
 }

@@ -103,4 +103,10 @@ public class RadioSignal : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y + 3, transform.position.z);
     }
 
+    private void OnDestroy()
+    {
+        GM_.Instance.story_objective.Event_BarrierObjectiveComplete -= Story_objective_Event_BarrierObjectiveComplete;
+        GM_.Instance.story.Event_BarrierStart -= BarrierStart;
+    }
+
 }

@@ -1,5 +1,62 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9010171508059295969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d820c1cde8f8c4088dc535417700d3, type: 3}
+  m_Name: Barrier
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -1144, y: 488}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: -9010171508059295969}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: 687803313877274557}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -9010171508059295969}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 6665581349954894498}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -9010171508059295969}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  barriers: 06000000
+  output: 0
+  input: 0
 --- !u!114 &-8756275064080166972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13,7 +70,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 3432, y: 1064}
+  position: {x: 3784, y: 632}
   ports:
     keys:
     - input
@@ -80,7 +137,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 4968, y: 1240}
+  position: {x: 5080, y: 376}
   ports:
     keys:
     - input
@@ -126,10 +183,13 @@ MonoBehaviour:
   Dialog:
   - whoIsTalking: 1
     dialog_text: '[AppearAtOnce][WaveScaled(0.2,2,1)]Wow[/WaveScaled][/AppearAtOnce][CharSpeed(5)]...[/CharSpeed][#Delay(1)]
-      You really wrecked your plane there didn''t ya?'
+      That plane''s certainly looking a lot better than before! '
+  - whoIsTalking: 1
+    dialog_text: Still looks like a head of scrap tho, never understood why you didn't
+      get a new plane. Over.
   - whoIsTalking: 0
-    dialog_text: Shut up [Colour(119, 45, 194)]Jacob[/Colour],[#Delay(0.5)] Lagoon
-      out.
+    dialog_text: Shut up [Colour(119, 45, 194)]Jacob[/Colour],[#Delay(0.5)] you know
+      what we've been through together. Lagoon out.
   input: 0
   output: 0
   nodeWidth: 300
@@ -146,7 +206,7 @@ MonoBehaviour:
   m_Name: Barrier
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 5405.775, y: 1349.5782}
+  position: {x: 5544, y: 408}
   ports:
     keys:
     - input
@@ -169,7 +229,10 @@ MonoBehaviour:
       _node: {fileID: -7171491494866776571}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
+      connections:
+      - fieldName: input
+        node: {fileID: -78223908603945377}
+        reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
@@ -184,7 +247,64 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   additionalInfo: 0
-  barriers: 02000000
+  barriers: 04000000
+  output: 0
+  input: 0
+--- !u!114 &-6844741197521966895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d820c1cde8f8c4088dc535417700d3, type: 3}
+  m_Name: Barrier
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 6648, y: 504}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: -6844741197521966895}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: outputA
+        node: {fileID: 9009800898561546038}
+        reroutePoints: []
+      - fieldName: outputB
+        node: {fileID: 9009800898561546038}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -6844741197521966895}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -6844741197521966895}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  barriers: 06000000
   output: 0
   input: 0
 --- !u!114 &-6660801044633476709
@@ -200,7 +320,7 @@ MonoBehaviour:
   m_Name: Root
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -696, y: -24}
+  position: {x: -2792, y: -984}
   ports:
     keys:
     - output
@@ -212,7 +332,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: input
-        node: {fileID: 2005244941897501164}
+        node: {fileID: -2404862401087138357}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -228,8 +348,75 @@ MonoBehaviour:
       _typeConstraint: 0
       _dynamic: 0
   additionalInfo: 0
-  barriers: 01000000
+  barriers: 05000000
   output: 0
+--- !u!114 &-5820797617285975987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
+  m_Name: Dialog
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -88, y: -72}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: -5820797617285975987}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: 134544054205602124}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -5820797617285975987}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 3306803106393969010}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -5820797617285975987}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
+  rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
+  Dialog:
+  - whoIsTalking: 0
+    dialog_text: Lagoon 10, come in.[#Delay(0.3)] This is Bravo 3 1, over.
+  - whoIsTalking: 1
+    dialog_text: Lagoon 10 here, over.
+  - whoIsTalking: 0
+    dialog_text: Alright Ace! Sorry about that earlier must've been a dodgy signal
+      or somethin'
+  input: 0
+  output: 0
+  nodeWidth: 300
 --- !u!114 &-5575307375619232555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,6 +488,136 @@ MonoBehaviour:
   input: 0
   output: 0
   nodeWidth: 300
+--- !u!114 &-2591767828564238574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
+  m_Name: Dialog
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -1976, y: -840}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: -2591767828564238574}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: -2404862401087138357}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -2591767828564238574}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 687803313877274557}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -2591767828564238574}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
+  rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
+  Dialog:
+  - whoIsTalking: 1
+    dialog_text: Hey Buddy, how are ya? Not seen you about the base in a few day.
+  - whoIsTalking: 0
+    dialog_text: "Doing good my friend, enjoying some time out. I need to fix the
+      plane since the [Shiver(0.05,20)] [Colour(255,0,0)]incident [/Shiver][/Colour],
+      but need parts. Can you source them? Over.\"\r"
+  input: 0
+  output: 0
+  nodeWidth: 300
+--- !u!114 &-2404862401087138357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
+  m_Name: Dialog
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -2360, y: -840}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: -2404862401087138357}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: -6660801044633476709}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -2404862401087138357}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: -2591767828564238574}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -2404862401087138357}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
+  rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
+  Dialog:
+  - whoIsTalking: 1
+    dialog_text: Lagoon 10, come in.[#Delay(0.3)] This is Bravo 3 1, over.
+  - whoIsTalking: 0
+    dialog_text: This is Lagoon 10, over.
+  input: 0
+  output: 0
+  nodeWidth: 300
 --- !u!114 &-2166667912325943365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,7 +631,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1368, y: 264}
+  position: {x: 1368, y: 232}
   ports:
     keys:
     - input
@@ -362,16 +679,16 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
   - whoIsTalking: 1
-    dialog_text: Anyway,[#Delay(0.5)] I've managed to scrounge up some tools to send
-      to you.
-  - whoIsTalking: 1
-    dialog_text: Should let you finish the work on the [Colour(66, 135, 245)]Rear
-      Fuselage[/Colour].[#Delay(0.5)] Shouldn't be too difficult.
+    dialog_text: Anyway,[#Delay(0.5)] I've managed to scrounge up some final parts
+      to send to you.
   - whoIsTalking: 0
     dialog_text: Good.[#Delay(0.5)] Yeah it looks like it'll be an easy fix.
   - whoIsTalking: 1
-    dialog_text: Should be getting sent your way once we get cleared for a plane to
-      come out that way.
+    dialog_text: Should let you finish the work on the [Colour(66, 135, 245)]Rear
+      Fuselage[/Colour].[#Delay(0.5)] Shouldn't be too difficult.
+  - whoIsTalking: 1
+    dialog_text: Should be getting sent your way once we get clearance for a plane
+      to be sent out.
   - whoIsTalking: 1
     dialog_text: I'll keep you posted[#Delay(0.5)] Bravo 3 1 out.
   input: 0
@@ -390,7 +707,7 @@ MonoBehaviour:
   m_Name: Additional Info - Certain Supply Drop Item
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1752, y: 1016}
+  position: {x: 1752, y: 632}
   ports:
     keys:
     - output
@@ -484,7 +801,7 @@ MonoBehaviour:
   m_Name: Branching
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 3032, y: 440}
+  position: {x: 3192, y: 248}
   ports:
     keys:
     - input
@@ -542,7 +859,69 @@ MonoBehaviour:
   outputA: 0
   outputB: 0
   LeftDecision: '[Colour(200, 200, 200)][AppearAtOnce]*Wait for Jacob to say over*[/Colour][/AppearAtOnce]'
-  RightDecision: '[#Delay(2)]Yeah sorry.[#Delay(0.5)] It never goes away does it...'
+  RightDecision: '[#Delay(1.3)]Yeah sorry.[#Delay(0.5)] It never goes away does it...'
+  nodeWidth: 300
+--- !u!114 &-78223908603945377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
+  m_Name: Dialog
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 5896, y: 376}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: -78223908603945377}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: -7171491494866776571}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -78223908603945377}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 9009800898561546038}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -78223908603945377}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
+  rightCharacter: {fileID: 11400000, guid: d3e1b4c88d0156245b0f08062593e928, type: 2}
+  Dialog:
+  - whoIsTalking: 0
+    dialog_text: 'Lagoon 10 here, [#Delay(1)] '
+  input: 0
+  output: 0
   nodeWidth: 300
 --- !u!114 &11400000
 MonoBehaviour:
@@ -559,7 +938,6 @@ MonoBehaviour:
   nodes:
   - {fileID: 3482819492227612262}
   - {fileID: -6660801044633476709}
-  - {fileID: 2005244941897501164}
   - {fileID: 3306803106393969010}
   - {fileID: 4644727102309361052}
   - {fileID: 2534978486118315163}
@@ -577,6 +955,146 @@ MonoBehaviour:
   - {fileID: 6925705680755287335}
   - {fileID: -784954607781825925}
   - {fileID: -1690183579352973713}
+  - {fileID: -5820797617285975987}
+  - {fileID: 9009800898561546038}
+  - {fileID: -6844741197521966895}
+  - {fileID: -9010171508059295969}
+  - {fileID: -2404862401087138357}
+  - {fileID: -2591767828564238574}
+  - {fileID: 687803313877274557}
+  - {fileID: -78223908603945377}
+  - {fileID: 134544054205602124}
+  - {fileID: 6665581349954894498}
+--- !u!114 &134544054205602124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d820c1cde8f8c4088dc535417700d3, type: 3}
+  m_Name: Barrier
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -488, y: 488}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: 134544054205602124}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: 6665581349954894498}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 134544054205602124}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: -5820797617285975987}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 134544054205602124}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  barriers: 01000000
+  output: 0
+  input: 0
+--- !u!114 &687803313877274557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
+  m_Name: Dialog
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -1576, y: -856}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: 687803313877274557}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: -2591767828564238574}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 687803313877274557}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: -9010171508059295969}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 687803313877274557}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
+  rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
+  Dialog:
+  - whoIsTalking: 1
+    dialog_text: No both boss, will get that sorted for you.  But what you going to
+      do in the mean time. Over.
+  - whoIsTalking: 0
+    dialog_text: '[CharSpeed(5)]Relaxing[/CharSpeed], I plan to enjoy my time [Colour(0,255,255)][WaveScaled(1,3,1)]
+      fishing[/WaveScaled][/Colour]. '
+  - whoIsTalking: 0
+    dialog_text: I've not fished since I was young. Lucky I wrote down eveything I
+      need to know about it in my [Colour(0,255,255)][WaveScaled(1,3,1)]Journal.[/Colour][/WaveScaled]
+  - whoIsTalking: 0
+    dialog_text: '[CharSpeed(3)]Well... that''s good [/CharSpeed]. Anyway, will try
+      sort them parts out for you my friend. It was good to hear you again. Over and
+      out.'
+  input: 0
+  output: 0
+  nodeWidth: 300
 --- !u!114 &1924276598092847580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -590,7 +1108,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 4216, y: 1080}
+  position: {x: 4344, y: 360}
   ports:
     keys:
     - input
@@ -646,71 +1164,6 @@ MonoBehaviour:
   input: 0
   output: 0
   nodeWidth: 300
---- !u!114 &2005244941897501164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
-  m_Name: Dialog
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -312, y: -40}
-  ports:
-    keys:
-    - input
-    - output
-    - additionalInfo
-    values:
-    - _fieldName: input
-      _node: {fileID: 2005244941897501164}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: output
-        node: {fileID: -6660801044633476709}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: output
-      _node: {fileID: 2005244941897501164}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: input
-        node: {fileID: 3306803106393969010}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: additionalInfo
-      _node: {fileID: 2005244941897501164}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  additionalInfo: 0
-  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
-  rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
-  Dialog:
-  - whoIsTalking: 0
-    dialog_text: Bravo 3 1, [#Delay(0.25)]this is Lagoon 10 come in,[#Delay(0.25)]
-      over.
-  - whoIsTalking: 1
-    dialog_text: This is Bravo 3 1.[#Delay(0.25)] How are you doing [Colour(0,255,0)]Sam[/Colour]?
-  input: 0
-  output: 0
-  nodeWidth: 300
 --- !u!114 &2534978486118315163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -724,7 +1177,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 808, y: 856}
+  position: {x: 744, y: 552}
   ports:
     keys:
     - input
@@ -786,7 +1239,7 @@ MonoBehaviour:
   m_Name: Branching
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 264, y: -24}
+  position: {x: 280, y: -72}
   ports:
     keys:
     - input
@@ -800,7 +1253,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: output
-        node: {fileID: 2005244941897501164}
+        node: {fileID: -5820797617285975987}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -893,7 +1346,7 @@ MonoBehaviour:
   m_Name: Event
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 4606.8984, y: 1197.6033}
+  position: {x: 4728, y: 376}
   ports:
     keys:
     - input
@@ -950,7 +1403,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 888, y: -264}
+  position: {x: 744, y: -280}
   ports:
     keys:
     - input
@@ -1021,7 +1474,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 2585.7986, y: 431.04877}
+  position: {x: 2808, y: 248}
   ports:
     keys:
     - input
@@ -1088,7 +1541,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1896, y: 424}
+  position: {x: 1800, y: 232}
   ports:
     keys:
     - input
@@ -1154,7 +1607,7 @@ MonoBehaviour:
   m_Name: Barrier
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 2264, y: 456}
+  position: {x: 2440, y: 280}
   ports:
     keys:
     - input
@@ -1198,6 +1651,73 @@ MonoBehaviour:
   barriers: 00000000
   output: 0
   input: 0
+--- !u!114 &6665581349954894498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c691db300bef6f346affb2ee7a5a1fb0, type: 3}
+  m_Name: Dialog
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -824, y: 456}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: 6665581349954894498}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: -9010171508059295969}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: 6665581349954894498}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: 134544054205602124}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 6665581349954894498}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  leftCharacter: {fileID: 11400000, guid: ad094d026e4075041882b358353391f1, type: 2}
+  rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
+  Dialog:
+  - whoIsTalking: 1
+    dialog_text: Lagoon [#Delay(0.3)] 10, come in... [Colour(112,112,112)] [Shiver(0.05,20)]
+      *static* [/Colour][/Shiver]
+  - whoIsTalking: 0
+    dialog_text: Lagoon 10 here, who is this? Over.
+  - whoIsTalking: 0
+    dialog_text: '[Colour(200,200,200)](Oh well..[#Delay(0.5)]Back to fishing...)[/Colour]'
+  input: 0
+  output: 0
+  nodeWidth: 300
 --- !u!114 &6925705680755287335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1227,3 +1747,76 @@ MonoBehaviour:
       _dynamic: 0
   additionalInfo: 0
   page: 2
+--- !u!114 &9009800898561546038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5092ad3a4c0b56743b21cb39a12531e4, type: 3}
+  m_Name: Branching
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 6264, y: 376}
+  ports:
+    keys:
+    - input
+    - outputA
+    - outputB
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: 9009800898561546038}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: -78223908603945377}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: outputA
+      _node: {fileID: 9009800898561546038}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: -6844741197521966895}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: outputB
+      _node: {fileID: 9009800898561546038}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: input
+        node: {fileID: -6844741197521966895}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: 9009800898561546038}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  input: 0
+  outputA: 0
+  outputB: 0
+  LeftDecision: Relaxing time is over, I'm ready to join the fight
+  RightDecision: Fighting isn't for me anymore. [#Delay(1)]Over and out.
+  nodeWidth: 300

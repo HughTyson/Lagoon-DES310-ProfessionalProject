@@ -142,6 +142,21 @@ public class StatsManager
 
     }
 
+    public int AmountOfSegmentsComplete()
+    {
+        int complete = 0;
+
+        for(int i = 0; i < plane_segments_stats.Count; i++)
+        {
+            if(plane_segments_stats[i].complete)
+            {
+                complete++;
+            }
+        }
+
+        return complete;
+    }
+
 
 
 }

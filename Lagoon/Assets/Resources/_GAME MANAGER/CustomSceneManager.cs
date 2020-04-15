@@ -23,9 +23,10 @@ public class CustomSceneManager : MonoBehaviour
     TweenAnimator.Animation anim_continueLoading;
     TweenAnimator.Animation anim_endLoading;
 
-
-
     SpecialText.SpecialTextData loadingScreenText_data = new SpecialText.SpecialTextData();
+
+    public bool new_scene_loaded;
+
     private void Awake()
     {
         loadingScreenText_data.CreateCharacterData(SpecialTxt_loadingText.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text);
@@ -152,9 +153,8 @@ public class CustomSceneManager : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-
-
-    int transitionSceneID = 0;
+    public int transitionSceneID = 0;
+    public int amount_of_scenes = 2;
     int transitioningStartFuncs = 0;
 
 
@@ -181,6 +181,7 @@ public class CustomSceneManager : MonoBehaviour
         SceneManager.sceneLoaded -= sceneLoaded;
         GM_.Instance.input.InputEnabled = true;
         gameObject.SetActive(false);
+        new_scene_loaded = true;
     }
 
     void sceneLoaded(Scene s, LoadSceneMode mode)

@@ -14,6 +14,7 @@ public class EventNode : BaseNodeType
     public enum EVENT_TYPE
     {
         SUPPLY_DROP,
+        NEXT_SCENE,
         SOMETHING
     }
 

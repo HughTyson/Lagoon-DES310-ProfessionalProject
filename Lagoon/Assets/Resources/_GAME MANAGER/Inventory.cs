@@ -99,5 +99,18 @@ public class Inventory
         return null; //this should only be call if there are no entires
     }
 
+    public void Reset()
+    {
+        items.Clear();
 
+
+        Firewood wood = new Firewood();
+        wood.Init(15);
+
+        Puzzle puzzle = new Puzzle();
+        puzzle.Init(2);
+
+        items.Add(wood);
+        items.Add(puzzle);
+    }
 }

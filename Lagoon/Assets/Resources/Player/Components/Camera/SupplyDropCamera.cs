@@ -158,4 +158,13 @@ public class SupplyDropCamera : MonoBehaviour
         should_shake = false;
     }
 
+    private void OnDestroy()
+    {
+        GM_.Instance.story.Event_GameEventStart -= SupplyStart;
+
+        //GM_.Instance.story.EventRequest_GameEventContinue += SupplyFinish;
+
+        GM_.Instance.story.Event_GameEventEnd -= SupplyFinish;
+    }
+
 }

@@ -217,9 +217,12 @@ public class CheckBox_Default : Checkbox_
     }
 
 
+    private void OnDestroy()
+    {
+        InternalEvent_ToggleSet += valueSet;
+    }
 
 
-   
 
 
 }
