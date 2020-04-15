@@ -29,7 +29,7 @@ public class PlayerRepairState : BaseState
 
     RepairState state;
 
-    bool update_stats = false;
+    bool t = false;
 
 
 
@@ -67,12 +67,7 @@ public class PlayerRepairState : BaseState
         text = true;
 
         GM_.Instance.DayNightCycle.SetTime(0.0f);
-
-        if(update_stats)
-        {
-            UpdateStats();
-        }
-            
+         
     }
 
     public void OnDisable()
@@ -83,11 +78,8 @@ public class PlayerRepairState : BaseState
         GAME_UI.Instance.state_repair.Hide();
 
 
-        UpdateStats();
-        
 
-        
-        update_stats = true;
+
     }
 
     public override void StateUpdate()
@@ -243,6 +235,16 @@ public class PlayerRepairState : BaseState
             default:
                 break;
         }
+
+        if(t)
+        {
+            UpdateStats();
+            t = false;
+        }
+
+
+
+
     }
 
     void HandelInput()
@@ -286,6 +288,8 @@ public class PlayerRepairState : BaseState
                 }
 
                 state = RepairState.FULLPLANE;
+
+                t = true;
             }
 
             if (state != RepairState.SEGMENT)
