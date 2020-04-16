@@ -18,12 +18,14 @@ public class GM_ : MonoBehaviour
     [SerializeField] CustomSceneManager sceneManager;
 
     static GM_ instance_ = null;
-
+    static bool destroyed_ = false;
     Members members = null;
     static public Members Instance
     {
         get
         {
+            if (destroyed_)
+                return null;
             if (instance_ == null)
             {
                 instance_ = FindObjectOfType<GM_>();
@@ -45,7 +47,7 @@ public class GM_ : MonoBehaviour
         public PauseManager pause;
         public StatsManager stats;
         public StoryManager story;
-        public StoryObjectiveHandler story_objective; // might not need to be here
+        public StoryObjectiveHandler story_objective; 
         public TweenManager tween_manager;
         public UpdateEventSystem update_events;
         public TweenCurveLibrary tween_curveLibrary_Tomas;
@@ -78,7 +80,7 @@ public class GM_ : MonoBehaviour
             members.input = new InputManager();
             members.pause = new PauseManager();
             members.stats = new StatsManager();
-            members.story = new StoryManager((convoGraph.Root)); // should be barrier node.);
+            members.story = new StoryManager((convoGraph.Root),convoGraph); // should be barrier node.);
             members.story_objective = new StoryObjectiveHandler();
             members.settings = new PlayerSettings();
             members.inventory = new Inventory();
@@ -103,7 +105,7 @@ public class GM_ : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        members.story.Begin();
+        members.story.Init();
     }
 
 
@@ -117,13 +119,17 @@ public class GM_ : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (members != null)
+
+        if (instance_ == this)
         {
             members.input.SetVibrationBoth(0, 0); // prevents controller vibrating even if Unity game closes
             members.input.Update();
-        }
-        if (instance_ == this)
+
+            for (int i = instance_.gameObject.transform.childCount - 1 ; i >= 0; i--)
+                Destroy(instance_.gameObject.transform.GetChild(i).gameObject);
             instance_ = null;
+            destroyed_ = true;
+        }
     }
 }
 

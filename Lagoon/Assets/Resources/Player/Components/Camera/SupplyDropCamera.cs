@@ -52,6 +52,9 @@ public class SupplyDropCamera : MonoBehaviour
 
         GM_.Instance.story.Event_GameEventEnd += SupplyFinish;
 
+
+        Application.quitting += Quitting;
+
     }
 
     private void OnEnable()
@@ -160,11 +163,20 @@ public class SupplyDropCamera : MonoBehaviour
 
     private void OnDestroy()
     {
-        GM_.Instance.story.Event_GameEventStart -= SupplyStart;
+        if (!quiting)
+        {
+            GM_.Instance.story.Event_GameEventStart -= SupplyStart;
 
-        //GM_.Instance.story.EventRequest_GameEventContinue += SupplyFinish;
+            //GM_.Instance.story.EventRequest_GameEventContinue += SupplyFinish;
 
-        GM_.Instance.story.Event_GameEventEnd -= SupplyFinish;
+            GM_.Instance.story.Event_GameEventEnd -= SupplyFinish;
+        }
+
     }
 
+    bool quiting = false;
+    void Quitting()
+    {
+        quiting = true;
+    }
 }

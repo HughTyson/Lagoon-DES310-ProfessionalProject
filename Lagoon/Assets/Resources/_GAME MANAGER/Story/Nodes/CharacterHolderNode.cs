@@ -8,5 +8,6 @@ public abstract class CharacterHolderNode : BaseNodeType
 {
     public ConversationCharacter leftCharacter;
     public ConversationCharacter rightCharacter;
+
 }
 

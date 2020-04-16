@@ -14,6 +14,12 @@ public class StoryObjectiveHandler
         GM_.Instance.story.Event_BarrierStart += BarrierStart;
     }
 
+
+    public void Reset()
+    {
+        objectives.Clear();
+        GM_.Instance.update_events.UpdateEvent -= BarrierBlockingUpdate;
+    }
     void BarrierStart(StoryManager.BarrierStartArgs args)
     {
         GM_.Instance.update_events.UpdateEvent += BarrierBlockingUpdate;

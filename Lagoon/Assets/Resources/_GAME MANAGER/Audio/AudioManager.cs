@@ -118,7 +118,6 @@ public class AudioManager : MonoBehaviour
        }           
        );      
     }
-
     bool completedSFXInstanceCheck(SFXInstance instance)
     {
         if (instance.isCompleted)

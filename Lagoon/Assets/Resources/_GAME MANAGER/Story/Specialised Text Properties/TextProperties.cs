@@ -185,15 +185,19 @@ namespace SpecialText
 
         public static void ApplyDefaults(SpecialTextData specialTextData, List<Base> included_properties, List<SpecialTextCharacterData> characters, GlobalPropertiesNode globalProperties)
         {
-            if (!included_properties.Exists(y => { return y.GetType() == typeof(AppearAtOnce); }))
+            if (!included_properties.Exists(y => { return y.GetType() == typeof(StaticAppear); }))
             {
-                if (!included_properties.Exists(y => { return (y.GetType() == typeof(CharSpeed)); }))
+                if (!included_properties.Exists(y => { return y.GetType() == typeof(AppearAtOnce); }))
                 {
-                    Base default_property = new CharSpeed(globalProperties.DefaultSpeedPerTextCharacter);
-                    default_property.AddCharacterReference(characters);
-                    specialTextData.propertyDataList.Add(default_property);
+                    if (!included_properties.Exists(y => { return (y.GetType() == typeof(CharSpeed)); }))
+                    {
+                        Base default_property = new CharSpeed(globalProperties.DefaultSpeedPerTextCharacter);
+                        default_property.AddCharacterReference(characters);
+                        specialTextData.propertyDataList.Add(default_property);
+                    }
                 }
             }
+
             if (!included_properties.Exists(y => { return y.GetType() == typeof(Colour); }))
             {
                 Base default_property = new Colour(globalProperties.DefaultColour.r, globalProperties.DefaultColour.g, globalProperties.DefaultColour.b);

@@ -60,8 +60,8 @@ public class PlayerFishingState : BaseState
 
 
 
-    AudioSFX sfx_reeling;
-    AudioManager.SFXInstanceInterface sfx_reeling_interface;
+  //  AudioSFX sfx_reeling;
+ //   AudioManager.SFXInstanceInterface sfx_reeling_interface;
     TypeRef<float> reelingDesiredPitch = new TypeRef<float>();
 
     enum FISHING_STATE
@@ -101,7 +101,7 @@ public class PlayerFishingState : BaseState
 
     private void Awake()
     {
-        sfx_reeling = GM_.Instance.audio.GetSFX("Fishing_Reeling");
+   //     sfx_reeling = GM_.Instance.audio.GetSFX("Fishing_Reeling");
     }
 
     public void OnEnable()
@@ -133,7 +133,7 @@ public class PlayerFishingState : BaseState
 
     public void OnDisable()
     {
-        sfx_reeling_interface?.Stop();
+ //       sfx_reeling_interface?.Stop();
 
 
 
@@ -248,7 +248,7 @@ public class PlayerFishingState : BaseState
                    
                     reelingDesiredPitch.value = 1.2f;
 
-                    sfx_reeling_interface.Volume = Mathf.Min((sfx_reeling_interface.Pitch - 0.7f) / (0.95f - 0.7f), 0.6f);
+          //          sfx_reeling_interface.Volume = Mathf.Min((sfx_reeling_interface.Pitch - 0.7f) / (0.95f - 0.7f), 0.6f);
 
                     if (fishingBob.GetComponentInChildren<BuoyancyPhysics>().GetCurrentState() == BuoyancyPhysics.STATE.IN_WATER || fishingBob.GetComponentInChildren<BuoyancyPhysics>().IsInEquilibrium() || GM_.Instance.input.GetAxis(InputManager.AXIS.RT) > 0.5f) // bob has settled
                     {
@@ -287,7 +287,7 @@ public class PlayerFishingState : BaseState
 
                     }
 
-                    sfx_reeling_interface.Volume = Mathf.Min((sfx_reeling_interface.Pitch - 0.7f) / (0.95f - 0.7f),0.6f);
+         //           sfx_reeling_interface.Volume = Mathf.Min((sfx_reeling_interface.Pitch - 0.7f) / (0.95f - 0.7f),0.6f);
                     reelingDesiredPitch.value = Mathf.Lerp(0.7f, 1.2f , reelAxis);
 
                     GM_.Instance.input.SetVibration(InputManager.VIBRATION_MOTOR.RIGHT, reelAxis *0.1f);
@@ -312,7 +312,7 @@ public class PlayerFishingState : BaseState
 
                     float reelAxis = GM_.Instance.input.GetAxis(InputManager.AXIS.RT);
 
-                    sfx_reeling_interface.Volume = Mathf.Min((sfx_reeling_interface.Pitch - 0.7f) / (0.95f - 0.7f), 0.6f);
+       //             sfx_reeling_interface.Volume = Mathf.Min((sfx_reeling_interface.Pitch - 0.7f) / (0.95f - 0.7f), 0.6f);
                     reelingDesiredPitch.value = Mathf.Lerp(0.7f, 1.2f, reelAxis);
 
                     if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.B))
@@ -536,7 +536,7 @@ public class PlayerFishingState : BaseState
 
 
 
-        sfx_reeling_interface = GM_.Instance.audio.PlaySFX(sfx_reeling, transform, settingVolume: new SFXSettings.AnyFloatSetting.Constant(0), settingPitch: new SFXSettings.AnyFloatSetting.SmoothStep(reelingDesiredPitch, 0.7f, 5)); // create realling sound effect, but set volume to 0
+   //     sfx_reeling_interface = GM_.Instance.audio.PlaySFX(sfx_reeling, transform, settingVolume: new SFXSettings.AnyFloatSetting.Constant(0), settingPitch: new SFXSettings.AnyFloatSetting.SmoothStep(reelingDesiredPitch, 0.7f, 5)); // create realling sound effect, but set volume to 0
 
         fishing_state = FISHING_STATE.BOB_IS_FLYING;
         thirdPersonCamera.look_at_target = fishingBob.transform;
