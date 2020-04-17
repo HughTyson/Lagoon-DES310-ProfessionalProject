@@ -49,7 +49,7 @@ public class RadioSignal : MonoBehaviour
     void Start()
     {
 
-        SetPosition();
+        transform.position = new Vector3(transform.position.x, transform.position.y + 1.3f, transform.position.z);
 
         radio_signal_tween = new TweenManager.TweenPathBundle(
             // frame index
@@ -101,10 +101,9 @@ public class RadioSignal : MonoBehaviour
     }
 
 
-    void SetPosition()
-    {
-        transform.position = new Vector3(transform.position.x, transform.position.y + 3, transform.position.z);
-    }
+
+        
+    
 
     private void OnDestroy()
     {
