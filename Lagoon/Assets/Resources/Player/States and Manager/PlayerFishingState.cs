@@ -833,11 +833,8 @@ public class PlayerFishingState : BaseState
                 GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Continue");
 
 
-                GM_.Instance.stats.IncreaseFishCount();
-                GM_.Instance.stats.NewBiggest(interactingFish.varsFromFishGenerator);
-                GM_.Instance.stats.UpdateLastFish(interactingFish.varsFromFishGenerator);
+                GM_.Instance.stats.UpdateFishStats(interactingFish.varsFromFishGenerator);
 
-                
                 GAME_UI.Instance.state_fishVictory.SetVictoryStats(interactingFish.varsFromFishGenerator.fishTypeName, interactingFish.varsFromFishGenerator.teir, interactingFish.varsFromFishGenerator.size);
                 GAME_UI.Instance.state_fishVictory.Show();
                 

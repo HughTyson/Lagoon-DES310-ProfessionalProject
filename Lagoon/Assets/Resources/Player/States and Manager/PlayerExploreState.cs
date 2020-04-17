@@ -63,7 +63,8 @@ public class PlayerExploreState : BaseState
     public override void StateUpdate()
     {
 
-        
+        GM_.Instance.inventory.ButtonPrompt();
+        GM_.Instance.stats.ButtonPrompt();
 
 
         if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))

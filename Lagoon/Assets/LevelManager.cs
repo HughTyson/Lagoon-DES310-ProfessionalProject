@@ -9,6 +9,9 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
+        GM_.Instance.stats.CleanUp();
+
+
         GM_.Instance.story_objective.Event_BarrierObjectiveComplete += GameStart;
 
         GM_.Instance.story.Event_BarrierStart += Story_EventRequest_BarrierStart;

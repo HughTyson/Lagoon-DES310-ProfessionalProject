@@ -55,21 +55,20 @@ public class PagePair_Stats : BasePagePair
 
         stats_box.text += "Last fish caught: " + System.Environment.NewLine;
         stats_box.text += "Type - " + GM_.Instance.stats.last_fish_stats.type + System.Environment.NewLine;
-        stats_box.text += "Size - " + GM_.Instance.stats.last_fish_stats.size + System.Environment.NewLine;
+        stats_box.text += "Size - " + GM_.Instance.stats.last_fish_stats.size.ToString("F2") + System.Environment.NewLine;
         stats_box.text += "Satisfaction: " + GM_.Instance.stats.last_fish_stats.satisfaction + System.Environment.NewLine;
-
 
         plane_box.text += "Plane Fixes" + System.Environment.NewLine;
 
-        for(int i = 0; i < GM_.Instance.stats.plane_segments_stats.Count; i++)
+        for (int i = 0; i < GM_.Instance.stats.plane_segments_stats.Count; i++)
         {
             plane_box.text += GM_.Instance.stats.plane_segments_stats[i].segment_name + " - ";
-            
-            if(!GM_.Instance.stats.plane_segments_stats[i].complete)
+
+            if (!GM_.Instance.stats.plane_segments_stats[i].complete)
             {
                 plane_box.text += "Not fixed" + System.Environment.NewLine;
             }
-            else if(GM_.Instance.stats.plane_segments_stats[i].complete)
+            else if (GM_.Instance.stats.plane_segments_stats[i].complete)
             {
                 plane_box.text += "Fixed " + System.Environment.NewLine;
             }

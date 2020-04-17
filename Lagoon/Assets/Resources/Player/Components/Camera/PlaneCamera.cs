@@ -330,6 +330,7 @@ public class PlaneCamera : MonoBehaviour
                                 if(un_zoom)
                                 {
                                     ZoomTransition(Transitions.SelectionTransitionType.ENGMID_TAIL, TweenManager.DIRECTION.END_TO_START, false);
+                                    current_state = PlaneCamera.PlaneCameraStates.SELECTION;
                                     un_zoom = false;
                                 }
                             }

@@ -15,6 +15,8 @@ public class Inventory
     readonly List<InventoryItem> item_instances;
     readonly float accumulated_weight;
 
+    bool updated_inventory = false;
+
     public Inventory()
     {
         System.Type[] types = Assembly.GetExecutingAssembly().GetTypes();
@@ -63,11 +65,12 @@ public class Inventory
         {
             items.Add(new_item);
         }
+
+        updated_inventory = true;
     }
 
     public void AddNewContent()
     {
-
     }
 
     public bool SearchFor(System.Type type)
@@ -99,6 +102,19 @@ public class Inventory
         return null; //this should only be call if there are no entires
     }
 
+    public void ButtonPrompt()
+    {
+        if(updated_inventory)
+        {
+            GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.Y, "JOURNAL");
+
+            if(GM_.Instance.input.GetButtonDown(InputManager.BUTTON.Y))
+            {
+                updated_inventory = false;
+            }
+        }
+    }
+
     public void Reset()
     {
         items.Clear();
@@ -112,5 +128,6 @@ public class Inventory
 
         items.Add(wood);
         items.Add(puzzle);
+       
     }
 }

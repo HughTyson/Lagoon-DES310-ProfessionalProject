@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Name: Barrier
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 6648, y: 504}
+  position: {x: 6696, y: 504}
   ports:
     keys:
     - input
@@ -289,7 +289,10 @@ MonoBehaviour:
       _node: {fileID: -6844741197521966895}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
+      connections:
+      - fieldName: input
+        node: {fileID: -4331506898311387213}
+        reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
@@ -488,6 +491,60 @@ MonoBehaviour:
   input: 0
   output: 0
   nodeWidth: 300
+--- !u!114 &-4331506898311387213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d820c1cde8f8c4088dc535417700d3, type: 3}
+  m_Name: Barrier
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 7096, y: 504}
+  ports:
+    keys:
+    - input
+    - output
+    - additionalInfo
+    values:
+    - _fieldName: input
+      _node: {fileID: -4331506898311387213}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: output
+        node: {fileID: -6844741197521966895}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -4331506898311387213}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 1
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: additionalInfo
+      _node: {fileID: -4331506898311387213}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  additionalInfo: 0
+  barriers: 02000000
+  output: 0
+  input: 0
 --- !u!114 &-2591767828564238574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -965,6 +1022,7 @@ MonoBehaviour:
   - {fileID: -78223908603945377}
   - {fileID: 134544054205602124}
   - {fileID: 6665581349954894498}
+  - {fileID: -4331506898311387213}
 --- !u!114 &134544054205602124
 MonoBehaviour:
   m_ObjectHideFlags: 0
