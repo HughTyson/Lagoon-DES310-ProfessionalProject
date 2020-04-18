@@ -17,7 +17,8 @@ public class HDRP_SpriteSheet : ScriptableObject
     List<AnimationFrames> animations;
 
     Dictionary<int, AnimationFrames> animationFramesDictionary;
-    void OnValidate()
+
+    private void Awake()
     {
         animationFramesDictionary = new Dictionary<int, AnimationFrames>();
         for (int i = 0; i < animations.Count; i++)
