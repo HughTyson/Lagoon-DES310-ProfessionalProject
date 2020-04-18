@@ -46,6 +46,7 @@ public class LevelManager : MonoBehaviour
     {
         GM_.Instance.scene_manager.new_scene_loaded = false;
         Debug.Log(GM_.Instance.scene_manager.new_scene_loaded);
+        GM_.Instance.story_objective.Event_BarrierObjectiveComplete -= GameStart;
     }
 
 
@@ -54,7 +55,7 @@ public class LevelManager : MonoBehaviour
     {
         if (!quiting)
         {
-            GM_.Instance.story_objective.Event_BarrierObjectiveComplete -= GameStart;
+           
             GM_.Instance.story.Event_BarrierStart -= Story_EventRequest_BarrierStart;
         }
     }
