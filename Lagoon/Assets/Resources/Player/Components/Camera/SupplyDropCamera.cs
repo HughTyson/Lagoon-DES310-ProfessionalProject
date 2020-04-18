@@ -26,7 +26,8 @@ public class SupplyDropCamera : MonoBehaviour
 
     float shake_time = 0.5f;
 
-    TweenManager.TweenPathBundle magnitude;
+    TweenManager.TweenPathBundle magnitude1;
+    
     Quaternion rot;
 
 
@@ -35,9 +36,16 @@ public class SupplyDropCamera : MonoBehaviour
     {
 
 
-        magnitude = new TweenManager.TweenPathBundle(
+        magnitude1 = new TweenManager.TweenPathBundle(
                             new TweenManager.TweenPath(
-                                new TweenManager.TweenPart_Start(0, 0.15f, 1.0f, TweenManager.CURVE_PRESET.EASE_IN)
+                                new TweenManager.TweenPart_Start(0, 0.15f, 1.0f, TweenManager.CURVE_PRESET.EASE_IN),
+                                new TweenManager.TweenPart_Delay(1),
+                                new TweenManager.TweenPart_Continue(0.05f, 1.0f, TweenManager.CURVE_PRESET.LINEAR),
+                                new TweenManager.TweenPart_Delay(3),
+                                new TweenManager.TweenPart_Continue(0.15f, 1.5f, TweenManager.CURVE_PRESET.EASE_IN),
+                                new TweenManager.TweenPart_Delay(2),
+                                new TweenManager.TweenPart_Continue(0, 1.0f, TweenManager.CURVE_PRESET.EASE_OUT)
+
                             )
                         );
 
@@ -47,8 +55,6 @@ public class SupplyDropCamera : MonoBehaviour
     private void Awake()
     {
         GM_.Instance.story.Event_GameEventStart += SupplyStart;
-
-        //GM_.Instance.story.EventRequest_GameEventContinue += SupplyFinish;
 
         GM_.Instance.story.Event_GameEventEnd += SupplyFinish;
 
@@ -127,7 +133,7 @@ public class SupplyDropCamera : MonoBehaviour
         {
 
             GM_.Instance.tween_manager.StartTweenInstance(
-                magnitude,
+                magnitude1,
                 new TypeRef<float>[] { shake_magnitude }
             );
 
@@ -139,12 +145,12 @@ public class SupplyDropCamera : MonoBehaviour
     private void SupplyFinish()
     {
 
-        GM_.Instance.tween_manager.StartTweenInstance(
-            magnitude,
-            new TypeRef<float>[] { shake_magnitude },
-            tweenUpdatedDelegate_: UpdateFinish,
-            tweenCompleteDelegate_: Finish
-        );
+        //GM_.Instance.tween_manager.StartTweenInstance(
+        //    magnitude1,
+        //    new TypeRef<float>[] { shake_magnitude },
+        //    tweenUpdatedDelegate_: UpdateFinish,
+        //    tweenCompleteDelegate_: Finish
+        //);
 
         look_up = false;
 

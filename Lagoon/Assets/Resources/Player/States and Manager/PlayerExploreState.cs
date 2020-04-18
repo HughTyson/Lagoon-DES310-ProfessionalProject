@@ -23,7 +23,10 @@ public class PlayerExploreState : BaseState
 
     bool radioIsAvailable = false;
 
-    INTERACTION_TYPE interaction_type;
+
+
+
+   INTERACTION_TYPE interaction_type;
 
     private void Awake()
     {
@@ -33,6 +36,8 @@ public class PlayerExploreState : BaseState
     {
         GM_.Instance.story.Event_BarrierOpened += ConversationStateAvailable;
         GM_.Instance.story.Event_ConvoEnter += ConversationStateUnavailalble;
+
+        
 
     }
 
@@ -63,7 +68,8 @@ public class PlayerExploreState : BaseState
     public override void StateUpdate()
     {
 
-        
+        GM_.Instance.inventory.ButtonPrompt();
+        GM_.Instance.stats.ButtonPrompt();
 
 
         if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))

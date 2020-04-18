@@ -432,7 +432,7 @@ public class JournalLogic : MonoBehaviour
             {
                 if (!showAnimation.IsPlaying)
                 {
-                    requestedToChangePage(new BasePagePair.RequestToChangePage(inventoryPage));
+                    requestedToChangePage(new BasePagePair.RequestToChangePage(statsPage));
                     GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
                 }
             }

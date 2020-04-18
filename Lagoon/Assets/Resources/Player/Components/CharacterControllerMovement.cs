@@ -43,6 +43,11 @@ public class CharacterControllerMovement : MonoBehaviour
 
     float g;
 
+    AudioSFX sfx_walking;
+    AudioManager.SFXInstanceInterface walking;
+
+    float time_passed;
+
     public enum STATE
     {
         FREE_MOVEMENT,       //Player can move any way they want
@@ -62,7 +67,9 @@ public class CharacterControllerMovement : MonoBehaviour
         test_drop = GetComponent<SupplyDrop>();
 
         //Physics.IgnoreLayerCollision(13, 15);
-        
+
+        sfx_walking = GM_.Instance.audio.GetSFX("WalkingOnSand");
+
     }
 
     // Update is called once per frame
@@ -88,6 +95,49 @@ public class CharacterControllerMovement : MonoBehaviour
                 {
                     HandleInput();
                     Rotation();
+
+
+                    Debug.Log(Vector3.Magnitude(move_direction));
+
+                    //if(Vector3.Magnitude(move_direction) > 1 && time_passed > 0.3f)
+                    //{
+                    //    walking = GM_.Instance.audio.PlaySFX(sfx_walking, null);
+
+                    //    time_passed = 0;
+                    //}
+                    //else
+                    //{
+                    //    if(walking != null && time_passed > 0.1f)
+                    //    {
+                    //        walking.Stop();    
+                    //    }
+
+                    //    time_passed += Time.deltaTime;
+
+                    //}
+
+
+                    if (Vector3.Magnitude(move_direction) > 1 && walking == null)
+                    {
+                        walking = GM_.Instance.audio.PlaySFX(sfx_walking, null);
+
+                        time_passed = 0;
+                    }
+                    else if(Vector3.Magnitude(move_direction) < 1)
+                    {
+                        if (walking != null)
+                        {
+                            walking.Stop();
+                            walking = null;
+                        }
+
+                        time_passed += Time.deltaTime;
+
+                    }
+
+                    Debug.Log(time_passed);
+
+                    //Debug.Log(move_direction);
 
                     controller.Move(move_direction * Time.fixedDeltaTime);
 

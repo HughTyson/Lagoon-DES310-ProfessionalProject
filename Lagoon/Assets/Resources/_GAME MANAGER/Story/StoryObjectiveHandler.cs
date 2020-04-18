@@ -110,7 +110,7 @@ public class StoryObjectiveHandler
     {
         public override bool ObjectiveComplete()
         {
-            return true;
+            return false;
         }
     }
 

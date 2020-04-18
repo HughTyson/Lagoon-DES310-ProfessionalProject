@@ -27,6 +27,8 @@ public class StatsManager
     public List<PlaneStats_> plane_segments_stats = new List<PlaneStats_>();
     PlaneStats_ temp;
 
+    bool stats_update = true;
+
 
     public void DayCountIncrease()
     {
@@ -34,12 +36,24 @@ public class StatsManager
         Debug.Log(dayNumber);
     }
 
-    public void IncreaseFishCount()
+    public void UpdateFishStats(FishLogic.VarsFromFishGenerator vars)
+    {
+
+        IncreaseFishCount();
+
+        NewBiggest(vars);
+
+        UpdateLastFish(vars);
+
+
+    }
+
+    void IncreaseFishCount()
     {
         fishCaught += 1;
     }
 
-    public void NewBiggest(FishLogic.VarsFromFishGenerator vars)
+    void NewBiggest(FishLogic.VarsFromFishGenerator vars)
     {
         if(vars.size > bigestFishStats.size)
         {
@@ -102,17 +116,32 @@ public class StatsManager
                 }
         }
 
+        stats_update = true;
+
+    }
+
+    public void ButtonPrompt()
+    {
+        if (stats_update)
+        {
+            GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.Y, "JOURNAL");
+
+            if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.Y))
+            {
+                stats_update = false;
+            }
+        }
     }
 
     public void ResetStats()
     {
         bigestFishStats.size = 0;
-        bigestFishStats.type = "";
+        bigestFishStats.type = "Go catch a fish";
         bigestFishStats.satisfaction = "I need to catch a fish first";
 
 
         last_fish_stats.size = 0;
-        last_fish_stats.type = "";
+        last_fish_stats.type = "Go catch a fish";
         last_fish_stats.satisfaction = "I need to catch a fish first";
     }
 
@@ -157,6 +186,9 @@ public class StatsManager
         return complete;
     }
 
-
+    public void CleanUp()
+    {
+        plane_segments_stats.Clear();
+    }
 
 }

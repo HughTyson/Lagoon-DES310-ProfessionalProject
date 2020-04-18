@@ -34,7 +34,7 @@ public class Firewood : InventoryItem
 {
     public override void Init(int? i = null)
     {
-        SetName("Chocolate");
+        SetName("Firewood");
         SetItemType(ItemType.GENERIC);
         SetDescription("Sun of a birch");
         SetQuanity((i == null ? 10 : (int)i));
