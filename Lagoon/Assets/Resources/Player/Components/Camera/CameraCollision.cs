@@ -43,7 +43,7 @@ public class CameraCollision : MonoBehaviour
     {
         //clear intoArray 
 
-        intoArray = new Vector3[4];
+        intoArray = new Vector3[5];
 
         float z = cam.nearClipPlane; //distance from cameras position to the new clip plane
         float x = Mathf.Tan(cam.fieldOfView / collision_box_size) * z;
@@ -58,7 +58,7 @@ public class CameraCollision : MonoBehaviour
 
         intoArray[3] = (cp_rotation * new Vector3(x, -y, z)) + camera_position;     //add and rotate the collision point based on camera
 
-        // intoArray[4] = camera_position - cam.transform.forward/2;                  //cam_pos
+        intoArray[4] = camera_position - cam.transform.forward/2;                  //cam_pos
     }
 
     //determines if there is a collision at any of these clip points
