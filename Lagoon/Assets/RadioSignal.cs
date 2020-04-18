@@ -16,22 +16,64 @@ public class RadioSignal : MonoBehaviour
     HDRP_Unlit_ManualAnimator manual_sprite_animator;
     Material material;
 
+    AudioSFX sfx_radio;
+    AudioSFX sfx_talking;
+
+    AudioManager.SFXInstanceInterface incoming_transmission;
+    AudioManager.SFXInstanceInterface talking;
+
     private void Awake()
     {
         GM_.Instance.story_objective.Event_BarrierObjectiveComplete += Story_objective_Event_BarrierObjectiveComplete;
         GM_.Instance.story.Event_BarrierStart += BarrierStart;
 
+        GM_.Instance.story.Event_ConvoEnter += ConvoStart;
+
+        GM_.Instance.story.Event_BranchStart += BranchStart;
+
+        GM_.Instance.story.Event_DialogNewText += NewTextNewPersonSpeaking;
+        
 
         manual_sprite_animator = GetComponentInChildren<HDRP_Unlit_ManualAnimator>();
         material = GetComponentInChildren<MeshRenderer>().material;
 
+        
 
         Application.quitting += Quitting;
+
+        sfx_radio = GM_.Instance.audio.GetSFX("Radio_Calling");
+    }
+
+    private void NewTextNewPersonSpeaking(StoryManager.DialogNewTextArgs obj)
+    {
+
+        if(talking != null)
+        {
+            talking.Stop();
+        }
+        
+
+        //talking = GM_.Instance.audio.PlaySFX(sfx_radio, null);
+    }
+
+    private void BranchStart(StoryManager.BranchEnterArgs args)
+    {
+        //talking.Stop();
+    }
+
+    private void ConvoStart()
+    {
+            incoming_transmission.Stop();
+            GM_.Instance.story.RequestGameEventContinue();
     }
 
     private void BarrierStart(StoryManager.BarrierStartArgs obj)
     {
         run_ui = false;
+
+        if(incoming_transmission != null)
+            incoming_transmission.Stop();
+
         GM_.Instance.DayNightCycle.SetBaseTime(1.0f);
         GM_.Instance.DayNightCycle.SetTime();
     }
@@ -40,8 +82,9 @@ public class RadioSignal : MonoBehaviour
     {
         run_ui = true;
 
-        GM_.Instance.DayNightCycle.SetBaseTime(0.0f);
+        incoming_transmission =  GM_.Instance.audio.PlaySFX(sfx_radio, transform);
 
+        GM_.Instance.DayNightCycle.SetBaseTime(0.0f);
     }
 
 
@@ -100,20 +143,17 @@ public class RadioSignal : MonoBehaviour
 
     }
 
-
-
-        
-    
-
     private void OnDestroy()
     {
         if (!quiting)
         {
             GM_.Instance.story_objective.Event_BarrierObjectiveComplete -= Story_objective_Event_BarrierObjectiveComplete;
             GM_.Instance.story.Event_BarrierStart -= BarrierStart;
+            GM_.Instance.story.Event_ConvoEnter -= ConvoStart;
         }
 
     }
+
     bool quiting = false;
     void Quitting()
     {

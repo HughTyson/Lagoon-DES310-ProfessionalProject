@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Barrier
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -1688, y: 488}
+  position: {x: -1128, y: 488}
   ports:
     keys:
     - input
@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Name: Root
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -2776, y: -808}
+  position: {x: -2920, y: -824}
   ports:
     keys:
     - output
@@ -558,7 +558,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -1976, y: -840}
+  position: {x: -1896, y: -856}
   ports:
     keys:
     - input
@@ -624,7 +624,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -2360, y: -840}
+  position: {x: -2248, y: -856}
   ports:
     keys:
     - input
@@ -1023,7 +1023,6 @@ MonoBehaviour:
   - {fileID: 134544054205602124}
   - {fileID: 6665581349954894498}
   - {fileID: -4331506898311387213}
-  - {fileID: 7505099268918265186}
 --- !u!114 &134544054205602124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1050,7 +1049,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: output
-        node: {fileID: 7505099268918265186}
+        node: {fileID: 6665581349954894498}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -1094,7 +1093,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -1576, y: -856}
+  position: {x: -1560, y: -856}
   ports:
     keys:
     - input
@@ -1723,7 +1722,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -1336, y: 456}
+  position: {x: -808, y: 456}
   ports:
     keys:
     - input
@@ -1748,7 +1747,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: input
-        node: {fileID: 7505099268918265186}
+        node: {fileID: 134544054205602124}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -1807,63 +1806,6 @@ MonoBehaviour:
       _dynamic: 0
   additionalInfo: 0
   page: 2
---- !u!114 &7505099268918265186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 082bee13cc9ec184f81ba5ce88c98576, type: 3}
-  m_Name: Event
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -888, y: 568}
-  ports:
-    keys:
-    - input
-    - output
-    - additionalInfo
-    values:
-    - _fieldName: input
-      _node: {fileID: 7505099268918265186}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: output
-        node: {fileID: 6665581349954894498}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: output
-      _node: {fileID: 7505099268918265186}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: input
-        node: {fileID: 134544054205602124}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: additionalInfo
-      _node: {fileID: 7505099268918265186}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  additionalInfo: 0
-  input: 0
-  output: 0
-  event_occured: 0
 --- !u!114 &9009800898561546038
 MonoBehaviour:
   m_ObjectHideFlags: 0

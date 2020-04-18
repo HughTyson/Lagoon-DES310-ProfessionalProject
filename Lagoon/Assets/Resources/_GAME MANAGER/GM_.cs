@@ -20,6 +20,7 @@ public class GM_ : MonoBehaviour
     static GM_ instance_ = null;
     static bool destroyed_ = false;
     Members members = null;
+
     static public Members Instance
     {
         get
@@ -106,6 +107,7 @@ public class GM_ : MonoBehaviour
     void Start()
     {
         members.story.Init();
+        
     }
 
 

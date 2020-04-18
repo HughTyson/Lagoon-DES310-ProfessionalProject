@@ -23,7 +23,10 @@ public class PlayerExploreState : BaseState
 
     bool radioIsAvailable = false;
 
-    INTERACTION_TYPE interaction_type;
+
+
+
+   INTERACTION_TYPE interaction_type;
 
     private void Awake()
     {
@@ -33,6 +36,8 @@ public class PlayerExploreState : BaseState
     {
         GM_.Instance.story.Event_BarrierOpened += ConversationStateAvailable;
         GM_.Instance.story.Event_ConvoEnter += ConversationStateUnavailalble;
+
+        
 
     }
 

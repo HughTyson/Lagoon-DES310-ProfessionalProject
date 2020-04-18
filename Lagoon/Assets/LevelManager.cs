@@ -52,7 +52,17 @@ public class LevelManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        GM_.Instance.story_objective.Event_BarrierObjectiveComplete -= GameStart;
-        GM_.Instance.story.Event_BarrierStart -= Story_EventRequest_BarrierStart;
+        if (!quiting)
+        {
+            GM_.Instance.story_objective.Event_BarrierObjectiveComplete -= GameStart;
+            GM_.Instance.story.Event_BarrierStart -= Story_EventRequest_BarrierStart;
+        }
+    }
+
+    bool quiting = false;
+
+    void Quiting()
+    {
+        quiting = true;
     }
 }
