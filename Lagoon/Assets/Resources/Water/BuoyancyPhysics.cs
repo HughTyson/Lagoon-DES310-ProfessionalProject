@@ -31,7 +31,6 @@ public class BuoyancyPhysics : MonoBehaviour
 
     private void Awake()
     {
-        bobHitWater = GM_.Instance.audio.GetSFX("FishingBob_HitWater");
     }
     private void OnEnable()
     {
@@ -102,7 +101,6 @@ public class BuoyancyPhysics : MonoBehaviour
     }
 
 
-    AudioSFX bobHitWater;
     void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<WaterPhysics>() != null)
