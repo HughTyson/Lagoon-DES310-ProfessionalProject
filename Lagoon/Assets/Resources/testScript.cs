@@ -11,6 +11,7 @@ public class testScript : MonoBehaviour
     [SerializeField] SelectableButton_TextButton button3;
     [SerializeField] Slider_Default slider;
     [SerializeField] CheckBox_Default checkbox;
+    [SerializeField] SelectableButton_Default button4;
     private void Start()
     {
 
@@ -25,6 +26,7 @@ public class testScript : MonoBehaviour
             button3.Show();
             slider.Show();
             checkbox.Show();
+            button4.Show();
         }
         else if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.RB))
         {
@@ -33,11 +35,12 @@ public class testScript : MonoBehaviour
             button3.Hide();
             slider.Hide();
             checkbox.Hide();
+            button4.Hide();
         }
 
         if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.Y))
         {
-            button1.HoverOver();
+            button4.HoverOver();
         }
 
 

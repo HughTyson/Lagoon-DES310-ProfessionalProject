@@ -9,10 +9,6 @@ public class SelectableButton_ : Selectable_
         Init();
     }
 
-
-   // static readonly AudioSFX sfx_hoverChange = ;
-   // static readonly AudioSFX sfx_select =;
-
      AudioManager.SFXArgs sfxArgs_hoverChange;
      AudioManager.SFXArgs sfxArgs_select;
 
@@ -33,9 +29,6 @@ public class SelectableButton_ : Selectable_
           IsMenuSound_: true
        );
 
-
-
-
         InternalEvent_BeginHoverOver += internalHoveredOverBegin;
         InternalEvent_UpdateHoverOver += internalHoveredOverUpdate;
         ThisInit_Layer3();
@@ -54,8 +47,6 @@ public class SelectableButton_ : Selectable_
     }
     void internalHoveredOverUpdate()
     {
-        float horizontal = GM_.Instance.input.GetAxis(InputManager.AXIS.LH);
-        float vertical = GM_.Instance.input.GetAxis(InputManager.AXIS.LV);
 
         if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))
         {
@@ -66,6 +57,10 @@ public class SelectableButton_ : Selectable_
             Select();
             return;
         }
+
+        float horizontal = GM_.Instance.input.GetAxis(InputManager.AXIS.LH);
+        float vertical = GM_.Instance.input.GetAxis(InputManager.AXIS.LV);
+
 
         // always go for the axis with the the highest magnitude pushed on it, icase the player is pushing over the deadzone in both, the horizontal and vertical
         if (Mathf.Abs(vertical) > Mathf.Abs(horizontal))
