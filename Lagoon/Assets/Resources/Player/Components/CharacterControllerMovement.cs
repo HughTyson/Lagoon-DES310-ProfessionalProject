@@ -43,8 +43,10 @@ public class CharacterControllerMovement : MonoBehaviour
 
     float g;
 
+    bool journal_open = false;
+
     AudioSFX sfx_walking;
-    AudioManager.SFXInstanceInterface walking;
+    [HideInInspector] public AudioManager.SFXInstanceInterface walking;
 
     float time_passed;
 
@@ -96,36 +98,40 @@ public class CharacterControllerMovement : MonoBehaviour
                     HandleInput();
                     Rotation();
 
-                    if (Vector3.Magnitude(move_direction) > 1)
-                    {
-                        if(walking == null)
-                        {
-                            walking = GM_.Instance.audio.PlaySFX(sfx_walking, null);
-                        }
-                        else if(walking != null)
-                        {
-                            walking.Loop = true;
-                        }
+                    //if(!journal_open)
+                    //{
+                    //    if (Vector3.Magnitude(move_direction) > 1)
+                    //    {
+                    //        if(walking == null)
+                    //        {
+                    //            walking = GM_.Instance.audio.PlaySFX(sfx_walking, null);
+                    //        }
+                    //        else if(walking != null)
+                    //        {
+                    //            walking.Loop = true;
+                    //        }
                         
-                        time_passed = 0;
-                    }
-                    else if(Vector3.Magnitude(move_direction) < 1)
-                    {
-                        if(walking != null)
-                        {
-                            if (walking.Loop)
-                            {
-                                walking.Loop = false;
-                            }
-                            time_passed += Time.deltaTime;
-                        }
+                    //        time_passed = 0;
+                    //    }
+                    //    else if(Vector3.Magnitude(move_direction) < 1)
+                    //    {
+                    //        if(walking != null)
+                    //        {
+                    //            if (walking.Loop)
+                    //            {
+                    //                walking.Loop = false;
+                    //            }
+                    //            time_passed += Time.deltaTime;
+                    //        }
 
-                        if(time_passed > 0.2)
-                        {
-                            time_passed = 0;
-                            walking = null;
-                        }
-                    }
+                    //        if(time_passed > 0.2)
+                    //        {
+                    //            time_passed = 0;
+                    //            walking = null;
+                    //        }
+                    //    }
+                    //}
+
 
                     controller.Move(move_direction * Time.fixedDeltaTime);
 
@@ -167,6 +173,18 @@ public class CharacterControllerMovement : MonoBehaviour
     private void HandleInput()
     {
         movement_input = new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.LH) * joyStick_sensitivity, GM_.Instance.input.GetAxis(InputManager.AXIS.LV) * joyStick_sensitivity);
+
+        //if(GM_.Instance.input.GetButton(InputManager.BUTTON.Y) && !journal_open)
+        //{
+        //    journal_open = true;
+        //    walking.Stop();
+        //    walking = null;
+        //}
+
+        //if(GM_.Instance.input.GetButton(InputManager.BUTTON.B))
+        //{
+        //    journal_open = false;
+        //}
     }
 
     private void Rotation()

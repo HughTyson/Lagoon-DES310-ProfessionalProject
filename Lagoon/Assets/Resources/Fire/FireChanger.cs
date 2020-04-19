@@ -28,11 +28,13 @@ public class FireChanger : MonoBehaviour
     TypeRef<float> fireAdd_rateovertime_day = new TypeRef<float>();
     TypeRef<float> glow_rateovertime_day = new TypeRef<float>();
     TypeRef<float> sparks_rateovertime_day = new TypeRef<float>();
+    TypeRef<float> fire_volume = new TypeRef<float>();
 
     TimeMovement.Solar current;
     TimeMovement.Solar old;
 
     TweenManager.TweenPathBundle slowdown_tween;
+    
 
     bool update_vars = true;
 
@@ -41,11 +43,15 @@ public class FireChanger : MonoBehaviour
     ParticleSystem.EmissionModule em_glow;
     ParticleSystem.EmissionModule em_sparks;
 
-    
+    AudioSFX sfx_fire;
+    AudioManager.SFXInstanceInterface fire_crackling;
+
 
     // Start is called before the first frame update
     void Start()
     {
+
+        sfx_fire = GM_.Instance.audio.GetSFX("Fire_Crackling");
 
         slowdown_tween = new TweenManager.TweenPathBundle(
                 new TweenManager.TweenPath(
@@ -55,7 +61,9 @@ public class FireChanger : MonoBehaviour
                 new TweenManager.TweenPath(
                 new TweenManager.TweenPart_Start(10, 0, 15.0f, TweenManager.CURVE_PRESET.LINEAR)),
                 new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(10, 0, 20.0f, TweenManager.CURVE_PRESET.LINEAR))
+                new TweenManager.TweenPart_Start(10, 0, 20.0f, TweenManager.CURVE_PRESET.LINEAR)),
+                new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(sfx_fire.Volume, 0, 13.0f, TweenManager.CURVE_PRESET.LINEAR))
         );
 
         em_fireAdd= particle_system_fireAdd.emission;
@@ -77,22 +85,19 @@ public class FireChanger : MonoBehaviour
             fireflys[i].enabled = false;
         }
 
+        log_mat.SetColor("_EmissiveColor", Color.black);
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-
         current = GM_.Instance.DayNightCycle.GetSolar();
-
-
 
         if (old != current)
         {
             old = current;
-
-
 
             switch (current)
             {
@@ -101,7 +106,7 @@ public class FireChanger : MonoBehaviour
 
                         GM_.Instance.tween_manager.StartTweenInstance(
                             slowdown_tween,
-                            new TypeRef<float>[] { fireAdd_rateovertime_day, fireAlpha_rateovertime_day, glow_rateovertime_day, sparks_rateovertime_day },
+                            new TypeRef<float>[] { fireAdd_rateovertime_day, fireAlpha_rateovertime_day, glow_rateovertime_day, sparks_rateovertime_day, fire_volume },
                             tweenUpdatedDelegate_: UpdateFire,
                             tweenCompleteDelegate_: CompleteFire
                         );
@@ -133,11 +138,15 @@ public class FireChanger : MonoBehaviour
                             fireflys[i].enabled = true;
                         }
 
+                        fire_crackling = GM_.Instance.audio.PlaySFX(sfx_fire, transform);
+
                     }
                     break;
                 default:
                     break;
             }
+
+            
         }
 
         if(update_vars)
@@ -153,6 +162,7 @@ public class FireChanger : MonoBehaviour
         em_fireAlpha.rateOverTime = fireAlpha_rateovertime_day.value;
         em_glow.rateOverTime = glow_rateovertime_day.value;
         em_sparks.rateOverTime = sparks_rateovertime_day.value;
+        fire_crackling.Volume = fire_volume.value;
 
         log_mat.SetColor("_EmissiveColor", Color.black);
 
@@ -163,6 +173,10 @@ public class FireChanger : MonoBehaviour
 
     void CompleteFire()
     {
+
+        fire_crackling.Stop();
+        fire_crackling = null;
+
         //enabled = false;
     }
 }

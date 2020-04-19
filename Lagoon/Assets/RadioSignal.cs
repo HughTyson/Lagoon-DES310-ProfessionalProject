@@ -31,40 +31,42 @@ public class RadioSignal : MonoBehaviour
 
         GM_.Instance.story.Event_BranchStart += BranchStart;
 
-        GM_.Instance.story.Event_DialogNewText += NewTextNewPersonSpeaking;
-        
+        GM_.Instance.story.Event_ConvoExit += ConvoExit;
 
         manual_sprite_animator = GetComponentInChildren<HDRP_Unlit_ManualAnimator>();
         material = GetComponentInChildren<MeshRenderer>().material;
 
-        
-
         Application.quitting += Quitting;
 
         sfx_radio = GM_.Instance.audio.GetSFX("Radio_Calling");
+        sfx_talking = GM_.Instance.audio.GetSFX("Radio_Talking");
     }
 
-    private void NewTextNewPersonSpeaking(StoryManager.DialogNewTextArgs obj)
+    private void ConvoExit()
     {
-
-        if(talking != null)
-        {
-            talking.Stop();
-        }
-        
-
-        //talking = GM_.Instance.audio.PlaySFX(sfx_radio, null);
+        talking.Stop();
     }
 
     private void BranchStart(StoryManager.BranchEnterArgs args)
     {
-        //talking.Stop();
+        talking.Stop();
+
+        GM_.Instance.story.Event_DialogNewText += StartTalking;
+    }
+
+    private void StartTalking(StoryManager.DialogNewTextArgs obj)
+    {
+        talking = GM_.Instance.audio.PlaySFX(sfx_talking, null);
+        GM_.Instance.story.Event_DialogNewText -= StartTalking;
     }
 
     private void ConvoStart()
     {
-            incoming_transmission.Stop();
-            GM_.Instance.story.RequestGameEventContinue();
+        incoming_transmission.Stop();
+
+        talking = GM_.Instance.audio.PlaySFX(sfx_talking, null);
+
+        GM_.Instance.story.RequestGameEventContinue();
     }
 
     private void BarrierStart(StoryManager.BarrierStartArgs obj)
@@ -86,7 +88,6 @@ public class RadioSignal : MonoBehaviour
 
         GM_.Instance.DayNightCycle.SetBaseTime(0.0f);
     }
-
 
     // Start is called before the first frame update
     void Start()
