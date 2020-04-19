@@ -14,6 +14,7 @@ public class SleepCamera : MonoBehaviour
     [Tooltip("The speed of the camera when moving")]
     float camera_speed = 1f;
 
+    private Vector3 cam_velocity = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,7 @@ public class SleepCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.Lerp(transform.position, target_position, camera_speed * Time.deltaTime);
+        transform.position = Vector3.SmoothDamp(transform.position, target_position, ref cam_velocity, camera_speed * Time.deltaTime);
 
         Quaternion rot = Quaternion.LookRotation(look_at - transform.position);
 
