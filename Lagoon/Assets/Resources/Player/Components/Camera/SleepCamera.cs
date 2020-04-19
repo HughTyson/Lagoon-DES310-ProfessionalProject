@@ -6,30 +6,71 @@ public class SleepCamera : MonoBehaviour
 {
 
     [Tooltip("The look at for the camera")]
-    [SerializeField] Vector3 look_at;
+    [SerializeField] Transform look_at;
 
     [Tooltip("The position of the camera")]
-    [SerializeField] Vector3 target_position;
+    [SerializeField] Transform base_pos;
 
     [Tooltip("The speed of the camera when moving")]
     float camera_speed = 1f;
+
+    TweenManager.TweenPathBundle init_movement;
+    TypeRef<float> x = new TypeRef<float>();
+    TypeRef<float> y = new TypeRef<float>();
+    TypeRef<float> z = new TypeRef<float>();
+
+    bool move = false;
 
     private Vector3 cam_velocity = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
     {
-        target_position = new Vector3(0, 2, 0);
-        look_at = new Vector3(-10, 2, 0);
+        
+    }
+
+
+    private void OnEnable()
+    {
+        if(move)
+        {
+            x.value = transform.position.x;
+            y.value = transform.position.y;
+            z.value = transform.position.z;
+
+            init_movement = new TweenManager.TweenPathBundle(
+                    new TweenManager.TweenPath(
+                        new TweenManager.TweenPart_Start(transform.position.x, base_pos.position.x, 4, TweenManager.CURVE_PRESET.LINEAR)
+                    ),
+                    new TweenManager.TweenPath(
+                        new TweenManager.TweenPart_Start(transform.position.y, base_pos.position.y, 4, TweenManager.CURVE_PRESET.LINEAR)
+
+                    ),
+                    new TweenManager.TweenPath(
+                        new TweenManager.TweenPart_Start(transform.position.z, base_pos.position.z, 4.0f, TweenManager.CURVE_PRESET.LINEAR)
+                    )
+            );
+
+            GM_.Instance.tween_manager.StartTweenInstance(
+                init_movement,
+                new TypeRef<float>[] { x, y, z },
+                tweenUpdatedDelegate_: PosUpdate
+            );
+        }
+
+        move = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.SmoothDamp(transform.position, target_position, ref cam_velocity, camera_speed * Time.deltaTime);
+        Quaternion rot = Quaternion.LookRotation(look_at.position - transform.position);
 
-        Quaternion rot = Quaternion.LookRotation(look_at - transform.position);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * 1.5f);
+    }
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime);
+    void PosUpdate()
+    {
+        transform.position = new Vector3(x.value, y.value, z.value);
     }
 }

@@ -46,6 +46,9 @@ public class FireChanger : MonoBehaviour
     AudioSFX sfx_fire;
     AudioManager.SFXInstanceInterface fire_crackling;
 
+    bool fade_in = false;
+    float delay = 0;
+
 
     // Start is called before the first frame update
     void Start()
@@ -130,9 +133,6 @@ public class FireChanger : MonoBehaviour
                         em_glow.rateOverTime = glow_rateovertime_night;
                         em_sparks.rateOverTime = sparks_rateovertime_night;
 
-
-                        log_mat.SetColor("_EmissiveColor", Color.white);
-
                         for (int i = 0; i < fireflys.Count; i++)
                         {
                             fireflys[i].enabled = true;
@@ -140,20 +140,41 @@ public class FireChanger : MonoBehaviour
 
                         fire_crackling = GM_.Instance.audio.PlaySFX(sfx_fire, transform);
 
+                        fade_in = true;
+
                     }
                     break;
                 default:
                     break;
             }
 
+
             
         }
-
-        if(update_vars)
+        if (fade_in)
         {
+            if (delay > 1.3)
+            {
+                Color current = log_mat.GetColor("_EmissiveColor");
 
+                Color final = new Color(1, 1, 1);
+
+                Color new_colour = Color.Lerp(current, final, Time.deltaTime / 5);
+
+                log_mat.SetColor("_EmissiveColor", new_colour);
+
+                if (new_colour.r + 0.3 >= 1.0f)
+                {
+                    fade_in = false;
+                    log_mat.SetColor("_EmissiveColor", Color.white);
+                    delay = 0;
+                }
+            }
+            else
+            {
+                delay += Time.deltaTime;
+            }
         }
-
     }
 
     void UpdateFire()
@@ -164,11 +185,19 @@ public class FireChanger : MonoBehaviour
         em_sparks.rateOverTime = sparks_rateovertime_day.value;
         fire_crackling.Volume = fire_volume.value;
 
-        log_mat.SetColor("_EmissiveColor", Color.black);
+        //log_mat.SetColor("_EmissiveColor", Color.black);
 
         sparks.enabled = false;
 
+        Color current = log_mat.GetColor("_EmissiveColor");
 
+        Color final = new Color(0, 0, 0);
+
+        Color mat = Color.Lerp(current, final, Time.deltaTime /4 );
+
+        log_mat.SetColor("_EmissiveColor", mat);
+
+        Debug.Log(mat.ToString());
     }
 
     void CompleteFire()
@@ -177,6 +206,7 @@ public class FireChanger : MonoBehaviour
         fire_crackling.Stop();
         fire_crackling = null;
 
+        log_mat.SetColor("_EmissiveColor", Color.black);
         //enabled = false;
     }
 }

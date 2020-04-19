@@ -34,8 +34,6 @@ public class SupplyDropCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-
         camera_shake = new TweenManager.TweenPathBundle(
                             new TweenManager.TweenPath(
                                 new TweenManager.TweenPart_Start(0, 0.15f, 1.0f, TweenManager.CURVE_PRESET.EASE_IN),
@@ -48,8 +46,6 @@ public class SupplyDropCamera : MonoBehaviour
 
                             )
                         );
-
-
     }
 
     private void Awake()
