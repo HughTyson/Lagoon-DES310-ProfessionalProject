@@ -20,6 +20,9 @@ public class FireChanger : MonoBehaviour
 
     [SerializeField] UnityEngine.Experimental.VFX.VisualEffect sparks;
 
+    [SerializeField] List<UnityEngine.Experimental.VFX.VisualEffect> fireflys;
+
+    [SerializeField] Material log_mat;
 
     TypeRef<float> fireAlpha_rateovertime_day = new TypeRef<float>();
     TypeRef<float> fireAdd_rateovertime_day = new TypeRef<float>();
@@ -37,6 +40,8 @@ public class FireChanger : MonoBehaviour
     ParticleSystem.EmissionModule em_fireAlpha;
     ParticleSystem.EmissionModule em_glow;
     ParticleSystem.EmissionModule em_sparks;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -67,6 +72,11 @@ public class FireChanger : MonoBehaviour
 
         sparks.enabled = false;
 
+        for (int i = 0; i < fireflys.Count; i++)
+        {
+            fireflys[i].enabled = false;
+        }
+
     }
 
     // Update is called once per frame
@@ -89,13 +99,17 @@ public class FireChanger : MonoBehaviour
                 case TimeMovement.Solar.DAY:
                     {
 
-                            GM_.Instance.tween_manager.StartTweenInstance(
-                                slowdown_tween,
-                                new TypeRef<float>[] { fireAdd_rateovertime_day, fireAlpha_rateovertime_day, glow_rateovertime_day, sparks_rateovertime_day },
-                                tweenUpdatedDelegate_: UpdateFire,
-                                tweenCompleteDelegate_: CompleteFire
-                            );
-                        
+                        GM_.Instance.tween_manager.StartTweenInstance(
+                            slowdown_tween,
+                            new TypeRef<float>[] { fireAdd_rateovertime_day, fireAlpha_rateovertime_day, glow_rateovertime_day, sparks_rateovertime_day },
+                            tweenUpdatedDelegate_: UpdateFire,
+                            tweenCompleteDelegate_: CompleteFire
+                        );
+
+                        for (int i = 0; i < fireflys.Count; i++)
+                        {
+                            fireflys[i].enabled = false;
+                        }
 
                     }
                     break;
@@ -112,16 +126,18 @@ public class FireChanger : MonoBehaviour
                         em_sparks.rateOverTime = sparks_rateovertime_night;
 
 
+                        log_mat.SetColor("_EmissiveColor", Color.white);
+
+                        for (int i = 0; i < fireflys.Count; i++)
+                        {
+                            fireflys[i].enabled = true;
+                        }
 
                     }
                     break;
                 default:
                     break;
             }
-            //particle_system_fireAlpha.emission.rateOverTime.mode = ParticleSystemCurveMode.Constant;
-
-
-
         }
 
         if(update_vars)
@@ -133,12 +149,16 @@ public class FireChanger : MonoBehaviour
 
     void UpdateFire()
     {
-            em_fireAdd.rateOverTime = fireAdd_rateovertime_day.value;
-            em_fireAlpha.rateOverTime = fireAlpha_rateovertime_day.value;
-            em_glow.rateOverTime = glow_rateovertime_day.value;
-            em_sparks.rateOverTime = sparks_rateovertime_day.value;
+        em_fireAdd.rateOverTime = fireAdd_rateovertime_day.value;
+        em_fireAlpha.rateOverTime = fireAlpha_rateovertime_day.value;
+        em_glow.rateOverTime = glow_rateovertime_day.value;
+        em_sparks.rateOverTime = sparks_rateovertime_day.value;
 
-            sparks.enabled = false;
+        log_mat.SetColor("_EmissiveColor", Color.black);
+
+        sparks.enabled = false;
+
+
     }
 
     void CompleteFire()

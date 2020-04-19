@@ -171,9 +171,13 @@ public class SupplyBox : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.GetComponent<TagsScript>().ContainsTheTag(TagsScript.TAGS.FISHING_BOB))
+
+        if(collision.gameObject.TryGetComponent<TagsScript>(out TagsScript tag))
         {
-            box_state = STATE.CAUGHT;
+            if(tag.ContainsTheTag(TagsScript.TAGS.FISHING_BOB))
+            {
+                box_state = STATE.CAUGHT;
+            }
         }
     }
 }
