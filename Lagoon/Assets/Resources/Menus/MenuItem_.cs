@@ -194,8 +194,6 @@ public class MenuItem_ : MonoBehaviour
                     }
                 case STATE.NO_STATE:
                     {
-                        Debug.LogError("Error! AttemptEnd called when nothing was transitioning!");
-                        Debug.Break();
                         break;
                     }
             }
@@ -233,8 +231,7 @@ public class MenuItem_ : MonoBehaviour
     bool isShowing;
     public bool IsShowing => isShowing;
 
-    public event System.Action Event_CompletedHide;
-    public event System.Action Event_CompletedShow;
+ 
 
 
     private void Awake()
@@ -339,6 +336,9 @@ public class MenuItem_ : MonoBehaviour
 
     TweenAnimator.Animation animationShow;
     TweenAnimator.Animation.PlayArgs animationShowArgs;
+
+    public event System.Action Event_CompletedHide;
+    public event System.Action Event_CompletedShow;
 
     protected event System.Action InternalEvent_BeginHide;
     protected event System.Action InternalEvent_UpdateHide;

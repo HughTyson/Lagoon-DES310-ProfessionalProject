@@ -28,6 +28,23 @@ public class Selectable_ : MenuItem_
     protected static readonly float OPTION_SWAP_COOLDOWN = 0.3f;
     protected static readonly float OPTION_SWAP_DEADZONE = 0.1f;
 
+    protected event System.Action InternalEvent_BeginHoverOver;
+    protected event System.Action InternalEvent_UpdateHoverOver;
+    protected event System.Action InternalEvent_EndHoverOver;
+
+    protected event System.Action InternalEvent_BeginSelected;
+    protected event System.Action InternalEvent_UpdateSelected;
+    protected event System.Action InternalEvent_EndSelected;
+
+
+    protected event System.Action InternalEvent_BeginUnHoverOver;
+    protected event System.Action InternalEvent_UpdateUnHoverOver;
+    protected event System.Action InternalEvent_EndUnHoverOver;
+
+    protected event System.Action InternalEvent_BeginUnSelect;
+    protected event System.Action InternalEvent_UpdateUnSelect;
+    protected event System.Action InternalEvent_EndUnSelect;
+
     protected void SetupNavigation(Selectable_ up = null, Selectable_ down = null, Selectable_ left = null, Selectable_ right = null)
     {
         siblingUp = up;
@@ -54,31 +71,13 @@ public class Selectable_ : MenuItem_
         if (selectable_state == SELECTABLE_STATE.HOVERED_OVER || selectable_state == SELECTABLE_STATE.SELECTED)
             UnHoverOver();
     }
-    /// <summary>
-    /// Transitions from Unselected, to hovered
-    /// </summary>
+
     public void UnSelect()
     {
         _Transitioner.RequestBegin(cmdUnSelect, InteruptedUnSelect, InternalEvent_BeginUnSelect, InternalEvent_UpdateUnSelect, InternalEvent_EndUnSelect, Event_UnSelected);
     }
 
-    protected event System.Action InternalEvent_BeginHoverOver;
-    protected event System.Action InternalEvent_UpdateHoverOver;
-    protected event System.Action InternalEvent_EndHoverOver;
 
-
-    protected event System.Action InternalEvent_BeginSelected;
-    protected event System.Action InternalEvent_UpdateSelected;
-    protected event System.Action InternalEvent_EndSelected;
-
-
-    protected event System.Action InternalEvent_BeginUnHoverOver;
-    protected event System.Action InternalEvent_UpdateUnHoverOver;
-    protected event System.Action InternalEvent_EndUnHoverOver;
-
-    protected event System.Action InternalEvent_BeginUnSelect;
-    protected event System.Action InternalEvent_UpdateUnSelect;
-    protected event System.Action InternalEvent_EndUnSelect;
 
     protected virtual void InteruptedSelect(InteruptArgs args, InteruptReturn returns)
     {
@@ -276,7 +275,6 @@ public class Selectable_ : MenuItem_
     {
         if (animationSelectUpdate != null)
             animationUnSelect.StopAnimation(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
-
         if (animationHoverOver != null)
             animationHoverOver.StopAnimation(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
         if (animationUnHoverOver != null)
