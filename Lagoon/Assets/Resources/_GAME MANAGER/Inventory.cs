@@ -126,6 +126,11 @@ public class Inventory
         Puzzle puzzle = new Puzzle();
         puzzle.Init(2);
 
+        //SwitchItem i = new SwitchItem();
+        //i.Init();
+        //items.Add(i);
+
+
         items.Add(wood);
         items.Add(puzzle);
        

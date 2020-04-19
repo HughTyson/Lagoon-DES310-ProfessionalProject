@@ -91,6 +91,8 @@ public class PagePair_Inventory : BasePagePair
     void AddToLeft(int i)
     {
 
+        int new_data_len = GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length;
+
         if (GM_.Instance.inventory.items[i].isNew())     //if the item is new
         {
 
@@ -104,10 +106,10 @@ public class PagePair_Inventory : BasePagePair
                             new SpecialText.TextProperties.WaveScaled(1,0.5f,5)
                     },
                     left_character_data,
-                    GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length
-                );
+                    new_data_len
+                    );
 
-            left_character_data += GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length;
+            left_character_data += new_data_len;
 
             GM_.Instance.inventory.items[i].SetIsNew(false);   //set the item to not new
 
@@ -122,17 +124,18 @@ public class PagePair_Inventory : BasePagePair
                             new SpecialText.TextProperties.StaticAppear()
                     },
                     left_character_data,
-                    GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length
-                );
+                    new_data_len
+                    );
 
-            left_character_data += GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length;
-
+            left_character_data += new_data_len;
         }
     }
 
     void AddToRight(int i)
     {
 
+        int new_data_len = GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length;
+
         if (GM_.Instance.inventory.items[i].isNew())     //if the item is new
         {
 
@@ -146,10 +149,10 @@ public class PagePair_Inventory : BasePagePair
                             new SpecialText.TextProperties.WaveScaled(1,0.5f,5)
                     },
                     right_character_data,
-                    GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length
-                );
+                    new_data_len
+                    );
 
-            right_character_data += GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length;
+            right_character_data += new_data_len;
 
             GM_.Instance.inventory.items[i].SetIsNew(false);   //set the item to not new
 
@@ -164,11 +167,10 @@ public class PagePair_Inventory : BasePagePair
                             new SpecialText.TextProperties.StaticAppear()
                     },
                     right_character_data,
-                    GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length
-                );
+                    new_data_len
+                    );
 
-            right_character_data += GM_.Instance.inventory.items[i].GetName().Length + " x".Length + items[i].GetQuantity().ToString().Length + " - ".Length + System.Environment.NewLine.Length + items[i].GetDescription().Length + System.Environment.NewLine.Length;
-
+            right_character_data += new_data_len;
         }
 
     }

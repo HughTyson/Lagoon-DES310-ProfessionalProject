@@ -26,7 +26,7 @@ public class SupplyDropCamera : MonoBehaviour
 
     float shake_time = 0.5f;
 
-    TweenManager.TweenPathBundle magnitude1;
+    TweenManager.TweenPathBundle camera_shake;
     
     Quaternion rot;
 
@@ -36,7 +36,7 @@ public class SupplyDropCamera : MonoBehaviour
     {
 
 
-        magnitude1 = new TweenManager.TweenPathBundle(
+        camera_shake = new TweenManager.TweenPathBundle(
                             new TweenManager.TweenPath(
                                 new TweenManager.TweenPart_Start(0, 0.15f, 1.0f, TweenManager.CURVE_PRESET.EASE_IN),
                                 new TweenManager.TweenPart_Delay(1),
@@ -114,12 +114,6 @@ public class SupplyDropCamera : MonoBehaviour
 
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * 1.5f);
 
-        if (should_shake)
-        {
-
-            transform.rotation =  Quaternion.Lerp(transform.rotation, rot * Random.rotation /** shake_magnitude.value*/, Time.deltaTime * shake_magnitude.value);
-
-        }
     }
 
     void PosUpdate()
@@ -133,11 +127,11 @@ public class SupplyDropCamera : MonoBehaviour
         {
 
             GM_.Instance.tween_manager.StartTweenInstance(
-                magnitude1,
-                new TypeRef<float>[] { shake_magnitude }
+                camera_shake,
+                new TypeRef<float>[] { shake_magnitude },
+                tweenUpdatedDelegate_: ShakeUpdate
             );
 
-            should_shake = true;
             look_up = true;
         }
     }
@@ -162,9 +156,12 @@ public class SupplyDropCamera : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(look_at - transform.position), Time.deltaTime);
     }
 
-    void Finish()
+    void ShakeUpdate()
     {
-        should_shake = false;
+
+        rot = Quaternion.LookRotation(look_at - transform.position);
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot * Random.rotation, Time.deltaTime * shake_magnitude.value);
     }
 
     private void OnDestroy()
