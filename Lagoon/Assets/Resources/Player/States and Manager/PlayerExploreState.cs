@@ -23,9 +23,6 @@ public class PlayerExploreState : BaseState
 
     bool radioIsAvailable = false;
 
-
-
-
    INTERACTION_TYPE interaction_type;
 
     private void Awake()
@@ -38,7 +35,7 @@ public class PlayerExploreState : BaseState
         GM_.Instance.story.Event_ConvoEnter += ConversationStateUnavailalble;
 
         
-
+        
     }
 
     public void OnEnable()
@@ -53,6 +50,7 @@ public class PlayerExploreState : BaseState
 
     public void OnDisable()
     {
+
     }
 
     void ConversationStateAvailable()
@@ -128,8 +126,18 @@ public class PlayerExploreState : BaseState
         }
     }
 
+    Vector3 down = new Vector3(0, -1, 0);
 
-    
+    private void FixedUpdate()
+    {
+        Ray ray = new Ray(transform.position, down);
+        RaycastHit hit;
+        Physics.Raycast(ray, out hit);
+
+        Material mat = hit.collider.GetComponent<Material>();
+
+    }
+
 
     private void OnTriggerStay(Collider other)
     {
