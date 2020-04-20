@@ -133,6 +133,7 @@ public class SelectableButton_TextButton : SelectableButton_
 
 
 
+        // CHANGING THE HOVER COLOUR VALUE
         SpecialText.SpecialTextData specialTextData_Hover = new SpecialText.SpecialTextData();
         specialTextData_Hover.CreateCharacterData(TMPText.text);
         specialTextData_Hover.AddPropertyToText
@@ -140,7 +141,7 @@ public class SelectableButton_TextButton : SelectableButton_
             new List<SpecialText.TextProperties.Base>
             {
                 new SpecialText.TextProperties.StaticAppear(),
-                new SpecialText.TextProperties.Colour(125,125,255),
+                new SpecialText.TextProperties.Colour(255,125,255), // <-----------------------------------
                 new SpecialText.TextProperties.WaveScaled(1,2.0f,2)
             },
             0,
