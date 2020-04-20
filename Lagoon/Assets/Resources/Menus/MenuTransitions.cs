@@ -17,7 +17,7 @@ public static class MenuTransitions
     public static readonly CameraPositionAndRotation ExtraCreditVals = new CameraPositionAndRotation() { position = new Vector3(3.06f, 2.68f, -5.71f), rotation = new Vector3(0, -253, 0) };
     public static readonly CameraPositionAndRotation GameOptionsVals = new CameraPositionAndRotation() { position = new Vector3(-2.53f, 1.78f, 7.5f), rotation = new Vector3(18, 10, 0) };
     public static readonly CameraPositionAndRotation AudioOptionsVals = new CameraPositionAndRotation() { position = new Vector3(-2.04f, 1.82f, 12.9f), rotation = new Vector3(26, -155.2f, 0) };
-    public static readonly CameraPositionAndRotation ControlOptionVals = new CameraPositionAndRotation() { position = new Vector3(-5.86f, 2.4f, 10.62f), rotation = new Vector3(26, -266.3f, 0) };
+    public static readonly CameraPositionAndRotation ControlOptionVals = new CameraPositionAndRotation() { position = new Vector3(-4.84f, 2.8f, 11.35f), rotation = new Vector3(38.4f, -258.8f, 0) };
 
 
     static public readonly TweenManager.TweenPathBundle transition_MainMenuToCredits = new TweenManager.TweenPathBundle(
