@@ -6,15 +6,15 @@ public class testScript : MonoBehaviour
 {
     // Update is called once per frame
 
-    [SerializeField] SelectableButton_TextButton button1;
-    [SerializeField] SelectableButton_TextButton button2;
-    [SerializeField] SelectableButton_TextButton button3;
-    [SerializeField] Slider_Default slider;
-    [SerializeField] CheckBox_Default checkbox;
-    [SerializeField] SelectableButton_Default button4;
+    [SerializeField] SelectableButton_ button1;
+    [SerializeField] SelectableButton_ button2;
+    [SerializeField] SelectableButton_ button3;
+    [SerializeField] Slider_ slider;
+    [SerializeField] Checkbox_ checkbox;
+    [SerializeField] SelectableButton_ button4;
+    [SerializeField] MenuItem_ test;
     private void Start()
     {
-
     }
     void Update()
     {
@@ -27,6 +27,7 @@ public class testScript : MonoBehaviour
             slider.Show();
             checkbox.Show();
             button4.Show();
+            test.Show();
         }
         else if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.RB))
         {
@@ -36,6 +37,7 @@ public class testScript : MonoBehaviour
             slider.Hide();
             checkbox.Hide();
             button4.Hide();
+            test.Hide();
         }
 
         if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.Y))
