@@ -32,6 +32,7 @@ public class FishLogic : MonoBehaviour
     {
         public FishType.FISH_TEIR teir;
 
+        public float depth;
         public string fishTypeName;
         public Vector2 habitatRingOrigin;
         public float habitatRingMin;
@@ -290,8 +291,10 @@ public class FishLogic : MonoBehaviour
 
 
         }
-        
 
+        Vector3 setYPosition = parentRigidbody.position;
+        setYPosition.y = varsFromFishGenerator.depth;
+        parentRigidbody.MovePosition(setYPosition);
     }
 
     void Update()

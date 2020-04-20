@@ -170,7 +170,7 @@ public class FishGenerator : MonoBehaviour
         fish_vars.size = RandomnessExtension.RandomRangeWithNormalDistribution(chosen_fish_type.StatsList[fishRing.fishTeirEnum].sizeMin, chosen_fish_type.StatsList[fishRing.fishTeirEnum].sizeMax);
         fish_vars.fishTypeName = chosen_fish_type.fishTypeName;
         fish_vars.teir = fishRing.fishTeirEnum;
-
+        fish_vars.depth = -fishSpawnDepth;
         new_fish.fishObject.GetComponentInChildren<FishLogic>().Init(fish_vars);
 
         //if (fishRing.fishTeirEnum == FishType.FISH_TEIR.T2)
