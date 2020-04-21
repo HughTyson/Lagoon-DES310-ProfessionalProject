@@ -33,10 +33,10 @@ public class CharacterAnimationHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animator.SetFloat(idParam_MovementSpeed, GM_.Instance.input.GetAxis( InputManager.AXIS.RT), 0.1f, Time.deltaTime);
+       // animator.SetFloat(idParam_MovementSpeed, GM_.Instance.input.GetAxis( InputManager.AXIS.RT), 0.1f, Time.deltaTime);
 
        
-      //  animator.SetFloat(idParam_MovementSpeed, characterControllerMovement.CurrentNormalizedVelocity, 0.1f, Time.deltaTime);
+        animator.SetFloat(idParam_MovementSpeed, characterControllerMovement.CurrentNormalizedVelocity, 0.1f, Time.deltaTime);
        // Debug.Log("Test: " + animator.GetFloat(idParam_MovementSpeed));
 
 
