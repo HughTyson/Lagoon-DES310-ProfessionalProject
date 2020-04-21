@@ -164,7 +164,7 @@ public class MenuScreen_MainMenu : MenuScreenBase
     void game_startFinsihed()
     {
 
-        GM_.Instance.inventory.Reset();
+        GM_.Instance.inventory.ClearInventory();
         GM_.Instance.story.StartOrReset(5.0f);
         GM_.Instance.story_objective.Reset();
  

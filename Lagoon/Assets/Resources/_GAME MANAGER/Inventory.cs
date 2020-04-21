@@ -17,6 +17,8 @@ public class Inventory
 
     bool updated_inventory = false;
 
+    [HideInInspector] public List<ItemSprite> item_images;
+
     public Inventory()
     {
         System.Type[] types = Assembly.GetExecutingAssembly().GetTypes();
@@ -32,7 +34,7 @@ public class Inventory
             InventoryItem temp_item = (InventoryItem)System.Activator.CreateInstance(possible[i]);
             temp_item.Init();
 
-            if(temp_item.GetItemType() == InventoryItem.ItemType.GENERIC)   //only use generics as they will have to be included in the commonanilty calculations
+            if(temp_item.GetSpawnType() == InventoryItem.SpwanType.GENERIC)   //only use generics as they will have to be included in the commonanilty calculations
             {
 
                 item_instances.Add((InventoryItem)System.Activator.CreateInstance(possible[i]));
@@ -63,6 +65,7 @@ public class Inventory
 
         if(!unkown_item)
         {
+            new_item.SetItemImage(GetSprite(new_item.GetItemType()));
             items.Add(new_item);
         }
 
@@ -102,6 +105,16 @@ public class Inventory
         return null; //this should only be call if there are no entires
     }
 
+    public Sprite GetSprite(InventoryItem.ItemType type)
+    {
+        for(int i = 0; i < item_images.Count; i++)
+        {
+            return item_images[i].sprite;
+        }
+
+        return null;
+    }
+
     public void ButtonPrompt()
     {
         if(updated_inventory)
@@ -115,16 +128,24 @@ public class Inventory
         }
     }
 
+    public void ClearInventory()
+    {
+        items.Clear();
+    }
+
     public void Reset()
     {
+
         items.Clear();
 
 
         Firewood wood = new Firewood();
         wood.Init(15);
+        wood.SetItemImage(GetSprite(wood.GetItemType()));
 
         Puzzle puzzle = new Puzzle();
         puzzle.Init(2);
+        puzzle.SetItemImage(GetSprite(wood.GetItemType()));
 
         //SwitchItem i = new SwitchItem();
         //i.Init();
