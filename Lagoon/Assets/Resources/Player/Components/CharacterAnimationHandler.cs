@@ -21,8 +21,9 @@ public class CharacterAnimationHandler : MonoBehaviour
 
     [Range(0,1)]
     [SerializeField] float ikWeighting = 1;
-    
-    
+
+
+    [SerializeField] bool TestOn = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,21 +34,31 @@ public class CharacterAnimationHandler : MonoBehaviour
     void Update()
     {
         animator.SetFloat(idParam_MovementSpeed, GM_.Instance.input.GetAxis( InputManager.AXIS.RT), 0.1f, Time.deltaTime);
-        //animator.SetFloat(idParam_MovementSpeed, characterControllerMovement.CurrentNormalizedVelocity, 0.1f, Time.deltaTime);
+
+       
+      //  animator.SetFloat(idParam_MovementSpeed, characterControllerMovement.CurrentNormalizedVelocity, 0.1f, Time.deltaTime);
+       // Debug.Log("Test: " + animator.GetFloat(idParam_MovementSpeed));
+
+
     }
 
 
-    private void OnAnimatorMove()
-    {
-        
-    }
+    //private void OnAnimatorMove()
+    //{
+
+    //}
     private void OnAnimatorIK(int layerIndex)
     {
+
+        Debug.Log(animator.GetIKPosition(AvatarIKGoal.LeftFoot));
+        if (!TestOn)
+            return;
+
 
         //    Vector3 test = animator.bodyPosition;
         // test.y = testY;
         animator.bodyPosition = new Vector3(0, defaultBodyYOffset, 0) + transform.position;
-     // animator.SetBoneLocalRotation(HumanBodyBones)
+        // animator.SetBoneLocalRotation(HumanBodyBones)
         animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, ikWeighting);
         animator.SetIKRotationWeight(AvatarIKGoal.LeftFoot, ikWeighting);
         animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, ikWeighting);
@@ -86,10 +97,10 @@ public class CharacterAnimationHandler : MonoBehaviour
         }
 
 
-    }
-    private void LateUpdate()
-    {
+        }
+        //private void LateUpdate()
+        //{
 
-       // animator.GetBoneTransform(HumanBodyBones.Chest).position = new Vector3(50, 0, 0);
+        //   // animator.GetBoneTransform(HumanBodyBones.Chest).position = new Vector3(50, 0, 0);
+        //}
     }
-}

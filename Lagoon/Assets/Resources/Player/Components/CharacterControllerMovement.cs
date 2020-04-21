@@ -115,7 +115,7 @@ public class CharacterControllerMovement : MonoBehaviour
                     //        {
                     //            walking.Loop = true;
                     //        }
-                        
+
                     //        time_passed = 0;
                     //    }
                     //    else if(Vector3.Magnitude(move_direction) < 1)
@@ -138,7 +138,9 @@ public class CharacterControllerMovement : MonoBehaviour
                     //}
 
 
-                    controller.Move(move_direction * Time.fixedDeltaTime);
+
+                    controller.Move(new Vector3(0,move_direction.y,0)* Time.fixedDeltaTime);
+                    //  controller.Move(move_direction * Time.fixedDeltaTime);
 
                 }
                 break;
@@ -213,6 +215,7 @@ public class CharacterControllerMovement : MonoBehaviour
             Quaternion new_rotation = Quaternion.Slerp(transform.rotation, target_rotation, player_rotation_speed);
 
             transform.rotation = new_rotation;
+            
         }
     }
 }
