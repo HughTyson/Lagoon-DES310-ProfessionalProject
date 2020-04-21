@@ -8,7 +8,7 @@ public class PagePair_ExitAYS : BasePagePair
     [SerializeField] SelectableButton_ yesButton;
     [SerializeField] SelectableButton_ noButton;
 
-    [SerializeField] UnselectableButton goBackButton;
+    [SerializeField] SelectableAndUnhoverableButton goBackButton;
 
     [SerializeField] BasePagePair goBackPair;
 
@@ -27,6 +27,7 @@ public class PagePair_ExitAYS : BasePagePair
         noButton.Show();
         yesButton.Show();
         goBackButton.Show();
+        goBackButton.ListenForSelection();
     }
     public override void FinishedEnteringPage()
     {

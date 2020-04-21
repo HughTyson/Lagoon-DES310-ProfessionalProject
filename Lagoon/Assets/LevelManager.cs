@@ -9,6 +9,9 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
+        Application.quitting += Quiting;
+
+
         GM_.Instance.stats.CleanUp();
 
 

@@ -6,7 +6,7 @@ public class MenuScreen_Credits : MenuScreenBase
 {
 
     [SerializeField] SelectableButton_ extraCreditsButton;
-    [SerializeField] UnselectableButton goBackButton;
+    [SerializeField] SelectableAndUnhoverableButton goBackButton;
 
 
     [SerializeField] MenuScreenBase mainMenu;
@@ -141,7 +141,7 @@ public class MenuScreen_Credits : MenuScreenBase
 
         extraCreditsButton.Event_Selected += start_transitionToExtraCredits;
 
-        goBackButton.SetButtonsToCheckForPress(InputManager.BUTTON.B);
+        goBackButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.B });
         goBackButton.Event_Selected += start_transitionToMainMenu;
 
 
@@ -158,7 +158,7 @@ public class MenuScreen_Credits : MenuScreenBase
         extraCreditsButton.Show();
 
         goBackButton.Show();
-
+        goBackButton.ListenForSelection();
 
         SpecialText_CreditsTitle.Begin(TextData_CreditsTitle);
 

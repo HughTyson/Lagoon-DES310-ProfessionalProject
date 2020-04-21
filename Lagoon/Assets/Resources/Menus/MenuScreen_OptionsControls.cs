@@ -11,9 +11,9 @@ public class MenuScreen_OptionsControls : MenuScreenBase
 
     [SerializeField] SpecialText.SpecialText SpecialText_Title;
 
-    [SerializeField] UnselectableButton goBackButton;
-    [SerializeField] UnselectableButton goToGameOptionsButton;
-    [SerializeField] UnselectableButton goToAudioOptionsButton;
+    [SerializeField] SelectableAndUnhoverableButton goBackButton;
+    [SerializeField] SelectableAndUnhoverableButton goToGameOptionsButton;
+    [SerializeField] SelectableAndUnhoverableButton goToAudioOptionsButton;
 
     [SerializeField] Checkbox_ vibrationsCheckBox;
     [SerializeField] TMPro.TextMeshProUGUI text_vibrationsCheckBox;
@@ -46,18 +46,17 @@ public class MenuScreen_OptionsControls : MenuScreenBase
 
         gameObject.SetActive(false);
 
-        goBackButton.SetButtonsToCheckForPress(InputManager.BUTTON.B);
-        goToGameOptionsButton.SetButtonsToCheckForPress(InputManager.BUTTON.RB);
-        goToAudioOptionsButton.SetButtonsToCheckForPress(InputManager.BUTTON.LB);
+        goBackButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.B });
+        goToGameOptionsButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.RB });
+        goToAudioOptionsButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.LB });
 
         goBackButton.Event_Selected += start_transitionToMain;
         goToGameOptionsButton.Event_Selected += start_transitionToGame;
         goToAudioOptionsButton.Event_Selected += start_transitionToAudio;
 
         TypeRef<bool> buttonGrouper = new TypeRef<bool>(false);
-        goBackButton.AssignToGroup(buttonGrouper);
-        goToGameOptionsButton.AssignToGroup(buttonGrouper);
-        goToAudioOptionsButton.AssignToGroup(buttonGrouper);
+        goBackButton.GroupWith(goToGameOptionsButton);
+        goToGameOptionsButton.GroupWith(goToAudioOptionsButton);
 
 
 
@@ -84,6 +83,10 @@ public class MenuScreen_OptionsControls : MenuScreenBase
         goToGameOptionsButton.Show();
         goToAudioOptionsButton.Show();
         vibrationsCheckBox.Show();
+
+        goBackButton.ListenForSelection();
+        goToGameOptionsButton.ListenForSelection();
+        goToAudioOptionsButton.ListenForSelection();
 
         SpecialText_Title.Begin(SpecialTextData_Title);
 

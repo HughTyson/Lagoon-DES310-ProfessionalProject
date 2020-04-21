@@ -5,8 +5,8 @@ using UnityEngine;
 public class PagePair_Tutorial : BasePagePair
 {
 
-    [SerializeField] UnselectableButton go_back_button;
-    [SerializeField] UnselectableButton to_stats;
+    [SerializeField] SelectableAndUnhoverableButton go_back_button;
+    [SerializeField] SelectableAndUnhoverableButton to_stats;
 
     [SerializeField] PagePair_Stats stats_pair;
 
@@ -21,7 +21,22 @@ public class PagePair_Tutorial : BasePagePair
         to_stats.Event_Selected += requestGoTo_Stats;
         to_stats.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.LB });
 
+
+        go_back_button.GroupWith(to_stats);
     }
+    public override void BegunEnteringPage()
+    {
+        go_back_button.Show();
+        to_stats.Show();
+        go_back_button.ListenForSelection();
+        to_stats.ListenForSelection();
+    }
+    public override void PassingBy()
+    {
+        go_back_button.Show();
+        to_stats.Show();
+    }
+
 
     void requestGoTo_Stats()
     {

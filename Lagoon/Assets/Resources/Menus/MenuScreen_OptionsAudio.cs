@@ -14,9 +14,9 @@ public class MenuScreen_OptionsAudio : MenuScreenBase
 
     [SerializeField] SpecialText.SpecialText SpecialText_Title;
 
-    [SerializeField] UnselectableButton goBackButton;
-    [SerializeField] UnselectableButton goToGameOptionsButton;
-    [SerializeField] UnselectableButton goToControlOptionsButton;
+    [SerializeField] SelectableAndUnhoverableButton goBackButton;
+    [SerializeField] SelectableAndUnhoverableButton goToGameOptionsButton;
+    [SerializeField] SelectableAndUnhoverableButton goToControlOptionsButton;
 
     [SerializeField] Slider_ masterSlider;
     [SerializeField] Slider_ musicSlider;
@@ -53,9 +53,9 @@ public class MenuScreen_OptionsAudio : MenuScreenBase
 
         gameObject.SetActive(false);
 
-        goBackButton.SetButtonsToCheckForPress(InputManager.BUTTON.B);
-        goToGameOptionsButton.SetButtonsToCheckForPress(InputManager.BUTTON.LB);
-        goToControlOptionsButton.SetButtonsToCheckForPress(InputManager.BUTTON.RB);
+        goBackButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.B });
+        goToGameOptionsButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.LB });
+        goToControlOptionsButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.RB });
 
 
         goToGameOptionsButton.Event_Selected += start_transitionToGame;
@@ -63,9 +63,9 @@ public class MenuScreen_OptionsAudio : MenuScreenBase
 
 
         TypeRef<bool> buttonGrouper = new TypeRef<bool>(false);
-        goBackButton.AssignToGroup(buttonGrouper);
-        goToGameOptionsButton.AssignToGroup(buttonGrouper);
-        goToControlOptionsButton.AssignToGroup(buttonGrouper);
+        goBackButton.GroupWith(goToGameOptionsButton);
+        goToGameOptionsButton.GroupWith(goToControlOptionsButton);
+
 
 
         masterSlider.Event_CompletedShow += finishedShowingSlider;
@@ -114,6 +114,10 @@ public class MenuScreen_OptionsAudio : MenuScreenBase
         goBackButton.Show();
         goToGameOptionsButton.Show();
         goToControlOptionsButton.Show();
+
+        goBackButton.ListenForSelection();
+        goToGameOptionsButton.ListenForSelection();
+        goToControlOptionsButton.ListenForSelection();
 
         SpecialText_Title.Begin(SpecialTextData_Title);
 

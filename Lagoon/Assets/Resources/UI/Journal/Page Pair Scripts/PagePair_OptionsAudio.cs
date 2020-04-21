@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PagePair_OptionsAudio : BasePagePair
 {
-    [SerializeField] UnselectableButton goBackButton;
-    [SerializeField] UnselectableButton controlsButton;
-    [SerializeField] UnselectableButton gameButton;
+    [SerializeField] SelectableAndUnhoverableButton goBackButton;
+    [SerializeField] SelectableAndUnhoverableButton controlsButton;
+    [SerializeField] SelectableAndUnhoverableButton gameButton;
 
 
     [SerializeField] Slider_Default masterSlider;
@@ -32,10 +32,8 @@ public class PagePair_OptionsAudio : BasePagePair
         gameButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.RB });
 
 
-        TypeRef<bool> grouper = new TypeRef<bool>();
-        goBackButton.AssignToGroup(grouper);
-        controlsButton.AssignToGroup(grouper);
-        gameButton.AssignToGroup(grouper);
+        goBackButton.GroupWith(controlsButton);
+        controlsButton.GroupWith(gameButton);
 
 
         masterSlider.Event_ValueChanged += setMasterVolume;
@@ -83,6 +81,11 @@ public class PagePair_OptionsAudio : BasePagePair
         musicSlider.Show();
         sfxSlider.Show();
         back_SButton.Show();
+
+        goBackButton.ListenForSelection();
+        controlsButton.ListenForSelection();
+        gameButton.ListenForSelection();
+
     }
     public override void PassingBy()
     {

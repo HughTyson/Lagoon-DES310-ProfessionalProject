@@ -5,7 +5,7 @@ using UnityEngine;
 public class PagePair_Options : BasePagePair
 {
 
-    [SerializeField] UnselectableButton goBackButton;
+    [SerializeField] SelectableAndUnhoverableButton goBackButton;
     [SerializeField] SelectableButton_TextButton game_SButton;
     [SerializeField] SelectableButton_TextButton control_SButton;
     [SerializeField] SelectableButton_TextButton audio_SButton;
@@ -40,8 +40,12 @@ public class PagePair_Options : BasePagePair
         audio_SButton.Show();
         back_SButton.Show();
     }
+
+
     public override void FinishedEnteringPage()
     {
+        goBackButton.ListenForSelection();
+
         InfoRequest_CameraFromPage_Args args = Invoke_InfoRequest_CameFromPage();
 
         if (args.pageType == typeof(PagePair_OptionsGame))

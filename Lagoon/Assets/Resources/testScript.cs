@@ -13,6 +13,7 @@ public class testScript : MonoBehaviour
     [SerializeField] Checkbox_ checkbox;
     [SerializeField] SelectableButton_ button4;
     [SerializeField] MenuItem_ test;
+    [SerializeField] SelectableAndUnhoverableButton unhoverableButton;
     private void Start()
     {
     }
@@ -28,6 +29,7 @@ public class testScript : MonoBehaviour
             checkbox.Show();
             button4.Show();
             test.Show();
+            unhoverableButton.Show();
         }
         else if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.RB))
         {
@@ -38,6 +40,7 @@ public class testScript : MonoBehaviour
             checkbox.Hide();
             button4.Hide();
             test.Hide();
+            unhoverableButton.Hide();
         }
 
         if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.Y))
@@ -48,7 +51,7 @@ public class testScript : MonoBehaviour
 
         if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.X))
         {
-            checkbox.SetToggle(!checkbox.ToggledOn);
+            unhoverableButton.ListenForSelection();
         }
     }
 }

@@ -38,11 +38,80 @@ public class MenuItem_ : MonoBehaviour
     }
 
 
+    List<MenuItem_> group = null;
+    public IReadOnlyList<MenuItem_> Group => group;
+    public void GroupWith(MenuItem_ item)
+    {
+        if (group == null && item.group == null)
+        {
+            group = new List<MenuItem_>();
+            group.Add(this);
+            group.Add(item);
+            item.group = group;
+        }
+        else if (group != null && item.group != null)
+        {
+            group.AddRange(item.group);
+            item.group = group;
+        }
+        else if (group == null)
+        {
+            group = item.group;
+            group.Add(this);
+        }
+        else if (item.group == null)
+        {
+            item.group = group;
+            group.Add(item);
+        }
+        else
+        {
+            Debug.LogError("This shouldn't be hit");
+            Debug.Break();
+        }
 
+
+    }
+    public void RemoveFromGroup()
+    {
+        group.Remove(this);
+        group = null;
+    }
+
+
+
+    protected event System.Action<BlockRequestArgs> InternalEventQuery_BlockOtherItemInGroupRequest;
+
+    public class BlockRequestArgs
+    {
+        public readonly CMD_Base cmdType;
+        public readonly MenuItem_ requester;
+        public BlockRequestArgs(MenuItem_ requester_, CMD_Base cmdType_)
+        {
+            cmdType = cmdType_;
+            requester = requester_;
+        }
+
+        bool blocked = false;
+        public bool Blocked => blocked;
+
+        public void Block()
+        {
+            blocked = true;
+        }
+
+    }
+
+    protected void BlockingOtherItemInGroupsRequest(BlockRequestArgs args)
+    {
+        InternalEventQuery_BlockOtherItemInGroupRequest?.Invoke(args);
+    }
 
 
     protected class Transitioner
     {
+        
+
         System.Action<InteruptArgs, InteruptReturn> interuptionCallBack;
 
         System.Action internalBegin;
@@ -70,8 +139,31 @@ public class MenuItem_ : MonoBehaviour
 
         MenuItem_ parent;
 
+        bool blockAllRequests = false;
+
         public void RequestBegin(CMD_Base myCMD, System.Action<InteruptArgs, InteruptReturn> interuptionCallBack_, System.Action internalBegin_, System.Action internalUpdate_, System.Action internalEnd_, System.Action externalComplete_)
         {
+            if (blockAllRequests)
+            {
+                return;
+
+            }
+            BlockRequestArgs block_args = new BlockRequestArgs(parent, myCMD);
+
+            if (parent.group != null)
+            {
+                for (int i = 0; i < parent.group.Count; i++)
+                {
+                    if (parent.group[i] != parent)
+                    {
+                        parent.group[i].BlockingOtherItemInGroupsRequest(block_args);
+
+                        if (block_args.Blocked)
+                            return;
+                    }
+                }
+            }
+
             if (state == STATE.NO_STATE)
             {
                 state = STATE.BEGIN;
@@ -93,29 +185,48 @@ public class MenuItem_ : MonoBehaviour
             }
             else
             {
-                InteruptReturn interuptReturn = new InteruptReturn();
-                interuptionCallBack?.Invoke(new InteruptArgs(myCMD, state), interuptReturn);
 
-                switch (interuptReturn.interuptResolution)
-                {
-                    case InteruptReturn.INTERUPT_RESOLUTION.END_CURRENT__START_INTERUPTED_BY:
-                        {
+                    InteruptReturn interuptReturn = new InteruptReturn();
+                    interuptionCallBack?.Invoke(new InteruptArgs(myCMD, state), interuptReturn);
+
+                    switch (interuptReturn.interuptResolution)
+                    {
+                        case InteruptReturn.INTERUPT_RESOLUTION.END_CURRENT__START_INTERUPTED_BY:
+                            {
+                            blockAllRequests = true;
+
+
+                            if (state == STATE.BEGIN)
+                            {
+                                internalUpdate?.Invoke();
+                            }
+
                             GM_.Instance.update_events.UpdateEvent -= internalUpdate;
                             GM_.Instance.update_events.UpdateEvent -= updateCheck;
-                            internalBegin = null;
                             internalUpdate = null;
+
+                            if (state == STATE.END)
+                            {
+                                internalEnd?.Invoke();
+                            }
+
                             internalEnd = null;
+
                             ForceCompleteAllAnimations?.Invoke();
                             state = STATE.NO_STATE;
+
+                            externalComplete?.Invoke();
+
+                            blockAllRequests = false;
                             RequestBegin(myCMD, interuptionCallBack_, internalBegin_, internalUpdate_, internalEnd_, externalComplete_);
-                            break;
-                        }
-                    case InteruptReturn.INTERUPT_RESOLUTION.IGNORE:
-                        {
-                            break;
-                        }
+                                break;
+                            }
+                        case InteruptReturn.INTERUPT_RESOLUTION.IGNORE:
+                            {
+                                break;
+                            }
+                    }
                 }
-            }
         }
 
 
@@ -147,7 +258,6 @@ public class MenuItem_ : MonoBehaviour
                             GM_.Instance.update_events.UpdateEvent += updateCheck;
                             GM_.Instance.update_events.UpdateEvent += internalUpdate;
 
-                            externalComplete?.Invoke();
 
                             if (internalUpdate == null)
                             {
@@ -188,6 +298,7 @@ public class MenuItem_ : MonoBehaviour
 
                         if (internalEnd == null)
                         {
+                            externalComplete?.Invoke();
                             state = STATE.NO_STATE;
                         }
                         break;

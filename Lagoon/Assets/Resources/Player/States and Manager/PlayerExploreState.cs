@@ -130,11 +130,6 @@ public class PlayerExploreState : BaseState
 
     private void FixedUpdate()
     {
-        Ray ray = new Ray(transform.position, down);
-        RaycastHit hit;
-        Physics.Raycast(ray, out hit);
-
-        Material mat = hit.collider.GetComponent<Material>();
 
     }
 

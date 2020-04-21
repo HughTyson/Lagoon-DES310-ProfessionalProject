@@ -10,9 +10,9 @@ public class MenuScreen_OptionsGame : MenuScreenBase
 
     [SerializeField] SpecialText.SpecialText SpecialText_Title;
 
-    [SerializeField] UnselectableButton goBackButton;
-    [SerializeField] UnselectableButton goToAudioOptionsButton;
-    [SerializeField] UnselectableButton goToControlOptionsButton;
+    [SerializeField] SelectableAndUnhoverableButton goBackButton;
+    [SerializeField] SelectableAndUnhoverableButton goToAudioOptionsButton;
+    [SerializeField] SelectableAndUnhoverableButton goToControlOptionsButton;
 
     [SerializeField] Slider_ xSensitivitySlider;
     [SerializeField] Slider_ ySensitivitySlider;
@@ -52,23 +52,19 @@ public class MenuScreen_OptionsGame : MenuScreenBase
 
         gameObject.SetActive(false);
 
-        goBackButton.SetButtonsToCheckForPress(InputManager.BUTTON.B);
-        goToAudioOptionsButton.SetButtonsToCheckForPress(InputManager.BUTTON.RB);
-        goToControlOptionsButton.SetButtonsToCheckForPress(InputManager.BUTTON.LB);
+
 
         
         goToAudioOptionsButton.Event_Selected += start_transitionToAudio;
         goToControlOptionsButton.Event_Selected += start_transitionToControls;
 
-        TypeRef<bool> buttonGrouper = new TypeRef<bool>(false);
-        goBackButton.AssignToGroup(buttonGrouper);
-        goToAudioOptionsButton.AssignToGroup(buttonGrouper);
-        goToControlOptionsButton.AssignToGroup(buttonGrouper);
+        goBackButton.GroupWith(goToAudioOptionsButton);
+        goToAudioOptionsButton.GroupWith(goToControlOptionsButton);
 
 
 
 
-        xSensitivitySlider.Event_CompletedShow += finishedShowingSlider;
+       xSensitivitySlider.Event_CompletedShow += finishedShowingSlider;
 
         xSensitivitySlider.Event_Selected += sliderSelected;
         ySensitivitySlider.Event_Selected += sliderSelected;
@@ -141,6 +137,9 @@ public class MenuScreen_OptionsGame : MenuScreenBase
         goToAudioOptionsButton.Show();
         goToControlOptionsButton.Show();
 
+        goBackButton.ListenForSelection();
+        goToAudioOptionsButton.ListenForSelection();
+        goToControlOptionsButton.ListenForSelection();
 
 
         xInvertCheckBox.Show();
@@ -150,7 +149,9 @@ public class MenuScreen_OptionsGame : MenuScreenBase
 
         ShowText();
 
-        SpecialText_Title.Begin(SpecialTextData_Title);
+
+
+SpecialText_Title.Begin(SpecialTextData_Title);
 
     }
 
