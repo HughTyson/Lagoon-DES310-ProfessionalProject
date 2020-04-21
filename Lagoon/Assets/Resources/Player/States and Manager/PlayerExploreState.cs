@@ -46,6 +46,8 @@ public class PlayerExploreState : BaseState
         camera_third_person.look_at_target = transform;
 
         GM_.Instance.DayNightCycle.SetTime();
+        
+
     }
 
     public void OnDisable()
@@ -69,6 +71,7 @@ public class PlayerExploreState : BaseState
         GM_.Instance.inventory.ButtonPrompt();
         GM_.Instance.stats.ButtonPrompt();
 
+        
 
         if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))
         {

@@ -17,6 +17,8 @@ public class GM_ : MonoBehaviour
     [SerializeField] TimeMovement DayNightValues;
     [SerializeField] CustomSceneManager sceneManager;
 
+    [SerializeField] TutorialManager tutorialManager;
+
     static GM_ instance_ = null;
     static bool destroyed_ = false;
     Members members = null;
@@ -58,6 +60,7 @@ public class GM_ : MonoBehaviour
         public AudioManager audio;
         public PlayerSettings settings;
         public CustomSceneManager scene_manager;
+        public TutorialManager tutorial_manger;
     };
 
     private void Awake()
@@ -86,6 +89,8 @@ public class GM_ : MonoBehaviour
             members.settings = new PlayerSettings();
             members.inventory = new Inventory();
             members.audio = audioManager;
+            members.tutorial_manger = new TutorialManager();
+
 
             members.tween_curveLibrary_Hugh = HughCurveLibrary;
             members.tween_curveLibrary_Tomas = TomasCurveLibrary;

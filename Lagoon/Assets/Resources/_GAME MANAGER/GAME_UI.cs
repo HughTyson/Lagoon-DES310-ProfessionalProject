@@ -10,6 +10,7 @@ public class GAME_UI : MonoBehaviour
     [SerializeField] UIStateFishVictory state_fishVictory;
     [SerializeField] UIStateConversation state_conversation;
     [SerializeField] UIStateRepair state_repair;
+    [SerializeField] UIState_Tutorial state_tutorial;
     // Start is called before the first frame update
     
     
@@ -52,6 +53,8 @@ public class GAME_UI : MonoBehaviour
             mem.state_fishVictory = state_fishVictory;
             mem.state_conversation = state_conversation;
             mem.state_repair = state_repair;
+            mem.state_Tutorial = state_tutorial;
+
             instance_.members = mem;
         }
         else
@@ -73,6 +76,7 @@ public class GAME_UI : MonoBehaviour
         public UIStateFishVictory state_fishVictory;
         public UIStateConversation state_conversation;
         public UIStateRepair state_repair;
+        public UIState_Tutorial state_Tutorial;
 
         public void EnableAll()
         {
