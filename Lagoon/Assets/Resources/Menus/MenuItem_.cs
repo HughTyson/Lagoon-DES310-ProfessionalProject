@@ -30,7 +30,7 @@ public class MenuItem_ : MonoBehaviour
         {
             END_CURRENT__START_INTERUPTED_BY,
             IGNORE,
-
+            QUEUE
 
         }
         public INTERUPT_RESOLUTION interuptResolution = INTERUPT_RESOLUTION.END_CURRENT__START_INTERUPTED_BY;
@@ -110,7 +110,9 @@ public class MenuItem_ : MonoBehaviour
 
     protected class Transitioner
     {
-        
+        Queue<NoArgsActionWrapper<CMD_Base, System.Action<InteruptArgs, InteruptReturn>, System.Action, System.Action, System.Action, System.Action>> requestBeginQueue = new Queue<NoArgsActionWrapper<CMD_Base, System.Action<InteruptArgs, InteruptReturn>, System.Action, System.Action, System.Action, System.Action>>();
+
+
 
         System.Action<InteruptArgs, InteruptReturn> interuptionCallBack;
 
@@ -195,10 +197,13 @@ public class MenuItem_ : MonoBehaviour
                             {
                             blockAllRequests = true;
 
+                            requestBeginQueue.Clear();
+
 
                             if (state == STATE.BEGIN)
                             {
                                 internalUpdate?.Invoke();
+                                externalComplete?.Invoke();
                             }
 
                             GM_.Instance.update_events.UpdateEvent -= internalUpdate;
@@ -212,11 +217,10 @@ public class MenuItem_ : MonoBehaviour
 
                             internalEnd = null;
 
-                            ForceCompleteAllAnimations?.Invoke();
                             state = STATE.NO_STATE;
 
-                            externalComplete?.Invoke();
 
+                            ForceCompleteAllAnimations?.Invoke();
                             blockAllRequests = false;
                             RequestBegin(myCMD, interuptionCallBack_, internalBegin_, internalUpdate_, internalEnd_, externalComplete_);
                                 break;
@@ -225,6 +229,11 @@ public class MenuItem_ : MonoBehaviour
                             {
                                 break;
                             }
+                    case InteruptReturn.INTERUPT_RESOLUTION.QUEUE:
+                        {
+                            requestBeginQueue.Enqueue(new NoArgsActionWrapper<CMD_Base, System.Action<InteruptArgs, InteruptReturn>, System.Action, System.Action, System.Action, System.Action>(RequestBegin, myCMD, interuptionCallBack_, internalBegin_, internalUpdate_, internalEnd_, externalComplete_));
+                            break;
+                        }
                     }
                 }
         }
@@ -232,7 +241,20 @@ public class MenuItem_ : MonoBehaviour
 
         void updateCheck()
         {
-            if (!parent.gameObject.activeInHierarchy)
+            if (parent != null)
+            {
+                if (!parent.gameObject.activeInHierarchy)
+                {
+                    GM_.Instance.update_events.UpdateEvent -= internalUpdate;
+                    GM_.Instance.update_events.UpdateEvent -= updateCheck;
+                    internalBegin = null;
+                    internalUpdate = null;
+                    internalEnd = null;
+                    ForceCompleteAllAnimations?.Invoke();
+                    state = STATE.NO_STATE;
+                }
+            }
+            else
             {
                 GM_.Instance.update_events.UpdateEvent -= internalUpdate;
                 GM_.Instance.update_events.UpdateEvent -= updateCheck;
@@ -242,6 +264,7 @@ public class MenuItem_ : MonoBehaviour
                 ForceCompleteAllAnimations?.Invoke();
                 state = STATE.NO_STATE;
             }
+
         }
 
         public void RequestContinue(System.Action unsubscribeFunction)
@@ -254,6 +277,7 @@ public class MenuItem_ : MonoBehaviour
 
                         if (internalBegin == null)
                         {
+
                             state = STATE.UPDATE;
                             GM_.Instance.update_events.UpdateEvent += updateCheck;
                             GM_.Instance.update_events.UpdateEvent += internalUpdate;
@@ -267,6 +291,8 @@ public class MenuItem_ : MonoBehaviour
                             {
                                 internalUpdate?.Invoke();
                             }
+
+                            externalComplete?.Invoke();
 
                         }
                         break;
@@ -298,8 +324,13 @@ public class MenuItem_ : MonoBehaviour
 
                         if (internalEnd == null)
                         {
-                            externalComplete?.Invoke();
+     
                             state = STATE.NO_STATE;
+
+                            if (requestBeginQueue.Count != 0)
+                            {
+                                requestBeginQueue.Dequeue().SafeInvoke();
+                            }
                         }
                         break;
                     }

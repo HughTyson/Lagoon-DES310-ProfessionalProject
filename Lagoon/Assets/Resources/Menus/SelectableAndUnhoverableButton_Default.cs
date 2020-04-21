@@ -30,7 +30,11 @@ public class SelectableAndUnhoverableButton_Default : SelectableAndUnhoverableBu
             );
         TweenAnimator.Animation animHide = new TweenAnimator.Animation(
             tweenHide,
-
+            new TweenAnimator.Image_
+            (
+                image,
+                color: new TweenAnimator.Image_.Color_(false, -1, false, -1, false, -1, true, 0, TweenAnimator.MOD_TYPE.ABSOLUTE)
+                ),
             new TweenAnimator.TMPText_
             (
                 text,
@@ -40,12 +44,16 @@ public class SelectableAndUnhoverableButton_Default : SelectableAndUnhoverableBu
 
         TweenManager.TweenPathBundle tweenShow = new TweenManager.TweenPathBundle(
         new TweenManager.TweenPath(
-            new TweenManager.TweenPart_Start(0, 1, 0.5f, TweenManager.CURVE_PRESET.LINEAR)
+            new TweenManager.TweenPart_Start(0, 1, 0.2f, TweenManager.CURVE_PRESET.LINEAR)
             )
         );
         TweenAnimator.Animation animShow = new TweenAnimator.Animation(
             tweenShow,
-
+             new TweenAnimator.Image_
+                (
+                image,
+                color: new TweenAnimator.Image_.Color_(false, -1, false, -1, false, -1, true, 0, TweenAnimator.MOD_TYPE.ABSOLUTE)
+                ),
              new TweenAnimator.TMPText_
             (
                 text,

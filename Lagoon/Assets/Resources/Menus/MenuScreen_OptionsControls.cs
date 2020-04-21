@@ -54,7 +54,6 @@ public class MenuScreen_OptionsControls : MenuScreenBase
         goToGameOptionsButton.Event_Selected += start_transitionToGame;
         goToAudioOptionsButton.Event_Selected += start_transitionToAudio;
 
-        TypeRef<bool> buttonGrouper = new TypeRef<bool>(false);
         goBackButton.GroupWith(goToGameOptionsButton);
         goToGameOptionsButton.GroupWith(goToAudioOptionsButton);
 

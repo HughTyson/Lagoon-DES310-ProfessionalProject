@@ -71,19 +71,26 @@ public class SelectableAndUnhoverableButton : SelectableAndUnhoverable_
     }
 
 
+    protected override void InteruptedShow(InteruptArgs args, InteruptReturn returns)
+    {
+        if (args.interuptedBy == typeof(CMD_ListeningForSelection))
+        {
+            returns.interuptResolution = InteruptReturn.INTERUPT_RESOLUTION.QUEUE;
+        }
+    }
     void beginCheckForButtons()
     {
-    //    current_optionswap_timer = 0.3f;
+       // current_optionswap_timer = 0.3f;
         isListening = true;
         _Transitioner.RequestContinue(beginCheckForButtons);
 
     }
     void internal_updateListeningForSelection_checkButtons()
     {
-      //  current_optionswap_timer -= Time.deltaTime;
+   //     current_optionswap_timer -= Time.deltaTime;
 
-        if (current_optionswap_timer <= 0)
-        {
+    //    if (current_optionswap_timer <= 0)
+    //    {
             for (int i = 0; i < buttonsToCheck.Length; i++)
             {
                 if (GM_.Instance.input.GetButtonDown(buttonsToCheck[i]))
@@ -92,7 +99,7 @@ public class SelectableAndUnhoverableButton : SelectableAndUnhoverable_
                     return;
                 }
             }
-        }
+    //    }
     }
 
 }
