@@ -31,7 +31,35 @@ public class NoArgsActionWrapper<T1>
         realAction?.Invoke(arg1);
     } 
 }
+public class NoArgsActionWrapper<T1, T2, T3, T4, T5, T6>
+{
+    public readonly System.Action wrappedAction;
 
+    System.Action<T1, T2, T3, T4, T5, T6> realAction;
+    public T1 arg1;
+    public T2 arg2;
+    public T3 arg3;
+    public T4 arg4;
+    public T5 arg5;
+    public T6 arg6;
+
+    public NoArgsActionWrapper(System.Action<T1, T2, T3, T4, T5, T6> action_, T1 arg1_, T2 arg2_, T3 arg3_, T4 arg4_, T5 arg5_, T6 arg6_)
+    {
+        wrappedAction = SafeInvoke;
+        realAction = action_;
+        arg1 = arg1_;
+        arg2 = arg2_;
+        arg3 = arg3_;
+        arg4 = arg4_;
+        arg5 = arg5_;
+        arg6 = arg6_;
+    }
+
+    public void SafeInvoke()
+    {
+        realAction?.Invoke(arg1, arg2, arg3, arg4, arg5, arg6);
+    }
+}
 
 
 //public class NoArgsActionWrapper<T1>

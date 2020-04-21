@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuScreen_MainMenu : MenuScreenBase
 {
@@ -11,10 +12,13 @@ public class MenuScreen_MainMenu : MenuScreenBase
     [SerializeField] SelectableButton_ optionsButton;
     [SerializeField] SelectableButton_ creditsButton;
     [SerializeField] SelectableButton_ exitButton;
+    [SerializeField] MenuItem_ menuLogo_image;
 
 
     [SerializeField] MenuScreenBase creditsMenu;
     [SerializeField] MenuScreenBase gameOptionsMenu;
+
+
 
 
 
@@ -61,10 +65,11 @@ public class MenuScreen_MainMenu : MenuScreenBase
             tweenCompleteDelegate_: init_finished
             );
 
-        actionTimer.AddAction(show_startButton, 0);
-        actionTimer.AddAction(show_optionButton, 0.1f);
-        actionTimer.AddAction(show_creditButton, 0.2f);
-        actionTimer.AddAction(show_exitButton, 0.3f);
+        actionTimer.AddAction(menuLogo_image.Show, 0);
+        actionTimer.AddAction(show_startButton, 0.1f);
+        actionTimer.AddAction(show_optionButton, 0.2f);
+        actionTimer.AddAction(show_creditButton, 0.3f);
+        actionTimer.AddAction(show_exitButton, 0.4f);
 
         Quaternion new_rotation = new Quaternion();
         new_rotation.eulerAngles = MenuTransitions.MainMenuVals.rotation;
@@ -107,6 +112,8 @@ public class MenuScreen_MainMenu : MenuScreenBase
 
     List<TweenManager.TweenInstanceInterface> buttonTweenInterfaces = new List<TweenManager.TweenInstanceInterface>();
 
+
+
     void show_startButton()
     {
         startButton.Event_CompletedShow += showButtonsCompleted;
@@ -143,6 +150,7 @@ public class MenuScreen_MainMenu : MenuScreenBase
         exitButton.Hide();
         optionsButton.Hide();
         creditsButton.Hide();
+        menuLogo_image.Hide();
 
         GM_.Instance.tween_manager.StartTweenInstance(
             fadeInTween,
@@ -170,6 +178,7 @@ public class MenuScreen_MainMenu : MenuScreenBase
         exitButton.Hide();
         optionsButton.Hide();
         creditsButton.Hide();
+        menuLogo_image.Hide();
 
         GM_.Instance.tween_manager.StartTweenInstance(
             MenuTransitions.transition_MainMenuToCredits,
@@ -207,6 +216,7 @@ public class MenuScreen_MainMenu : MenuScreenBase
         exitButton.Hide();
         optionsButton.Hide();
         creditsButton.Hide();
+        menuLogo_image.Hide();
 
         GM_.Instance.tween_manager.StartTweenInstance(
             MenuTransitions.transition_MainToGameOptions,

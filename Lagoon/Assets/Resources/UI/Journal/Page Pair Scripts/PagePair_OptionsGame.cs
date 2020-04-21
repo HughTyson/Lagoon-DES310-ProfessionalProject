@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PagePair_OptionsGame : BasePagePair
 {
-    [SerializeField] UnselectableButton goBackButton;
-    [SerializeField] UnselectableButton controlsButton;
-    [SerializeField] UnselectableButton audioButton;
+    [SerializeField] SelectableAndUnhoverableButton goBackButton;
+    [SerializeField] SelectableAndUnhoverableButton controlsButton;
+    [SerializeField] SelectableAndUnhoverableButton audioButton;
 
     [SerializeField] Checkbox_ vibrationCheckbox;
     [SerializeField] SelectableButton_TextButton back_SButton;
@@ -29,9 +29,8 @@ public class PagePair_OptionsGame : BasePagePair
         audioButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.LB });
 
         TypeRef<bool> grouper = new TypeRef<bool>();
-        goBackButton.AssignToGroup(grouper);
-        controlsButton.AssignToGroup(grouper);
-        audioButton.AssignToGroup(grouper);
+        goBackButton.GroupWith(controlsButton);
+        controlsButton.GroupWith(audioButton);
 
         vibrationCheckbox.Event_ToggleChanged += vibrationToggled;
     }
@@ -47,7 +46,7 @@ public class PagePair_OptionsGame : BasePagePair
         vibrationCheckbox.SetToggle(GM_.Instance.input.VibrationsEnabled);
 
 
-        goBackButton.Event_Selected += request_GoBack;
+  
 
         goBackButton.Show();
         controlsButton.Show();
@@ -60,6 +59,11 @@ public class PagePair_OptionsGame : BasePagePair
 
     public override void FinishedEnteringPage()
     {
+        goBackButton.Event_Selected += request_GoBack;
+
+        goBackButton.ListenForSelection();
+        controlsButton.ListenForSelection();
+        audioButton.ListenForSelection();
         vibrationCheckbox.HoverOver();
     }
 

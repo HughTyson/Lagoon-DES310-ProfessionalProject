@@ -9,8 +9,8 @@ public class PagePair_Inventory : BasePagePair
     [SerializeField] BasePagePair goBackPair;
 
 
-    [SerializeField] UnselectableButton goBackButton;
-    [SerializeField] UnselectableButton to_stats;
+    [SerializeField] SelectableAndUnhoverableButton goBackButton;
+    [SerializeField] SelectableAndUnhoverableButton to_stats;
 
     [SerializeField] TextMeshProUGUI left_text_box;
     [SerializeField] TextMeshProUGUI right_text_box;
@@ -76,7 +76,11 @@ public class PagePair_Inventory : BasePagePair
         special_text_right.Begin(right_special_text);
 
     }
-
+    public override void FinishedEnteringPage()
+    {
+        goBackButton.ListenForSelection();
+        to_stats.ListenForSelection();
+    }
     void requestGoBack()
     {
 

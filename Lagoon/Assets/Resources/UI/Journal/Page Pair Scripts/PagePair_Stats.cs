@@ -6,9 +6,9 @@ using TMPro;
 public class PagePair_Stats : BasePagePair
 {
 
-    [SerializeField] UnselectableButton go_back_button;
-    [SerializeField] UnselectableButton to_inventory;
-    [SerializeField] UnselectableButton to_tutorial;
+    [SerializeField] SelectableAndUnhoverableButton go_back_button;
+    [SerializeField] SelectableAndUnhoverableButton to_inventory;
+    [SerializeField] SelectableAndUnhoverableButton to_tutorial;
     
 
     [SerializeField] TextMeshProUGUI stats_box;
@@ -76,6 +76,12 @@ public class PagePair_Stats : BasePagePair
 
     }
 
+    public override void FinishedEnteringPage()
+    {
+        go_back_button.ListenForSelection();
+        to_inventory.ListenForSelection();
+        to_tutorial.ListenForSelection();
+    }
 
     void request_PutAwayBook()
     {

@@ -9,7 +9,7 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
 
     [SerializeField] SpecialText.SpecialText SpecialText_Title;
 
-    [SerializeField] UnselectableButton goBackButton;
+    [SerializeField] SelectableAndUnhoverableButton goBackButton;
 
     SpecialText.SpecialTextData SpecialTextData_Title = new SpecialText.SpecialTextData();
     void Start()
@@ -34,7 +34,7 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
         SpecialTextData_Title.fullTextString.Length
         );
 
-        goBackButton.SetButtonsToCheckForPress(InputManager.BUTTON.B);
+        goBackButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.B });
         goBackButton.Event_Selected += start_transitionToCredits;
         gameObject.SetActive(false);
     }
@@ -46,6 +46,7 @@ public class MenuScreen_ExtraCredits : MenuScreenBase
 
         gameObject.SetActive(true);
         goBackButton.Show();
+        goBackButton.ListenForSelection();
         SpecialText_Title.Begin(SpecialTextData_Title);
     }
 

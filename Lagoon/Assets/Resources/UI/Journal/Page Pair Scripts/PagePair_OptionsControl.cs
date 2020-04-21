@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PagePair_OptionsControl : BasePagePair
 {
-    [SerializeField] UnselectableButton goBackButton;
-    [SerializeField] UnselectableButton controlsButton;
-    [SerializeField] UnselectableButton audioButton;
+    [SerializeField] SelectableAndUnhoverableButton goBackButton;
+    [SerializeField] SelectableAndUnhoverableButton controlsButton;
+    [SerializeField] SelectableAndUnhoverableButton audioButton;
 
     [SerializeField] Slider_Default xSenseSlider;
     [SerializeField] Slider_Default ySenseSlider;
@@ -33,9 +33,8 @@ public class PagePair_OptionsControl : BasePagePair
         audioButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.RB });
 
         TypeRef<bool> grouper = new TypeRef<bool>();
-        goBackButton.AssignToGroup(grouper);
-        controlsButton.AssignToGroup(grouper);
-        audioButton.AssignToGroup(grouper);
+        goBackButton.GroupWith(controlsButton);
+        controlsButton.GroupWith(audioButton);
 
 
         xSenseSlider.Event_Selected += sliderSelected;
@@ -70,12 +69,16 @@ public class PagePair_OptionsControl : BasePagePair
         goBackButton.Show();
         controlsButton.Show();
         audioButton.Show();
+
+
+
         xSenseSlider.Show();
         ySenseSlider.Show();
         xInvSlider.Show();
         yInvSlider.Show();
         back_SButton.Show();
     }
+  
     public override void PassingBy()
     {
         goBackButton.Show();
@@ -110,6 +113,10 @@ public class PagePair_OptionsControl : BasePagePair
 
     public override void FinishedEnteringPage()
     {
+        goBackButton.ListenForSelection();
+        controlsButton.ListenForSelection();
+        audioButton.ListenForSelection();
+
         xSenseSlider.HoverOver();
     }
 

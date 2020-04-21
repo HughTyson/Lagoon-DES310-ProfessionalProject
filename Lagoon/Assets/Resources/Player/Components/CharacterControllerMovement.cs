@@ -28,6 +28,9 @@ public class CharacterControllerMovement : MonoBehaviour
     [SerializeField] float acceleration = 1.0f;                 //The acceleration valeue
     [SerializeField] float max_velocity = 5.0f;                 //The max velocity that the player can reach before being clamped
 
+
+
+
     // ==========================================
     //              Hidden Variables
     //===========================================
@@ -38,6 +41,8 @@ public class CharacterControllerMovement : MonoBehaviour
     Vector3 move_direction;                                     //stores the move information thats calculated in the 
 
     float current_velocity;                                     //keeps track of the players current_velocity
+    public float CurrentVelocity => current_velocity;
+    public float CurrentNormalizedVelocity => current_velocity / max_velocity;
 
     SupplyDrop test_drop;
 

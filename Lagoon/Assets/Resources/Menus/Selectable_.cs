@@ -274,7 +274,7 @@ public class Selectable_ : MenuItem_
     protected sealed override void ForceCompleteAnimations_Layer1()
     {
         if (animationSelectUpdate != null)
-            animationUnSelect.StopAnimation(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
+            animationSelectUpdate.StopAnimation(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
         if (animationHoverOver != null)
             animationHoverOver.StopAnimation(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
         if (animationUnHoverOver != null)

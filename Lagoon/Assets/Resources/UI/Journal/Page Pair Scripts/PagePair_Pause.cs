@@ -7,7 +7,7 @@ public class PagePair_Pause : BasePagePair
     [SerializeField] SelectableButton_ resumeButton;
     [SerializeField] SelectableButton_ optionsButton;
     [SerializeField] SelectableButton_ exitButton;
-    [SerializeField] UnselectableButton exitToJournalButton;
+    [SerializeField] SelectableAndUnhoverableButton exitToJournalButton;
 
     [SerializeField] BasePagePair pagePair_gameOptions;
     [SerializeField] BasePagePair pagePair_AreYouSure_Exit;
@@ -38,6 +38,8 @@ public class PagePair_Pause : BasePagePair
     }
     public override void FinishedEnteringPage()
     {
+        exitToJournalButton.ListenForSelection();
+
         InfoRequest_CameraFromPage_Args info = Invoke_InfoRequest_CameFromPage();
 
 
