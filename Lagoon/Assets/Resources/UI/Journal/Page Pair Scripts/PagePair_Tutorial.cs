@@ -28,6 +28,10 @@ public class PagePair_Tutorial : BasePagePair
     {
         go_back_button.Show();
         to_stats.Show();
+
+    }
+    public override void FinishedEnteringPage()
+    {
         go_back_button.ListenForSelection();
         to_stats.ListenForSelection();
     }

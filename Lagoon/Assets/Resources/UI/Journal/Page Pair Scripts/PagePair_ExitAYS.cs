@@ -27,10 +27,11 @@ public class PagePair_ExitAYS : BasePagePair
         noButton.Show();
         yesButton.Show();
         goBackButton.Show();
-        goBackButton.ListenForSelection();
+
     }
     public override void FinishedEnteringPage()
     {
+        goBackButton.ListenForSelection();
         yesButton.HoverOver();
     }
 

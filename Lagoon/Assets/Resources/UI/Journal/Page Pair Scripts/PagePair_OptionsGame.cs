@@ -46,7 +46,7 @@ public class PagePair_OptionsGame : BasePagePair
         vibrationCheckbox.SetToggle(GM_.Instance.input.VibrationsEnabled);
 
 
-        goBackButton.Event_Selected += request_GoBack;
+  
 
         goBackButton.Show();
         controlsButton.Show();
@@ -59,6 +59,8 @@ public class PagePair_OptionsGame : BasePagePair
 
     public override void FinishedEnteringPage()
     {
+        goBackButton.Event_Selected += request_GoBack;
+
         goBackButton.ListenForSelection();
         controlsButton.ListenForSelection();
         audioButton.ListenForSelection();

@@ -43,8 +43,12 @@ public class SelectableAndUnhoverableButton : SelectableAndUnhoverable_
     
     void blockingRequest(BlockRequestArgs args)
     {
-        if (isSelected)
-            args.Block();
+        if (args.cmdType.GetType() == typeof(CMD_Select))
+        {
+            if (isSelected)
+                args.Block();
+        }
+
     }
 
     void beginSelected()

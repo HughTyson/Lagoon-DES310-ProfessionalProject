@@ -68,17 +68,17 @@ public class PagePair_OptionsControl : BasePagePair
 
         goBackButton.Show();
         controlsButton.Show();
-
-        goBackButton.ListenForSelection();
-        controlsButton.ListenForSelection();
-
         audioButton.Show();
+
+
+
         xSenseSlider.Show();
         ySenseSlider.Show();
         xInvSlider.Show();
         yInvSlider.Show();
         back_SButton.Show();
     }
+  
     public override void PassingBy()
     {
         goBackButton.Show();
@@ -113,6 +113,10 @@ public class PagePair_OptionsControl : BasePagePair
 
     public override void FinishedEnteringPage()
     {
+        goBackButton.ListenForSelection();
+        controlsButton.ListenForSelection();
+        audioButton.ListenForSelection();
+
         xSenseSlider.HoverOver();
     }
 

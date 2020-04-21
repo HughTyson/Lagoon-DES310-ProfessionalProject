@@ -1037,6 +1037,8 @@ public class TweenAnimator
                 set { ((UnityEngine.UI.Image)reference).color = value; }
             }
         }
+
+
     }
 
     public class HDRP_Animator_ : Animatable

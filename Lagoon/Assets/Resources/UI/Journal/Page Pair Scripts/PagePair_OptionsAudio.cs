@@ -72,7 +72,7 @@ public class PagePair_OptionsAudio : BasePagePair
         musicSlider.SetValue(GM_.Instance.audio.MusicVolume);
         sfxSlider.SetValue(GM_.Instance.audio.SFXVolume);
 
-        goBackButton.Event_Selected += request_GoBack;
+
 
         goBackButton.Show();
         controlsButton.Show();
@@ -82,9 +82,7 @@ public class PagePair_OptionsAudio : BasePagePair
         sfxSlider.Show();
         back_SButton.Show();
 
-        goBackButton.ListenForSelection();
-        controlsButton.ListenForSelection();
-        gameButton.ListenForSelection();
+
 
     }
     public override void PassingBy()
@@ -104,6 +102,11 @@ public class PagePair_OptionsAudio : BasePagePair
 
     public override void FinishedEnteringPage()
     {
+        goBackButton.Event_Selected += request_GoBack;
+        goBackButton.ListenForSelection();
+        controlsButton.ListenForSelection();
+        gameButton.ListenForSelection();
+
         masterSlider.HoverOver();
     }
 

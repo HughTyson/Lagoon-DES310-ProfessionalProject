@@ -10,6 +10,10 @@ public class SelectableAndUnhoverableButton_Default : SelectableAndUnhoverableBu
     [SerializeField] Sprite unselectedSprite;
 
     [SerializeField] Image image;
+    [SerializeField] TMPro.TextMeshProUGUI text;
+
+
+    Color default_colour;
     protected override void ThisInit_Layer3()
     {
         
@@ -17,7 +21,7 @@ public class SelectableAndUnhoverableButton_Default : SelectableAndUnhoverableBu
     protected override void ApplyDefaults()
     {
         SetButtonsToCheckForPress(buttonsToCheckFor);
-
+        default_colour = text.color;
 
         TweenManager.TweenPathBundle tweenHide = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
@@ -26,11 +30,12 @@ public class SelectableAndUnhoverableButton_Default : SelectableAndUnhoverableBu
             );
         TweenAnimator.Animation animHide = new TweenAnimator.Animation(
             tweenHide,
-            new TweenAnimator.Image_
+
+            new TweenAnimator.TMPText_
             (
-                image,
-                color: new TweenAnimator.Image_.Color_(false, -1, false, -1, false, -1, true, 0, TweenAnimator.MOD_TYPE.ABSOLUTE)
-                )
+                text,
+                color: new TweenAnimator.TMPText_.Color_(false, -1, false, -1, false, -1, true, 0, TweenAnimator.MOD_TYPE.ABSOLUTE)
+               )            
             );
 
         TweenManager.TweenPathBundle tweenShow = new TweenManager.TweenPathBundle(
@@ -40,33 +45,46 @@ public class SelectableAndUnhoverableButton_Default : SelectableAndUnhoverableBu
         );
         TweenAnimator.Animation animShow = new TweenAnimator.Animation(
             tweenShow,
-            new TweenAnimator.Image_
+
+             new TweenAnimator.TMPText_
             (
-                image,
-                color: new TweenAnimator.Image_.Color_(false, -1, false, -1, false, -1, true, 0, TweenAnimator.MOD_TYPE.ABSOLUTE)
-                )
+                text,
+                color: new TweenAnimator.TMPText_.Color_(false, -1, false, -1, false, -1, true, 0, TweenAnimator.MOD_TYPE.ABSOLUTE)
+               )
             );
 
         TweenManager.TweenPathBundle tweenSelect = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(1, 0, 0.1f, TweenManager.CURVE_PRESET.LINEAR),
-                new TweenManager.TweenPart_Continue(1, 0.1f, TweenManager.CURVE_PRESET.LINEAR)
+                new TweenManager.TweenPart_Start(0, 1, 0.2f, TweenManager.CURVE_PRESET.LINEAR)
                 )
             );
         TweenAnimator.Animation animSelect = new TweenAnimator.Animation(
             tweenSelect,
-            new TweenAnimator.Image_
+             new TweenAnimator.Generic_
             (
-                image,
-                color: new TweenAnimator.Image_.Color_(true, 0, true, 0, true, 0, false, -1, TweenAnimator.MOD_TYPE.ABSOLUTE)
-                )
+                setToPressed,
+                new TweenAnimator.Generic_.Trigger_(0,0, TweenAnimator.Base.TriggerProperty.TRIGGER_TYPE.GREATEREQUAL_THAN)
+            ),
+             new TweenAnimator.Generic_
+            (
+                setToNonPressed,
+                new TweenAnimator.Generic_.Trigger_(0, 0.5f, TweenAnimator.Base.TriggerProperty.TRIGGER_TYPE.GREATEREQUAL_THAN)
+            )
             );
 
 
-        OverrideHideAnimation(animHide, new TweenAnimator.Animation.PlayArgs());
-        OverrideShowAnimation(animShow, new TweenAnimator.Animation.PlayArgs());
-        OverrideBeginSelectAnimation(animSelect, new TweenAnimator.Animation.PlayArgs());
+        OverrideHideAnimation(animHide, new TweenAnimator.Animation.PlayArgs(TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA));
+        OverrideShowAnimation(animShow, new TweenAnimator.Animation.PlayArgs(TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA));
+        OverrideBeginSelectAnimation(animSelect, new TweenAnimator.Animation.PlayArgs(TimeFormat_: TweenManager.TIME_FORMAT.UNSCALE_DELTA));
     }
 
    
+    void setToPressed()
+    {
+        image.sprite = selectedSprite;
+    }
+    void setToNonPressed()
+    {
+        image.sprite = unselectedSprite;
+    }
 }
