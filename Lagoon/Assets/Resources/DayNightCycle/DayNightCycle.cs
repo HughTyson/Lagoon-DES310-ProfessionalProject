@@ -20,6 +20,8 @@ public class DayNightCycle : MonoBehaviour
 
     [SerializeField] float max_sleep_speed = 50;
 
+    [SerializeField] Material stars_mat;
+
     bool sleep = false;
     
     ProceduralSky procedural_sky;

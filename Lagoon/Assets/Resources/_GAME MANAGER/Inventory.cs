@@ -109,7 +109,10 @@ public class Inventory
     {
         for(int i = 0; i < item_images.Count; i++)
         {
-            return item_images[i].sprite;
+            if(item_images[i].type == type)
+            {
+                return item_images[i].sprite;
+            }
         }
 
         return null;
@@ -145,13 +148,23 @@ public class Inventory
 
         Puzzle puzzle = new Puzzle();
         puzzle.Init(2);
-        puzzle.SetItemImage(GetSprite(wood.GetItemType()));
-        
+        puzzle.SetItemImage(GetSprite(puzzle.GetItemType()));
 
-        Chocolate c = new Chocolate();
+        Puzzle puzzle2 = new Puzzle();
+        puzzle2.Init(3);
+        puzzle2.SetItemImage(GetSprite(puzzle2.GetItemType()));
+
+
+        ScrewDriver c = new ScrewDriver();
         c.Init();
         c.SetItemImage(GetSprite(c.GetItemType()));
-        //items.Add(c);
+
+        Chocolate d = new Chocolate();
+        d.Init();
+        d.SetItemImage(GetSprite(d.GetItemType()));
+
+        items.Add(d);
+
 
         RemoteControlHelicopter r = new RemoteControlHelicopter();
         r.Init();
@@ -165,6 +178,7 @@ public class Inventory
 
         items.Add(wood);
         items.Add(puzzle);
+        items.Add(c);
        
     }
 }

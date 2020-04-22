@@ -194,11 +194,11 @@ public class ThirdPersonCamera : MonoBehaviour
 
         if(GM_.Instance.settings.IsYInverted)
         {
-            y_invert = -1;
+            y_invert = 1;
         }
         else
         {
-            y_invert = 1;
+            y_invert = -1;
         }
 
         camera_input += new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.RH) * (((GM_.Instance.settings.XSensitivity * 10) + 30) * x_invert) /*camera_rotation_speed*/, GM_.Instance.input.GetAxis(InputManager.AXIS.RV) * (((GM_.Instance.settings.YSensitivity * 10) + 30) * y_invert) /*camera_rotation_speed*/) * Time.fixedDeltaTime; //get the input from the left stick

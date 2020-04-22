@@ -53,23 +53,16 @@ public class PagePair_Inventory : BasePagePair
 
             if (GM_.Instance.inventory.items[i].GetSpawnType() == InventoryItem.SpwanType.GENERIC)
             {
-                Debug.Log(GM_.Instance.inventory.items[i].isNew());
+                
                 left_page_items[left_used].Show();
                 left_page_items[left_used].Clear();
-
 
                 AddToLeftBoxes(i, left_used);
                 left_page_items[left_used].BeginSpecialTexts();
 
-                GM_.Instance.inventory.items[i].SetIsNew(false);
-
                 left_used++;
             }
-        }
-
-        for (int i = 0; i < GM_.Instance.inventory.items.Count; i++)
-        {
-            if (GM_.Instance.inventory.items[i].GetSpawnType() == InventoryItem.SpwanType.SPECIFIC)
+            else if (GM_.Instance.inventory.items[i].GetSpawnType() == InventoryItem.SpwanType.SPECIFIC)
             {
 
                 right_page_items[right_used].Show();
@@ -105,41 +98,6 @@ public class PagePair_Inventory : BasePagePair
     void AddToRightBoxes(int i, int right_used)
     {
 
-        if (GM_.Instance.inventory.items[i].isNew())     //if the item is new
-        {
-            right_page_items[right_used].item_name_specialtext.CreateCharacterData(GM_.Instance.inventory.items[i].GetName());
-            right_page_items[right_used].item_name_specialtext.AddPropertyToText(
-                new List<SpecialText.TextProperties.Base>()
-                {
-
-                                new SpecialText.TextProperties.Colour(218,165,32),
-                                new SpecialText.TextProperties.StaticAppear(),
-                                new SpecialText.TextProperties.WaveScaled(1,0.5f,5)
-                },
-                0,
-                GM_.Instance.inventory.items[i].GetName().Length
-            );
-
-            right_page_items[right_used].item_number_specialtext.CreateCharacterData(GM_.Instance.inventory.items[i].GetQuantity().ToString());
-            right_page_items[right_used].item_number_specialtext.AddPropertyToText(
-                new List<SpecialText.TextProperties.Base>()
-                {
-
-                        new SpecialText.TextProperties.Colour(218,165,32),
-                        new SpecialText.TextProperties.StaticAppear(),
-                        new SpecialText.TextProperties.WaveScaled(1,0.5f,5)
-                },
-                0,
-                GM_.Instance.inventory.items[i].GetQuantity().ToString().Length
-            );
-
-            right_page_items[i].inventory_image.sprite = GM_.Instance.inventory.items[i].GetItemImage();
-
-            GM_.Instance.inventory.items[i].SetIsNew(false);
-
-        }
-        else if (!GM_.Instance.inventory.items[i].isNew())
-        {
             right_page_items[right_used].item_name_specialtext.CreateCharacterData(GM_.Instance.inventory.items[i].GetName());
             right_page_items[right_used].item_name_specialtext.AddPropertyToText(
                 new List<SpecialText.TextProperties.Base>()
@@ -161,23 +119,20 @@ public class PagePair_Inventory : BasePagePair
                 0,
                 GM_.Instance.inventory.items[i].GetQuantity().ToString().Length
             );
-        }
+
+            right_page_items[right_used].inventory_image.sprite = GM_.Instance.inventory.items[i].GetItemImage();
+
 
     }
 
     void AddToLeftBoxes(int i, int left_used)
     {
-
-        if (GM_.Instance.inventory.items[i].isNew())     //if the item is new
-        {
             left_page_items[left_used].item_name_specialtext.CreateCharacterData(GM_.Instance.inventory.items[i].GetName());
             left_page_items[left_used].item_name_specialtext.AddPropertyToText(
                 new List<SpecialText.TextProperties.Base>()
                 {
-
-                                new SpecialText.TextProperties.Colour(218,165,32),
-                                new SpecialText.TextProperties.StaticAppear(),
-                                new SpecialText.TextProperties.WaveScaled(1,0.5f,5)
+                                new SpecialText.TextProperties.Colour(255,255,255),
+                                new SpecialText.TextProperties.StaticAppear()
                 },
                 0,
                 GM_.Instance.inventory.items[i].GetName().Length
@@ -187,44 +142,14 @@ public class PagePair_Inventory : BasePagePair
             left_page_items[left_used].item_number_specialtext.AddPropertyToText(
                 new List<SpecialText.TextProperties.Base>()
                 {
-
-                        new SpecialText.TextProperties.Colour(218,165,32),
-                        new SpecialText.TextProperties.StaticAppear(),
-                        new SpecialText.TextProperties.WaveScaled(1,0.5f,5)
-                },
-                0,
-                GM_.Instance.inventory.items[i].GetQuantity().ToString().Length
-            );
-
-            left_page_items[left_used].inventory_image.sprite = GM_.Instance.inventory.items[i].GetItemImage();
-
-            GM_.Instance.inventory.items[i].SetIsNew(false);
-
-        }
-        else if (!GM_.Instance.inventory.items[i].isNew())
-        {
-            left_page_items[i].item_name_specialtext.CreateCharacterData(GM_.Instance.inventory.items[i].GetName());
-            left_page_items[i].item_name_specialtext.AddPropertyToText(
-                new List<SpecialText.TextProperties.Base>()
-                {
-                                new SpecialText.TextProperties.Colour(255,255,255),
-                                new SpecialText.TextProperties.StaticAppear()
-                },
-                0,
-                GM_.Instance.inventory.items[i].GetName().Length
-            );
-
-            left_page_items[i].item_number_specialtext.CreateCharacterData(GM_.Instance.inventory.items[i].GetQuantity().ToString());
-            left_page_items[i].item_number_specialtext.AddPropertyToText(
-                new List<SpecialText.TextProperties.Base>()
-                {
                                 new SpecialText.TextProperties.Colour(255,255,255),
                                 new SpecialText.TextProperties.StaticAppear()
                 },
                 0,
                 GM_.Instance.inventory.items[i].GetQuantity().ToString().Length
             );
-        }
+
+        left_page_items[left_used].inventory_image.sprite = GM_.Instance.inventory.items[i].GetItemImage();
     }
 
 

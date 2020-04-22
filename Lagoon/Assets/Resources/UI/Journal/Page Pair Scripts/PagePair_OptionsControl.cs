@@ -6,36 +6,39 @@ public class PagePair_OptionsControl : BasePagePair
 {
     [SerializeField] SelectableAndUnhoverableButton goBackButton;
     [SerializeField] SelectableAndUnhoverableButton controlsButton;
-    [SerializeField] SelectableAndUnhoverableButton audioButton;
 
+
+    [Header("Control Options")]
     [SerializeField] Slider_Default xSenseSlider;
     [SerializeField] Slider_Default ySenseSlider;
     [SerializeField] Checkbox_ xInvSlider;
     [SerializeField] Checkbox_ yInvSlider;
-    [SerializeField] SelectableButton_TextButton back_SButton;
 
+    [Header("Audio Options")]
+    [SerializeField] Slider_Default masterSlider;
+    [SerializeField] Slider_Default musicSlider;
+    [SerializeField] Slider_Default sfxSlider;
 
+    [Header("page Pairs")]
     [SerializeField] PagePair_OptionsGame gameOptionPair;
-    [SerializeField] PagePair_OptionsAudio audioOptionPair;
 
     [SerializeField] BasePagePair goBackPair;
 
     void Awake()
     {
 
-        back_SButton.Event_Selected += request_GoBack;
+      
 
         controlsButton.Event_Selected += requestGoTo_GameOptions;
-        audioButton.Event_Selected += requestGoTo_AudioOptions;
+      
 
         goBackButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.B });
         controlsButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.LB });
-        audioButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.RB });
+       
 
         TypeRef<bool> grouper = new TypeRef<bool>();
         goBackButton.GroupWith(controlsButton);
-        controlsButton.GroupWith(audioButton);
-
+        
 
         xSenseSlider.Event_Selected += sliderSelected;
         ySenseSlider.Event_Selected += sliderSelected;
@@ -52,6 +55,21 @@ public class PagePair_OptionsControl : BasePagePair
 
         xSenseSlider.ChangeSliderRange(PlayerSettings.MINMAX_X_SENSITIVITY);
         ySenseSlider.ChangeSliderRange(PlayerSettings.MINMAX_Y_SENSITIVITY);
+
+
+        //Audio Options
+
+        masterSlider.Event_ValueChanged += setMasterVolume;
+        musicSlider.Event_ValueChanged += setMusicVolume;
+        sfxSlider.Event_ValueChanged += setSFXVolume;
+
+        masterSlider.Event_Selected += sliderSelected;
+        musicSlider.Event_Selected += sliderSelected;
+        sfxSlider.Event_Selected += sliderSelected;
+
+        masterSlider.Event_UnSelected += sliderUnSelected;
+        musicSlider.Event_UnSelected += sliderUnSelected;
+        sfxSlider.Event_UnSelected += sliderUnSelected;
     }
 
     public override void BegunEnteringPage()
@@ -65,10 +83,14 @@ public class PagePair_OptionsControl : BasePagePair
         xInvSlider.SetToggle(GM_.Instance.settings.IsXInverted);
         yInvSlider.SetToggle(GM_.Instance.settings.IsYInverted);
 
+        masterSlider.SetValue(GM_.Instance.audio.MasterVolume);
+        musicSlider.SetValue(GM_.Instance.audio.MusicVolume);
+        sfxSlider.SetValue(GM_.Instance.audio.SFXVolume);
+
 
         goBackButton.Show();
         controlsButton.Show();
-        audioButton.Show();
+       
 
 
 
@@ -76,19 +98,30 @@ public class PagePair_OptionsControl : BasePagePair
         ySenseSlider.Show();
         xInvSlider.Show();
         yInvSlider.Show();
-        back_SButton.Show();
+        masterSlider.Show();
+        musicSlider.Show();
+        sfxSlider.Show();
+
     }
   
     public override void PassingBy()
     {
         goBackButton.Show();
         controlsButton.Show();
-        audioButton.Show();
+        
         xSenseSlider.Show();
         ySenseSlider.Show();
         xInvSlider.Show();
         yInvSlider.Show();
-        back_SButton.Show();
+
+        masterSlider.SetValue(GM_.Instance.audio.MasterVolume);
+        musicSlider.SetValue(GM_.Instance.audio.MusicVolume);
+        sfxSlider.SetValue(GM_.Instance.audio.SFXVolume);
+
+        masterSlider.Show();
+        musicSlider.Show();
+        sfxSlider.Show();
+
     }
 
 
@@ -115,8 +148,7 @@ public class PagePair_OptionsControl : BasePagePair
     {
         goBackButton.ListenForSelection();
         controlsButton.ListenForSelection();
-        audioButton.ListenForSelection();
-
+       
         xSenseSlider.HoverOver();
     }
 
@@ -138,21 +170,36 @@ public class PagePair_OptionsControl : BasePagePair
         ySenseSlider.SafeUnHoverOver();
         xInvSlider.SafeUnHoverOver();
         yInvSlider.SafeUnHoverOver();
-        back_SButton.SafeUnHoverOver();
+
+        masterSlider.SafeUnHoverOver();
+        musicSlider.SafeUnHoverOver();
+        sfxSlider.SafeUnHoverOver();
+
     }
 
     void requestGoTo_GameOptions()
     {
         Invoke_EventRequest_ChangePage(new RequestToChangePage(gameOptionPair));
     }
-    void requestGoTo_AudioOptions()
-    {
-        Invoke_EventRequest_ChangePage(new RequestToChangePage(audioOptionPair));
-    }
+
 
 
     void request_GoBack()
     {
         Invoke_EventRequest_ChangePage(new RequestToChangePage(goBackPair));
     }
+
+    void setMasterVolume(Slider_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.audio.MasterVolume = args.newValue;
+    }
+    void setMusicVolume(Slider_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.audio.MusicVolume = args.newValue;
+    }
+    void setSFXVolume(Slider_.EventArgs_ValueChanged args)
+    {
+        GM_.Instance.audio.SFXVolume = args.newValue;
+    }
+
 }
