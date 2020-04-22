@@ -158,6 +158,14 @@ MonoBehaviour:
   fishHoldBiteTime: 2
   fishheadTransform: {fileID: 630772104567113715}
   MeshTransform: {fileID: 5787979801242206318}
+  fleeingDriveForce: 5
+  nextStateMinTime: 0.5
+  nextStateMaxTime: 0
+  maxPlayerAccelleration: 0.08
+  maxVelocity: 0.5
+  maxLeftRighAmplitude: 10
+  accellerationMin: 0.02
+  accellerationMax: 0.04
 --- !u!135 &1477399331999179196
 SphereCollider:
   m_ObjectHideFlags: 0

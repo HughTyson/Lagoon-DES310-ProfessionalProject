@@ -113,8 +113,9 @@ startTalkingTween = new TweenManager.TweenPathBundle(
         is_talking = true;
         transitioning = true;
         border_image.sprite = sprTalkingBorder;
-        character_image.rectTransform.sizeDelta = new Vector2(360, 360);
-        character_image.rectTransform.anchoredPosition = new Vector2(-4, -8);
+        // character_image.rectTransform.sizeDelta = new Vector2(360, 360);
+        character_image.rectTransform.localScale = new Vector3(1.32f, 1.32f, 1);
+        character_image.rectTransform.anchoredPosition = new Vector2(-8, 12);
         settledIn();
 
         //GM_.Instance.tween_manager.StartTweenInstance(
@@ -139,8 +140,10 @@ startTalkingTween = new TweenManager.TweenPathBundle(
         is_talking = false;
         transitioning = true;
         border_image.sprite = sprNotTalkingBorder;
-        character_image.rectTransform.anchoredPosition = new Vector2(0, -13);
-        character_image.rectTransform.sizeDelta = new Vector2(270, 270);
+        character_image.rectTransform.localScale = new Vector3(1f, 1f, 1);
+  
+        character_image.rectTransform.anchoredPosition = new Vector2(0, 0);
+        //character_image.rectTransform.sizeDelta = new Vector2(270, 270);
 
         settledIn();
         //GM_.Instance.tween_manager.StartTweenInstance(

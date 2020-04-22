@@ -18,6 +18,7 @@ public class FishType : ScriptableObject
 
     public class Stats
     {
+        public bool spawnsInThisTeir = true;
         public float sizeMin = 1;
         public float sizeMax = 1;
         public float maxForce = 1;
