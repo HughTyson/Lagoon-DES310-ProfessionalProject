@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 573b53d33c29f964a96eecd1dcc11432, type: 3}
+  m_Name: MassiveFish
+  m_EditorClassIdentifier: 
+  fishTypeName: Goliath
+  fishPrefab: {fileID: 1028461759896159992, guid: f71003a09e6493f44a7d3d79b07cdd15,
+    type: 3}
+  minRangeTimeUnactiveTillDespawn: 9999999
+  maxRangeTimeUnactiveTillDespawned: 9999999
+  Teir1:
+    spawnsInThisTeir: 0
+    sizeMin: 1
+    sizeMax: 1
+    maxForce: 1
+    defaultForce: 1
+    defaultTurnForce: 1
+    maxTurnForce: 1
+    maxVelocity: 3
+  Teir2:
+    spawnsInThisTeir: 0
+    sizeMin: 1
+    sizeMax: 1
+    maxForce: 1
+    defaultForce: 1
+    defaultTurnForce: 1
+    maxTurnForce: 1
+    maxVelocity: 3
+  Teir3:
+    spawnsInThisTeir: 0
+    sizeMin: 1
+    sizeMax: 1
+    maxForce: 1
+    defaultForce: 1
+    defaultTurnForce: 1
+    maxTurnForce: 1
+    maxVelocity: 3
+  Teir4:
+    spawnsInThisTeir: 1
+    sizeMin: 5
+    sizeMax: 5
+    maxForce: 1
+    defaultForce: 1
+    defaultTurnForce: 1
+    maxTurnForce: 1
+    maxVelocity: 3

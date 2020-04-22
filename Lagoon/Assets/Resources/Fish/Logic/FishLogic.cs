@@ -584,7 +584,6 @@ public class FishLogic : MonoBehaviour
     struct FightingStateVars
     {
         public FIGHTING_STATE state;
-        public float maxVelocity;
 
         public float currentVelocity;
         public float fightingVelocityMax;
@@ -616,7 +615,17 @@ public class FishLogic : MonoBehaviour
     FightingStateVars fightingStateVars = new FightingStateVars();
 
 
-    
+
+    [Header("Fighting Properties")]
+    [SerializeField] float fleeingDriveForce = 5.0f;
+    [SerializeField] float nextStateMinTime = 0.1f;
+    [SerializeField] float nextStateMaxTime = 0.5f;
+    [SerializeField] float maxPlayerAccelleration = 0.08f;
+    [SerializeField] float maxVelocity = 0.5f;
+    [SerializeField] float maxLeftRighAmplitude = 10.0f;
+    [SerializeField] float accellerationMin = 0.02f;
+    [SerializeField] float accellerationMax = 0.04f;
+
     public void BeginFighting(Vector2 playerPosXZ_)
     {
 
@@ -626,30 +635,29 @@ public class FishLogic : MonoBehaviour
         fightingStateVars.playerPosXZ = playerPosXZ_;
 
         fightingStateVars.currentVelocity = 0;
-        fightingStateVars.maxVelocity = 16;
        
         fightingStateVars.distanceToPlayer = Vector2.Distance(headVectorXZ, fightingStateVars.playerPosXZ);
 
 
-        fightingStateVars.maxLeftRighAmplitude = 10.0f;
+        fightingStateVars.maxLeftRighAmplitude = maxLeftRighAmplitude;
         fightingStateVars.leftRighAmplitude = fightingStateVars.maxLeftRighAmplitude;
 
-        fightingStateVars.fightingAccellerationMin = 0.02f;
-        fightingStateVars.fightingAccellerationMax = 0.04f;
+        fightingStateVars.fightingAccellerationMin = accellerationMin;
+        fightingStateVars.fightingAccellerationMax = accellerationMax;
 
-        fightingStateVars.fightingVelocityMax = 0.5f;
+        fightingStateVars.fightingVelocityMax = maxVelocity;
 
         fightingStateVars.playerAccelleration = 0;
-        fightingStateVars.playerAccellerationMax = 0.08f;
+        fightingStateVars.playerAccellerationMax = maxPlayerAccelleration;
         fightingStateVars.fishAngleValue = 0.5f;
 
-        fightingStateVars.fightingNextStateMinTime = 0.1f;
-        fightingStateVars.fightingNextStateMinTime = 0.5f;
+        fightingStateVars.fightingNextStateMinTime = nextStateMinTime;
+        fightingStateVars.fightingNextStateMaxTime = nextStateMaxTime;
 
         fightingStateVars.maxDistance = 50.0f;
 
 
-        fightingStateVars.fleeingDriveForce = 5.0f;
+        fightingStateVars.fleeingDriveForce = fleeingDriveForce;
 
        // Debug.Log("Init Player Distance: " + fightingStateVars.distanceToPlayer);
 
