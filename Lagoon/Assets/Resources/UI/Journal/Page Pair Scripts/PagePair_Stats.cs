@@ -11,8 +11,8 @@ public class PagePair_Stats : BasePagePair
     [SerializeField] SelectableAndUnhoverableButton to_tutorial;
     
 
-    [SerializeField] TextMeshProUGUI stats_box;
-    [SerializeField] TextMeshProUGUI plane_box;
+    [SerializeField] TextMeshProUGUI stats_left_page;
+    [SerializeField] TextMeshProUGUI stats_right_page;
 
 
     [SerializeField] PagePair_Inventory inventory_pair;
@@ -43,36 +43,21 @@ public class PagePair_Stats : BasePagePair
         to_inventory.Show();
         to_tutorial.Show();
 
-        stats_box.text = "";
-        plane_box.text = "";
+        stats_left_page.text = "";
 
-        stats_box.text += "Days Passed - " + ((GM_.Instance.stats.dayNumber) + 13) + System.Environment.NewLine + System.Environment.NewLine;
+        stats_left_page.text += "Days Passed - " + ((GM_.Instance.stats.dayNumber) + 13) + System.Environment.NewLine + System.Environment.NewLine;
 
-        stats_box.text += "My biggest fish: " + System.Environment.NewLine;
-        stats_box.text += "Type - " + GM_.Instance.stats.bigestFishStats.type + System.Environment.NewLine;
-        stats_box.text += "Size - " + GM_.Instance.stats.bigestFishStats.size + System.Environment.NewLine;
-        stats_box.text += "Satisfaction: " + GM_.Instance.stats.bigestFishStats.satisfaction + System.Environment.NewLine + System.Environment.NewLine;
+        stats_left_page.text += "My biggest fish: " + System.Environment.NewLine;
+        stats_left_page.text += "Type - " + GM_.Instance.stats.bigestFishStats.type + System.Environment.NewLine;
+        stats_left_page.text += "Size - " + GM_.Instance.stats.bigestFishStats.size + System.Environment.NewLine;
+        stats_left_page.text += "Satisfaction: " + GM_.Instance.stats.bigestFishStats.satisfaction + System.Environment.NewLine + System.Environment.NewLine;
 
-        stats_box.text += "Last fish caught: " + System.Environment.NewLine;
-        stats_box.text += "Type - " + GM_.Instance.stats.last_fish_stats.type + System.Environment.NewLine;
-        stats_box.text += "Size - " + GM_.Instance.stats.last_fish_stats.size.ToString("F2") + System.Environment.NewLine;
-        stats_box.text += "Satisfaction: " + GM_.Instance.stats.last_fish_stats.satisfaction + System.Environment.NewLine;
+        stats_right_page.text += "Last fish caught: " + System.Environment.NewLine;
+        stats_right_page.text += "Type - " + GM_.Instance.stats.last_fish_stats.type + System.Environment.NewLine;
+        stats_right_page.text += "Size - " + GM_.Instance.stats.last_fish_stats.size.ToString("F2") + System.Environment.NewLine;
+        stats_right_page.text += "Satisfaction: " + GM_.Instance.stats.last_fish_stats.satisfaction + System.Environment.NewLine;
 
-        plane_box.text += "Plane Fixes" + System.Environment.NewLine;
-
-        for (int i = 0; i < GM_.Instance.stats.plane_segments_stats.Count; i++)
-        {
-            plane_box.text += GM_.Instance.stats.plane_segments_stats[i].segment_name + " - ";
-
-            if (!GM_.Instance.stats.plane_segments_stats[i].complete)
-            {
-                plane_box.text += "Not fixed" + System.Environment.NewLine;
-            }
-            else if (GM_.Instance.stats.plane_segments_stats[i].complete)
-            {
-                plane_box.text += "Fixed " + System.Environment.NewLine;
-            }
-        }
+        
 
     }
 

@@ -13,11 +13,11 @@ public class InventoryWrapper : MonoBehaviour
     [SerializeField] TextMeshProUGUI number_of_objects;
     [SerializeField] TextMeshProUGUI item_name;
 
-    public SpecialText.SpecialTextData item_name_specialtext;
-    public SpecialText.SpecialTextData item_number_specialtext;
+    public SpecialText.SpecialTextData item_name_specialtext = new SpecialText.SpecialTextData();
+    public SpecialText.SpecialTextData item_number_specialtext = new SpecialText.SpecialTextData();
 
-    SpecialText.SpecialText special_text_names = new SpecialText.SpecialText();
-    SpecialText.SpecialText special_text_numbers = new SpecialText.SpecialText();
+    [SerializeField] SpecialText.SpecialText special_text_names;
+    [SerializeField] SpecialText.SpecialText special_text_numbers;
 
     public void Hide()
     {
@@ -37,6 +37,7 @@ public class InventoryWrapper : MonoBehaviour
     {
         number_of_objects.text = "";
         item_name.text = "";
+
     }
 
     public void BeginSpecialTexts()

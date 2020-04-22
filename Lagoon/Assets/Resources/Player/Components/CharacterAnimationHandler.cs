@@ -50,7 +50,7 @@ public class CharacterAnimationHandler : MonoBehaviour
     private void OnAnimatorIK(int layerIndex)
     {
 
-        Debug.Log(animator.GetIKPosition(AvatarIKGoal.LeftFoot));
+        //Debug.Log(animator.GetIKPosition(AvatarIKGoal.LeftFoot));
         if (!TestOn)
             return;
 

@@ -19,17 +19,17 @@ public class LevelManager : MonoBehaviour
 
         GM_.Instance.story.Event_BarrierStart += Story_EventRequest_BarrierStart;
 
+    }
 
-        for(int i = 0; i < inventory_sprites.Count; i++)
+    private void Start()
+    {
+        for (int i = 0; i < inventory_sprites.Count; i++)
         {
-            //GM_.Instance.inventory.item_images.Add(inventory_sprites[i]);
+            GM_.Instance.inventory.item_images.Add(inventory_sprites[i]);
         }
 
-        
+
         GM_.Instance.inventory.Reset();
-
-
-
     }
 
 

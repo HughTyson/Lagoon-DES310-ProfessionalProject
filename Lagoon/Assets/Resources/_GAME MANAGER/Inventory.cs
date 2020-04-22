@@ -17,7 +17,7 @@ public class Inventory
 
     bool updated_inventory = false;
 
-    [HideInInspector] public List<ItemSprite> item_images;
+    [HideInInspector] public List<ItemSprite> item_images = new List<ItemSprite>();
 
     public Inventory()
     {
@@ -146,10 +146,21 @@ public class Inventory
         Puzzle puzzle = new Puzzle();
         puzzle.Init(2);
         puzzle.SetItemImage(GetSprite(wood.GetItemType()));
+        
 
-        //SwitchItem i = new SwitchItem();
-        //i.Init();
-        //items.Add(i);
+        Chocolate c = new Chocolate();
+        c.Init();
+        c.SetItemImage(GetSprite(c.GetItemType()));
+        //items.Add(c);
+
+        RemoteControlHelicopter r = new RemoteControlHelicopter();
+        r.Init();
+        r.SetItemImage(GetSprite(r.GetItemType()));
+
+        SwitchItem i = new SwitchItem();
+        i.Init();
+        i.SetItemImage(GetSprite(i.GetItemType()));
+        items.Add(i);
 
 
         items.Add(wood);
