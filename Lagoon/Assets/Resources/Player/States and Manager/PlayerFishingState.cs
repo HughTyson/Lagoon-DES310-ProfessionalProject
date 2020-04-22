@@ -269,7 +269,9 @@ public class PlayerFishingState : BaseState
             case FISHING_STATE.FISHING:
                 {
 
-                    Tutorial(TutorialManager.TutorialType.ATTRACT);
+                    NoFish();
+
+                    Tutorial(TutorialManager.TutorialType.OTHER);
 
                     float reelAxis = GM_.Instance.input.GetAxis(InputManager.AXIS.RT);
 
@@ -314,9 +316,6 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.INTERACTING_FISH:
                 {
-
-                    Tutorial(TutorialManager.TutorialType.EMOTE);
-
                     float reelAxis = GM_.Instance.input.GetAxis(InputManager.AXIS.RT);
 
        //             sfx_reeling_interface.Volume = Mathf.Min((sfx_reeling_interface.Pitch - 0.7f) / (0.95f - 0.7f), 0.6f);
@@ -478,8 +477,11 @@ public class PlayerFishingState : BaseState
         fishingLineLogic.BeganFishing();
         fishingBob.GetComponentInChildren<FishingBobLogic>().BeganFishing();
         fishingProjectileIndicator.SetActive(false);
+        Tutorial(TutorialManager.TutorialType.ATTRACT);
         fishing_state = FISHING_STATE.FISHING;
         GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.RT, "Reel In / Hook Fish");
+
+        
 
 
     }
@@ -864,10 +866,11 @@ public class PlayerFishingState : BaseState
 
     bool fishing_tutorial_complete = false;
     bool displaying_tutorial_box = false;
+    FishingBobLogic.STATE temp_bob_state;
 
     void Tutorial(TutorialManager.TutorialType type)
     {
-
+        
         if(!fishing_tutorial_complete)
         {
             if(!displaying_tutorial_box)
@@ -875,19 +878,42 @@ public class PlayerFishingState : BaseState
                 displaying_tutorial_box = GM_.Instance.tutorial_manger.WhatTutorial(type);
 
                 if (displaying_tutorial_box)
+                {
+                    GM_.Instance.input.InputEnabled = false;
+                    Debug.Log(Time.timeScale);
                     Time.timeScale = 0;
+                    temp_bob_state = fishingBob.GetComponentInChildren<FishingBobLogic>().GetState();
+                    fishingBob.GetComponentInChildren<FishingBobLogic>().Tutorial(FishingBobLogic.STATE.TUTORIAL);
+                }
+
             }
             else
             {
-                if(GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))
+                if(GM_.Instance.input.GetButtonDownDisabled(InputManager.BUTTON.A))
                 {
                     displaying_tutorial_box = GM_.Instance.tutorial_manger.CloseTutorial(type);
                     Time.timeScale = 1; 
+                    GM_.Instance.input.InputEnabled = true;
+                    fishingBob.GetComponentInChildren<FishingBobLogic>().Tutorial(temp_bob_state);
                 }
             }
         }
     }
 
+    float no_fish_time = 0;
+    void NoFish()
+    {
+        if (no_fish_time > 15 && !GM_.Instance.tutorial_manger.no_fish_complete)
+        {
+            Tutorial(TutorialManager.TutorialType.NOFISH);
+
+        }
+
+        if (!GM_.Instance.tutorial_manger.no_fish_complete)
+        {
+            no_fish_time += Time.deltaTime;
+        }
+    }
     // -- // 
     // -- Public Functions -- //
 

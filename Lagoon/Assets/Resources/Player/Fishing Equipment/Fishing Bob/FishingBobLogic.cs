@@ -34,7 +34,8 @@ public class FishingBobLogic : MonoBehaviour
         CASTED,
         FISH_INTERACTING,
         FIGHTING_FISH,
-        HOOKED_TO_CRATE
+        HOOKED_TO_CRATE,
+        TUTORIAL
     }
     STATE current_state = STATE.NOT_ACTIVE;
 
@@ -330,6 +331,11 @@ public class FishingBobLogic : MonoBehaviour
     public STATE GetState()
     {
         return current_state;
+    }
+
+    public void Tutorial(STATE state_)
+    {
+        current_state = state_;
     }
  
 }

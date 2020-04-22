@@ -236,6 +236,12 @@ public class InputManager // input manager for a single player controller game
         return 0;
     }
 
+    public bool GetButtonDownDisabled(BUTTON button)
+    {
+        if (!inputEnabled)
+            return (!prevButtons[(int)button] && currentButtons[(int)button]);
+        return false;
+    }
 
     public void SetVibrationWithPreset(VIBRATION_PRESET preset)
     {

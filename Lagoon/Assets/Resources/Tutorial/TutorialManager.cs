@@ -6,8 +6,8 @@ public class TutorialManager : MonoBehaviour
 {
 
     //string casting_tutorial = "Pull the left analogue stick back to get ready to cast, flick it forward to cast.";
-    string attract_tutoiral = "Keep the bob steady, fish are attracted!";
-    string emote_tutoiral = "The fish is very interested in the bob. Once it's bitten '!' hook him by holding RT. But be careful, it may just be testing the bob '?'.";
+    string attract_tutoiral = "Feel for the fish getting attracted to the bob. If they are attracted don't move away or they will get scared. When they bite '!' hook them on by holding RT. But be careful, it may just be testing the bob '?' and get frightened if you try to hook to early.";
+    string noFish_tutorial = "Hmmmmm, fish arn't interested in the bob. Reel in to try and attract them or cast out again";
     string reel_tutoiral = "You have hooked a fish! Reel him in with RT. Don't let the line snap or you will lose him";
 
     [SerializeField] string reel_tutorial;
@@ -18,16 +18,19 @@ public class TutorialManager : MonoBehaviour
 
     bool casting_complete;
     bool attract_complete;
-    bool emote_complete;
+    public bool no_fish_complete;
     bool reel_complete;
 
     public enum TutorialType
     {
         CASTING,
         ATTRACT,
-        EMOTE,
-        REEL
+        NOFISH,
+        REEL,
+        OTHER
     }
+
+    TutorialType currently_playing;
 
     public bool WhatTutorial(TutorialType type)
     {
@@ -37,6 +40,7 @@ public class TutorialManager : MonoBehaviour
                 {
                     if(!casting_complete)
                     {
+                        currently_playing = TutorialType.CASTING;
                         new_tutoiral_text = new SpecialText.SpecialTextData();
                         string casting_tutorial = "Pull the ";
                         int character_data = 0;
@@ -99,6 +103,7 @@ public class TutorialManager : MonoBehaviour
                 {
                     if (!attract_complete)
                     {
+                        currently_playing = TutorialType.ATTRACT;
                         new_tutoiral_text = new SpecialText.SpecialTextData();
                         new_tutoiral_text.CreateCharacterData(attract_tutoiral);
                         new_tutoiral_text.AddPropertyToText(
@@ -117,12 +122,13 @@ public class TutorialManager : MonoBehaviour
                     }
                 }
                 break;
-            case TutorialType.EMOTE:
+            case TutorialType.NOFISH:
                 {
-                    if(!emote_complete)
+                    if(!no_fish_complete)
                     {
+                        currently_playing = TutorialType.NOFISH;
                         new_tutoiral_text = new SpecialText.SpecialTextData();
-                        new_tutoiral_text.CreateCharacterData(emote_tutoiral);
+                        new_tutoiral_text.CreateCharacterData(noFish_tutorial);
                         new_tutoiral_text.AddPropertyToText(
                             new List<SpecialText.TextProperties.Base>()
                             {
@@ -130,7 +136,7 @@ public class TutorialManager : MonoBehaviour
                                     new SpecialText.TextProperties.CharSpeed(35)
                                     },
                                     0,
-                                    emote_tutoiral.Length
+                                    noFish_tutorial.Length
                             );
 
                         GAME_UI.Instance.state_Tutorial.box.string_data = new_tutoiral_text;
@@ -145,6 +151,7 @@ public class TutorialManager : MonoBehaviour
                 {
                     if(!reel_complete)
                     {
+                        currently_playing = TutorialType.REEL;
                         new_tutoiral_text = new SpecialText.SpecialTextData();
                         new_tutoiral_text.CreateCharacterData(reel_tutoiral);
                         new_tutoiral_text.AddPropertyToText(
@@ -175,7 +182,7 @@ public class TutorialManager : MonoBehaviour
     public bool CloseTutorial(TutorialType type)
     {
 
-        switch (type)
+        switch (currently_playing)
         {
             case TutorialType.CASTING:
                 casting_complete = true;
@@ -183,8 +190,8 @@ public class TutorialManager : MonoBehaviour
             case TutorialType.ATTRACT:
                 attract_complete = true;
                 break;
-            case TutorialType.EMOTE:
-                emote_complete = true;
+            case TutorialType.NOFISH:
+                no_fish_complete = true;
                 break;
             case TutorialType.REEL:
                 reel_complete = true;
