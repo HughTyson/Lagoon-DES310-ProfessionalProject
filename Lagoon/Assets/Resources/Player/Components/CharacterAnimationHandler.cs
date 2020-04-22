@@ -40,7 +40,7 @@ public class CharacterAnimationHandler : MonoBehaviour
     {
         animator.SetFloat(idParam_MovementSpeed, GM_.Instance.input.GetAxis( InputManager.AXIS.RT) + GM_.Instance.input.GetAxis(InputManager.AXIS.LT), 0.1f, Time.deltaTime);
 
-       
+
       //  animator.SetFloat(idParam_MovementSpeed, characterControllerMovement.CurrentNormalizedVelocity, 0.1f, Time.deltaTime);
        // Debug.Log("Test: " + animator.GetFloat(idParam_MovementSpeed));
 
@@ -92,7 +92,7 @@ public class CharacterAnimationHandler : MonoBehaviour
         float toeLength = initLeftToeDirection.magnitude;
         initLeftToeDirection = initLeftToeDirection.normalized;
 
-       
+
 
         RaycastHit hit;
         Ray ray = new Ray(animator.GetIKPosition(AvatarIKGoal.LeftFoot) + (Vector3.up*legLength), Vector3.down);

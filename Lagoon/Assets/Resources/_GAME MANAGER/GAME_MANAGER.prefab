@@ -517,6 +517,9 @@ MonoBehaviour:
   Image_background: {fileID: 5876842509138355459}
   Image_loadingIcon: {fileID: 8376587301823476236}
   SpecialTxt_loadingText: {fileID: 3508962968222062070}
+  new_scene_loaded: 0
+  transitionSceneID: 0
+  amount_of_scenes: 2
 --- !u!1 &6498299595587593160
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,6 +595,7 @@ Transform:
   - {fileID: 2043296029431764873}
   - {fileID: 6903990799270358453}
   - {fileID: 7974570800894780714}
+  - {fileID: 766643435955702784}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -613,3 +617,53 @@ MonoBehaviour:
   HughCurveLibrary: {fileID: 11400000, guid: fdc2f2ccfa6371442b1d0d0e507750bd, type: 2}
   DayNightValues: {fileID: 9090822290763063923}
   sceneManager: {fileID: 6115184187253365837}
+  tutorialManager: {fileID: 6628050397604642993}
+--- !u!1 &7873479117139473781
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 766643435955702784}
+  - component: {fileID: 6628050397604642993}
+  m_Layer: 0
+  m_Name: Tutorial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &766643435955702784
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7873479117139473781}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 902.18036, y: 619.303, z: 6.398903}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6703217912128351165}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6628050397604642993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7873479117139473781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93206eadcfd4d6b44a4f6a1c64bff07f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  casting_tutorial: Pull the left analogue stick back to get ready to cast, flick
+    it forward to cast.
+  attract_tutoiral: Keep the bob steady, fish are attracted!
+  emote_tutoiral: The fish is very interested in the bob. Hook it one by holding RT.
+    But be careful, it may just be testing the bob!.
+  reel_tutorial: 

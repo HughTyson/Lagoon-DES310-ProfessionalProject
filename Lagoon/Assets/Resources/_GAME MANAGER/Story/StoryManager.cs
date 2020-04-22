@@ -27,7 +27,7 @@ public class StoryManager
     public event System.Action<EventRequestArgs> EventRequest_GameEventContinue; // Called when the StoryManager has been requested to continue and end the game event. Alls subscibers are able to block the request, as they are not finished
     public event System.Action Event_GameEventEnd; // Called after a successfull EventRequest of the GameEventContinue
                                                    // -- //
-
+    
     public event System.Action<EventRequestArgs> EventRequest_BarrierStart;
 
 

@@ -36,10 +36,24 @@ public abstract class InventoryItem
     }
 
 
-    public enum ItemType
+    public enum SpwanType
     {
         GENERIC,    //this item can be randomly picked
         SPECIFIC    //this item will only be dropped after a certain conversation event
+    }
+
+    public enum ItemType
+    {
+        APPLE,
+        CHOCOLATE,
+        FIREWOOD,
+        SUNTANLOT,
+        PUZZLE,
+        REMOTECONTROLHELICOPTER,
+        SWITCH,
+        WRENCH,
+        SCREWDRIVER,
+        SALT
     }
 
     string item_name;
@@ -49,9 +63,13 @@ public abstract class InventoryItem
     float base_commonality;
     float relative_commonality;
 
-    ItemType type;
+    Sprite sprite;
+
+    SpwanType spawn_type;
+    ItemType item_type;
 
     bool is_updated = false;
+
 
     public virtual void Init(int? i = null) { }
 
@@ -105,14 +123,14 @@ public abstract class InventoryItem
         return relative_commonality;
     }
 
-    public void SetItemType(ItemType type_)
+    public void SetSpawnType(SpwanType type_)
     {
-        type = type_;
+        spawn_type = type_;
     }
 
-    public ItemType GetItemType()
+    public SpwanType GetSpawnType()
     {
-        return type;
+        return spawn_type;
     }
 
     public void SetIsNew(bool is_updated_)
@@ -125,4 +143,24 @@ public abstract class InventoryItem
         return is_updated;
     }
 
+
+    public void SetItemType(ItemType type_)
+    {
+        item_type = type_;
+    }
+
+    public ItemType GetItemType()
+    {
+        return item_type;
+    }
+
+    public void SetItemImage(Sprite sprite_)
+    {
+        sprite = sprite_;
+    }
+
+    public Sprite GetItemImage()
+    {
+        return sprite;
+    }
 }

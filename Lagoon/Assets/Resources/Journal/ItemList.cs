@@ -8,7 +8,8 @@ public class Apple : InventoryItem
     public override void Init(int? i = null)
     {
         SetName("Apple");
-        SetItemType(ItemType.GENERIC);
+        SetSpawnType(SpwanType.GENERIC);
+        SetItemType(ItemType.APPLE);
         SetDescription("A delicious snack");
         SetQuanity((i == null ? Random.Range(1, 7) : (int)i));
         setBaseCommonality(45.0f);
@@ -22,7 +23,8 @@ public class Chocolate : InventoryItem
     public override void Init(int? i = null)
     {
         SetName("Chocolate");
-        SetItemType(ItemType.GENERIC);
+        SetSpawnType(SpwanType.GENERIC);
+        SetItemType(ItemType.CHOCOLATE);
         SetDescription("A sugar rush");
         SetQuanity((i == null ? 1 : (int)i));
         setBaseCommonality(5.0f);
@@ -35,7 +37,8 @@ public class Firewood : InventoryItem
     public override void Init(int? i = null)
     {
         SetName("Firewood");
-        SetItemType(ItemType.GENERIC);
+        SetSpawnType(SpwanType.GENERIC);
+        SetItemType(ItemType.FIREWOOD);
         SetDescription("Sun of a birch");
         SetQuanity((i == null ? 10 : (int)i));
         setBaseCommonality(5.0f);
@@ -49,7 +52,8 @@ public class SunTanLotion : InventoryItem
     public override void Init(int? i = null)
     {
         SetName("SunTan Lotion");
-        SetItemType(ItemType.GENERIC);
+        SetSpawnType(SpwanType.GENERIC);
+        SetItemType(ItemType.SUNTANLOT);
         SetDescription("Factor 50, it's hot");
         SetQuanity((i == null ? 1 : (int)i));
         setBaseCommonality(10.0f);
@@ -63,7 +67,8 @@ public class Puzzle : InventoryItem
     public override void Init(int? i = null)
     {
         SetName("Puzzle");
-        SetItemType(ItemType.GENERIC);
+        SetSpawnType(SpwanType.GENERIC);
+        SetItemType(ItemType.PUZZLE);
         SetDescription("A way to pass the time");
         SetQuanity((i == null ? 1 : (int)i));
         setBaseCommonality(30.0f);
@@ -77,7 +82,8 @@ public class RemoteControlHelicopter : InventoryItem
     public override void Init(int? i = null)
     {
         SetName("RemoteControl Helicopter");
-        SetItemType(ItemType.GENERIC);
+        SetSpawnType(SpwanType.GENERIC);
+        SetItemType(ItemType.REMOTECONTROLHELICOPTER);
         SetDescription("They forgot to send batteries");
         SetQuanity((i == null ? 1 : (int)i));
         setBaseCommonality(0.1f);
@@ -91,7 +97,8 @@ public class SwitchItem: InventoryItem
     public override void Init(int? i = null)
     {
         SetName("Switch");
-        SetItemType(ItemType.SPECIFIC);
+        SetSpawnType(SpwanType.SPECIFIC);
+        SetItemType(ItemType.SWITCH);
         SetDescription("Will help fix the plane");
         SetQuanity((i == null ? 1 : (int)i));
         SetIsNew(true);
@@ -104,7 +111,8 @@ public class Wrench : InventoryItem
     public override void Init(int? i = null)
     {
         SetName("Wrench");
-        SetItemType(ItemType.SPECIFIC);
+        SetSpawnType(SpwanType.SPECIFIC);
+        SetItemType(ItemType.WRENCH);
         SetDescription("A tool to fix the plane");
         SetQuanity((i == null ? 1 : (int)i));
         SetIsNew(true);
@@ -117,7 +125,8 @@ public class ScrewDriver : InventoryItem
     public override void Init(int? i = null)
     {
         SetName("ScrewDriver");
-        SetItemType(ItemType.SPECIFIC);
+        SetSpawnType(SpwanType.SPECIFIC);
+        SetItemType(ItemType.SCREWDRIVER);
         SetDescription("A tool to fix the plane");
         SetQuanity((i == null ? 1 : (int)i));
         SetIsNew(true);
@@ -130,7 +139,8 @@ public class Salt : InventoryItem
     public override void Init(int? i = null)
     {
         SetName("Salt");
-        SetItemType(ItemType.SPECIFIC);
+        SetSpawnType(SpwanType.SPECIFIC);
+        SetItemType(ItemType.SALT);
         SetDescription("For a bit of flavour");
         SetQuanity((i == null ? 1 : (int)i));
         SetIsNew(true);

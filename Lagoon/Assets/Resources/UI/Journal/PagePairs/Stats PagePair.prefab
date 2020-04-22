@@ -208,8 +208,8 @@ MonoBehaviour:
   go_back_button: {fileID: 588465497409638421}
   to_inventory: {fileID: 837420256745845156}
   to_tutorial: {fileID: 6543858004810742439}
-  stats_box: {fileID: 3599857026074186597}
-  plane_box: {fileID: 2592363821294174971}
+  stats_left_page: {fileID: 3599857026074186597}
+  stats_right_page: {fileID: 2592363821294174971}
   inventory_pair: {fileID: 0}
   tutorial_pair: {fileID: 0}
 --- !u!1 &4164535760967062334
@@ -698,7 +698,7 @@ GameObject:
   - component: {fileID: 5955478545131130656}
   - component: {fileID: 2592363821294174971}
   m_Layer: 16
-  m_Name: Plane Stats
+  m_Name: Right stats page
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -720,7 +720,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -84}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5955478545131130656

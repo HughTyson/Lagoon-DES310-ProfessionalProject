@@ -98,11 +98,11 @@ public class SupplyBox : MonoBehaviour
 
     void Generate(System.Type type, int? amount = null)
     {
-           InventoryItem instance = (InventoryItem)System.Activator.CreateInstance(type);
+        InventoryItem instance = (InventoryItem)System.Activator.CreateInstance(type);
 
-            instance.Init(amount);
+        instance.Init(amount);
 
-            stored_items.Add(instance);
+        stored_items.Add(instance);
     }
 
     // Update is called once per frame

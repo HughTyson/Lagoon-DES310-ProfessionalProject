@@ -7,20 +7,29 @@ public class LevelManager : MonoBehaviour
 
     bool changed = false;
 
+    public List<ItemSprite> inventory_sprites = new List<ItemSprite>();
+
     private void Awake()
     {
         Application.quitting += Quiting;
 
-
         GM_.Instance.stats.CleanUp();
-
 
         GM_.Instance.story_objective.Event_BarrierObjectiveComplete += GameStart;
 
         GM_.Instance.story.Event_BarrierStart += Story_EventRequest_BarrierStart;
 
+    }
+
+    private void Start()
+    {
+        for (int i = 0; i < inventory_sprites.Count; i++)
+        {
+            GM_.Instance.inventory.item_images.Add(inventory_sprites[i]);
+        }
 
 
+        GM_.Instance.inventory.Reset();
     }
 
 

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using TMPro;
+
 public class PagePair_Tutorial : BasePagePair
 {
 
@@ -9,6 +11,8 @@ public class PagePair_Tutorial : BasePagePair
     [SerializeField] SelectableAndUnhoverableButton to_stats;
 
     [SerializeField] PagePair_Stats stats_pair;
+
+    [SerializeField] List<TextMeshProUGUI> tmps;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +32,23 @@ public class PagePair_Tutorial : BasePagePair
     {
         go_back_button.Show();
         to_stats.Show();
+
+        for (int i = 0; i < GM_.Instance.stats.plane_segments_stats.Count; i++)
+        {
+
+            tmps[i].text = "";
+
+            tmps[i].text += GM_.Instance.stats.plane_segments_stats[i].segment_name + " - ";
+
+            if (!GM_.Instance.stats.plane_segments_stats[i].complete)
+            {
+                tmps[i].text += "Not fixed";
+            }
+            else if (GM_.Instance.stats.plane_segments_stats[i].complete)
+            {
+                tmps[i].text += "Fixed ";
+            }
+        }
 
     }
     public override void FinishedEnteringPage()

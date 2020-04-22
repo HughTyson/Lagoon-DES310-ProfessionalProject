@@ -59,6 +59,8 @@ public class PlayerFishingState : BaseState
 
 
 
+    
+    
 
   //  AudioSFX sfx_reeling;
  //   AudioManager.SFXInstanceInterface sfx_reeling_interface;
@@ -183,7 +185,7 @@ public class PlayerFishingState : BaseState
             case FISHING_STATE.IDLE:  // not fishing
                 {
 
-
+                    Tutorial(TutorialManager.TutorialType.CASTING);
 
                     if (GM_.Instance.input.GetAxis(InputManager.AXIS.LV) < -0.8f) // begin powering up the cast
                     {
@@ -266,6 +268,9 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.FISHING:
                 {
+
+                    Tutorial(TutorialManager.TutorialType.ATTRACT);
+
                     float reelAxis = GM_.Instance.input.GetAxis(InputManager.AXIS.RT);
 
                     if (fishingBob.GetComponentInChildren<FishingBobLogic>().HasAttractedFish())
@@ -309,6 +314,8 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.INTERACTING_FISH:
                 {
+
+                    Tutorial(TutorialManager.TutorialType.EMOTE);
 
                     float reelAxis = GM_.Instance.input.GetAxis(InputManager.AXIS.RT);
 
@@ -362,6 +369,9 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.FISH_FIGHTING:
                 {
+
+                    Tutorial(TutorialManager.TutorialType.REEL);
+
                     GM_.Instance.input.SetVibration(InputManager.VIBRATION_MOTOR.LEFT, 1.0f - interactingFish.GetLineStrengthPercentageLeft());
 
                     bool game_over = false;
@@ -850,6 +860,34 @@ public class PlayerFishingState : BaseState
         }
 
     }
+
+
+    bool fishing_tutorial_complete = false;
+    bool displaying_tutorial_box = false;
+
+    void Tutorial(TutorialManager.TutorialType type)
+    {
+
+        if(!fishing_tutorial_complete)
+        {
+            if(!displaying_tutorial_box)
+            {
+                displaying_tutorial_box = GM_.Instance.tutorial_manger.WhatTutorial(type);
+
+                if (displaying_tutorial_box)
+                    Time.timeScale = 0;
+            }
+            else
+            {
+                if(GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))
+                {
+                    displaying_tutorial_box = GM_.Instance.tutorial_manger.CloseTutorial(type);
+                    Time.timeScale = 1; 
+                }
+            }
+        }
+    }
+
     // -- // 
     // -- Public Functions -- //
 
