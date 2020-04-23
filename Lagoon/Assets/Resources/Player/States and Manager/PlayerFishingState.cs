@@ -325,6 +325,7 @@ public class PlayerFishingState : BaseState
                     {
                         CancelCasted();
                         GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
+                        return;
                     }
                     else if (reelAxis > 0.1f)
                     {
@@ -334,6 +335,7 @@ public class PlayerFishingState : BaseState
                         if (interactingFishWontFrightenTime < 0.0f)
                         {
                             FailedHookAttempt();
+                            return;
                         }
                     }
 

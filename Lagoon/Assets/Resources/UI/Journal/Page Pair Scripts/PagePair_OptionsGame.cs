@@ -6,10 +6,10 @@ public class PagePair_OptionsGame : BasePagePair
 {
     [SerializeField] SelectableAndUnhoverableButton goBackButton;
     [SerializeField] SelectableAndUnhoverableButton controlsButton;
-    [SerializeField] SelectableAndUnhoverableButton audioButton;
+    
 
     [SerializeField] Checkbox_ vibrationCheckbox;
-    [SerializeField] SelectableButton_TextButton back_SButton;
+    
 
 
     [SerializeField] PagePair_OptionsControl controlOptionPair;
@@ -19,18 +19,18 @@ public class PagePair_OptionsGame : BasePagePair
     void Awake()
     {
 
-        back_SButton.Event_Selected += request_GoBack;
+        
 
         controlsButton.Event_Selected += requestGoTo_ControlOptions;
-        audioButton.Event_Selected += requestGoTo_AudioOptions;
+        
 
         goBackButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.B });
         controlsButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.RB });
-        audioButton.SetButtonsToCheckForPress(new InputManager.BUTTON[] { InputManager.BUTTON.LB });
+        
 
         TypeRef<bool> grouper = new TypeRef<bool>();
         goBackButton.GroupWith(controlsButton);
-        controlsButton.GroupWith(audioButton);
+       
 
         vibrationCheckbox.Event_ToggleChanged += vibrationToggled;
     }
@@ -50,9 +50,9 @@ public class PagePair_OptionsGame : BasePagePair
 
         goBackButton.Show();
         controlsButton.Show();
-        audioButton.Show();
+        
         vibrationCheckbox.Show();
-        back_SButton.Show();
+        
     }
 
 
@@ -63,7 +63,7 @@ public class PagePair_OptionsGame : BasePagePair
 
         goBackButton.ListenForSelection();
         controlsButton.ListenForSelection();
-        audioButton.ListenForSelection();
+       
         vibrationCheckbox.HoverOver();
     }
 
@@ -73,7 +73,7 @@ public class PagePair_OptionsGame : BasePagePair
         goBackButton.Event_Selected -= request_GoBack;
 
         vibrationCheckbox.SafeUnHoverOver();
-        back_SButton.SafeUnHoverOver();
+        
     }
 
 
