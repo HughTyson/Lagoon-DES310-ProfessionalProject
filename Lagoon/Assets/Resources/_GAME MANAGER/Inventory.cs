@@ -131,6 +131,22 @@ public class Inventory
         }
     }
 
+    public void RemoveItemType(System.Type type)
+    {
+        for(int i = 0; i < items.Count; i++)
+        {
+            if(items[i].GetType() == type)
+            {
+                items[i].SetQuanity(items[i].GetQuantity() - 1);
+
+                if(items[i].GetQuantity() == 0)
+                {
+                    items.RemoveAt(i);
+                }
+            }
+        }
+    }
+
     public void ClearInventory()
     {
         items.Clear();

@@ -35,8 +35,12 @@ public class InventoryWrapper : MonoBehaviour
 
     public void Clear()
     {
+        item_name_specialtext = new SpecialText.SpecialTextData();
+        item_number_specialtext = new SpecialText.SpecialTextData();
+
         number_of_objects.text = "";
         item_name.text = "";
+        //inventory_image = null;
 
     }
 
