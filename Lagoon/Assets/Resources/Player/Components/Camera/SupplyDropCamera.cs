@@ -99,8 +99,11 @@ public class SupplyDropCamera : MonoBehaviour
     private void OnDisable()
     {
         //TweenManager.STOP_COMMAND.IMMEDIATE;
-
-        init_interface.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE);
+        if(init_interface.Exists)
+        {
+                init_interface.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE);
+        }
+        
         
         //if(init_movement.)
     }
