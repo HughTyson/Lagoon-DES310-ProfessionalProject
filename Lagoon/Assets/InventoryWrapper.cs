@@ -40,8 +40,9 @@ public class InventoryWrapper : MonoBehaviour
 
         number_of_objects.text = "";
         item_name.text = "";
-        //inventory_image = null;
+        //inventory_image.color.a = 0;
 
+        Hide();
     }
 
     public void BeginSpecialTexts()

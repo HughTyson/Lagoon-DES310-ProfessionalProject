@@ -27,7 +27,7 @@ public class StatsManager
     public List<PlaneStats_> plane_segments_stats = new List<PlaneStats_>();
     PlaneStats_ temp;
 
-    bool stats_update = true;
+    bool stats_update = false;
 
 
     public void DayCountIncrease()
@@ -45,7 +45,7 @@ public class StatsManager
 
         UpdateLastFish(vars);
 
-
+        stats_update = true;
     }
 
     void IncreaseFishCount()
@@ -116,7 +116,7 @@ public class StatsManager
                 }
         }
 
-        stats_update = true;
+        
 
     }
 
@@ -124,11 +124,12 @@ public class StatsManager
     {
         if (stats_update)
         {
-            GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.Y, "JOURNAL");
+            GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.Y, "Journal");
 
             if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.Y))
             {
                 stats_update = false;
+                GAME_UI.Instance.helperButtons.DisableAll();
             }
         }
     }
