@@ -141,7 +141,7 @@ public class SelectableButton_TextButton : SelectableButton_
             new List<SpecialText.TextProperties.Base>
             {
                 new SpecialText.TextProperties.StaticAppear(),
-                new SpecialText.TextProperties.Colour(255,125,255), // <-----------------------------------
+                new SpecialText.TextProperties.Colour(22,203,170), // <-----------------------------------
                 new SpecialText.TextProperties.WaveScaled(1,2.0f,2)
             },
             0,

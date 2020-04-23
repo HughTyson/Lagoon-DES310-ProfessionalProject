@@ -65,7 +65,7 @@ public class StarsManager : MonoBehaviour
     void StarsReset()
     {
         update_stars = false;
-        //transform.rotation.eulerAngles = new Vector3()
+        transform.eulerAngles = new Vector3(start_rotation.y, start_rotation.x, start_rotation.z);
     }
 
     Vector3 move = new Vector3(1, 0, 1);
@@ -73,8 +73,12 @@ public class StarsManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        stars_transform.Rotate(new Vector3(0.3f, 0, 1), (0.1f * GM_.Instance.DayNightCycle.GetTime()) * Time.deltaTime);
-        Debug.Log(transform.rotation.eulerAngles);
+        if(update_stars)
+        {
+            stars_transform.Rotate(new Vector3(0.3f, 0, 1), (0.1f * GM_.Instance.DayNightCycle.GetTime()) * Time.deltaTime);
+            Debug.Log(transform.rotation.eulerAngles);
+        }
+
     }
 
 
