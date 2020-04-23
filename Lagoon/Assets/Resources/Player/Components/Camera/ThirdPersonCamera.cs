@@ -14,8 +14,11 @@ public class ThirdPersonCamera : MonoBehaviour
     [SerializeField] Transform rot_target; //what the camera rotates around
     [Tooltip("The game object that the camera will look at as it rotates")]
     [SerializeField] public Transform look_at_target; // what the camera looks at
+    [Tooltip("The transform of the player")]
+    [SerializeField] Transform characters_transform;
     [Tooltip("The offset from the origin of the target")]
     [SerializeField] Vector3 target_offset = new Vector3(0.0f ,3.5f, 0.0f);
+    
     
     [Header("Misc")]
     //minimum and maximum angles for the Y axis
@@ -118,7 +121,7 @@ public class ThirdPersonCamera : MonoBehaviour
             case STATE.CLAMPED_LOOK_AT:
                 {
                     camera_input.y = Mathf.Clamp(camera_input.y, ANGLE_MIN_Y, ANGLE_MAX_Y); //limit the y rotation
-                    camera_input.x = Mathf.Clamp(camera_input.x, rot_target.localRotation.eulerAngles.y - ANGLE_MIN_X, rot_target.localRotation.eulerAngles.y + ANGLE_MAX_X);
+                    camera_input.x = Mathf.Clamp(camera_input.x, characters_transform.localRotation.eulerAngles.y - ANGLE_MIN_X, characters_transform.localRotation.eulerAngles.y + ANGLE_MAX_X);
                 }
                 break;
             case STATE.NO_MOVEMENT:

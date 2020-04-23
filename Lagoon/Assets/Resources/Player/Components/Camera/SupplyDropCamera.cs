@@ -8,7 +8,7 @@ public class SupplyDropCamera : MonoBehaviour
     Vector3 base_pos = new Vector3(12, 5, 0);
     Vector3 look_at = new Vector3(-31, 22, 0);
 
-
+    TweenManager.TweenInstanceInterface init_interface = new TweenManager.TweenInstanceInterface(null);
     TweenManager.TweenPathBundle init_movement;
     TypeRef<float> x = new TypeRef<float>();
     TypeRef<float> y = new TypeRef<float>();
@@ -85,7 +85,7 @@ public class SupplyDropCamera : MonoBehaviour
                     )
             );
 
-            GM_.Instance.tween_manager.StartTweenInstance(
+            init_interface = GM_.Instance.tween_manager.StartTweenInstance(
                 init_movement,
                 new TypeRef<float>[] { x, y, z },
                 tweenUpdatedDelegate_: PosUpdate
@@ -94,6 +94,18 @@ public class SupplyDropCamera : MonoBehaviour
 
         move = true;
 
+    }
+
+    private void OnDisable()
+    {
+        //TweenManager.STOP_COMMAND.IMMEDIATE;
+        if(init_interface.Exists)
+        {
+                init_interface.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE);
+        }
+        
+        
+        //if(init_movement.)
     }
 
     private void Update()

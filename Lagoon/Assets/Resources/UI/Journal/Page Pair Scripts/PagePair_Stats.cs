@@ -44,6 +44,7 @@ public class PagePair_Stats : BasePagePair
         to_tutorial.Show();
 
         stats_left_page.text = "";
+        stats_right_page.text = "";
 
         stats_left_page.text += "Days Passed - " + ((GM_.Instance.stats.dayNumber) + 13) + System.Environment.NewLine + System.Environment.NewLine;
 

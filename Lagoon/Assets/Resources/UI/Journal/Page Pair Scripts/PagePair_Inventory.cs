@@ -38,16 +38,18 @@ public class PagePair_Inventory : BasePagePair
 
     }
 
+    int left_used = 0;
+    int right_used = 0;
+
+
     public override void BegunEnteringPage()
     {
         goBackButton.Show();    //show the go back button
         to_stats.Show();
 
+        left_used = 0;
+        right_used = 0;
 
-
-
-        int left_used = 0;
-        int right_used = 0;
 
         left_page_items[left_used].Clear();
         right_page_items[right_used].Clear();
@@ -56,7 +58,7 @@ public class PagePair_Inventory : BasePagePair
 
             if (GM_.Instance.inventory.items[i].GetSpawnType() == InventoryItem.SpwanType.GENERIC)
             {
-                
+                left_page_items[left_used].Clear();
                 left_page_items[left_used].Show();
                 
 
@@ -67,9 +69,8 @@ public class PagePair_Inventory : BasePagePair
             }
             else if (GM_.Instance.inventory.items[i].GetSpawnType() == InventoryItem.SpwanType.SPECIFIC)
             {
-
+                right_page_items[right_used].Clear();
                 right_page_items[right_used].Show();
-                
 
                 AddToRightBoxes(i, right_used);
                 right_page_items[right_used].BeginSpecialTexts();
@@ -94,12 +95,12 @@ public class PagePair_Inventory : BasePagePair
 
     public override void FinishedExitingPage()
     {
-        for(int i = 0; i < left_page_items.Count; i++)
+        for(int i = 0; i < left_used; i++)
         {
             left_page_items[i].Clear();
         }
 
-        for (int i = 0; i < right_page_items.Count; i++)
+        for (int i = 0; i < right_used; i++)
         {
             right_page_items[i].Clear();
         }

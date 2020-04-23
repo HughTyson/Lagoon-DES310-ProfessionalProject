@@ -122,11 +122,12 @@ public class Inventory
     {
         if(updated_inventory)
         {
-            GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.Y, "JOURNAL");
+            GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.Y, "Journal");
 
             if(GM_.Instance.input.GetButtonDown(InputManager.BUTTON.Y))
             {
                 updated_inventory = false;
+                GAME_UI.Instance.helperButtons.DisableAll();
             }
         }
     }
