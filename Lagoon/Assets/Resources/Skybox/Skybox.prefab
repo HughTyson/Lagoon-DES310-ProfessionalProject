@@ -55,9 +55,9 @@ MonoBehaviour:
     min: 0
     max: 0
   max_sleep_speed: 50
+  stars_mat: {fileID: 0}
   secondsInFullDay: 120
   current_time: 0.5
-  time_multiplyer: 1
 --- !u!1 &4253317465997139277
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
   useOldInspector: 0
   useVolumetric: 1
   featuresFoldout: 1
-  showAdditionalSettings: 4
+  showAdditionalSettings: 12
   displayLightIntensity: 2
   displayAreaLightEmissiveMesh: 0
   areaLightCookie: {fileID: 0}
@@ -202,7 +202,7 @@ MonoBehaviour:
   lightLayers: 1
   lightlayersMask: 1
   linkShadowLayers: 1
-  shadowNearPlane: 0.1
+  shadowNearPlane: 10
   shadowSoftness: 0.5
   blockerSampleCount: 24
   filterSampleCount: 16
@@ -223,12 +223,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Version: 1
-  shadowResolution: 512
+  shadowResolution: 2048
   shadowDimmer: 1
   volumetricShadowDimmer: 1
   shadowFadeDistance: 10000
   contactShadows: 0
-  shadowTint: {r: 0, g: 0, b: 0, a: 1}
+  shadowTint: {r: 0.06069775, g: 0.08601862, b: 0.41509432, a: 1}
   viewBiasMin: 0.2
   viewBiasMax: 100
   viewBiasScale: 1
@@ -238,7 +238,7 @@ MonoBehaviour:
   sampleBiasScale: 0
   edgeLeakFixup: 0
   edgeToleranceNormal: 1
-  edgeTolerance: 1
+  edgeTolerance: 0.48
   shadowCascadeCount: 4
   shadowCascadeRatios:
   - 0.05
