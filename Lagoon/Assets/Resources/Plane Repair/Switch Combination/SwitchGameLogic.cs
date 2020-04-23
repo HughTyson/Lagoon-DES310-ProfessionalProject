@@ -136,6 +136,7 @@ public class SwitchGameLogic : RepairGameBase
         {
             Debug.Log("Hello");
             game_complete = true;
+            GM_.Instance.inventory.RemoveItemType(typeof(SwitchItem));
         }
     }
 

@@ -43,11 +43,14 @@ public class PagePair_Inventory : BasePagePair
         goBackButton.Show();    //show the go back button
         to_stats.Show();
 
+
+
+
         int left_used = 0;
         int right_used = 0;
 
-        
-
+        left_page_items[left_used].Clear();
+        right_page_items[right_used].Clear();
         for (int i = 0; i < GM_.Instance.inventory.items.Count; i++)
         {
 
@@ -55,7 +58,7 @@ public class PagePair_Inventory : BasePagePair
             {
                 
                 left_page_items[left_used].Show();
-                left_page_items[left_used].Clear();
+                
 
                 AddToLeftBoxes(i, left_used);
                 left_page_items[left_used].BeginSpecialTexts();
@@ -66,7 +69,7 @@ public class PagePair_Inventory : BasePagePair
             {
 
                 right_page_items[right_used].Show();
-                right_page_items[right_used].Clear();
+                
 
                 AddToRightBoxes(i, right_used);
                 right_page_items[right_used].BeginSpecialTexts();
@@ -74,6 +77,8 @@ public class PagePair_Inventory : BasePagePair
                 right_used++;
             }
         }
+
+       
 
     }
     public override void FinishedEnteringPage()
@@ -92,6 +97,11 @@ public class PagePair_Inventory : BasePagePair
         for(int i = 0; i < left_page_items.Count; i++)
         {
             left_page_items[i].Clear();
+        }
+
+        for (int i = 0; i < right_page_items.Count; i++)
+        {
+            right_page_items[i].Clear();
         }
     }
 

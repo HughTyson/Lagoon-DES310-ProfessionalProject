@@ -73,7 +73,6 @@ public class CharacterControllerMovement : MonoBehaviour
 
         test_drop = GetComponent<SupplyDrop>();
 
-        //Physics.IgnoreLayerCollision(13, 15);
 
         sfx_walking = GM_.Instance.audio.GetSFX("WalkingOnSand");
 
@@ -82,8 +81,12 @@ public class CharacterControllerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        
         current_velocity += acceleration * movement_input.magnitude;
-        current_velocity = Mathf.Clamp(current_velocity, 0, max_velocity);
+        current_velocity = Mathf.Clamp(current_velocity, 0, max_velocity * Mathf.Abs(movement_input.magnitude));
+
+        Debug.Log("Current Vel: " + current_velocity);
+        Debug.Log("Max Vel: + " + max_velocity * Mathf.Abs(movement_input.magnitude));
 
         if (movement_input.x == 0 && movement_input.y == 0)
         {
