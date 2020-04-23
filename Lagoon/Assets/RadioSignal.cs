@@ -44,12 +44,13 @@ public class RadioSignal : MonoBehaviour
 
     private void ConvoExit()
     {
-        talking.Stop();
+     
+        talking?.Stop();
     }
 
     private void BranchStart(StoryManager.BranchEnterArgs args)
     {
-        talking.Stop();
+        talking?.Stop();
 
         GM_.Instance.story.Event_DialogNewText += StartTalking;
     }
@@ -88,6 +89,7 @@ public class RadioSignal : MonoBehaviour
 
         GM_.Instance.DayNightCycle.SetBaseTime(0.0f);
     }
+
 
     // Start is called before the first frame update
     void Start()

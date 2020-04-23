@@ -28,6 +28,10 @@ public class CharacterAnimationHandler : MonoBehaviour
     [SerializeField] ThirdPersonCamera thirdPersonCamera;
 
 
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,13 +39,11 @@ public class CharacterAnimationHandler : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         
 
-        realLeftFootIk = animator.GetIKPosition(AvatarIKGoal.LeftFoot);
-        realRightFootIk = animator.GetIKPosition(AvatarIKGoal.RightFoot);
-        realBodyIk = animator.bodyPosition;
 
-        DebugGUI.SetGraphProperties("Anim", "Animation Body Y Pos", -2, 2, 0, Color.green, true);
-        DebugGUI.SetGraphProperties("Desired", "Desired: Body Y Pos", -2, 2, 1, Color.yellow, true);
-        DebugGUI.SetGraphProperties("Test", "Real Body Y Pos", -2, 2, 2, Color.red, true);
+        DebugGUI.SetGraphProperties("LeftFootGrounded", "Left Foot Grounded:", -0.1f, 1.1f, 0, Color.green, true);
+        DebugGUI.SetGraphProperties("RightFootGrounded", "Right Foot Grounded:", -0.1f, 1.1f, 1, Color.yellow, true);
+
+
     }
 
     // Update is called once per frame
@@ -76,13 +78,13 @@ public class CharacterAnimationHandler : MonoBehaviour
     Vector3 desiredLookAtDir = Vector3.zero;
     Vector3 realLookAtDir = Vector3.zero;
     Vector3 refLookAtDirVelocity = Vector3.zero;
-    //private void OnAnimatorMove()
-    //{
 
-    //}
+
+    bool firstOnAnimatorIK = true;
+
+
     private void OnAnimatorIK(int layerIndex)
     {
-
         animator.SetLookAtWeight(0.5f);
         desiredLookAtDir = (animator.GetBoneTransform(HumanBodyBones.Head).position - thirdPersonCamera.transform.position).normalized;
         realLookAtDir = Vector3.SmoothDamp(realLookAtDir, desiredLookAtDir, ref refLookAtDirVelocity, 0.1f, 2.0f, Time.deltaTime);
@@ -113,6 +115,8 @@ public class CharacterAnimationHandler : MonoBehaviour
 
             if (animator.GetFloat("LeftFootGrounded") < 0.9f)
             {
+                DebugGUI.Graph("LeftFootGrounded", 0);
+
                 float heightfromRayOriginToGround = Mathf.Abs(Mathf.Abs(ray.origin.y) - Mathf.Abs(groundedFootPosition.y));
                 float heightfromTayOriginToFoot = Mathf.Abs(Mathf.Abs(ray.origin.y) - Mathf.Abs(realLeftFootIk.y));
 
@@ -129,6 +133,7 @@ public class CharacterAnimationHandler : MonoBehaviour
             }
             else
             {
+                DebugGUI.Graph("LeftFootGrounded", 1);
                 desiredLeftFootIk = groundedFootPosition;
             }
 
@@ -152,6 +157,8 @@ public class CharacterAnimationHandler : MonoBehaviour
 
             if (animator.GetFloat("RightFootGrounded") < 0.9f)
             {
+                DebugGUI.Graph("RightFootGrounded", 0);
+
                 float heightfromRayOriginToGround = Mathf.Abs(Mathf.Abs(ray.origin.y) - Mathf.Abs(groundedFootPosition.y));
                 float heightfromTayOriginToFoot = Mathf.Abs(Mathf.Abs(ray.origin.y) - Mathf.Abs(realRightFootIk.y));
 
@@ -167,6 +174,8 @@ public class CharacterAnimationHandler : MonoBehaviour
             }
             else
             {
+                DebugGUI.Graph("RightFootGrounded", 1);
+
                 desiredRightFootIk = groundedFootPosition;
             }
 
@@ -211,19 +220,29 @@ public class CharacterAnimationHandler : MonoBehaviour
 
 
 
-        realLeftFootIk = Vector3.SmoothDamp(realLeftFootIk, desiredLeftFootIk, ref refLeftFootIkVelocity, smoothnessTime, maxSmoothnessVelocity, Time.deltaTime);
-        realRightFootIk = Vector3.SmoothDamp(realRightFootIk, desiredRightFootIk, ref refRightFootIkVelocity, smoothnessTime, maxSmoothnessVelocity, Time.deltaTime);
-        realBodyIk = Vector3.SmoothDamp(realBodyIk, desiredBodyIk, ref refBodyIkVelocity, smoothnessTime, maxSmoothnessVelocity, Time.deltaTime);
+        if (firstOnAnimatorIK)
+        {
+            realLeftFootIk = desiredLeftFootIk;
+            realRightFootIk = desiredRightFootIk;
+            realBodyIk = desiredBodyIk;
+            firstOnAnimatorIK = false;
+
+        }
+        else
+        {
+            realLeftFootIk = Vector3.SmoothDamp(realLeftFootIk, desiredLeftFootIk, ref refLeftFootIkVelocity, smoothnessTime, maxSmoothnessVelocity, Time.deltaTime);
+            realRightFootIk = Vector3.SmoothDamp(realRightFootIk, desiredRightFootIk, ref refRightFootIkVelocity, smoothnessTime, maxSmoothnessVelocity, Time.deltaTime);
+            realBodyIk = Vector3.SmoothDamp(realBodyIk, desiredBodyIk, ref refBodyIkVelocity, smoothnessTime, maxSmoothnessVelocity, Time.deltaTime);
+
+        }
 
 
-        DebugGUI.Graph("Anim", animator.bodyPosition.y);
 
         animator.bodyPosition = realBodyIk;
         animator.SetIKPosition(AvatarIKGoal.LeftFoot, realLeftFootIk);
         animator.SetIKPosition(AvatarIKGoal.RightFoot, realRightFootIk);
 
-        DebugGUI.Graph("Desired", desiredBodyIk.y);
-        DebugGUI.Graph("Test", animator.bodyPosition.y);
+
     }
 
         //private void LateUpdate()

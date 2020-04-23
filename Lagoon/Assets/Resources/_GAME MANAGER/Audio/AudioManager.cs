@@ -311,7 +311,14 @@ public class AudioManager : MonoBehaviour
 
         public void Stop()
         {
-            instance.source?.Stop();
+            if (instance != null)
+            {
+                if (instance.source != null)
+                {
+                    instance.source.Stop();
+                }
+            }
+           
         }
 
         public bool Mute
