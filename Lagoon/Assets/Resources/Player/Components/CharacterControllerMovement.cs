@@ -164,13 +164,13 @@ public class CharacterControllerMovement : MonoBehaviour
                 break;
             case STATE.NO_MOVEMENT:
                 {
-
+                    movement_input = new Vector2(0, 0);
                 }
                 break;
             case STATE.ROT_CAMERA:
                 {
                     //rotates to face the camera in real time
- 
+                    movement_input = new Vector2(0, 0);
                     transform.rotation = Quaternion.Euler(transform.localEulerAngles.x, _camera.localEulerAngles.y, transform.localEulerAngles.z);
                 }
                 break;

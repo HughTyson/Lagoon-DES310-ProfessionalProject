@@ -11,7 +11,7 @@ public class TutorialDialogueBox : MonoBehaviour
     Vector2 positionOffset = Vector2.zero;
     RectTransform rectTransform;
     public TMPro.TextMeshProUGUI tmp;
-    [SerializeField] SpecialText.SpecialText specialText;
+    [SerializeField] public SpecialText.SpecialText specialText;
     public SpecialText.SpecialTextData string_data;
     Image image;
 

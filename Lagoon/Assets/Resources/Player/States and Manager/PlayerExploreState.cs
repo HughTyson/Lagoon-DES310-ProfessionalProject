@@ -52,7 +52,7 @@ public class PlayerExploreState : BaseState
 
     public void OnDisable()
     {
-
+        
     }
 
     void ConversationStateAvailable()
@@ -161,7 +161,7 @@ public class PlayerExploreState : BaseState
                                 {
                                     interaction_type = INTERACTION_TYPE.RADIO;
                                     GAME_UI.Instance.helperButtons.DisableAll();
-                                    GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Talk to Radio");
+                                    GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Answer Radio");
                                 }
                             }
                             break;

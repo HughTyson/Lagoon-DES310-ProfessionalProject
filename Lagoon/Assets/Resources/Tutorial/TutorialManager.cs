@@ -289,7 +289,7 @@ public class TutorialManager : MonoBehaviour
                         new_tutoiral_text.AddPropertyToText(
                             new List<SpecialText.TextProperties.Base>()
                             {
-                                    new SpecialText.TextProperties.Colour(255,255,32),
+                                    new SpecialText.TextProperties.Colour(255,255,255),
                                     new SpecialText.TextProperties.CharSpeed(35)
                                     },
                                     0,
@@ -397,30 +397,36 @@ public class TutorialManager : MonoBehaviour
 
     public bool CloseTutorial(TutorialType type)
     {
-
-        switch (currently_playing)
+        if(GAME_UI.Instance.state_Tutorial.box.specialText.AreAllCompleted())
         {
-            case TutorialType.CASTING:
-                casting_complete = true;
-                break;
-            case TutorialType.ATTRACT:
-                attract_complete = true;
-                break;
-            case TutorialType.NOFISH:
-                no_fish_complete = true;
-                break;
-            case TutorialType.REEL:
-                reel_complete = true;
-                break;
-            default:
-                break;
+            switch (currently_playing)
+            {
+                case TutorialType.CASTING:
+                    casting_complete = true;
+                    break;
+                case TutorialType.ATTRACT:
+                    attract_complete = true;
+                    break;
+                case TutorialType.NOFISH:
+                    no_fish_complete = true;
+                    break;
+                case TutorialType.REEL:
+                    reel_complete = true;
+                    break;
+                default:
+                    break;
+            }
+
+            GAME_UI.Instance.state_Tutorial.box.Disappear();
+
+            return false;
+        }
+        else
+        {
+            GAME_UI.Instance.state_Tutorial.box.SkipTransition();
         }
 
-        GAME_UI.Instance.state_Tutorial.box.Disappear();
-
-        
-
-        return false;
+        return true;
 
     }
 }
