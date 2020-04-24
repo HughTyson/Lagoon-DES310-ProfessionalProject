@@ -469,6 +469,7 @@ public class AudioManager : MonoBehaviour
 
         public SFXInstance(AudioSFX audioSFX_,AudioSource source_, int uniqueID_, AudioMixerGroup mixerGroup = null, SFXSettings.AnyBoolSetting.BoolBase settingLoop_ = null, SFXSettings.AnyBoolSetting.BoolBase settingMute_ = null, SFXSettings.AnyFloatSetting.FloatBase settingPanning_ = null, SFXSettings.AnyFloatSetting.FloatBase settingPitch_ = null, SFXSettings.AnyIntSetting.IntBase settingPriority_ = null, SFXSettings.AnyFloatSetting.FloatBase settingSpatialBlend_ = null, SFXSettings.AnyFloatSetting.FloatBase settingVolume_ = null, object appliedID_ = null)
         {
+            
             isCompleted = false;
             appliedID = appliedID_;
             uniqueID = uniqueID_;
@@ -481,7 +482,10 @@ public class AudioManager : MonoBehaviour
             settingPriority = settingPriority_;
             settingSpatialBlend = settingSpatialBlend_;
             settingVolume = settingVolume_;
-         
+
+
+            source.spatialize = true;
+
 
             if (settingPriority != null)
             {
@@ -569,11 +573,36 @@ public class AudioManager : MonoBehaviour
             source.pitch = pitch;
             source.priority = priority;
             source.outputAudioMixerGroup = mixerGroup;
+            source.maxDistance = audioSFX.AudioMaxDistance;
+
+
+            if (audioSFX.VolumeFallOffCurve.enabled)
+            {
+                source.SetCustomCurve(AudioSourceCurveType.CustomRolloff,audioSFX.VolumeFallOffCurve.animationCurve);
+            }
+            else
+            {
+                source.rolloffMode = AudioRolloffMode.Logarithmic;
+            }
+            if (audioSFX.AudioSpreadCurve.enabled)
+            {
+                source.SetCustomCurve(AudioSourceCurveType.Spread, audioSFX.AudioSpreadCurve.animationCurve);
+            }
+            else
+            {
+                source.spread = 240.0f;  
+            }
+
+
+
             source.Play();
         }
 
         public void Update()
         {
+
+            
+
             // gameObject which had source attached to it was destroyed
             if (source == null)
             {

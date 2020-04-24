@@ -34,6 +34,11 @@ public class AudioSFX : ScriptableObject
     int priority = 128;
 
 
+    [Header("3D Property Curves")]
+    [SerializeField] float maxDistance;
+    [SerializeField] Curve volumeFallOff;
+    [SerializeField] Curve audioSpread;
+
 
     public bool IsLooping => isLooping;
     public float Pitch => pitch;
@@ -41,8 +46,20 @@ public class AudioSFX : ScriptableObject
     public float Volume => volume;
     public float Panning => panning;
     public int Priority => priority;
-
     public AudioClip Clip => audioClip;
-    
+
+    public Curve VolumeFallOffCurve => volumeFallOff;
+    public Curve AudioSpreadCurve => audioSpread;
+
+    public float AudioMaxDistance => maxDistance;
+
+
+    [System.Serializable]
+    public struct Curve
+    {
+        public bool enabled;
+        public AnimationCurve animationCurve;    
+    }
+
 
 }
