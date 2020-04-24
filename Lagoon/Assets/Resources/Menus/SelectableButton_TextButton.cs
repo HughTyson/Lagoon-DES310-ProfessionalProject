@@ -11,7 +11,7 @@ public class SelectableButton_TextButton : SelectableButton_
 
     [SerializeField] SpecialText.SpecialText specialText;
     TMPro.TextMeshProUGUI TMPText;
-
+    [SerializeField] bool dont_wave = false;
 
 
     static readonly TweenManager.TweenPathBundle defaultShowButtonTween = new TweenManager.TweenPathBundle(
@@ -136,17 +136,35 @@ public class SelectableButton_TextButton : SelectableButton_
         // CHANGING THE HOVER COLOUR VALUE
         SpecialText.SpecialTextData specialTextData_Hover = new SpecialText.SpecialTextData();
         specialTextData_Hover.CreateCharacterData(TMPText.text);
-        specialTextData_Hover.AddPropertyToText
-            (
-            new List<SpecialText.TextProperties.Base>
-            {
-                new SpecialText.TextProperties.StaticAppear(),
-                new SpecialText.TextProperties.Colour(22,203,170), // <-----------------------------------
-                new SpecialText.TextProperties.WaveScaled(1,2.0f,2)
-            },
-            0,
-            specialTextData_Hover.specialTextCharacters.Count
-            );
+        if(!dont_wave)
+        {
+            specialTextData_Hover.AddPropertyToText
+                (
+                new List<SpecialText.TextProperties.Base>
+                {
+                    new SpecialText.TextProperties.StaticAppear(),
+                    new SpecialText.TextProperties.Colour(22,203,170), // <-----------------------------------
+                    new SpecialText.TextProperties.WaveScaled(1,2.0f,2)
+                },
+                0,
+                specialTextData_Hover.specialTextCharacters.Count
+                );
+        }
+        else if(dont_wave)
+        {
+            specialTextData_Hover.AddPropertyToText
+                (
+                new List<SpecialText.TextProperties.Base>
+                {
+                                new SpecialText.TextProperties.StaticAppear(),
+                                new SpecialText.TextProperties.Colour(22,203,170), // <-----------------------------------
+                                //new SpecialText.TextProperties.WaveScaled(1,2.0f,2)
+                },
+                0,
+                specialTextData_Hover.specialTextCharacters.Count
+                );
+        }
+
 
         TweenAnimator.Animation hoverAnimation = new TweenAnimator.Animation(
             defaultHoverOverButtonTween,
