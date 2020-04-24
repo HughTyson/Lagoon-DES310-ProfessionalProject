@@ -12,7 +12,7 @@ public class PagePair_Tutorial : BasePagePair
 
     [SerializeField] PagePair_Stats stats_pair;
 
-    [SerializeField] List<TextMeshProUGUI> tmps;
+    [SerializeField] List<PlanePartDisplayer> displays;
 
     // Start is called before the first frame update
     void Start()
@@ -35,19 +35,28 @@ public class PagePair_Tutorial : BasePagePair
 
         for (int i = 0; i < GM_.Instance.stats.plane_segments_stats.Count; i++)
         {
-
-            tmps[i].text = "";
-
-            tmps[i].text += GM_.Instance.stats.plane_segments_stats[i].segment_name + " - ";
-
-            if (!GM_.Instance.stats.plane_segments_stats[i].complete)
+            for(int j = 0; j < displays.Count; j++)
             {
-                tmps[i].text += "Not fixed";
+                if(displays[j].display_type == GM_.Instance.stats.plane_segments_stats[i].type)
+                {
+                    displays[j].tmp.text = "";
+
+                    displays[j].tmp.text += GM_.Instance.stats.plane_segments_stats[i].segment_name + " - ";
+
+                    if (!GM_.Instance.stats.plane_segments_stats[i].complete)
+                    {
+                        displays[j].tmp.text += "Not fixed";
+                    }
+                    else if (GM_.Instance.stats.plane_segments_stats[i].complete)
+                    {
+                        displays[j].tmp.text += "Fixed ";
+                    }
+
+                    break;
+                }
             }
-            else if (GM_.Instance.stats.plane_segments_stats[i].complete)
-            {
-                tmps[i].text += "Fixed ";
-            }
+
+            
         }
 
     }
