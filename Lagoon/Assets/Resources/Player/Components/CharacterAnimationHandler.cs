@@ -33,7 +33,7 @@ public class CharacterAnimationHandler : MonoBehaviour
     [SerializeField] GameObject CharacterRoot;
     [Header("Modular Peices")]
     [SerializeField] GameObject Hair_MPeice;
-
+    [SerializeField] GameObject Beard_MPeice;
 
     CharacterModularPieceManager modularPeiceManager;
 
@@ -47,7 +47,7 @@ public class CharacterAnimationHandler : MonoBehaviour
 
         modularPeiceManager = new CharacterModularPieceManager(CharacterRoot, "_jnt");
         modularPeiceManager.AddNewModularPeice("HAIR", Hair_MPeice, "_jnt", true);
-
+        modularPeiceManager.AddNewModularPeice("BEARD", Beard_MPeice, "_jnt", true);
 
         DebugGUI.SetGraphProperties("LeftFootGrounded", "Left Foot Grounded:", -0.1f, 1.1f, 0, Color.green, true);
         DebugGUI.SetGraphProperties("RightFootGrounded", "Right Foot Grounded:", -0.1f, 1.1f, 1, Color.yellow, true);
