@@ -2873,16 +2873,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4035137943ded5249b066d26d41115ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heightOfGround: 0.06
+  heightOfGround: 0
   layerMask:
     serializedVersion: 2
-    m_Bits: 98087
+    m_Bits: 257
   characterControllerMovement: {fileID: 6160413944266683236}
   smoothnessTime: 0.1
   maxSmoothnessVelocity: 10
   fromBodyToFootLength: 0.95
   legLength: 0.95
   ikWeighting: 1
+  thirdPersonCamera: {fileID: 0}
+  footLength: 0.12
+  CharacterRoot: {fileID: 1757663826451756167}
+  Hair_MPeice: {fileID: 0}
 --- !u!1 &6186341015964039332
 GameObject:
   m_ObjectHideFlags: 0

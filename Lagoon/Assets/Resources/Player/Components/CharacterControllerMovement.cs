@@ -83,7 +83,7 @@ public class CharacterControllerMovement : MonoBehaviour
     {
         
         current_velocity += acceleration * movement_input.magnitude;
-        current_velocity = Mathf.Clamp(current_velocity, 0, max_velocity * Mathf.Abs(movement_input.magnitude));
+        current_velocity = Mathf.Clamp(current_velocity, 0, max_velocity * new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.LH), GM_.Instance.input.GetAxis(InputManager.AXIS.LV)).magnitude);
 
         if (movement_input.x == 0 && movement_input.y == 0)
         {

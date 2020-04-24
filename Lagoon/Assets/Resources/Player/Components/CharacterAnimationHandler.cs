@@ -28,16 +28,25 @@ public class CharacterAnimationHandler : MonoBehaviour
     [SerializeField] ThirdPersonCamera thirdPersonCamera;
 
 
+    [SerializeField] float footLength = 0.12f;
+
+    [SerializeField] GameObject CharacterRoot;
+    [Header("Modular Peices")]
+    [SerializeField] GameObject Hair_MPeice;
 
 
+    CharacterModularPieceManager modularPeiceManager;
 
 
+    
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
-        
+
+        modularPeiceManager = new CharacterModularPieceManager(CharacterRoot, "_jnt");
+        modularPeiceManager.AddNewModularPeice("HAIR", Hair_MPeice, "_jnt", true);
 
 
         DebugGUI.SetGraphProperties("LeftFootGrounded", "Left Foot Grounded:", -0.1f, 1.1f, 0, Color.green, true);
@@ -56,8 +65,6 @@ public class CharacterAnimationHandler : MonoBehaviour
        // animator.SetFloat(idParam_MovementSpeed, characterControllerMovement.CurrentNormalizedVelocity);
 
         // Debug.Log("Test: " + animator.GetFloat(idParam_MovementSpeed));
-
-
     }
 
     Vector3 desiredLeftFootIk;
@@ -101,10 +108,9 @@ public class CharacterAnimationHandler : MonoBehaviour
 
 
         Vector3 initLeftToeDirection = animator.GetBoneTransform(HumanBodyBones.LeftFoot).position - animator.GetBoneTransform(HumanBodyBones.LeftToes).position;
-        float toeLength = initLeftToeDirection.magnitude;
-        initLeftToeDirection = initLeftToeDirection.normalized;
 
 
+        float heightDifference_LeftToesAndFeet = Mathf.Max(0, animator.GetBoneTransform(HumanBodyBones.LeftFoot).position.y - animator.GetBoneTransform(HumanBodyBones.LeftToes).position.y);
 
         RaycastHit hit;
         Ray ray = new Ray(animator.GetIKPosition(AvatarIKGoal.LeftFoot) + (Vector3.up* characterController.stepOffset), Vector3.down);
@@ -113,7 +119,8 @@ public class CharacterAnimationHandler : MonoBehaviour
             Vector3 groundedFootPosition = hit.point;
             groundedFootPosition.y += heightOfGround;
 
-            if (animator.GetFloat("LeftFootGrounded") < 0.9f)
+
+            if (animator.GetFloat("LeftFootGrounded") < 0.5f)
             {
                 DebugGUI.Graph("LeftFootGrounded", 0);
 
@@ -123,7 +130,6 @@ public class CharacterAnimationHandler : MonoBehaviour
                 if (heightfromRayOriginToGround < heightfromTayOriginToFoot)
                 {
                     desiredLeftFootIk = groundedFootPosition;
-
                 }
                 else
                 {
@@ -135,7 +141,11 @@ public class CharacterAnimationHandler : MonoBehaviour
             {
                 DebugGUI.Graph("LeftFootGrounded", 1);
                 desiredLeftFootIk = groundedFootPosition;
+
             }
+
+            desiredLeftFootIk.y += heightDifference_LeftToesAndFeet;
+
 
             //float bodyYChange = Vector3.Distance(groundedFootPosition, animator.bodyPosition) - legLength;
             //if (bodyYChange > 0)
@@ -145,6 +155,7 @@ public class CharacterAnimationHandler : MonoBehaviour
         }
 
 
+        float heightDifference_RightToesAndFeet = Mathf.Max(0, animator.GetBoneTransform(HumanBodyBones.RightFoot).position.y - animator.GetBoneTransform(HumanBodyBones.RightToes).position.y);
 
         CharacterController test;
         ray = new Ray(animator.GetIKPosition(AvatarIKGoal.RightFoot) + (Vector3.up * characterController.stepOffset), Vector3.down);
@@ -153,9 +164,7 @@ public class CharacterAnimationHandler : MonoBehaviour
             Vector3 groundedFootPosition = hit.point;
             groundedFootPosition.y += heightOfGround;
 
-
-
-            if (animator.GetFloat("RightFootGrounded") < 0.9f)
+            if (animator.GetFloat("RightFootGrounded") < 0.5f)
             {
                 DebugGUI.Graph("RightFootGrounded", 0);
 
@@ -177,7 +186,11 @@ public class CharacterAnimationHandler : MonoBehaviour
                 DebugGUI.Graph("RightFootGrounded", 1);
 
                 desiredRightFootIk = groundedFootPosition;
+
             }
+
+            desiredRightFootIk.y += heightDifference_RightToesAndFeet;
+
 
             //float bodyYChange = Vector3.Distance(groundedFootPosition, animator.bodyPosition) - legLength;
             //if (bodyYChange > 0)
@@ -195,8 +208,9 @@ public class CharacterAnimationHandler : MonoBehaviour
         //float currentDistance_RightFoot_To_Body = fromBodyPositionToRightFoot.magnitude;
 
         float leftFootYOffset = desiredLeftFootIk.y - animator.GetIKPosition(AvatarIKGoal.LeftFoot).y;
+      //  leftFootYOffset -= heightDifference_LeftToesAndFeet;
         float rightFootYOffset = desiredRightFootIk.y - animator.GetIKPosition(AvatarIKGoal.RightFoot).y;
-
+       // rightFootYOffset -= heightDifference_RightToesAndFeet;
         desiredBodyIk = animator.bodyPosition;
         desiredBodyIk.y += Mathf.Max(leftFootYOffset, rightFootYOffset); // move body up based on the higher y value of the legs, keeping the body moving correctly with the animation
 
@@ -234,6 +248,12 @@ public class CharacterAnimationHandler : MonoBehaviour
             realRightFootIk = Vector3.SmoothDamp(realRightFootIk, desiredRightFootIk, ref refRightFootIkVelocity, smoothnessTime, maxSmoothnessVelocity, Time.deltaTime);
             realBodyIk = Vector3.SmoothDamp(realBodyIk, desiredBodyIk, ref refBodyIkVelocity, smoothnessTime, maxSmoothnessVelocity, Time.deltaTime);
 
+
+
+            //CODE FOR TESTING
+            //realLeftFootIk = desiredLeftFootIk;
+            //realRightFootIk = desiredRightFootIk;
+            //realBodyIk = desiredBodyIk;
         }
 
 
@@ -245,9 +265,8 @@ public class CharacterAnimationHandler : MonoBehaviour
 
     }
 
-        //private void LateUpdate()
-        //{
-
-        //   // animator.GetBoneTransform(HumanBodyBones.Chest).position = new Vector3(50, 0, 0);
-        //}
+    private void LateUpdate()
+    {
+        modularPeiceManager.LateUpdate();
     }
+}
