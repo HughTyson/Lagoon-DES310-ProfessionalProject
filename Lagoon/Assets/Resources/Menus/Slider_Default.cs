@@ -20,8 +20,8 @@ public class Slider_Default : Slider_
     [SerializeField]
     RectTransform mainParentRectTransfrom;
 
-
-
+    [Tooltip("Don't set under 1")]
+    [SerializeField] float hover_size_increase = 1.5f;
 
 
 
@@ -59,7 +59,7 @@ public class Slider_Default : Slider_
 
         TweenManager.TweenPathBundle defaultHoverOverButtonTween = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(1, 1.5f, 0.2f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
+                new TweenManager.TweenPart_Start(1, hover_size_increase, 0.2f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
                 ),
             new TweenManager.TweenPath(
                 new TweenManager.TweenPart_Start(1, 0.75f, 0.2f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
@@ -68,7 +68,7 @@ public class Slider_Default : Slider_
 
         TweenManager.TweenPathBundle defaultUnHoverOverButtonTween = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(1.5f, 1.0f, 0.2f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
+                new TweenManager.TweenPart_Start(hover_size_increase, 1.0f, 0.2f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
                 ),
             new TweenManager.TweenPath(
                 new TweenManager.TweenPart_Start(0.75f, 1.0f, 0.2f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
