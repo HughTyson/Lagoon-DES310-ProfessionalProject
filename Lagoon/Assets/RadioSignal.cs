@@ -77,8 +77,8 @@ public class RadioSignal : MonoBehaviour
         if(incoming_transmission != null)
             incoming_transmission.Stop();
 
-        GM_.Instance.DayNightCycle.SetBaseTime(1.0f);
-        GM_.Instance.DayNightCycle.SetTime();
+        GM_.Instance.day_night_cycle.SetBaseTime(1.0f);
+        GM_.Instance.day_night_cycle.SetTime();
     }
 
     private void Story_objective_Event_BarrierObjectiveComplete()
@@ -87,7 +87,7 @@ public class RadioSignal : MonoBehaviour
 
         incoming_transmission =  GM_.Instance.audio.PlaySFX(sfx_radio, transform);
 
-        GM_.Instance.DayNightCycle.SetBaseTime(0.0f);
+        GM_.Instance.day_night_cycle.SetBaseTime(0.0f);
     }
 
 

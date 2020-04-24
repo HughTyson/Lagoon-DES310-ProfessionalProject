@@ -55,7 +55,7 @@ public class GM_ : MonoBehaviour
         public UpdateEventSystem update_events;
         public TweenCurveLibrary tween_curveLibrary_Tomas;
         public TweenCurveLibrary tween_curveLibrary_Hugh;
-        public TimeMovement DayNightCycle;
+        public TimeMovement day_night_cycle;
         public Inventory inventory;
         public AudioManager audio;
         public PlayerSettings settings;
@@ -95,8 +95,8 @@ public class GM_ : MonoBehaviour
             members.tween_curveLibrary_Hugh = HughCurveLibrary;
             members.tween_curveLibrary_Tomas = TomasCurveLibrary;
 
-            members.DayNightCycle = DayNightValues;
-            members.DayNightCycle.SetBaseTime(1.0f);
+            members.day_night_cycle = DayNightValues;
+            members.day_night_cycle.SetBaseTime(1.0f);
 
             members.stats.ResetStats();
         }

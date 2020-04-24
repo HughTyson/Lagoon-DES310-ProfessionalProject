@@ -79,9 +79,9 @@ public class MenuScreen_MainMenu : MenuScreenBase
 
 
 
-        GM_.Instance.DayNightCycle.SetSolar(TimeMovement.Solar.DAY);
-        GM_.Instance.DayNightCycle.SetTime(0);
-        GM_.Instance.DayNightCycle.SetBaseTime(0);
+        GM_.Instance.day_night_cycle.SetSolar(TimeMovement.Solar.DAY);
+        GM_.Instance.day_night_cycle.SetTime(0);
+        GM_.Instance.day_night_cycle.SetBaseTime(0);
     }
 
 

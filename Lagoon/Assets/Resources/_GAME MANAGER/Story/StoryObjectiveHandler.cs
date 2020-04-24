@@ -24,7 +24,7 @@ public class StoryObjectiveHandler
     {
         GM_.Instance.update_events.UpdateEvent += BarrierBlockingUpdate;
 
-        GM_.Instance.DayNightCycle.SetBaseTime(1.0f);
+        GM_.Instance.day_night_cycle.SetBaseTime(1.0f);
 
         objectives.Clear();
         for (int i = 0; i < args.Barriers.Count; i++)

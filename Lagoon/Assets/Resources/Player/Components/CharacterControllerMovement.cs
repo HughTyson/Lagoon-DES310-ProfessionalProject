@@ -85,9 +85,6 @@ public class CharacterControllerMovement : MonoBehaviour
         current_velocity += acceleration * movement_input.magnitude;
         current_velocity = Mathf.Clamp(current_velocity, 0, max_velocity * new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.LH), GM_.Instance.input.GetAxis(InputManager.AXIS.LV)).magnitude);
 
-        Debug.Log("Current Vel: " + current_velocity);
-        Debug.Log("Max Vel: + " + max_velocity * Mathf.Abs(movement_input.magnitude));
-
         if (movement_input.x == 0 && movement_input.y == 0)
         {
             if (current_velocity > 0)
@@ -164,13 +161,13 @@ public class CharacterControllerMovement : MonoBehaviour
                 break;
             case STATE.NO_MOVEMENT:
                 {
-
+                    movement_input = new Vector2(0, 0);
                 }
                 break;
             case STATE.ROT_CAMERA:
                 {
                     //rotates to face the camera in real time
- 
+                    movement_input = new Vector2(0, 0);
                     transform.rotation = Quaternion.Euler(transform.localEulerAngles.x, _camera.localEulerAngles.y, transform.localEulerAngles.z);
                 }
                 break;

@@ -45,14 +45,14 @@ public class PlayerExploreState : BaseState
         camera_celebration.enabled = false;
         camera_third_person.look_at_target = transform;
 
-        GM_.Instance.DayNightCycle.SetTime(4);
+        GM_.Instance.day_night_cycle.SetTime(4);
         
 
     }
 
     public void OnDisable()
     {
-
+        
     }
 
     void ConversationStateAvailable()
@@ -114,7 +114,7 @@ public class PlayerExploreState : BaseState
                 case INTERACTION_TYPE.REPAIR:
                     { 
 
-                        if(GM_.Instance.DayNightCycle.GetSolar() == TimeMovement.Solar.DAY)
+                        if(GM_.Instance.day_night_cycle.GetSolar() == TimeMovement.Solar.DAY)
                         {
                             StateManager.ChangeState(PlayerScriptManager.STATE.REPAIR); 
                             //  Debug.Log("REPIAR"); 
@@ -161,7 +161,7 @@ public class PlayerExploreState : BaseState
                                 {
                                     interaction_type = INTERACTION_TYPE.RADIO;
                                     GAME_UI.Instance.helperButtons.DisableAll();
-                                    GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Talk to Radio");
+                                    GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Answer Radio");
                                 }
                             }
                             break;
@@ -176,7 +176,7 @@ public class PlayerExploreState : BaseState
                         case TriggerType.TRIGGER_TYPE.REPAIR:
                             {
 
-                                if (GM_.Instance.DayNightCycle.GetSolar() == TimeMovement.Solar.DAY)
+                                if (GM_.Instance.day_night_cycle.GetSolar() == TimeMovement.Solar.DAY)
                                 {
                                     interaction_type = INTERACTION_TYPE.REPAIR;
 

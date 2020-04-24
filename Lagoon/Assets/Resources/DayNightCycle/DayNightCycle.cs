@@ -82,7 +82,7 @@ public class DayNightCycle : MonoBehaviour
 
         secondsInFullDay = 600f;
 
-        GM_.Instance.DayNightCycle.SetSolar(TimeMovement.Solar.DAY);
+        GM_.Instance.day_night_cycle.SetSolar(TimeMovement.Solar.DAY);
 
     }
 
@@ -94,7 +94,7 @@ public class DayNightCycle : MonoBehaviour
 
         UpdateLight();
 
-        current_time += (Time.deltaTime / secondsInFullDay) * GM_.Instance.DayNightCycle.GetTime();
+        current_time += (Time.deltaTime / secondsInFullDay) * GM_.Instance.day_night_cycle.GetTime();
 
         if (current_time >= 1)
         {
@@ -230,7 +230,7 @@ public class DayNightCycle : MonoBehaviour
 
         moon.enabled = true;
 
-        GM_.Instance.DayNightCycle.SetSolar(TimeMovement.Solar.NIGHT);
+        GM_.Instance.day_night_cycle.SetSolar(TimeMovement.Solar.NIGHT);
         stars.StarStart();
 
         GM_.Instance.tween_manager.StartTweenInstance(
@@ -249,7 +249,7 @@ public class DayNightCycle : MonoBehaviour
 
         sun.enabled = true;
 
-        GM_.Instance.DayNightCycle.SetSolar(TimeMovement.Solar.DAY);
+        GM_.Instance.day_night_cycle.SetSolar(TimeMovement.Solar.DAY);
         GM_.Instance.stats.DayCountIncrease();
         stars.EndStars();
 
