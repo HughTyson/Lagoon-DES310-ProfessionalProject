@@ -30,6 +30,9 @@ public class Switch : MonoBehaviour
     public SwitchState state;
     Quaternion rot;
 
+    AudioSFX switch_noise;
+
+
     public void Start()
     {
 
@@ -37,6 +40,7 @@ public class Switch : MonoBehaviour
 
         transform.rotation = off_rot;
 
+        switch_noise = GM_.Instance.audio.GetSFX("SwitchNoise");
     }
 
     public bool IsActive()
@@ -88,9 +92,10 @@ public class Switch : MonoBehaviour
                 {
                     rot = Quaternion.Lerp(transform.rotation, off_rot, 1.0f);
                     transform.rotation = rot;
-
+                   
                     if (transform.rotation == off_rot)
                     {
+                         //GM_.Instance.audio.PlaySFX(switch_noise, transform);
                         state = SwitchState.NEUTRAL;
                     }
 
@@ -100,9 +105,10 @@ public class Switch : MonoBehaviour
                 {
                     rot = Quaternion.Lerp(transform.rotation, on_rot, 1.0f);
                     transform.rotation = rot;
-
-                    if(transform.rotation == on_rot)
+                    
+                    if (transform.rotation == on_rot)
                     {
+                        
                         state = SwitchState.NEUTRAL;
                     }
                 }

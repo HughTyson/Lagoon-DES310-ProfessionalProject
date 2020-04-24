@@ -197,7 +197,7 @@ public class FireChanger : MonoBehaviour
 
         log_mat.SetColor("_EmissiveColor", mat);
 
-        Debug.Log(mat.ToString());
+
     }
 
     void CompleteFire()
