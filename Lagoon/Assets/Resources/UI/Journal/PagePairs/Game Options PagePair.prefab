@@ -288,9 +288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goBackButton: {fileID: 2916614402971368269}
   controlsButton: {fileID: 3204642025541516044}
-  audioButton: {fileID: 0}
   vibrationCheckbox: {fileID: 7665021979314147930}
-  back_SButton: {fileID: 0}
   controlOptionPair: {fileID: 0}
   audioOptionPair: {fileID: 0}
   goBackPair: {fileID: 0}
@@ -1107,6 +1105,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5786102256623231748}
     m_Modifications:
+    - target: {fileID: 2236159451078522586, guid: 83541ccb0900d8343b5ba33b9685b6d8,
+        type: 3}
+      propertyPath: m_Name
+      value: JournalCheckbox
+      objectReference: {fileID: 0}
     - target: {fileID: 2236159451078522588, guid: 83541ccb0900d8343b5ba33b9685b6d8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1211,11 +1214,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2236159451078522586, guid: 83541ccb0900d8343b5ba33b9685b6d8,
-        type: 3}
-      propertyPath: m_Name
-      value: JournalCheckbox
       objectReference: {fileID: 0}
     - target: {fileID: 2236159451078522589, guid: 83541ccb0900d8343b5ba33b9685b6d8,
         type: 3}
