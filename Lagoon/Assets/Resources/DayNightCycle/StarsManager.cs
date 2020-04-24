@@ -75,8 +75,8 @@ public class StarsManager : MonoBehaviour
     {
         if(update_stars)
         {
-            stars_transform.Rotate(new Vector3(0.3f, 0, 1), (0.1f * GM_.Instance.DayNightCycle.GetTime()) * Time.deltaTime);
-            Debug.Log(transform.rotation.eulerAngles);
+            stars_transform.Rotate(new Vector3(0.3f, 0, 1), (0.1f * GM_.Instance.day_night_cycle.GetTime()) * Time.deltaTime);
+            
         }
 
     }

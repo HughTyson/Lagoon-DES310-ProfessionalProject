@@ -10,7 +10,7 @@ public class CameraCollision : MonoBehaviour
 
     int camera_collisison_layer;
 
-    
+    int[] layers = new int[7];
     //collision detection variables 
 
     float collision_box_size = 3.0f;
@@ -32,6 +32,8 @@ public class CameraCollision : MonoBehaviour
         cam = camera;
         adjusted_cp_pos = new Vector3[4]; //4 clip points and the cameras position
         desired_cp_pos = new Vector3[4];
+
+        layers[0] = 5; layers[1] = 9; layers[2] = 10; layers[3] = 11; layers[4] = 12; layers[5] = 13; layers[6] = 14;
 
         camera_collisison_layer = (1 << 5) |(1 << 9) | (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13) | (1 << 14) /*| (1 << 15)*/;
 
@@ -88,20 +90,34 @@ public class CameraCollision : MonoBehaviour
         for (int i = 0; i < desired_cp_pos.Length; i++)
         {
             Ray ray = new Ray(target_position, desired_cp_pos[i] - target_position);    //define a new ray starting from the target with a direction towards the clip point
+            float distance_ray = Vector3.Distance(desired_cp_pos[i], target_position);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, distance_ray))
             {
                 if (distance == -1) //chekc if any hit has occured yet
                 {
-                    distance = hit.distance; //if no hit then set as initital hit
+                        distance = hit.distance; //if no hit then set as initital hit
                 }
                 else
                 {
                     if (hit.distance < distance) //get the shortest distance from a point to the targets position
                     {
 
-                        distance = hit.distance;
+                        if (hit.transform.gameObject.layer != layers[0] && hit.transform.gameObject.layer != layers[1] && hit.transform.gameObject.layer != layers[2] && hit.transform.gameObject.layer != layers[3] && hit.transform.gameObject.layer != layers[4] && hit.transform.gameObject.layer != layers[5] && hit.transform.gameObject.layer != layers[6])
+                        {
+
+                            if(hit.transform.gameObject.layer != 8)
+                            { Debug.Log(hit.transform.gameObject.layer); }
+                                
+
+                            distance = hit.distance;
+
+                           
+
+                            
+                        }
+                        
                     }
                 }
             }

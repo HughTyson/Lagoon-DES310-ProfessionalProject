@@ -96,7 +96,7 @@ public class FireChanger : MonoBehaviour
     void Update()
     {
 
-        current = GM_.Instance.DayNightCycle.GetSolar();
+        current = GM_.Instance.day_night_cycle.GetSolar();
 
         if (old != current)
         {

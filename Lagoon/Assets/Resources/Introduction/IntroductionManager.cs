@@ -81,12 +81,14 @@ public class IntroductionManager : MonoBehaviour
     void Update()
     {
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
+        GM_.Instance.day_night_cycle.SetTime(0);
+
 
         if(distance)
         {
 
             camera.transform.rotation = Quaternion.LookRotation(look_at - transform.position);
-            Debug.Log(GM_.Instance.DayNightCycle.GetTime());
+            Debug.Log(GM_.Instance.day_night_cycle.GetTime());
         }
         
         if(next_scene)
