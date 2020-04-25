@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class SFXSettings
+public static class AudioSettings
 {
 
     public abstract class RootBase
@@ -128,8 +128,7 @@ public static class SFXSettings
  
 
 
-        // the Float Ref is an accelleration to pitch 
-       
+        
 
     }
 
@@ -151,6 +150,33 @@ public static class SFXSettings
 
     public static class VolumeOnly
     {
+
+    }
+
+
+
+    public static class MusicOnly
+    {
+        public static class Volume
+        {
+            public class CrossFade
+            {
+
+
+            }
+            public class FadeOut
+            {
+
+            }
+            public class FadeIn
+            {
+
+            }
+
+        }
+
+
+
 
     }
 

@@ -163,7 +163,7 @@ public class SupplyBox : MonoBehaviour
         if(other.gameObject.layer == 15)
         {
             if (GetComponent<Rigidbody>().velocity.magnitude > 5)
-                GM_.Instance.audio.PlaySFX(sfx_waterSplash, transform, settingPitch: new SFXSettings.AnyFloatSetting.Constant(Random.Range(0.9f, 1.1f)), settingVolume: new SFXSettings.AnyFloatSetting.Constant(0.7f));
+                GM_.Instance.audio.PlaySFX(sfx_waterSplash, transform, settingPitch: new AudioSettings.AnyFloatSetting.Constant(Random.Range(0.9f, 1.1f)), settingVolume: new AudioSettings.AnyFloatSetting.Constant(0.7f));
 
             box_state = STATE.IN_WATER;
         }

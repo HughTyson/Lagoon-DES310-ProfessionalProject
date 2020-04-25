@@ -49,8 +49,8 @@ public class CharacterAnimationHandler : MonoBehaviour
         modularPeiceManager.AddNewModularPeice("HAIR", Hair_MPeice, "_jnt", true);
         modularPeiceManager.AddNewModularPeice("BEARD", Beard_MPeice, "_jnt", true);
 
-        DebugGUI.SetGraphProperties("LeftFootGrounded", "Left Foot Grounded:", -0.1f, 1.1f, 0, Color.green, true);
-        DebugGUI.SetGraphProperties("RightFootGrounded", "Right Foot Grounded:", -0.1f, 1.1f, 1, Color.yellow, true);
+        //DebugGUI.SetGraphProperties("LeftFootGrounded", "Left Foot Grounded:", -0.1f, 1.1f, 0, Color.green, true);
+        //DebugGUI.SetGraphProperties("RightFootGrounded", "Right Foot Grounded:", -0.1f, 1.1f, 1, Color.yellow, true);
 
 
 
@@ -123,7 +123,7 @@ public class CharacterAnimationHandler : MonoBehaviour
 
             if (animator.GetFloat("LeftFootGrounded") < 0.5f)
             {
-                DebugGUI.Graph("LeftFootGrounded", 0);
+      //          DebugGUI.Graph("LeftFootGrounded", 0);
 
                 float heightfromRayOriginToGround = Mathf.Abs(Mathf.Abs(ray.origin.y) - Mathf.Abs(groundedFootPosition.y));
                 float heightfromTayOriginToFoot = Mathf.Abs(Mathf.Abs(ray.origin.y) - Mathf.Abs(realLeftFootIk.y));
@@ -140,7 +140,7 @@ public class CharacterAnimationHandler : MonoBehaviour
             }
             else
             {
-                DebugGUI.Graph("LeftFootGrounded", 1);
+      //          DebugGUI.Graph("LeftFootGrounded", 1);
                 desiredLeftFootIk = groundedFootPosition;
 
             }
@@ -167,7 +167,7 @@ public class CharacterAnimationHandler : MonoBehaviour
 
             if (animator.GetFloat("RightFootGrounded") < 0.5f)
             {
-                DebugGUI.Graph("RightFootGrounded", 0);
+     //           DebugGUI.Graph("RightFootGrounded", 0);
 
                 float heightfromRayOriginToGround = Mathf.Abs(Mathf.Abs(ray.origin.y) - Mathf.Abs(groundedFootPosition.y));
                 float heightfromTayOriginToFoot = Mathf.Abs(Mathf.Abs(ray.origin.y) - Mathf.Abs(realRightFootIk.y));
@@ -184,7 +184,7 @@ public class CharacterAnimationHandler : MonoBehaviour
             }
             else
             {
-                DebugGUI.Graph("RightFootGrounded", 1);
+        //        DebugGUI.Graph("RightFootGrounded", 1);
 
                 desiredRightFootIk = groundedFootPosition;
 

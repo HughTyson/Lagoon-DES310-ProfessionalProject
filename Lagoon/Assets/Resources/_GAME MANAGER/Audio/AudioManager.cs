@@ -9,10 +9,12 @@ public class AudioManager : MonoBehaviour
     int maxAudioSources;
 
     Dictionary<string, AudioSFX> SFX = new Dictionary<string, AudioSFX>();
+    Dictionary<string, AudioMusic> MUSIC = new Dictionary<string, AudioMusic>();
 
     List<GameObject> availableSFXInstanceObjs = new List<GameObject>();
 
     List<SFXInstance> sfxInstances = new List<SFXInstance>();
+    List<MusicInstance> musicInstances = new List<MusicInstance>();
 
 
     AudioMixer masterMixer;
@@ -90,6 +92,14 @@ public class AudioManager : MonoBehaviour
             SFX.Add(sFXes[i].name, (AudioSFX)sFXes[i]);
         }
 
+        Object[] music = Resources.LoadAll("", typeof(AudioMusic));
+
+        for (int i = 0; i < music.Length; i++)
+        {
+            MUSIC.Add(music[i].name, (AudioMusic)music[i]);
+        }
+
+
         for (int i = 0; i < maxAudioSources; i++)
         {
             GameObject sfxInstance = new GameObject("SFX Instance", typeof(AudioSource));
@@ -121,8 +131,27 @@ public class AudioManager : MonoBehaviour
 
            return completedSFXInstanceCheck(y);
        }           
-       );      
+       );
+
+
+        musicInstances.RemoveAll( y =>
+        {
+            y.Update();
+            return completedMusicInstanceCheck(y);
+        }
+        ); 
     }
+
+    bool completedMusicInstanceCheck(MusicInstance instance)
+    {
+        if (instance.isCompleted)
+        {
+            Destroy(instance.source.gameObject);
+            return true;
+        }
+        return false;
+    }
+
     bool completedSFXInstanceCheck(SFXInstance instance)
     {
         if (instance.isCompleted)
@@ -190,14 +219,126 @@ public class AudioManager : MonoBehaviour
         return interfaces;
     }
 
-    public void PlayMusic(AudioClip musicClip, TweenManager.TweenPath currentMusicFadeOutVolumeTween = null, TweenManager.TweenPath newMusicFadeInVolumeTween = null)
+
+    public MusicInstanceInterface PlayMusic(AudioMusic audioMusic, AudioSettings.MusicOnly.Volume.FadeIn fadeInOfNewMusic = null, AudioSettings.MusicOnly.Volume.FadeOut fadeOutOfOldMusic = null)
     {
 
-    }
-    public void StopMusic(TweenManager.TweenPath fadeOutVolumeTween = null)
-    {
+        if (musicInstances.Count != 0)
+        {
+            musicInstances[musicInstances.Count - 1].Stop(fadeOutOfOldMusic);
+        }
 
+        GameObject musicInstanceObj = new GameObject("Music Instance", typeof(AudioSource));
+        musicInstanceObj.transform.SetParent(transform, false);
+
+        MusicInstance newInstance = new MusicInstance(audioMusic, musicInstanceObj.GetComponent<AudioSource>(), fadeIn: fadeInOfNewMusic);
+
+        musicInstances.Add(newInstance);
+
+
+        return new MusicInstanceInterface(newInstance);
     }
+
+
+    // Stops the primary music instance
+    public void StopMusic(AudioSettings.MusicOnly.Volume.FadeOut fadeOut = null)
+    {
+        if (musicInstances.Count != 0)
+        {
+            musicInstances[musicInstances.Count - 1].Stop(fadeOut);
+        }
+    }
+
+
+
+    /// <summary>
+    /// The primary music instance. This is the most recently created MusicInstance. 
+    /// 
+    /// returns null if no music instances
+    /// </summary>
+    /// <returns></returns>
+    public MusicInstanceInterface GetPrimaryActiveMusicInstance()
+    {
+        if (musicInstances.Count != 0)
+        {
+            return new MusicInstanceInterface(musicInstances[musicInstances.Count - 1]);
+        }
+        return null;
+    }
+
+
+    /// <summary>
+    /// All the music instances which are currently playing music. There is only one primary music instance, however there are multiple active when music is being cross-faded
+    /// The list is in order of activation. 
+    ///     Index 0: Oldest
+    ///     Index Count - 1: Newest (Primary MusicInstance)
+    /// </summary>
+    /// <returns></returns>
+    public List<MusicInstanceInterface> GetAllActiveMusicInstances()
+    {
+        List<MusicInstanceInterface> musicInterfaces = new List<MusicInstanceInterface>();
+
+        for (int i = 0; i <  musicInstances.Count; i++)
+        {
+            musicInterfaces.Add(new MusicInstanceInterface(musicInstances[i]));
+        }
+        return musicInterfaces;
+    }
+
+
+    public class MusicInstance
+    {
+        public AudioMusic audioMUSIC;
+        public AudioSource source;
+        public bool isStopping = false;
+        public bool isCompleted = false;
+
+        public MusicInstance(AudioMusic audioMusic, AudioSource audioSource, AudioSettings.MusicOnly.Volume.FadeIn fadeIn = null)
+        {
+            
+        }
+        public void Update()
+        {
+            if (isStopping)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+
+        public void Stop(AudioSettings.MusicOnly.Volume.FadeOut fadeOut = null)
+        {
+            if (!isStopping)
+            {
+                isStopping = true;
+
+
+
+
+
+            }
+        }
+    }
+
+    public class MusicInstanceInterface
+    {
+        MusicInstance instance;
+        public MusicInstanceInterface(MusicInstance instance_)
+        {
+            instance = instance_;
+        }
+        public AudioMusic SourceAudioMusic => instance.audioMUSIC;
+        public string AudioMusicName => SourceAudioMusic.name;
+        public bool IsStopping => instance.isStopping;
+    }
+
+
+
+
+
 
 
     /// <summary>
@@ -218,7 +359,7 @@ public class AudioManager : MonoBehaviour
     /// 
 
 
-    public SFXInstanceInterface PlaySFX(AudioSFX audioSFX, Transform sourceTransform, bool IsMenuSound = false, SFXSettings.AnyBoolSetting.BoolBase settingLoop = null, SFXSettings.AnyBoolSetting.BoolBase settingMute = null, SFXSettings.AnyFloatSetting.FloatBase settingPanning = null, SFXSettings.AnyFloatSetting.FloatBase settingPitch = null, SFXSettings.AnyIntSetting.IntBase settingPriority = null, SFXSettings.AnyFloatSetting.FloatBase settingSpatialBlend = null, SFXSettings.AnyFloatSetting.FloatBase settingVolume = null, object appliedID = null)
+    public SFXInstanceInterface PlaySFX(AudioSFX audioSFX, Transform sourceTransform, bool IsMenuSound = false, AudioSettings.AnyBoolSetting.BoolBase settingLoop = null, AudioSettings.AnyBoolSetting.BoolBase settingMute = null, AudioSettings.AnyFloatSetting.FloatBase settingPanning = null, AudioSettings.AnyFloatSetting.FloatBase settingPitch = null, AudioSettings.AnyIntSetting.IntBase settingPriority = null, AudioSettings.AnyFloatSetting.FloatBase settingSpatialBlend = null, AudioSettings.AnyFloatSetting.FloatBase settingVolume = null, object appliedID = null)
     {
         uniqueIDCount++;
 
@@ -274,14 +415,14 @@ public class AudioManager : MonoBehaviour
         public readonly AudioSFX audioSFX;
         public readonly Transform sourceTransform;
         public readonly bool IsMenuSound;
-        public readonly SFXSettings.AnyBoolSetting.BoolBase settingLoop;
-        public readonly SFXSettings.AnyBoolSetting.BoolBase settingMute;
-        public readonly SFXSettings.AnyFloatSetting.FloatBase settingPanning;
-        public readonly SFXSettings.AnyFloatSetting.FloatBase settingPitch;
-        public readonly SFXSettings.AnyIntSetting.IntBase settingPriority;
-        public readonly SFXSettings.AnyFloatSetting.FloatBase settingSpatialBlend;
-        public readonly SFXSettings.AnyFloatSetting.FloatBase settingVolume;
-        public SFXArgs(AudioSFX audioSFX_, Transform sourceTransform_, bool IsMenuSound_ = false, SFXSettings.AnyBoolSetting.BoolBase settingLoop_ = null, SFXSettings.AnyBoolSetting.BoolBase settingMute_ = null, SFXSettings.AnyFloatSetting.FloatBase settingPanning_ = null, SFXSettings.AnyFloatSetting.FloatBase settingPitch_ = null, SFXSettings.AnyIntSetting.IntBase settingPriority_ = null, SFXSettings.AnyFloatSetting.FloatBase settingSpatialBlend_ = null, SFXSettings.AnyFloatSetting.FloatBase settingVolume_ = null)
+        public readonly AudioSettings.AnyBoolSetting.BoolBase settingLoop;
+        public readonly AudioSettings.AnyBoolSetting.BoolBase settingMute;
+        public readonly AudioSettings.AnyFloatSetting.FloatBase settingPanning;
+        public readonly AudioSettings.AnyFloatSetting.FloatBase settingPitch;
+        public readonly AudioSettings.AnyIntSetting.IntBase settingPriority;
+        public readonly AudioSettings.AnyFloatSetting.FloatBase settingSpatialBlend;
+        public readonly AudioSettings.AnyFloatSetting.FloatBase settingVolume;
+        public SFXArgs(AudioSFX audioSFX_, Transform sourceTransform_, bool IsMenuSound_ = false, AudioSettings.AnyBoolSetting.BoolBase settingLoop_ = null, AudioSettings.AnyBoolSetting.BoolBase settingMute_ = null, AudioSettings.AnyFloatSetting.FloatBase settingPanning_ = null, AudioSettings.AnyFloatSetting.FloatBase settingPitch_ = null, AudioSettings.AnyIntSetting.IntBase settingPriority_ = null, AudioSettings.AnyFloatSetting.FloatBase settingSpatialBlend_ = null, AudioSettings.AnyFloatSetting.FloatBase settingVolume_ = null)
         {
             audioSFX = audioSFX_;
             sourceTransform = sourceTransform_;
@@ -455,19 +596,19 @@ public class AudioManager : MonoBehaviour
         public AudioSFX audioSFX;
         public AudioSource source;
 
-        public SFXSettings.AnyBoolSetting.BoolBase settingLoop = null;
-        public SFXSettings.AnyBoolSetting.BoolBase settingMute = null;
-        public SFXSettings.AnyFloatSetting.FloatBase settingPanning = null;
-        public SFXSettings.AnyFloatSetting.FloatBase settingPitch = null;
-        public SFXSettings.AnyIntSetting.IntBase settingPriority = null;
-        public SFXSettings.AnyFloatSetting.FloatBase settingSpatialBlend = null;
-        public SFXSettings.AnyFloatSetting.FloatBase settingVolume = null;
+        public AudioSettings.AnyBoolSetting.BoolBase settingLoop = null;
+        public AudioSettings.AnyBoolSetting.BoolBase settingMute = null;
+        public AudioSettings.AnyFloatSetting.FloatBase settingPanning = null;
+        public AudioSettings.AnyFloatSetting.FloatBase settingPitch = null;
+        public AudioSettings.AnyIntSetting.IntBase settingPriority = null;
+        public AudioSettings.AnyFloatSetting.FloatBase settingSpatialBlend = null;
+        public AudioSettings.AnyFloatSetting.FloatBase settingVolume = null;
 
 
         public object appliedID;
         public int uniqueID;
 
-        public SFXInstance(AudioSFX audioSFX_,AudioSource source_, int uniqueID_, AudioMixerGroup mixerGroup = null, SFXSettings.AnyBoolSetting.BoolBase settingLoop_ = null, SFXSettings.AnyBoolSetting.BoolBase settingMute_ = null, SFXSettings.AnyFloatSetting.FloatBase settingPanning_ = null, SFXSettings.AnyFloatSetting.FloatBase settingPitch_ = null, SFXSettings.AnyIntSetting.IntBase settingPriority_ = null, SFXSettings.AnyFloatSetting.FloatBase settingSpatialBlend_ = null, SFXSettings.AnyFloatSetting.FloatBase settingVolume_ = null, object appliedID_ = null)
+        public SFXInstance(AudioSFX audioSFX_,AudioSource source_, int uniqueID_, AudioMixerGroup mixerGroup = null, AudioSettings.AnyBoolSetting.BoolBase settingLoop_ = null, AudioSettings.AnyBoolSetting.BoolBase settingMute_ = null, AudioSettings.AnyFloatSetting.FloatBase settingPanning_ = null, AudioSettings.AnyFloatSetting.FloatBase settingPitch_ = null, AudioSettings.AnyIntSetting.IntBase settingPriority_ = null, AudioSettings.AnyFloatSetting.FloatBase settingSpatialBlend_ = null, AudioSettings.AnyFloatSetting.FloatBase settingVolume_ = null, object appliedID_ = null)
         {
             
             isCompleted = false;
@@ -490,7 +631,7 @@ public class AudioManager : MonoBehaviour
             if (settingPriority != null)
             {
                 priority = settingPriority.Value;
-                if (settingPriority.GetType() == typeof(SFXSettings.AnyIntSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                if (settingPriority.GetType() == typeof(AudioSettings.AnyIntSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingPriority = null;
             }
             else
@@ -501,7 +642,7 @@ public class AudioManager : MonoBehaviour
             if (settingLoop != null)
             {
                 isLooping = settingLoop.Value;
-                if (settingLoop.GetType() == typeof(SFXSettings.AnyBoolSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                if (settingLoop.GetType() == typeof(AudioSettings.AnyBoolSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingLoop = null;
             }
             else
@@ -512,7 +653,7 @@ public class AudioManager : MonoBehaviour
             if (settingPitch != null)
             {
                 pitch = settingPitch.Value;
-                if (settingPitch.GetType() == typeof(SFXSettings.AnyFloatSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                if (settingPitch.GetType() == typeof(AudioSettings.AnyFloatSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingPitch = null;
             }
             else
@@ -523,7 +664,7 @@ public class AudioManager : MonoBehaviour
             if (settingSpatialBlend != null)
             {
                 spatialBlend2DTo3D = settingSpatialBlend.Value;
-                if (settingSpatialBlend.GetType() == typeof(SFXSettings.AnyFloatSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                if (settingSpatialBlend.GetType() == typeof(AudioSettings.AnyFloatSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingSpatialBlend = null;
             }
             else
@@ -534,7 +675,7 @@ public class AudioManager : MonoBehaviour
             if (settingVolume != null)
             {
                 volume = settingVolume.Value;
-                if (settingVolume.GetType() == typeof(SFXSettings.AnyFloatSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                if (settingVolume.GetType() == typeof(AudioSettings.AnyFloatSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingVolume = null;
             }
             else
@@ -545,7 +686,7 @@ public class AudioManager : MonoBehaviour
             if (settingPanning != null)
             {
                 panning = settingPanning.Value;
-                if (settingPanning.GetType() == typeof(SFXSettings.AnyFloatSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                if (settingPanning.GetType() == typeof(AudioSettings.AnyFloatSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingPanning = null;
             }
             else
@@ -556,7 +697,7 @@ public class AudioManager : MonoBehaviour
             if (settingMute != null)
             {
                 isMuted = settingMute.Value;
-                if (settingMute.GetType() == typeof(SFXSettings.AnyBoolSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
+                if (settingMute.GetType() == typeof(AudioSettings.AnyBoolSetting.Constant)) // reduce unessicary update cycles and memory by nulling pointer when the settings is constant
                     settingMute = null;
             }
             else
