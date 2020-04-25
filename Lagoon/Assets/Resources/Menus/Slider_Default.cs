@@ -17,6 +17,8 @@ public class Slider_Default : Slider_
     [SerializeField] Image backgroundImage;
     [SerializeField] Image handleImage;
 
+    [SerializeField] Color background_image_color = Color.white;
+
     [SerializeField]
     RectTransform mainParentRectTransfrom;
 
@@ -29,6 +31,8 @@ public class Slider_Default : Slider_
     {
         InternalEvent_ValueChanged += valueChanged;
         InternalEvent_ValueSet += valueSet;
+
+        backgroundImage.color = background_image_color;
     }
 
     protected override void ApplyDefaults()
@@ -198,7 +202,7 @@ public class Slider_Default : Slider_
         mainParentRectTransfrom.localScale = new Vector3(1, 1, 1);
         startImage.color = new Color(1, 1, 1, 1);
         endImage.color = new Color(1, 1, 1, 1);
-        backgroundImage.color = new Color(1, 1, 1, 1);
+        backgroundImage.color = background_image_color;
     }
 
 
