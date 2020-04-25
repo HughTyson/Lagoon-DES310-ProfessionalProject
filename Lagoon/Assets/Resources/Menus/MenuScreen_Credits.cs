@@ -18,6 +18,9 @@ public class MenuScreen_Credits : MenuScreenBase
     [SerializeField] SpecialText.SpecialText SpecialText_progammerNames;
     [SerializeField] SpecialText.SpecialText SpecialText_artistNames;
     [SerializeField] SpecialText.SpecialText SpecialText_artistTitle;
+    [SerializeField] SpecialText.SpecialText SpecialText_musicianTitle;
+    [SerializeField] SpecialText.SpecialText SpecialText_musicianNames;
+
     [SerializeField] SpecialText.SpecialText SpecialText_designerTitle;
     [SerializeField] SpecialText.SpecialText SpecialText_designerNames;
 
@@ -28,10 +31,13 @@ public class MenuScreen_Credits : MenuScreenBase
 
     SpecialText.SpecialTextData TextData_programmerNames = new SpecialText.SpecialTextData();
     SpecialText.SpecialTextData TextData_artistNames = new SpecialText.SpecialTextData();
-    SpecialText.SpecialTextData TextData_designerNames = new SpecialText.SpecialTextData();
+    SpecialText.SpecialTextData TextData_musicianNames = new SpecialText.SpecialTextData();
     SpecialText.SpecialTextData TextData_programmerTitle = new SpecialText.SpecialTextData();
     SpecialText.SpecialTextData TextData_artistTitle = new SpecialText.SpecialTextData();
+    SpecialText.SpecialTextData TextData_musicianTitle = new SpecialText.SpecialTextData();
+
     SpecialText.SpecialTextData TextData_designerTitle = new SpecialText.SpecialTextData();
+    SpecialText.SpecialTextData TextData_designerNames = new SpecialText.SpecialTextData();
 
 
     TweenManager.TweenPathBundle tweenShowButton;
@@ -51,10 +57,13 @@ public class MenuScreen_Credits : MenuScreenBase
 
         TextData_programmerNames.CreateCharacterData(SpecialText_progammerNames.GetComponent<TMPro.TextMeshProUGUI>().text);
         TextData_artistNames.CreateCharacterData(SpecialText_artistNames.GetComponent<TMPro.TextMeshProUGUI>().text);
-        TextData_designerNames.CreateCharacterData(SpecialText_designerNames.GetComponent<TMPro.TextMeshProUGUI>().text);
+        TextData_musicianNames.CreateCharacterData(SpecialText_musicianNames.GetComponent<TMPro.TextMeshProUGUI>().text);
         TextData_programmerTitle.CreateCharacterData(SpecialText_progammerTitle.GetComponent<TMPro.TextMeshProUGUI>().text);
         TextData_artistTitle.CreateCharacterData(SpecialText_artistTitle.GetComponent<TMPro.TextMeshProUGUI>().text);
+        TextData_musicianTitle.CreateCharacterData(SpecialText_musicianTitle.GetComponent<TMPro.TextMeshProUGUI>().text);
+
         TextData_designerTitle.CreateCharacterData(SpecialText_designerTitle.GetComponent<TMPro.TextMeshProUGUI>().text);
+        TextData_designerNames.CreateCharacterData(SpecialText_designerNames.GetComponent<TMPro.TextMeshProUGUI>().text);
 
         Color32 default_colour_CreditsTitle = ColourExtension.ColourtoColour32(SpecialText_CreditsTitle.GetComponent<TMPro.TextMeshProUGUI>().color);
 
@@ -62,8 +71,8 @@ public class MenuScreen_Credits : MenuScreenBase
         Color32 default_colour_programmerTitle = ColourExtension.ColourtoColour32(SpecialText_progammerTitle.GetComponent<TMPro.TextMeshProUGUI>().color);
         Color32 default_colour_artistNames = ColourExtension.ColourtoColour32(SpecialText_artistNames.GetComponent<TMPro.TextMeshProUGUI>().color);
         Color32 default_colour_artistTitle = ColourExtension.ColourtoColour32(SpecialText_artistTitle.GetComponent<TMPro.TextMeshProUGUI>().color);
-        Color32 default_colour_designNames = ColourExtension.ColourtoColour32(SpecialText_designerNames.GetComponent<TMPro.TextMeshProUGUI>().color);
-        Color32 default_colour_designTitle = ColourExtension.ColourtoColour32(SpecialText_designerTitle.GetComponent<TMPro.TextMeshProUGUI>().color);
+        Color32 default_colour_designNames = ColourExtension.ColourtoColour32(SpecialText_musicianNames.GetComponent<TMPro.TextMeshProUGUI>().color);
+        Color32 default_colour_designTitle = ColourExtension.ColourtoColour32(SpecialText_musicianTitle.GetComponent<TMPro.TextMeshProUGUI>().color);
 
 
         TextData_CreditsTitle.AddPropertyToText(
@@ -96,15 +105,15 @@ public class MenuScreen_Credits : MenuScreenBase
         );
         TextData_artistTitle.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.2f, -1));
 
-        TextData_designerTitle.AddPropertyToText(
+        TextData_musicianTitle.AddPropertyToText(
         new List<SpecialText.TextProperties.Base> {
                     new SpecialText.TextProperties.AppearAtOnce(),
                     new SpecialText.TextProperties.Colour(default_colour_designTitle.r,default_colour_designTitle.g,default_colour_designTitle.b)
         },
         0,
-        TextData_designerTitle.fullTextString.Length
+        TextData_musicianTitle.fullTextString.Length
         );
-        TextData_designerTitle.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.4f, -1));
+        TextData_musicianTitle.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.4f, -1));
 
 
         TextData_programmerNames.AddPropertyToText(
@@ -128,15 +137,38 @@ public class MenuScreen_Credits : MenuScreenBase
         TextData_artistNames.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.2f, -1));
 
 
-        TextData_designerNames.AddPropertyToText(
+        TextData_musicianNames.AddPropertyToText(
         new List<SpecialText.TextProperties.Base> {
                     new SpecialText.TextProperties.AppearAtOnce(),
                     new SpecialText.TextProperties.Colour(default_colour_designNames.r,default_colour_designNames.g,default_colour_designNames.b)
         },
         0,
+        TextData_musicianNames.fullTextString.Length
+        );
+        TextData_musicianNames.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.4f, -1));
+
+
+
+        TextData_designerNames.AddPropertyToText(
+        new List<SpecialText.TextProperties.Base> {
+                    new SpecialText.TextProperties.AppearAtOnce(),
+                    new SpecialText.TextProperties.Colour(default_colour_programmerNames.r,default_colour_programmerNames.g,default_colour_programmerNames.b)
+        },
+        0,
         TextData_designerNames.fullTextString.Length
         );
-        TextData_designerNames.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.4f, -1));
+        TextData_designerNames.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.6f, -1));
+
+        TextData_designerTitle.AddPropertyToText(
+        new List<SpecialText.TextProperties.Base> {
+                            new SpecialText.TextProperties.AppearAtOnce(),
+                            new SpecialText.TextProperties.Colour(default_colour_programmerNames.r,default_colour_programmerNames.g,default_colour_programmerNames.b)
+        },
+        0,
+        TextData_designerTitle.fullTextString.Length
+        );
+            TextData_designerTitle.propertyDataList.Add(new SpecialText.TextProperties.Delay(0.6f, -1));
+
 
 
         extraCreditsButton.Event_Selected += start_transitionToExtraCredits;
@@ -164,13 +196,14 @@ public class MenuScreen_Credits : MenuScreenBase
 
         SpecialText_progammerTitle.Begin(TextData_programmerTitle);
         SpecialText_artistTitle.Begin(TextData_artistTitle);
-        SpecialText_designerTitle.Begin(TextData_designerTitle);
+        SpecialText_musicianTitle.Begin(TextData_musicianTitle);
 
         SpecialText_progammerNames.Begin(TextData_programmerNames);
         SpecialText_artistNames.Begin(TextData_artistNames);
+        SpecialText_musicianNames.Begin(TextData_musicianNames);
+
+        SpecialText_designerTitle.Begin(TextData_designerTitle);
         SpecialText_designerNames.Begin(TextData_designerNames);
-
-
 
 
     }
@@ -213,8 +246,11 @@ public class MenuScreen_Credits : MenuScreenBase
         SpecialText_progammerNames.End();
         SpecialText_artistNames.End();
         SpecialText_artistTitle.End();
-        SpecialText_designerTitle.End();
+        SpecialText_musicianTitle.End();
+        SpecialText_musicianNames.End();
+
         SpecialText_designerNames.End();
+        SpecialText_designerTitle.End();
 
         GM_.Instance.tween_manager.StartTweenInstance(
             default_hideTween,
@@ -231,9 +267,12 @@ public class MenuScreen_Credits : MenuScreenBase
         SpecialText_CreditsTitle.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
         SpecialText_progammerNames.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
         SpecialText_artistNames.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
-        SpecialText_designerNames.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
+        SpecialText_musicianNames.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
         SpecialText_progammerTitle.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
         SpecialText_artistTitle.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
+        SpecialText_musicianTitle.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
+
+        SpecialText_designerNames.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
         SpecialText_designerTitle.GetComponent<TMPro.TextMeshProUGUI>().color = new_colour;
     }
 
