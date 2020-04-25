@@ -1983,6 +1983,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7906435583812524491}
     m_Modifications:
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingUp
+      value: 
+      objectReference: {fileID: 8312539820169772112}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingDown
+      value: 
+      objectReference: {fileID: 3049445422306559145}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingLeft
+      value: 
+      objectReference: {fileID: 271350265161513152}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingRight
+      value: 
+      objectReference: {fileID: 271350265161513152}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: startValue
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: endValue
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4467572091346032601, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2108,36 +2138,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Music Slider
       objectReference: {fileID: 0}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingUp
-      value: 
-      objectReference: {fileID: 8312539820169772112}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingDown
-      value: 
-      objectReference: {fileID: 3049445422306559145}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingLeft
-      value: 
-      objectReference: {fileID: 271350265161513152}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingRight
-      value: 
-      objectReference: {fileID: 271350265161513152}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: startValue
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: endValue
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5121972adfb595b4ea41c626295ec41d, type: 3}
 --- !u!114 &1981315957326596083 stripped
@@ -2165,6 +2165,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1594355061307524735}
     m_Modifications:
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingUp
+      value: 
+      objectReference: {fileID: 3731591479483509748}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingDown
+      value: 
+      objectReference: {fileID: 271350265161513152}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingLeft
+      value: 
+      objectReference: {fileID: 8312539820169772112}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingRight
+      value: 
+      objectReference: {fileID: 8312539820169772112}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: hover_size_increase
+      value: 1.1
+      objectReference: {fileID: 0}
     - target: {fileID: 4467572091346032601, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2275,26 +2300,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: X Slider
       objectReference: {fileID: 0}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingUp
-      value: 
-      objectReference: {fileID: 3731591479483509748}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingDown
-      value: 
-      objectReference: {fileID: 271350265161513152}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingLeft
-      value: 
-      objectReference: {fileID: 8312539820169772112}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingRight
-      value: 
-      objectReference: {fileID: 8312539820169772112}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5121972adfb595b4ea41c626295ec41d, type: 3}
 --- !u!224 &3761894074822561784 stripped
@@ -2499,6 +2504,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1594355061307524735}
     m_Modifications:
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingUp
+      value: 
+      objectReference: {fileID: 1629589865628590219}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingDown
+      value: 
+      objectReference: {fileID: 3731591479483509748}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingLeft
+      value: 
+      objectReference: {fileID: 1981315957326596083}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingRight
+      value: 
+      objectReference: {fileID: 1981315957326596083}
     - target: {fileID: 4467572091346032601, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2609,26 +2634,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Y Slider
       objectReference: {fileID: 0}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingUp
-      value: 
-      objectReference: {fileID: 1629589865628590219}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingDown
-      value: 
-      objectReference: {fileID: 3731591479483509748}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingLeft
-      value: 
-      objectReference: {fileID: 1981315957326596083}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingRight
-      value: 
-      objectReference: {fileID: 1981315957326596083}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5121972adfb595b4ea41c626295ec41d, type: 3}
 --- !u!224 &2408755388033046451 stripped
@@ -2828,6 +2833,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7906435583812524491}
     m_Modifications:
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingUp
+      value: 
+      objectReference: {fileID: 1981315957326596083}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingDown
+      value: 
+      objectReference: {fileID: 8312539820169772112}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingLeft
+      value: 
+      objectReference: {fileID: 2234998553920092901}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingRight
+      value: 
+      objectReference: {fileID: 3731591479483509748}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: startValue
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: endValue
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4467572091346032601, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2953,36 +2988,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Volume Slider
       objectReference: {fileID: 0}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingUp
-      value: 
-      objectReference: {fileID: 1981315957326596083}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingDown
-      value: 
-      objectReference: {fileID: 8312539820169772112}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingLeft
-      value: 
-      objectReference: {fileID: 2234998553920092901}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingRight
-      value: 
-      objectReference: {fileID: 3731591479483509748}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: startValue
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: endValue
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5121972adfb595b4ea41c626295ec41d, type: 3}
 --- !u!224 &646362856684153818 stripped
@@ -3010,6 +3015,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7906435583812524491}
     m_Modifications:
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingUp
+      value: 
+      objectReference: {fileID: 3049445422306559145}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingDown
+      value: 
+      objectReference: {fileID: 1981315957326596083}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingLeft
+      value: 
+      objectReference: {fileID: 1629589865628590219}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: siblingRight
+      value: 
+      objectReference: {fileID: 8312539820169772112}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: startValue
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: endValue
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4467572091346032601, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3135,36 +3170,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Master Slider
       objectReference: {fileID: 0}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingUp
-      value: 
-      objectReference: {fileID: 3049445422306559145}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingDown
-      value: 
-      objectReference: {fileID: 1981315957326596083}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingLeft
-      value: 
-      objectReference: {fileID: 1629589865628590219}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: siblingRight
-      value: 
-      objectReference: {fileID: 8312539820169772112}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: startValue
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: endValue
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5121972adfb595b4ea41c626295ec41d, type: 3}
 --- !u!224 &5905779383857992483 stripped
@@ -3192,11 +3197,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7906435583812524491}
     m_Modifications:
-    - target: {fileID: 1187458599915022575, guid: f211dd1693631b7449b3e9ae3ed5d2e7,
-        type: 3}
-      propertyPath: m_Name
-      value: BUnhoverableButton_Journal
-      objectReference: {fileID: 0}
     - target: {fileID: 7740147193532406379, guid: f211dd1693631b7449b3e9ae3ed5d2e7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3301,6 +3301,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1187458599915022575, guid: f211dd1693631b7449b3e9ae3ed5d2e7,
+        type: 3}
+      propertyPath: m_Name
+      value: BUnhoverableButton_Journal
       objectReference: {fileID: 0}
     - target: {fileID: 5939889388996241717, guid: f211dd1693631b7449b3e9ae3ed5d2e7,
         type: 3}

@@ -16,6 +16,41 @@ MonoBehaviour:
   isLooping: 1
   pitch: -1.29
   spatialBlend2DTo3D: 1
-  volume: 0.32
+  volume: 0.2
   panning: 0
   priority: 125
+  maxDistance: 0
+  volumeFallOff:
+    enabled: 1
+    animationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: -0.0014648438
+        value: 1.0023499
+        inSlope: 0.059479762
+        outSlope: 0.059479762
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.043174233
+      - serializedVersion: 3
+        time: 0.6497803
+        value: -0.0047187805
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  audioSpread:
+    enabled: 0
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4

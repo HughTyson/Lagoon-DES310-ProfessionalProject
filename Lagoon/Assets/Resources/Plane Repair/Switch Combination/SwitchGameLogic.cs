@@ -27,16 +27,26 @@ public class SwitchGameLogic : RepairGameBase
 
     [SerializeField] bool[] light_active = new bool[4];
 
-    
+
+    AudioSFX switch_noise;
 
     int selected_switch = 0;
     float counter;
     float transition_time = 0.3f;
     bool selected = false;
 
+    private void Start()
+    {
+        complete_sfx = GM_.Instance.audio.GetSFX("Completion Noise");
+        
+        switch_noise = GM_.Instance.audio.GetSFX("SwitchNoise");
+    }
+
     public override void GameInit(Vector3 position)
     {
         transform.position = position;
+
+        
 
         for (int i = 0; i < 4; i++)
         {
@@ -82,6 +92,8 @@ public class SwitchGameLogic : RepairGameBase
 
             if (switchs[i].just_changed)
             {
+
+                GM_.Instance.audio.PlaySFX(switch_noise, transform);
 
                 for (int l = 0; l < switchs[i].activate.Count; l++)
                 {
@@ -136,6 +148,7 @@ public class SwitchGameLogic : RepairGameBase
         {
             Debug.Log("Hello");
             game_complete = true;
+            GM_.Instance.audio.PlaySFX(complete_sfx, null);
             GM_.Instance.inventory.RemoveItemType(typeof(SwitchItem));
         }
     }

@@ -91,47 +91,75 @@ public class CameraCollision : MonoBehaviour
         {
             Ray ray = new Ray(target_position, desired_cp_pos[i] - target_position);    //define a new ray starting from the target with a direction towards the clip point
             float distance_ray = Vector3.Distance(desired_cp_pos[i], target_position);
-            RaycastHit hit;
+            //RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, distance_ray))
+            //if (Physics.Raycast(ray, out hit, distance_ray))
+            //{
+            //    if (distance == -1) //chekc if any hit has occured yet
+            //    {
+            //            distance = hit.distance; //if no hit then set as initital hit
+            //    }
+            //    else
+            //    {
+            //        if (hit.distance < distance) //get the shortest distance from a point to the targets position
+            //        {
+
+            //            if (hit.transform.gameObject.layer != layers[0] && hit.transform.gameObject.layer != layers[1] && hit.transform.gameObject.layer != layers[2] && hit.transform.gameObject.layer != layers[3] && hit.transform.gameObject.layer != layers[4] && hit.transform.gameObject.layer != layers[5] && hit.transform.gameObject.layer != layers[6])
+            //            {
+
+            //                if(hit.transform.gameObject.layer != 8)
+            //                { Debug.Log(hit.transform.gameObject.layer); }
+
+
+            //                distance = hit.distance;
+
+
+
+
+            //            }
+
+            //        }
+            //    }
+            //}
+
+            RaycastHit[] hits;
+            hits = Physics.RaycastAll(ray, distance_ray, camera_collisison_layer);
+
+            for (int j = 0; j < hits.Length; j++)
             {
                 if (distance == -1) //chekc if any hit has occured yet
                 {
-                        distance = hit.distance; //if no hit then set as initital hit
+                    distance = hits[j].distance; //if no hit then set as initital hit
                 }
                 else
                 {
-                    if (hit.distance < distance) //get the shortest distance from a point to the targets position
+                    if (hits[j].distance < distance) //get the shortest distance from a point to the targets position
                     {
 
-                        if (hit.transform.gameObject.layer != layers[0] && hit.transform.gameObject.layer != layers[1] && hit.transform.gameObject.layer != layers[2] && hit.transform.gameObject.layer != layers[3] && hit.transform.gameObject.layer != layers[4] && hit.transform.gameObject.layer != layers[5] && hit.transform.gameObject.layer != layers[6])
+                        if (hits[j].transform.gameObject.layer != layers[0] && hits[j].transform.gameObject.layer != layers[1] && hits[j].transform.gameObject.layer != layers[2] && hits[j].transform.gameObject.layer != layers[3] && hits[j].transform.gameObject.layer != layers[4] && hits[j].transform.gameObject.layer != layers[5] && hits[j].transform.gameObject.layer != layers[6])
                         {
 
-                            if(hit.transform.gameObject.layer != 8)
-                            { Debug.Log(hit.transform.gameObject.layer); }
-                                
+                            if (hits[j].transform.gameObject.layer != 8)
+                            { Debug.Log(hits[j].transform.gameObject.layer); }
 
-                            distance = hit.distance;
 
-                           
-
-                            
+                            distance = hits[j].distance;
                         }
-                        
                     }
                 }
+
             }
         }
 
-        if (distance == -1) // if distacne is still negative one then no collisisons;
-        {
-            return 0;
-        }
-        else
-        {
-       
-            return distance;
-        }
+            if (distance == -1) // if distacne is still negative one then no collisisons;
+            {
+                return 0;
+            }
+            else
+            {
+
+                return distance;
+            }
     }
 
     public void CheckColliding(Vector3 target_position)

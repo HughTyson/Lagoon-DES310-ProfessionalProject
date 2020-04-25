@@ -59,11 +59,15 @@ public class PlayerFishingState : BaseState
 
 
 
-    
-    
 
-  //  AudioSFX sfx_reeling;
- //   AudioManager.SFXInstanceInterface sfx_reeling_interface;
+
+
+    //  AudioSFX sfx_reeling;
+    //   AudioManager.SFXInstanceInterface sfx_reeling_interface;
+
+    AudioSFX fish_caught_sfx;
+    AudioManager.SFXInstanceInterface fish_caught_sfx_interface;
+
     TypeRef<float> reelingDesiredPitch = new TypeRef<float>();
 
     enum FISHING_STATE
@@ -101,9 +105,12 @@ public class PlayerFishingState : BaseState
     // third person camera
     // fishing indicator
 
+    
+
     private void Awake()
     {
-   //     sfx_reeling = GM_.Instance.audio.GetSFX("Fishing_Reeling");
+        //     sfx_reeling = GM_.Instance.audio.GetSFX("Fishing_Reeling");
+        fish_caught_sfx = GM_.Instance.audio.GetSFX("Completion Noise");
     }
 
     public void OnEnable()
@@ -859,6 +866,8 @@ public class PlayerFishingState : BaseState
                 fishingProjectileIndicator.SetActive(false);
                 thirdPersonCamera.enabled = false;
                 celebrationCamera.enabled = true;
+
+                GM_.Instance.audio.PlaySFX(fish_caught_sfx, null);
 
             }
         }

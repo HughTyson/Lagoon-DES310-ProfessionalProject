@@ -214,12 +214,12 @@ public class FishGenerator : MonoBehaviour
         colours.Add(new Color(1.0f, 1.0f, 0));
         colours.Add(new Color(0.0f, 1.0f, 0));
 
-        for (int i = 0; i < fishGenerationStats.Count; i++)
-        {
-            UnityEditor.Handles.color = colours[i];
-            UnityEditor.Handles.DrawWireDisc(origin, Vector3.down, fishGenerationStats[i].habitatRingMin);
-            UnityEditor.Handles.DrawWireDisc(origin, Vector3.down, fishGenerationStats[i].habitatRingMax);
-        }
+        //for (int i = 0; i < fishGenerationStats.Count; i++)
+        //{
+        //    UnityEditor.Handles.color = colours[i];
+        //    UnityEditor.Handles.DrawWireDisc(origin, Vector3.down, fishGenerationStats[i].habitatRingMin);
+        //    UnityEditor.Handles.DrawWireDisc(origin, Vector3.down, fishGenerationStats[i].habitatRingMax);
+        //}
 
 
         Gizmos.color = Color.white;

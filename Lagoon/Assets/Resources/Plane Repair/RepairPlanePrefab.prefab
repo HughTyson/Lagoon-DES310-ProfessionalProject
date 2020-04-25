@@ -461,8 +461,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d2f82bfe4da06549bd8869d8e067d46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mat_on: {fileID: 2100000, guid: fa5b6fb732426a84ba2812f91f149565, type: 2}
-  mat_off: {fileID: 2100000, guid: aab1269365639184a9296557da9ccd22, type: 2}
+  mat_on: {fileID: 2100000, guid: 6833d6973cc882c4b9eca7570498f7d6, type: 2}
+  mat_off: {fileID: 2100000, guid: 4e336ed559cb6774dbac4cf5d7cf97b9, type: 2}
 --- !u!1 &3958161816880676452
 GameObject:
   m_ObjectHideFlags: 0
@@ -1817,6 +1817,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: 998bf36c6ab39df418cdfa93a4205b98,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4e336ed559cb6774dbac4cf5d7cf97b9, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 998bf36c6ab39df418cdfa93a4205b98, type: 3}
 --- !u!4 &7860082446944163940 stripped
