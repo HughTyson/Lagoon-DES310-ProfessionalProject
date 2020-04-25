@@ -34,8 +34,8 @@ public class PlayerExploreState : BaseState
         GM_.Instance.story.Event_BarrierOpened += ConversationStateAvailable;
         GM_.Instance.story.Event_ConvoEnter += ConversationStateUnavailalble;
 
-        
-        
+
+      //  GM_.Instance.audio.PlayMusic(GM_.Instance.audio.GetMUSIC("Island"), fadeInOfNewMusic: GM_.Instance.audio.GetMusicFadePreset(AudioManager.MUSIC_FADE_PRESETS.DEFAULT_FADEIN), fadeOutOfOldMusic: GM_.Instance.audio.GetMusicFadePreset(AudioManager.MUSIC_FADE_PRESETS.DEFAULT_FADEOUT));
     }
 
     public void OnEnable()

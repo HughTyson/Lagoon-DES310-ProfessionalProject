@@ -199,44 +199,44 @@ public class FishGenerator : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Vector3 origin = transform.position;
-        origin.x = fishHabitatRingsOriginXZ.x;
-        origin.z = fishHabitatRingsOriginXZ.y;
+        //Vector3 origin = transform.position;
+        //origin.x = fishHabitatRingsOriginXZ.x;
+        //origin.z = fishHabitatRingsOriginXZ.y;
 
-        List<Color> colours = new List<Color>();
-        colours.Add(new Color(0.0f, 0.0f, 1.0f));
-        //colours.Ad
+        //List<Color> colours = new List<Color>();
+        //colours.Add(new Color(0.0f, 0.0f, 1.0f));
+        ////colours.Ad
 
 
 
-        colours.Add(new Color(0.0f, 1.0f, 1.0f));
+        //colours.Add(new Color(0.0f, 1.0f, 1.0f));
 
-        colours.Add(new Color(1.0f, 1.0f, 0));
-        colours.Add(new Color(0.0f, 1.0f, 0));
+        //colours.Add(new Color(1.0f, 1.0f, 0));
+        //colours.Add(new Color(0.0f, 1.0f, 0));
+
+        ////for (int i = 0; i < fishGenerationStats.Count; i++)
+        ////{
+        ////    UnityEditor.Handles.color = colours[i];
+        ////    UnityEditor.Handles.DrawWireDisc(origin, Vector3.down, fishGenerationStats[i].habitatRingMin);
+        ////    UnityEditor.Handles.DrawWireDisc(origin, Vector3.down, fishGenerationStats[i].habitatRingMax);
+        ////}
+
+
+        //Gizmos.color = Color.white;
 
         //for (int i = 0; i < fishGenerationStats.Count; i++)
         //{
-        //    UnityEditor.Handles.color = colours[i];
-        //    UnityEditor.Handles.DrawWireDisc(origin, Vector3.down, fishGenerationStats[i].habitatRingMin);
-        //    UnityEditor.Handles.DrawWireDisc(origin, Vector3.down, fishGenerationStats[i].habitatRingMax);
+        //    for (int k = 0; k < fishGenerationStats[i].spawnArea.Count; k++)
+        //    {
+
+        //        Transform trans = fishGenerationStats[i].spawnArea[k].transform;
+        //        Matrix4x4 rotationMatrix = Matrix4x4.TRS(trans.position, trans.rotation, trans.lossyScale);
+        //        Gizmos.matrix = rotationMatrix;
+
+        //        Gizmos.DrawWireCube(transform.position, Vector3.one);
+        //    }
+
         //}
-
-
-        Gizmos.color = Color.white;
-
-        for (int i = 0; i < fishGenerationStats.Count; i++)
-        {
-            for (int k = 0; k < fishGenerationStats[i].spawnArea.Count; k++)
-            {
-
-                Transform trans = fishGenerationStats[i].spawnArea[k].transform;
-                Matrix4x4 rotationMatrix = Matrix4x4.TRS(trans.position, trans.rotation, trans.lossyScale);
-                Gizmos.matrix = rotationMatrix;
-
-                Gizmos.DrawWireCube(transform.position, Vector3.one);
-            }
-
-        }
 
 
 
