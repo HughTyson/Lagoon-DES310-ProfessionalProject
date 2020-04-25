@@ -54,6 +54,13 @@ public class MenuScreen_MainMenu : MenuScreenBase
 
     private void Start()
     {
+        GM_.Instance.audio.PlayMusic(
+            GM_.Instance.audio.GetMUSIC("Menu"),
+           fadeInOfNewMusic: GM_.Instance.audio.GetMusicFadePreset(AudioManager.MUSIC_FADE_PRESETS.DEFAULT_FADEIN),
+           fadeOutOfOldMusic: GM_.Instance.audio.GetMusicFadePreset(AudioManager.MUSIC_FADE_PRESETS.DEFAULT_FADEOUT)
+            );
+
+
         SetupTypeRefArray();
 
         fadeInOutImage.color = new Color(0, 0, 0, 1);

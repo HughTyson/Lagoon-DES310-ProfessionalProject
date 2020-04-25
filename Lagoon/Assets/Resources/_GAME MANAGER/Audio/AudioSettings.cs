@@ -159,25 +159,41 @@ public static class AudioSettings
     {
         public static class Volume
         {
-            public class CrossFade
+
+            public class Fade
             {
+                TweenManager.TweenPath tween;
 
 
+                float value;
+                float time = 0;
+                bool completed = false;
+
+                public float Value => value;
+                public bool Completed => completed;
+
+                public Fade(TweenManager.TweenPath fadeOutTween)
+                {
+                    tween = fadeOutTween;
+                    value = tween.GetValue(0);
+                }
+
+
+
+                public void Update()
+                {
+                    time += Time.unscaledDeltaTime;
+
+                    value = tween.GetValue(time);
+
+                    if (time > tween.TotalDuration)
+                    {
+                        completed = true;
+                    }
+
+                }
             }
-            public class FadeOut
-            {
-
-            }
-            public class FadeIn
-            {
-
-            }
-
         }
-
-
-
-
     }
 
 

@@ -15,7 +15,8 @@ public class AudioMusic : ScriptableObject
 
 
     [Header("Default Values")]
-    [SerializeField] float volume;
+    [Range(0,1)]
+    [SerializeField] float volume = 1.0f;
 
     public float Volume => volume;
     public AudioClip Clip => audioClip; 
