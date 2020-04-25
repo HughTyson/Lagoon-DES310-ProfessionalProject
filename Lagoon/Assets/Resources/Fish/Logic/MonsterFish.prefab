@@ -48,8 +48,7 @@ MonoBehaviour:
   fishbiteChance: 0.8
   fishHoldBiteTime: 2
   fishheadTransform: {fileID: 3533193828548916537}
-  MeshTransform: {fileID: -4216859302048453862, guid: dde99f0c9c2b1214384d1bd01c55d316,
-    type: 3}
+  MeshTransform: {fileID: 5070916318766422125}
   fleeingDriveForce: 15
   nextStateMinTime: 0.1
   nextStateMaxTime: 0.5
@@ -191,6 +190,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SM_DayFish_01 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: dde99f0c9c2b1214384d1bd01c55d316,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dde99f0c9c2b1214384d1bd01c55d316,
         type: 3}
