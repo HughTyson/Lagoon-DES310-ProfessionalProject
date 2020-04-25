@@ -167,35 +167,19 @@ public class Inventory
         puzzle.Init(2);
         puzzle.SetItemImage(GetSprite(puzzle.GetItemType()));
 
-        Puzzle puzzle2 = new Puzzle();
-        puzzle2.Init(3);
-        puzzle2.SetItemImage(GetSprite(puzzle2.GetItemType()));
-
-
-        ScrewDriver c = new ScrewDriver();
-        c.Init();
-        c.SetItemImage(GetSprite(c.GetItemType()));
-
         Chocolate d = new Chocolate();
         d.Init();
         d.SetItemImage(GetSprite(d.GetItemType()));
 
-        items.Add(d);
 
+        ScrewDriver screw_driver = new ScrewDriver();
+        screw_driver.Init();
+        screw_driver.SetItemImage(GetSprite(screw_driver.GetItemType()));
+        
 
-        RemoteControlHelicopter r = new RemoteControlHelicopter();
-        r.Init();
-        r.SetItemImage(GetSprite(r.GetItemType()));
-
-        SwitchItem i = new SwitchItem();
-        i.Init();
-        i.SetItemImage(GetSprite(i.GetItemType()));
-        items.Add(i);
-
-
+        items.Add(screw_driver);
         items.Add(wood);
         items.Add(puzzle);
-        items.Add(c);
        
     }
 }

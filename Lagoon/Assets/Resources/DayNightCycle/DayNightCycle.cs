@@ -83,7 +83,7 @@ public class DayNightCycle : MonoBehaviour
         secondsInFullDay = 600f;
 
         GM_.Instance.day_night_cycle.SetSolar(TimeMovement.Solar.DAY);
-
+        
     }
 
     // Update is called once per frame
