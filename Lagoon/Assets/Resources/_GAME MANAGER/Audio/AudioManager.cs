@@ -182,6 +182,15 @@ public class AudioManager : MonoBehaviour
         SFX.TryGetValue(name, out output);
         return output;
     }
+    public AudioMusic GetMUSIC(string name)
+    {
+        if (!hasBeenInit)
+            Init();
+
+        AudioMusic output;
+        MUSIC.TryGetValue(name, out output);
+        return output;
+    }
 
 
     public SFXInstanceInterface GetSFXInstanceUsingUniqueID(int uniqueID)
@@ -220,7 +229,7 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    public MusicInstanceInterface PlayMusic(AudioMusic audioMusic, AudioSettings.MusicOnly.Volume.FadeIn fadeInOfNewMusic = null, AudioSettings.MusicOnly.Volume.FadeOut fadeOutOfOldMusic = null)
+    public MusicInstanceInterface PlayMusic(AudioMusic audioMusic, AudioSettings.MusicOnly.Volume.Fade fadeInOfNewMusic = null, AudioSettings.MusicOnly.Volume.Fade fadeOutOfOldMusic = null)
     {
 
         if (musicInstances.Count != 0)
@@ -231,7 +240,7 @@ public class AudioManager : MonoBehaviour
         GameObject musicInstanceObj = new GameObject("Music Instance", typeof(AudioSource));
         musicInstanceObj.transform.SetParent(transform, false);
 
-        MusicInstance newInstance = new MusicInstance(audioMusic, musicInstanceObj.GetComponent<AudioSource>(), fadeIn: fadeInOfNewMusic);
+        MusicInstance newInstance = new MusicInstance(audioMusic, musicInstanceObj.GetComponent<AudioSource>(), mixerGroup: masterMusicMixerGroup,  fadeIn_: fadeInOfNewMusic);
 
         musicInstances.Add(newInstance);
 
@@ -239,9 +248,41 @@ public class AudioManager : MonoBehaviour
         return new MusicInstanceInterface(newInstance);
     }
 
+    public enum MUSIC_FADE_PRESETS
+    { 
+    DEFAULT_FADEIN,
+    DEFAULT_FADEOUT   
+    }
+
+    public AudioSettings.MusicOnly.Volume.Fade GetMusicFadePreset(MUSIC_FADE_PRESETS preset)
+    {
+        switch (preset)
+        {
+            case MUSIC_FADE_PRESETS.DEFAULT_FADEIN:
+                {
+                    return new AudioSettings.MusicOnly.Volume.Fade(
+                        new TweenManager.TweenPath(
+                            new TweenManager.TweenPart_Start(0,1,2,TweenManager.CURVE_PRESET.LINEAR)
+                        )
+                    );
+                }
+
+            case MUSIC_FADE_PRESETS.DEFAULT_FADEOUT:
+                {
+                    return new AudioSettings.MusicOnly.Volume.Fade(
+                        new TweenManager.TweenPath(
+                            new TweenManager.TweenPart_Start(1, 0, 2, TweenManager.CURVE_PRESET.LINEAR)
+                        )
+                    );
+                }
+        }
+        return null;
+    }
+
+
 
     // Stops the primary music instance
-    public void StopMusic(AudioSettings.MusicOnly.Volume.FadeOut fadeOut = null)
+    public void StopMusic(AudioSettings.MusicOnly.Volume.Fade fadeOut = null)
     {
         if (musicInstances.Count != 0)
         {
@@ -293,32 +334,74 @@ public class AudioManager : MonoBehaviour
         public bool isStopping = false;
         public bool isCompleted = false;
 
-        public MusicInstance(AudioMusic audioMusic, AudioSource audioSource, AudioSettings.MusicOnly.Volume.FadeIn fadeIn = null)
+        public float audioMusicAssetVolume;
+        AudioSettings.MusicOnly.Volume.Fade fadeOut;
+        AudioSettings.MusicOnly.Volume.Fade fadeIn;
+        public MusicInstance(AudioMusic audioMusic, AudioSource audioSource, AudioMixerGroup mixerGroup = null, AudioSettings.MusicOnly.Volume.Fade fadeIn_ = null)
         {
-            
+
+            audioMUSIC = audioMusic;
+            audioMusicAssetVolume = audioMUSIC.Volume;
+            source = audioSource;
+            source.clip = audioMUSIC.Clip;
+            source.volume = audioSource.volume;
+            source.pitch = 1;
+            source.spatialize = false;
+            source.loop = true;
+            source.outputAudioMixerGroup = mixerGroup;
+            source.priority = 0;
+
+            if (fadeIn != null)
+            {
+                fadeIn = fadeIn_;
+
+            }
+
+
+            source.Play();
         }
         public void Update()
         {
             if (isStopping)
             {
+                if (fadeOut != null)
+                {
+                    fadeOut.Update();
+                    source.volume = fadeOut.Value * audioMusicAssetVolume;
 
+                    if (fadeOut.Completed)
+                    {
+                        isCompleted = true;
+                        source.Stop();
+                    }
+                }
             }
             else
             {
-
+                if (fadeIn != null)
+                {
+                    fadeIn.Update();
+                    source.volume = fadeIn.Value * audioMusicAssetVolume;
+                }
             }
         }
 
-        public void Stop(AudioSettings.MusicOnly.Volume.FadeOut fadeOut = null)
+        public void Stop(AudioSettings.MusicOnly.Volume.Fade fadeOut_ = null)
         {
             if (!isStopping)
             {
                 isStopping = true;
+                fadeOut = fadeOut_;
 
-
-
-
-
+                if (fadeOut != null)
+                {
+                    fadeOut = fadeOut_;
+                }
+                else
+                {
+                    source.Stop();
+                    isCompleted = true;
+                }
             }
         }
     }

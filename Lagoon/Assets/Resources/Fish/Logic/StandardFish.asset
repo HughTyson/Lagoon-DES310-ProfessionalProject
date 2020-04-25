@@ -19,15 +19,6 @@ MonoBehaviour:
   maxRangeTimeUnactiveTillDespawned: 99999
   Teir1:
     spawnsInThisTeir: 1
-    sizeMin: 0.2
-    sizeMax: 0.3
-    maxForce: 5
-    defaultForce: 1
-    defaultTurnForce: 10
-    maxTurnForce: 10
-    maxVelocity: 3
-  Teir2:
-    spawnsInThisTeir: 1
     sizeMin: 0.3
     sizeMax: 0.4
     maxForce: 5
@@ -35,9 +26,18 @@ MonoBehaviour:
     defaultTurnForce: 10
     maxTurnForce: 10
     maxVelocity: 3
-  Teir3:
+  Teir2:
     spawnsInThisTeir: 1
     sizeMin: 0.4
+    sizeMax: 0.5
+    maxForce: 5
+    defaultForce: 1
+    defaultTurnForce: 10
+    maxTurnForce: 10
+    maxVelocity: 3
+  Teir3:
+    spawnsInThisTeir: 1
+    sizeMin: 0.6
     sizeMax: 0.8
     maxForce: 5
     defaultForce: 1

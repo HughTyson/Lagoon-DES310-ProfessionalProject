@@ -34,6 +34,8 @@ public class IntroductionManager : MonoBehaviour
        
     }
 
+   
+
     private void Story_EventRequest_BarrierStart(StoryManager.BarrierStartArgs args)
     {
 
@@ -76,9 +78,10 @@ public class IntroductionManager : MonoBehaviour
 
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
 
+        GM_.Instance.audio.StopMusic(GM_.Instance.audio.GetMusicFadePreset(AudioManager.MUSIC_FADE_PRESETS.DEFAULT_FADEOUT));
+
         if (GM_.Instance.audio.GetFirstSFXInstanceUsingAppliedID("OCEAN_NOISE") != null)
         {
-            Debug.Log("HELLO");
             waves_noise_handler = GM_.Instance.audio.GetFirstSFXInstanceUsingAppliedID("OCEAN_NOISE");
         }
         else

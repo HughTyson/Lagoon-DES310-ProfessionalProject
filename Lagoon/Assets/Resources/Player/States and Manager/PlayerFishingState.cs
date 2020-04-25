@@ -115,6 +115,7 @@ public class PlayerFishingState : BaseState
 
     public void OnEnable()
     {
+
         fishing_state = FISHING_STATE.PREPAIRING_ROD;
 
         staticFishingRodLogic.gameObject.SetActive(true);
