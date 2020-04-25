@@ -16,6 +16,23 @@ MonoBehaviour:
   isLooping: 1
   pitch: 1
   spatialBlend2DTo3D: 0
-  volume: 0.244
+  volume: 0.049
   panning: 0
   priority: 255
+  maxDistance: 0
+  volumeFallOff:
+    enabled: 0
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  audioSpread:
+    enabled: 0
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4

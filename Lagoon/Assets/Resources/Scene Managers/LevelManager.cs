@@ -9,6 +9,9 @@ public class LevelManager : MonoBehaviour
 
     public List<ItemSprite> inventory_sprites = new List<ItemSprite>();
 
+    AudioSFX waves_noise;
+    AudioManager.SFXInstanceInterface waves_noise_handler;
+
     private void Awake()
     {
         Application.quitting += Quiting;
@@ -26,6 +29,18 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < inventory_sprites.Count; i++)
         {
             GM_.Instance.inventory.item_images.Add(inventory_sprites[i]);
+        }
+
+
+        if (GM_.Instance.audio.GetFirstSFXInstanceUsingAppliedID("OCEAN_NOISE") != null)
+        {
+            Debug.Log("HELLO");
+            waves_noise_handler = GM_.Instance.audio.GetFirstSFXInstanceUsingAppliedID("OCEAN_NOISE");
+        }
+        else
+        {
+            waves_noise = GM_.Instance.audio.GetSFX("OceanNoise");
+            waves_noise_handler = GM_.Instance.audio.PlaySFX(waves_noise, null, appliedID: "OCEAN_NOISE");
         }
 
 

@@ -19,6 +19,8 @@ public class IntroductionManager : MonoBehaviour
     bool distance = false;
     bool next_scene = false;
 
+    AudioSFX waves_noise;
+    AudioManager.SFXInstanceInterface waves_noise_handler;
 
     void Awake()
     {
@@ -50,7 +52,6 @@ public class IntroductionManager : MonoBehaviour
     private void IntroStart()
     {
         GM_.Instance.scene_manager.new_scene_loaded = false;
-        Debug.Log(GM_.Instance.scene_manager.new_scene_loaded);
     }
 
     private void NextScene(StoryManager.GameEventTriggeredArgs args)
@@ -74,6 +75,17 @@ public class IntroductionManager : MonoBehaviour
     {
 
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
+
+        if (GM_.Instance.audio.GetFirstSFXInstanceUsingAppliedID("OCEAN_NOISE") != null)
+        {
+            Debug.Log("HELLO");
+            waves_noise_handler = GM_.Instance.audio.GetFirstSFXInstanceUsingAppliedID("OCEAN_NOISE");
+        }
+        else
+        {
+            waves_noise = GM_.Instance.audio.GetSFX("OceanNoise");
+            waves_noise_handler = GM_.Instance.audio.PlaySFX(waves_noise, null, appliedID: "OCEAN_NOISE");
+        }
 
     }
 

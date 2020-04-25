@@ -146,7 +146,6 @@ public class StoryObjectiveHandler
         {
             if (GM_.Instance.scene_manager.new_scene_loaded)
             {
-                Debug.Log("Hello");
             }
 
             return GM_.Instance.scene_manager.new_scene_loaded;

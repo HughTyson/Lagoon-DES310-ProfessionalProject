@@ -20,7 +20,7 @@ public class DayNightCycle : MonoBehaviour
 
     [SerializeField] float max_sleep_speed = 50;
 
-    [SerializeField] StarsManager stars;
+    
 
     bool sleep = false;
     
@@ -231,7 +231,7 @@ public class DayNightCycle : MonoBehaviour
         moon.enabled = true;
 
         GM_.Instance.day_night_cycle.SetSolar(TimeMovement.Solar.NIGHT);
-        stars.StarStart();
+  
 
         GM_.Instance.tween_manager.StartTweenInstance(
             moon_intensity_tween,
@@ -251,7 +251,7 @@ public class DayNightCycle : MonoBehaviour
 
         GM_.Instance.day_night_cycle.SetSolar(TimeMovement.Solar.DAY);
         GM_.Instance.stats.DayCountIncrease();
-        stars.EndStars();
+
 
         GM_.Instance.tween_manager.StartTweenInstance(
             sun_intensity_tween,

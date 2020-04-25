@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class RepairGameBase : MonoBehaviour
 {
+
+    public AudioSFX complete_sfx;
+
+
     public enum GameType
     {
         SwitchGame

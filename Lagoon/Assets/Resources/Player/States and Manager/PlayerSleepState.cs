@@ -50,7 +50,7 @@ public class PlayerSleepState : BaseState
 
         cycle.ChangeIntensityTweenTime(0.2f);
 
-        cycle.ChangeAtmosphereTweenTime(3f);
+        cycle.ChangeAtmosphereTweenTime(2f);
 
     }
 

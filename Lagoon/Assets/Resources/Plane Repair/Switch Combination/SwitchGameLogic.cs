@@ -35,11 +35,18 @@ public class SwitchGameLogic : RepairGameBase
     float transition_time = 0.3f;
     bool selected = false;
 
+    private void Start()
+    {
+        complete_sfx = GM_.Instance.audio.GetSFX("Completion Noise");
+        
+        switch_noise = GM_.Instance.audio.GetSFX("SwitchNoise");
+    }
+
     public override void GameInit(Vector3 position)
     {
         transform.position = position;
 
-        switch_noise = GM_.Instance.audio.GetSFX("SwitchNoise");
+        
 
         for (int i = 0; i < 4; i++)
         {
@@ -141,6 +148,7 @@ public class SwitchGameLogic : RepairGameBase
         {
             Debug.Log("Hello");
             game_complete = true;
+            GM_.Instance.audio.PlaySFX(complete_sfx, null);
             GM_.Instance.inventory.RemoveItemType(typeof(SwitchItem));
         }
     }

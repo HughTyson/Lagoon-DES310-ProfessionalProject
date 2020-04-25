@@ -45,7 +45,7 @@ public class PlayerExploreState : BaseState
         camera_celebration.enabled = false;
         camera_third_person.look_at_target = transform;
 
-        GM_.Instance.day_night_cycle.SetTime(4);
+        GM_.Instance.day_night_cycle.SetTime();
         
 
     }
