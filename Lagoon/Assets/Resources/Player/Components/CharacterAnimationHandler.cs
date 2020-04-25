@@ -38,10 +38,10 @@ public class CharacterAnimationHandler : MonoBehaviour
     CharacterModularPieceManager modularPeiceManager;
 
 
-    
     // Start is called before the first frame update
     void Start()
     {
+
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
 
@@ -51,6 +51,7 @@ public class CharacterAnimationHandler : MonoBehaviour
 
         DebugGUI.SetGraphProperties("LeftFootGrounded", "Left Foot Grounded:", -0.1f, 1.1f, 0, Color.green, true);
         DebugGUI.SetGraphProperties("RightFootGrounded", "Right Foot Grounded:", -0.1f, 1.1f, 1, Color.yellow, true);
+
 
 
     }
