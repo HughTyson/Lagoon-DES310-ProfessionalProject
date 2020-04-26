@@ -8,7 +8,9 @@ using System.Linq;
 public class Inventory
 {
 
-    
+
+    public event System.Action Event_CanFixPlane;
+    public event System.Action Event_MissingParts;
 
     [HideInInspector] public List<InventoryItem> items = new List<InventoryItem>();
 
@@ -66,6 +68,12 @@ public class Inventory
         if(!unkown_item)
         {
             new_item.SetItemImage(GetSprite(new_item.GetItemType()));
+
+            if(new_item.GetSpawnType() == InventoryItem.SpwanType.SPECIFIC)
+            {
+                Event_CanFixPlane?.Invoke();
+            }
+
             items.Add(new_item);
         }
 
@@ -82,7 +90,9 @@ public class Inventory
         {
             if (items[i].GetType() == type)
             {
+                Event_MissingParts?.Invoke();
                 return true;
+               
             }
         }
 
@@ -151,6 +161,15 @@ public class Inventory
     public void ClearInventory()
     {
         items.Clear();
+    }
+
+    public void SignalComplete(bool complete)
+    {
+        if(complete)
+        {
+            Event_MissingParts?.Invoke();
+        }
+        
     }
 
     public void Reset()

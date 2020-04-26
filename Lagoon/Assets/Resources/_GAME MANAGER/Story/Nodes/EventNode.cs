@@ -15,7 +15,7 @@ public class EventNode : BaseNodeType
     {
         SUPPLY_DROP,
         NEXT_SCENE,
-        CONVERSATION_STARTED,
+        SLEEP,
         SOMETHING
     }
 

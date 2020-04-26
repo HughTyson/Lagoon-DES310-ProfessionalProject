@@ -50,12 +50,12 @@ public class PagePair_Stats : BasePagePair
 
         stats_left_page.text += "My biggest fish: " + System.Environment.NewLine;
         stats_left_page.text += "Type - " + GM_.Instance.stats.bigestFishStats.type + System.Environment.NewLine;
-        stats_left_page.text += "Size - " + GM_.Instance.stats.bigestFishStats.size.ToString("F2") + System.Environment.NewLine;
+        stats_left_page.text += "Size - " + GM_.Instance.stats.bigestFishStats.size.ToString("F2") + " meters " + System.Environment.NewLine;
         stats_left_page.text += "Satisfaction: " + GM_.Instance.stats.bigestFishStats.satisfaction + System.Environment.NewLine + System.Environment.NewLine;
 
         stats_right_page.text += "Last fish caught: " + System.Environment.NewLine;
         stats_right_page.text += "Type - " + GM_.Instance.stats.last_fish_stats.type + System.Environment.NewLine;
-        stats_right_page.text += "Size - " + GM_.Instance.stats.last_fish_stats.size.ToString("F2") + System.Environment.NewLine;
+        stats_right_page.text += "Size - " + GM_.Instance.stats.last_fish_stats.size.ToString("F2") + " meters " + System.Environment.NewLine;
         stats_right_page.text += "Satisfaction: " + GM_.Instance.stats.last_fish_stats.satisfaction + System.Environment.NewLine;
 
         

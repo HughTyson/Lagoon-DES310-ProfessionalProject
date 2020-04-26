@@ -262,7 +262,7 @@ public class PlayerRepairState : BaseState
 
                         if(GM_.Instance.inventory.SearchFor(typeof(SwitchItem)))    //this owuld need to be changed so that every plane segement would have required objects ot be acceses. However for time's sake this was the best option
                         {
-
+                            
                             state = RepairState.SEGMENT;
 
                             plane_camera.current_state = PlaneCamera.PlaneCameraStates.SEGMENT;
@@ -284,9 +284,9 @@ public class PlayerRepairState : BaseState
                 {
                     if (plane_camera.current_state == PlaneCamera.PlaneCameraStates.SEGMENT)
                     {
+                        
                         plane_camera.un_zoom = true;
                         GAME_UI.Instance.state_repair.Complete(plane_segments[selected_part].segment_complete);
-                        Debug.Log("UNZOOM");
                     }
                 }
 
