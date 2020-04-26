@@ -84,10 +84,12 @@ public class MenuScreen_OptionsAudio : MenuScreenBase
 
     void sliderSelected()
     {
+
         goBackButton.Event_Selected -= start_transitionToMain;
     }
     void sliderUnSelected()
     {
+        goBackButton.ListenForSelection();
         goBackButton.Event_Selected += start_transitionToMain;
     }
 

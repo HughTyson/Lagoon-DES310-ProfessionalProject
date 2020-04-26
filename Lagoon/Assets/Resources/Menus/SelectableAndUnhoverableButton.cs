@@ -30,6 +30,7 @@ public class SelectableAndUnhoverableButton : SelectableAndUnhoverable_
 
         InternalEventQuery_BlockOtherItemInGroupRequest += blockingRequest;
 
+
         ThisInit_Layer3();
     }
     protected virtual void ThisInit_Layer3() { }
@@ -50,6 +51,9 @@ public class SelectableAndUnhoverableButton : SelectableAndUnhoverable_
         }
 
     }
+
+
+
 
     void beginSelected()
     {
@@ -82,6 +86,7 @@ public class SelectableAndUnhoverableButton : SelectableAndUnhoverable_
     {
        // current_optionswap_timer = 0.3f;
         isListening = true;
+        isSelected = false;
         _Transitioner.RequestContinue(beginCheckForButtons);
 
     }
