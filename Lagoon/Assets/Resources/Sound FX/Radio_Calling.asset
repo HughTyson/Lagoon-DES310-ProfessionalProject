@@ -19,9 +19,10 @@ MonoBehaviour:
   volume: 0.2
   panning: 0
   priority: 125
-  maxDistance: 0
+  maxDistance: 5
+  minDistance: 1
   volumeFallOff:
-    enabled: 1
+    enabled: 0
     animationCurve:
       serializedVersion: 2
       m_Curve:

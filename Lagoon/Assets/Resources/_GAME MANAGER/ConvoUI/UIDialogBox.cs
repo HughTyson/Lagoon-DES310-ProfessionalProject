@@ -23,8 +23,16 @@ public class UIDialogBox : MonoBehaviour
     Color imageColour;
     bool transitioning = false;
     bool isBoxShowing = false;
+
+    AudioSFX audio_charcterTyping;
+    private void Awake()
+    {
+        audio_charcterTyping = GM_.Instance.audio.GetSFX("Radio_Talking");
+    }
+
     private void Start()
     {
+
         rectTransform = GetComponent<RectTransform>();
         text = GetComponentInChildren<TMPro.TextMeshProUGUI>();
         textShowingPos = text.rectTransform.anchoredPosition;
@@ -61,8 +69,16 @@ public class UIDialogBox : MonoBehaviour
                 new TweenManager.TweenPart_Start(-50, 0, 0.25f, TweenManager.CURVE_PRESET.EASE_OUT)      // Y POS
             )
         );
+
+
+        specialText.Event_NewCharacterShown += playSound;
     }
 
+
+    void playSound()
+    {
+        GM_.Instance.audio.PlaySFX(audio_charcterTyping, null, IsMenuSound: true);
+    }
     TypeRef<float> alphaVal = new TypeRef<float>();
     TypeRef<float> positionValX = new TypeRef<float>();
     TypeRef<float> positionValY = new TypeRef<float>();

@@ -13,9 +13,27 @@ MonoBehaviour:
   m_Name: WalkingOnSand
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: 23f186dc33438c441a8e5a0de4723ceb, type: 3}
-  isLooping: 1
+  isLooping: 0
   pitch: 1
-  spatialBlend2DTo3D: 0
+  spatialBlend2DTo3D: 1
   volume: 0.343
   panning: 0
   priority: 128
+  maxDistance: 5
+  minDistance: 1
+  volumeFallOff:
+    enabled: 0
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  audioSpread:
+    enabled: 0
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4

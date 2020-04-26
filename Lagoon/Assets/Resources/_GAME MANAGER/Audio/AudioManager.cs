@@ -350,11 +350,11 @@ public class AudioManager : MonoBehaviour
             source.loop = true;
             source.outputAudioMixerGroup = mixerGroup;
             source.priority = 0;
-
+            fadeIn = fadeIn_;
             if (fadeIn != null)
             {
                 fadeIn = fadeIn_;
-
+                source.volume = fadeIn.Value * audioMusicAssetVolume;
             }
 
 
@@ -797,7 +797,10 @@ public class AudioManager : MonoBehaviour
             source.pitch = pitch;
             source.priority = priority;
             source.outputAudioMixerGroup = mixerGroup;
+            source.dopplerLevel = audioSFX.DopplerEffect;
             source.maxDistance = audioSFX.AudioMaxDistance;
+            source.minDistance = audioSFX.MinDistance;
+
 
 
             if (audioSFX.VolumeFallOffCurve.enabled)
@@ -814,7 +817,7 @@ public class AudioManager : MonoBehaviour
             }
             else
             {
-                source.spread = 240.0f;  
+                source.spread = 0.0f;  
             }
 
 

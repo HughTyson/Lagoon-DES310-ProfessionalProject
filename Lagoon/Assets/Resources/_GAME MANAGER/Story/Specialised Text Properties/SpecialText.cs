@@ -12,7 +12,8 @@ namespace SpecialText
 
         SpecialTexManager specialTextManager = new SpecialTexManager();
         // Start is called before the first frame update
-        
+
+        public event System.Action Event_NewCharacterShown;
         bool isOn = false;
         System.Action TextCompleted;
 
@@ -26,6 +27,9 @@ namespace SpecialText
         /// <param name="textCompleted_"> Optional Param: Called when Text is finished being shown</param>
         public void Begin(SpecialTextData specialTextData_, System.Action textCompleted_ = null)
         {
+            specialTextManager.Event_NewCharacterShown -= Event_NewCharacterShown;
+            specialTextManager.Event_NewCharacterShown += Event_NewCharacterShown;
+
             textCompletedEventCalled = false;
             text.enabled = true;
             Revert();

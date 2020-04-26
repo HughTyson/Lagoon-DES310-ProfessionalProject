@@ -16,6 +16,9 @@ namespace SpecialText
 
         bool isReverted = false;
 
+
+        public event System.Action Event_NewCharacterShown;
+
         public void Revert()
         {
             TMPro.TMP_TextInfo info = tmp.textInfo;
@@ -173,8 +176,12 @@ namespace SpecialText
                 return false;
             }
             );
+
+            int prev_iteratorValue = iterator;
             iterator = lowestHoldBackIndex;
 
+            if (prev_iteratorValue != iterator)
+                Event_NewCharacterShown?.Invoke();
 
 
             TMPro.TMP_TextInfo info = tmp.textInfo;

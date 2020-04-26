@@ -36,9 +36,17 @@ public class CharacterAnimationHandler : MonoBehaviour
     [SerializeField] GameObject Beard_MPeice;
     [SerializeField] GameObject Brows_MPeice;
     [SerializeField] GameObject Shirt_MPeice;
+    [SerializeField] GameObject Trousers_MPeice;
     CharacterModularPieceManager modularPeiceManager;
 
 
+    [SerializeField] float TestFootVelValue;
+    private void Awake()
+    {
+        audio_sandStep = GM_.Instance.audio.GetSFX("WalkingOnSand");
+    }
+
+    AudioSFX audio_sandStep;
     // Start is called before the first frame update
     void Start()
     {
@@ -51,6 +59,7 @@ public class CharacterAnimationHandler : MonoBehaviour
         modularPeiceManager.AddNewModularPeice("BEARD", Beard_MPeice, "_jnt", true);
         modularPeiceManager.AddNewModularPeice("BROWS", Brows_MPeice, "_jnt", true);
         modularPeiceManager.AddNewModularPeice("SHIRT", Shirt_MPeice, "_jnt", true);
+        modularPeiceManager.AddNewModularPeice("TROUSERS", Trousers_MPeice, "_jnt", true);
         //DebugGUI.SetGraphProperties("LeftFootGrounded", "Left Foot Grounded:", -0.1f, 1.1f, 0, Color.green, true);
         //DebugGUI.SetGraphProperties("RightFootGrounded", "Right Foot Grounded:", -0.1f, 1.1f, 1, Color.yellow, true);
 
@@ -92,9 +101,16 @@ public class CharacterAnimationHandler : MonoBehaviour
 
     bool firstOnAnimatorIK = true;
 
+    bool firstFrameLeftStep = false;
+    bool firstFrameRightStep = false;
+    float rightFootVelocity = 0;
+    float leftFootVelocity = 0;
 
     private void OnAnimatorIK(int layerIndex)
     {
+
+
+
         animator.SetLookAtWeight(0.5f);
         desiredLookAtDir = (animator.GetBoneTransform(HumanBodyBones.Head).position - thirdPersonCamera.transform.position).normalized;
         realLookAtDir = Vector3.SmoothDamp(realLookAtDir, desiredLookAtDir, ref refLookAtDirVelocity, 0.1f, 2.0f, Time.deltaTime);
@@ -125,7 +141,7 @@ public class CharacterAnimationHandler : MonoBehaviour
 
             if (animator.GetFloat("LeftFootGrounded") < 0.5f)
             {
-      //          DebugGUI.Graph("LeftFootGrounded", 0);
+
 
                 float heightfromRayOriginToGround = Mathf.Abs(Mathf.Abs(ray.origin.y) - Mathf.Abs(groundedFootPosition.y));
                 float heightfromTayOriginToFoot = Mathf.Abs(Mathf.Abs(ray.origin.y) - Mathf.Abs(realLeftFootIk.y));
@@ -142,7 +158,9 @@ public class CharacterAnimationHandler : MonoBehaviour
             }
             else
             {
-      //          DebugGUI.Graph("LeftFootGrounded", 1);
+
+
+                //          DebugGUI.Graph("LeftFootGrounded", 1);
                 desiredLeftFootIk = groundedFootPosition;
 
             }
@@ -155,6 +173,10 @@ public class CharacterAnimationHandler : MonoBehaviour
             //{
             //    animator.bodyPosition += (groundedFootPosition - animator.bodyPosition).normalized * bodyYChange;
             //}
+        }
+        else
+        {
+                desiredLeftFootIk = animator.GetIKPosition(AvatarIKGoal.LeftFoot);
         }
 
 
@@ -169,7 +191,8 @@ public class CharacterAnimationHandler : MonoBehaviour
 
             if (animator.GetFloat("RightFootGrounded") < 0.5f)
             {
-     //           DebugGUI.Graph("RightFootGrounded", 0);
+
+                //           DebugGUI.Graph("RightFootGrounded", 0);
 
                 float heightfromRayOriginToGround = Mathf.Abs(Mathf.Abs(ray.origin.y) - Mathf.Abs(groundedFootPosition.y));
                 float heightfromTayOriginToFoot = Mathf.Abs(Mathf.Abs(ray.origin.y) - Mathf.Abs(realRightFootIk.y));
@@ -186,7 +209,9 @@ public class CharacterAnimationHandler : MonoBehaviour
             }
             else
             {
-        //        DebugGUI.Graph("RightFootGrounded", 1);
+
+
+                //        DebugGUI.Graph("RightFootGrounded", 1);
 
                 desiredRightFootIk = groundedFootPosition;
 
@@ -201,7 +226,10 @@ public class CharacterAnimationHandler : MonoBehaviour
             //    animator.bodyPosition += (groundedFootPosition - animator.bodyPosition).normalized * bodyYChange;
             //}
         }
-
+        else
+        {
+            desiredRightFootIk = animator.GetIKPosition(AvatarIKGoal.RightFoot);
+        }
 
         //Vector3 fromBodyPositionToLeftFoot = realLeftFootIk - animator.bodyPosition;
         //Vector3 fromBodyPositionToRightFoot = realRightFootIk - animator.bodyPosition;
@@ -237,16 +265,25 @@ public class CharacterAnimationHandler : MonoBehaviour
 
 
 
+        Vector3 prevLeftFootIk;
+        Vector3 prevRightFootIk;
+
         if (firstOnAnimatorIK)
         {
+
             realLeftFootIk = desiredLeftFootIk;
             realRightFootIk = desiredRightFootIk;
             realBodyIk = desiredBodyIk;
             firstOnAnimatorIK = false;
 
+            prevLeftFootIk = realLeftFootIk;
+            prevRightFootIk = realRightFootIk;
         }
         else
         {
+            prevLeftFootIk = realLeftFootIk;
+            prevRightFootIk = realRightFootIk;
+
             realLeftFootIk = Vector3.SmoothDamp(realLeftFootIk, desiredLeftFootIk, ref refLeftFootIkVelocity, smoothnessTime, maxSmoothnessVelocity, Time.deltaTime);
             realRightFootIk = Vector3.SmoothDamp(realRightFootIk, desiredRightFootIk, ref refRightFootIkVelocity, smoothnessTime, maxSmoothnessVelocity, Time.deltaTime);
             realBodyIk = Vector3.SmoothDamp(realBodyIk, desiredBodyIk, ref refBodyIkVelocity, smoothnessTime, maxSmoothnessVelocity, Time.deltaTime);
@@ -258,7 +295,8 @@ public class CharacterAnimationHandler : MonoBehaviour
             //realRightFootIk = desiredRightFootIk;
             //realBodyIk = desiredBodyIk;
         }
-
+        leftFootVelocity = (realLeftFootIk.magnitude - prevLeftFootIk.magnitude) / Time.deltaTime;
+        rightFootVelocity = (realRightFootIk.magnitude - prevRightFootIk.magnitude) / Time.deltaTime;
 
 
         animator.bodyPosition = realBodyIk;
@@ -266,6 +304,55 @@ public class CharacterAnimationHandler : MonoBehaviour
         animator.SetIKPosition(AvatarIKGoal.RightFoot, realRightFootIk);
 
 
+
+
+
+        audioCalcs();
+
+    }
+
+
+
+    void audioCalcs()
+    {
+        float normalizedVelocity = characterControllerMovement.CurrentNormalizedVelocity;
+
+        if (animator.GetFloat("LeftFootGrounded") < 0.99f)
+        {
+            firstFrameLeftStep = true;
+        }
+        else
+        {
+            if (firstFrameLeftStep)
+            {
+                    if (normalizedVelocity > 0.4f)
+                    {
+                        AudioSettings.AnyFloatSetting.Constant footPitch = new AudioSettings.AnyFloatSetting.Constant(Mathf.Lerp(0.85f, 1.10f, ((normalizedVelocity - 0.4f) / 0.8f)));
+                        GM_.Instance.audio.PlaySFX(audio_sandStep, animator.GetBoneTransform(HumanBodyBones.LeftFoot), settingPitch: footPitch);
+                    }
+
+
+                firstFrameLeftStep = false;
+            }
+        }
+        if (animator.GetFloat("RightFootGrounded") < 0.99f)
+        {
+            firstFrameRightStep = true;
+        }
+        else
+        {
+            if (firstFrameRightStep)
+            {
+
+                    if (normalizedVelocity > 0.4f)
+                    {
+                        AudioSettings.AnyFloatSetting.Constant footPitch = new AudioSettings.AnyFloatSetting.Constant(Mathf.Lerp(0.85f, 1.10f, ((normalizedVelocity - 0.4f) / 0.8f)));
+                        GM_.Instance.audio.PlaySFX(audio_sandStep, animator.GetBoneTransform(HumanBodyBones.RightFoot), settingPitch: footPitch);
+                    }
+
+                firstFrameRightStep = false;
+            }
+        }
     }
 
     private void LateUpdate()

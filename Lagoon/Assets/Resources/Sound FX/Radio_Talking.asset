@@ -12,10 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2656df3881e508242b670992d3f467da, type: 3}
   m_Name: Radio_Talking
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 8300000, guid: e296eca961f0a4a45bdf6a6dad1526f1, type: 3}
-  isLooping: 1
-  pitch: 1
+  audioClip: {fileID: 8300000, guid: cdf306ed0bbd0da4ca28e7eedbded083, type: 3}
+  isLooping: 0
+  pitch: 0.95
   spatialBlend2DTo3D: 0
   volume: 0.456
   panning: 0
-  priority: 128
+  doppplerEffect: 0
+  priority: 255
+  maxDistance: 1
+  minDistance: 0.1
+  volumeFallOff:
+    enabled: 0
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  audioSpread:
+    enabled: 0
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4

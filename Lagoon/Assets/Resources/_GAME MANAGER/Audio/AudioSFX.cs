@@ -29,13 +29,17 @@ public class AudioSFX : ScriptableObject
     [SerializeField]
     float panning = 0;
 
+    [Range(0,5)]
+    [SerializeField]
+    float doppplerEffect = 0;
     [Range(0,255)]
     [SerializeField]
     int priority = 128;
 
 
     [Header("3D Property Curves")]
-    [SerializeField] float maxDistance;
+    [SerializeField] float maxDistance = 1.0f;
+    [SerializeField] float minDistance = 0.1f;
     [SerializeField] Curve volumeFallOff;
     [SerializeField] Curve audioSpread;
 
@@ -46,6 +50,9 @@ public class AudioSFX : ScriptableObject
     public float Volume => volume;
     public float Panning => panning;
     public int Priority => priority;
+
+    public float DopplerEffect => doppplerEffect;
+    public float MinDistance => minDistance;
     public AudioClip Clip => audioClip;
 
     public Curve VolumeFallOffCurve => volumeFallOff;

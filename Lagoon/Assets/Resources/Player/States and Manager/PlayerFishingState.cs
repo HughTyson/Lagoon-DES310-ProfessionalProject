@@ -137,7 +137,7 @@ public class PlayerFishingState : BaseState
 
         fishingBob.GetComponent<FishingBobCollisionEvent>().Event_HitSupplyDrop += supplyCrateHit;
 
-
+        firstUpdate = true;
 
     }
 
@@ -175,12 +175,21 @@ public class PlayerFishingState : BaseState
 
         thirdPersonCamera.look_at_target = transform; // set target back to player
 
-
+        if (!firstUpdate)
+            GM_.Instance.audio.PlayMusic(GM_.Instance.audio.GetMUSIC("Island"), fadeInOfNewMusic: GM_.Instance.audio.GetMusicFadePreset(AudioManager.MUSIC_FADE_PRESETS.DEFAULT_FADEIN), fadeOutOfOldMusic: GM_.Instance.audio.GetMusicFadePreset(AudioManager.MUSIC_FADE_PRESETS.DEFAULT_FADEOUT));
     }
 
+
+    bool firstUpdate = false;
     // Update is called once per frame
     public override void StateUpdate()
     {
+        if (firstUpdate)
+        {
+            firstUpdate = false;
+            GM_.Instance.audio.PlayMusic(GM_.Instance.audio.GetMUSIC("Fishing"), fadeInOfNewMusic: GM_.Instance.audio.GetMusicFadePreset(AudioManager.MUSIC_FADE_PRESETS.DEFAULT_FADEIN), fadeOutOfOldMusic: GM_.Instance.audio.GetMusicFadePreset(AudioManager.MUSIC_FADE_PRESETS.DEFAULT_FADEOUT));
+
+        }
 
         switch (fishing_state)
         {

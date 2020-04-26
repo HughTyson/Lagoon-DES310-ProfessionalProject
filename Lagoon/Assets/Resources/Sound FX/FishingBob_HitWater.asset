@@ -19,3 +19,21 @@ MonoBehaviour:
   volume: 1
   panning: 0
   priority: 128
+  maxDistance: 40
+  minDistance: 10
+  volumeFallOff:
+    enabled: 0
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  audioSpread:
+    enabled: 0
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
