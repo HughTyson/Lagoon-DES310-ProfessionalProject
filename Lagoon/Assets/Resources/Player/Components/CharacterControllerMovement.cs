@@ -30,7 +30,6 @@ public class CharacterControllerMovement : MonoBehaviour
 
 
 
-
     // ==========================================
     //              Hidden Variables
     //===========================================
@@ -78,18 +77,17 @@ public class CharacterControllerMovement : MonoBehaviour
 
     }
 
+    float desired_velocity = 0;
     // Update is called once per frame
+
+
+    float refVelocity_velocity;
     void FixedUpdate()
     {
-        
-        current_velocity += acceleration * movement_input.magnitude;
-        current_velocity = Mathf.Clamp(current_velocity, 0, max_velocity * new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.LH), GM_.Instance.input.GetAxis(InputManager.AXIS.LV)).magnitude);
 
-        if (movement_input.x == 0 && movement_input.y == 0)
-        {
-            if (current_velocity > 0)
-                current_velocity -= acceleration;
-        }
+        desired_velocity = max_velocity * new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.LH), GM_.Instance.input.GetAxis(InputManager.AXIS.LV)).magnitude;
+
+        current_velocity = Mathf.SmoothDamp(current_velocity, desired_velocity,ref refVelocity_velocity, acceleration);
 
         move_direction = transform.forward * current_velocity;
 

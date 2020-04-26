@@ -27,6 +27,7 @@ public class CharacterAnimationHandler : MonoBehaviour
     CharacterController characterController;
     [SerializeField] ThirdPersonCamera thirdPersonCamera;
 
+    [SerializeField] float maxRayCastDistance;
 
     [SerializeField] float footLength = 0.12f;
 
@@ -40,7 +41,7 @@ public class CharacterAnimationHandler : MonoBehaviour
     CharacterModularPieceManager modularPeiceManager;
 
 
-    [SerializeField] float TestFootVelValue;
+
     private void Awake()
     {
         audio_sandStep = GM_.Instance.audio.GetSFX("WalkingOnSand");
@@ -133,7 +134,7 @@ public class CharacterAnimationHandler : MonoBehaviour
 
         RaycastHit hit;
         Ray ray = new Ray(animator.GetIKPosition(AvatarIKGoal.LeftFoot) + (Vector3.up* characterController.stepOffset), Vector3.down);
-        if (Physics.Raycast(ray, out hit, heightOfGround + 3.0f, layerMask))
+        if (Physics.Raycast(ray, out hit, heightOfGround + maxRayCastDistance, layerMask))
         {
             Vector3 groundedFootPosition = hit.point;
             groundedFootPosition.y += heightOfGround;
@@ -184,7 +185,7 @@ public class CharacterAnimationHandler : MonoBehaviour
 
         CharacterController test;
         ray = new Ray(animator.GetIKPosition(AvatarIKGoal.RightFoot) + (Vector3.up * characterController.stepOffset), Vector3.down);
-        if (Physics.Raycast(ray, out hit, heightOfGround + 3.0f, layerMask))
+        if (Physics.Raycast(ray, out hit, heightOfGround + maxRayCastDistance, layerMask))
         {
             Vector3 groundedFootPosition = hit.point;
             groundedFootPosition.y += heightOfGround;

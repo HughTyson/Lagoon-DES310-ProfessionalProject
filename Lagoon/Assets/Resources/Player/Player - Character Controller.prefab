@@ -2759,11 +2759,12 @@ MonoBehaviour:
   _camera: {fileID: 0}
   joyStick_sensitivity: 6
   player_rotation_speed: 0.12
-  gravityScale: 5
+  gravityScale: 15
   X_ANGLE_LIMITS: 30
   current_state: 0
   acceleration: 0.4
   max_velocity: 2
+  deceleration: 0.1
 --- !u!114 &2428279469275129610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2884,9 +2885,14 @@ MonoBehaviour:
   legLength: 0.95
   ikWeighting: 1
   thirdPersonCamera: {fileID: 0}
+  maxRayCastDistance: 1
   footLength: 0.12
   CharacterRoot: {fileID: 1757663826451756167}
   Hair_MPeice: {fileID: 0}
+  Beard_MPeice: {fileID: 0}
+  Brows_MPeice: {fileID: 0}
+  Shirt_MPeice: {fileID: 0}
+  Trousers_MPeice: {fileID: 0}
 --- !u!1 &6186341015964039332
 GameObject:
   m_ObjectHideFlags: 0
@@ -4075,11 +4081,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2207740848213092383}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: ae9c8fb3a0d5acd49bcb5515f7c4f307,
-        type: 3}
-      propertyPath: m_Name
-      value: SM_FishingPoleRigged_01
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: ae9c8fb3a0d5acd49bcb5515f7c4f307,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4134,6 +4135,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: ae9c8fb3a0d5acd49bcb5515f7c4f307,
+        type: 3}
+      propertyPath: m_Name
+      value: SM_FishingPoleRigged_01
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -6057140222963153312, guid: ae9c8fb3a0d5acd49bcb5515f7c4f307, type: 3}
