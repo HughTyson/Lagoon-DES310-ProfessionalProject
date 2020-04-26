@@ -8,7 +8,7 @@ using System.Linq;
 public class Inventory
 {
 
-
+    
 
     [HideInInspector] public List<InventoryItem> items = new List<InventoryItem>();
 
