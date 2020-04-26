@@ -185,8 +185,8 @@ MonoBehaviour:
     dialog_text: '[AppearAtOnce][WaveScaled(0.2,2,1)]Wow[/WaveScaled][/AppearAtOnce][CharSpeed(5)]...[/CharSpeed][#Delay(1)]
       That plane''s certainly looking a lot better than before! '
   - whoIsTalking: 1
-    dialog_text: Still looks like a heap of scrap tho, I never understood why you
-      didn't get a new plane. Over.
+    dialog_text: Still looks like a heap of scrap tho,[#Delay(0.3)] I never understood
+      why you didn't get a new plane. Over.
   - whoIsTalking: 0
     dialog_text: Shut up [Colour(119, 45, 194)]Jacob[/Colour],[#Delay(0.5)] you know
       what we've been through together. Lagoon out.
@@ -415,8 +415,8 @@ MonoBehaviour:
   - whoIsTalking: 1
     dialog_text: Lagoon 1 0 here, over.
   - whoIsTalking: 0
-    dialog_text: Alright Ace! Sorry about that earlier must've been a dodgy signal
-      or somethin'. How've you been?
+    dialog_text: Alright Ace![#Delay(0.3)] Sorry about that earlier must've been a
+      dodgy signal or somethin'. [#Delay(0.3)]How've you been?
   input: 0
   output: 0
   nodeWidth: 300
@@ -603,11 +603,13 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
   - whoIsTalking: 1
-    dialog_text: Hey Buddy, how are ya? Not seen you about the base in a few day.
+    dialog_text: Hey Buddy, how are ya?[#Delay(0.3)] Not seen you about the base in
+      a few day.
   - whoIsTalking: 0
-    dialog_text: "Doing good my friend, enjoying some time out. I need to fix the
-      plane since the [Shiver(0.05,20)] [Colour(255,0,0)]incident [/Shiver][/Colour],
-      but need parts. Can you source them? Over.\"\r"
+    dialog_text: "Doing good my friend,[#Delay(0.3)] enjoying some time out.[#Delay(0.3)]
+      I need to fix the plane since the [Shiver(0.05,20)] [Colour(255,0,0)]incident
+      [/Shiver][/Colour],[#Delay(0.3)] but need parts.[#Delay(0.3)] Can you source
+      them Over.\"\r"
   input: 0
   output: 0
   nodeWidth: 300
@@ -741,11 +743,11 @@ MonoBehaviour:
   - whoIsTalking: 0
     dialog_text: Good.[#Delay(0.5)] Yeah it looks like it'll be an easy fix.
   - whoIsTalking: 1
-    dialog_text: Should let you finish the work on the [Colour(66, 135, 245)]Mid Engine,[/Colour].[#Delay(0.5)]
+    dialog_text: Should let you finish the work on the [Colour(66, 135, 245)]Mid Engine[/Colour].[#Delay(0.5)]
       Shouldn't be too difficult.
   - whoIsTalking: 1
     dialog_text: Should be getting sent your way once we get clearance for a plane
-      to be sent out.
+      to be sent out.[#Delay(0.3)]
   - whoIsTalking: 1
     dialog_text: I'll keep you posted[#Delay(0.5)] Bravo 3 1 out.
   input: 0
@@ -764,7 +766,7 @@ MonoBehaviour:
   m_Name: Additional Info - Certain Supply Drop Item
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 1752, y: 632}
+  position: {x: 1752, y: 664}
   ports:
     keys:
     - output
@@ -1136,18 +1138,19 @@ MonoBehaviour:
   rightCharacter: {fileID: 11400000, guid: f3d30fb8fa4a56b43b38cdc1b9470e8d, type: 2}
   Dialog:
   - whoIsTalking: 1
-    dialog_text: No bother boss, will get that sorted for you.  But what are you going
-      to do in the mean time. Over.
+    dialog_text: No bother boss,[#Delay(0.3)] will get that sorted for you.[#Delay(0.3)]  But
+      what are you going to do in the mean time. Over.
   - whoIsTalking: 0
     dialog_text: '[CharSpeed(5)]Relaxing[/CharSpeed], I plan to enjoy my time [Colour(0,255,255)][WaveScaled(1,3,1)]
       fishing[/WaveScaled][/Colour]. '
   - whoIsTalking: 0
-    dialog_text: I've not fished since I was young. And I've brought my [Colour(0,255,255)][WaveScaled(1,3,1)]Journal.[/Colour][/WaveScaled]
-      to write about this fish I catch
-  - whoIsTalking: 0
-    dialog_text: '[CharSpeed(3)]Well... that''s good [/CharSpeed]. Anyway, will try
-      sort them parts out for you my friend. It was good to hear you again. Over and
-      out.'
+    dialog_text: I've not fished since I was young.[#Delay(0.3)] And I've brought
+      my [Colour(0,255,255)][WaveScaled(1,3,1)]Journal.[/Colour][/WaveScaled] to write
+      about thefish I catch.
+  - whoIsTalking: 1
+    dialog_text: '[CharSpeed(3)]Well... that''s good [/CharSpeed]. Anyway,[#Delay(0.3)]
+      will try sort them parts out for you my friend.[#Delay(0.3)] It was good to
+      hear you again. Over and out.'
   input: 0
   output: 0
   nodeWidth: 300
@@ -1214,7 +1217,7 @@ MonoBehaviour:
   - whoIsTalking: 1
     dialog_text: Anyway,[#Delay(0.5)] the supply drop should be coming around soon.
   - whoIsTalking: 1
-    dialog_text: You might be able to see it.
+    dialog_text: You might be able to see it.[#Delay(0.3)]
   - whoIsTalking: 0
     dialog_text: Roger,[#Delay(0.5)] I can see it now.
   input: 0
@@ -1233,7 +1236,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: 744, y: 552}
+  position: {x: 744, y: 680}
   ports:
     keys:
     - input
@@ -1354,8 +1357,8 @@ MonoBehaviour:
   outputB: 0
   LeftDecision: Hey [Colour(119, 45, 194)]Jacob[/Colour].[#Delay(0.5)] Getting [Colour(220,0,0)][Shiver(0.05,20)]sick
     of fish[/Colour][/Shiver] to be honest,[#Delay(0.25)] over.
-  RightDecision: '[#Delay(4)]Hasn''t changed from the last time [Colour(119, 45, 194)]Jacob[/Colour].[#Delay(0.5)]
-    How are those tools coming along?'
+  RightDecision: '[#Delay(4)]Hasn''t changed since the last time [Colour(119, 45,
+    194)]Jacob[/Colour].[#Delay(0.5)] How are those tools coming along?[#Delay(0.3)]'
   nodeWidth: 375.88077
 --- !u!114 &3482819492227612262
 MonoBehaviour:
@@ -1768,7 +1771,7 @@ MonoBehaviour:
     dialog_text: Lagoon [#Delay(0.3)] 1 0, come in... [Colour(112,112,112)] [Shiver(0.05,20)]
       *static* [/Colour][/Shiver]
   - whoIsTalking: 0
-    dialog_text: Lagoon 1 0 here, who is this? Over. [#Delay(1.3)]
+    dialog_text: Lagoon 1 0 here, [#Delay(0.6)]who is this? Over. [#Delay(1.3)]
   - whoIsTalking: 0
     dialog_text: '[Colour(200,200,200)](Oh well...[#Delay(0.5)] better go catch dinner
       for tonight)[/Colour]'
@@ -1874,6 +1877,6 @@ MonoBehaviour:
   input: 0
   outputA: 0
   outputB: 0
-  LeftDecision: Relaxing time is over, I'm ready to join the fight
+  LeftDecision: Relaxing time is over. [#Delay(1)]I'm ready to join the fight
   RightDecision: Fighting isn't for me anymore. [#Delay(1)]Over and out.
   nodeWidth: 300
