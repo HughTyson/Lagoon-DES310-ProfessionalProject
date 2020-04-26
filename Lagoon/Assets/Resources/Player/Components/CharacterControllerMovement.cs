@@ -84,20 +84,12 @@ public class CharacterControllerMovement : MonoBehaviour
     float refVelocity_velocity;
     void FixedUpdate()
     {
-
-        desired_velocity = max_velocity * new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.LH), GM_.Instance.input.GetAxis(InputManager.AXIS.LV)).magnitude;
-
-        current_velocity = Mathf.SmoothDamp(current_velocity, desired_velocity,ref refVelocity_velocity, acceleration);
-
-        move_direction = transform.forward * current_velocity;
-
-        
-        move_direction.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
-
         switch (current_state)
         {
             case STATE.FREE_MOVEMENT:
                 {
+                    desired_velocity = max_velocity * new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.LH), GM_.Instance.input.GetAxis(InputManager.AXIS.LV)).magnitude;
+
                     HandleInput();
                     Rotation();
 
@@ -144,6 +136,7 @@ public class CharacterControllerMovement : MonoBehaviour
                 break;
             case STATE.ROT_ONLY:
                 {
+                    desired_velocity = 0;
                     HandleInput();
                     Rotation();
                 }
@@ -159,11 +152,13 @@ public class CharacterControllerMovement : MonoBehaviour
                 break;
             case STATE.NO_MOVEMENT:
                 {
+                    desired_velocity = 0;
                     movement_input = new Vector2(0, 0);
                 }
                 break;
             case STATE.ROT_CAMERA:
                 {
+                    desired_velocity = 0;
                     //rotates to face the camera in real time
                     movement_input = new Vector2(0, 0);
                     transform.rotation = Quaternion.Euler(transform.localEulerAngles.x, _camera.localEulerAngles.y, transform.localEulerAngles.z);
@@ -172,8 +167,15 @@ public class CharacterControllerMovement : MonoBehaviour
             default:
                 break;
         }
+
+
+        current_velocity = Mathf.SmoothDamp(current_velocity, desired_velocity, ref refVelocity_velocity, acceleration);
+        move_direction = transform.forward * current_velocity;
+        move_direction.y += Physics.gravity.y * gravityScale * Time.fixedDeltaTime;
     }
 
+
+    
     //methods
     private void HandleInput()
     {

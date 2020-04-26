@@ -41,10 +41,17 @@ public class CharacterAnimationHandler : MonoBehaviour
     CharacterModularPieceManager modularPeiceManager;
 
 
+    Quaternion headDefaulRotation;
+    Quaternion defaultTransformRotation;
 
     private void Awake()
     {
         audio_sandStep = GM_.Instance.audio.GetSFX("WalkingOnSand");
+        animator = GetComponent<Animator>();
+        characterController = GetComponent<CharacterController>();
+
+        headDefaulRotation = animator.GetBoneTransform(HumanBodyBones.Head).rotation * Quaternion.Inverse(transform.rotation);
+        //defaultTransformRotation = ;
     }
 
     AudioSFX audio_sandStep;
@@ -52,8 +59,7 @@ public class CharacterAnimationHandler : MonoBehaviour
     void Start()
     {
 
-        animator = GetComponent<Animator>();
-        characterController = GetComponent<CharacterController>();
+
 
         modularPeiceManager = new CharacterModularPieceManager(CharacterRoot, "_jnt");
         modularPeiceManager.AddNewModularPeice("HAIR", Hair_MPeice, "_jnt", true);
@@ -95,8 +101,8 @@ public class CharacterAnimationHandler : MonoBehaviour
     Vector3 refBodyIkVelocity = Vector3.zero;
 
 
-    Vector3 desiredLookAtDir = Vector3.zero;
-    Vector3 realLookAtDir = Vector3.zero;
+    Vector3 desiredLookAtAngle = Vector3.zero;
+    Vector3 realLookAtAngle = Vector3.zero;
     Vector3 refLookAtDirVelocity = Vector3.zero;
 
 
@@ -112,10 +118,7 @@ public class CharacterAnimationHandler : MonoBehaviour
 
 
 
-        animator.SetLookAtWeight(0.5f);
-        desiredLookAtDir = (animator.GetBoneTransform(HumanBodyBones.Head).position - thirdPersonCamera.transform.position).normalized;
-        realLookAtDir = Vector3.SmoothDamp(realLookAtDir, desiredLookAtDir, ref refLookAtDirVelocity, 0.1f, 2.0f, Time.deltaTime);
-        animator.SetLookAtPosition(animator.GetBoneTransform(HumanBodyBones.Head).position + desiredLookAtDir);
+
 
 
         animator.bodyPosition += new Vector3(0,heightOfGround,0);
@@ -358,6 +361,79 @@ public class CharacterAnimationHandler : MonoBehaviour
 
     private void LateUpdate()
     {
+
+       // Vector3 prevDesiredLookAtDir = desiredLookAtDir;
+
+
+      
+
+
+
+        Vector3 bodyForward = transform.forward;
+        Vector3 lookAt = (animator.GetBoneTransform(HumanBodyBones.Head).position - thirdPersonCamera.transform.position).normalized;
+
+
+        float tempZ = Mathf.Abs(bodyForward.z);
+        if (tempZ < 0.001f)
+        {
+            tempZ = 0.01f;
+        }
+           float Xdiffernence = Vector2.SignedAngle(new Vector2(bodyForward.y, tempZ).normalized, new Vector2(lookAt.y, tempZ).normalized);
+
+
+
+
+        float Ydiffernence = -Vector2.SignedAngle(new Vector2(bodyForward.x, bodyForward.z).normalized, new Vector2(lookAt.x, lookAt.z).normalized);
+        //  float Zdiffernence = Vector3.SignedAngle(bodyForward, lookAt, Vector3.right);
+
+
+
+        if (Ydiffernence > 30.0f)
+        {
+            Ydiffernence = 30.0f;
+        }
+        else if (Ydiffernence < -30.0f)
+        {
+            Ydiffernence = -30.0f;
+        }
+
+        //if (Zdiffernence > 45.0f)
+        //{
+        //    Zdiffernence = 45.0f;
+        //}
+        //else if (Zdiffernence < -45)
+        //{
+        //    Zdiffernence = -45.0f;
+        //}
+
+
+        if (Xdiffernence > 10.0f) // Looking Down
+        {
+            Xdiffernence = 10.0f;
+        }
+        else if (Xdiffernence < -30) // Looking Up
+        {
+            Xdiffernence = -30;
+        }
+
+
+        desiredLookAtAngle = new Vector3(Xdiffernence, Ydiffernence, 0);
+        realLookAtAngle = Vector3.SmoothDamp(realLookAtAngle, desiredLookAtAngle, ref refLookAtDirVelocity, 0.1f, 100.0f, Time.deltaTime*2.0f);
+
+
+
+
+
+        Quaternion quat =   Quaternion.LookRotation(transform.forward, transform.up) * Quaternion.Euler(realLookAtAngle) * headDefaulRotation;
+       
+
+
+
+
+        animator.GetBoneTransform(HumanBodyBones.Head).rotation = quat;
+
         modularPeiceManager.LateUpdate();
+
+        
     }
 }
