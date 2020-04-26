@@ -23,7 +23,7 @@ public class Slider_Default : Slider_
     [Tooltip("Don't set under 1")]
     [SerializeField] float hover_size_increase = 1.5f;
 
-
+    [SerializeField] Color background_colour = Color.white;
 
     protected override void ThisInit_Layer3()
     {
@@ -198,7 +198,7 @@ public class Slider_Default : Slider_
         mainParentRectTransfrom.localScale = new Vector3(1, 1, 1);
         startImage.color = new Color(1, 1, 1, 1);
         endImage.color = new Color(1, 1, 1, 1);
-        backgroundImage.color = new Color(1, 1, 1, 1);
+        backgroundImage.color = background_colour;
     }
 
 
