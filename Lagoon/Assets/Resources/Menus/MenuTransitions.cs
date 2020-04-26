@@ -12,7 +12,7 @@ public static class MenuTransitions
         public Vector3 rotation;
     }
 
-    public static readonly CameraPositionAndRotation MainMenuVals = new CameraPositionAndRotation() { position = new Vector3(0, 0.77f, 0), rotation = new Vector3(0, -90, 0) };
+    public static readonly CameraPositionAndRotation MainMenuVals = new CameraPositionAndRotation() { position = new Vector3(4.892f, 0.361f, 0), rotation = new Vector3(-1.735f, -74.319f, -0.487f) };
     public static readonly CameraPositionAndRotation CreditVals = new CameraPositionAndRotation() { position = new Vector3(-1.68f,1.85f ,0), rotation = new Vector3(-30, -270, 0) };
     public static readonly CameraPositionAndRotation ExtraCreditVals = new CameraPositionAndRotation() { position = new Vector3(3.06f, 2.68f, -5.71f), rotation = new Vector3(0, -253, 0) };
     public static readonly CameraPositionAndRotation GameOptionsVals = new CameraPositionAndRotation() { position = new Vector3(-2.53f, 1.78f, 7.5f), rotation = new Vector3(18, 10, 0) };
