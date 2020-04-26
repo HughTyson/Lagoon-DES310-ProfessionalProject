@@ -127,8 +127,8 @@ public class Slider_ : Selectable_
                     if (current_optionswap_timer < 0)
                     {
                         GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_CHANGE_SELECTION);
-                        siblingUp.HoverOver();
                         UnHoverOver();
+                        siblingUp.HoverOver();
                     }
                 }
 
@@ -142,8 +142,8 @@ public class Slider_ : Selectable_
                     if (current_optionswap_timer < 0)
                     {
                         GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_CHANGE_SELECTION);
-                        siblingDown.HoverOver();
                         UnHoverOver();
+                        siblingDown.HoverOver();
                     }
                 }
             }
@@ -163,8 +163,8 @@ public class Slider_ : Selectable_
                     if (current_optionswap_timer < 0)
                     {
                         GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_CHANGE_SELECTION);
-                        siblingRight.HoverOver();
                         UnHoverOver();
+                        siblingRight.HoverOver();
                     }
                 }
 
@@ -178,8 +178,8 @@ public class Slider_ : Selectable_
                     if (current_optionswap_timer < 0)
                     {
                         GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_CHANGE_SELECTION);
-                        siblingLeft.HoverOver();
                         UnHoverOver();
+                        siblingLeft.HoverOver();
                     }
                 }
             }

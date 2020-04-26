@@ -160,6 +160,7 @@ public class PagePair_OptionsControl : BasePagePair
     void sliderUnSelected()
     {
         goBackButton.Event_Selected += request_GoBack;
+        goBackButton.ListenForSelection();
     }
 
     public override void BegunExitingPage()

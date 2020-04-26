@@ -858,11 +858,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1071838887814170747}
     m_Modifications:
-    - target: {fileID: 2089142618052675159, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: m_Name
-      value: Volume Slider
-      objectReference: {fileID: 0}
     - target: {fileID: 4467572091346032601, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -983,6 +978,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.0176793
       objectReference: {fileID: 0}
+    - target: {fileID: 2089142618052675159, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: m_Name
+      value: Volume Slider
+      objectReference: {fileID: 0}
     - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: siblingUp
@@ -1006,7 +1006,7 @@ PrefabInstance:
     - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: startValue
-      value: -10
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
@@ -1040,11 +1040,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8450701188225996751}
     m_Modifications:
-    - target: {fileID: 1187458599915022575, guid: f211dd1693631b7449b3e9ae3ed5d2e7,
-        type: 3}
-      propertyPath: m_Name
-      value: BUnhoverableButton_Journal
-      objectReference: {fileID: 0}
     - target: {fileID: 7740147193532406379, guid: f211dd1693631b7449b3e9ae3ed5d2e7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1150,6 +1145,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1187458599915022575, guid: f211dd1693631b7449b3e9ae3ed5d2e7,
+        type: 3}
+      propertyPath: m_Name
+      value: BUnhoverableButton_Journal
+      objectReference: {fileID: 0}
     - target: {fileID: 5939889388996241717, guid: f211dd1693631b7449b3e9ae3ed5d2e7,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -1202,11 +1202,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1071838887814170747}
     m_Modifications:
-    - target: {fileID: 2089142618052675159, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: m_Name
-      value: Master Slider
-      objectReference: {fileID: 0}
     - target: {fileID: 4467572091346032601, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1327,6 +1322,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.0176793
       objectReference: {fileID: 0}
+    - target: {fileID: 2089142618052675159, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: m_Name
+      value: Master Slider
+      objectReference: {fileID: 0}
     - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: siblingUp
@@ -1350,7 +1350,7 @@ PrefabInstance:
     - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: startValue
-      value: -10
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
@@ -1384,21 +1384,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1071838887814170747}
     m_Modifications:
-    - target: {fileID: 6453782164347636133, guid: c79cad2550100ab4da224d65ae2aa255,
-        type: 3}
-      propertyPath: m_Name
-      value: Back
-      objectReference: {fileID: 0}
-    - target: {fileID: 167562399753701277, guid: c79cad2550100ab4da224d65ae2aa255,
-        type: 3}
-      propertyPath: siblingUp
-      value: 
-      objectReference: {fileID: 1735714620152185487}
-    - target: {fileID: 167562399753701277, guid: c79cad2550100ab4da224d65ae2aa255,
-        type: 3}
-      propertyPath: siblingDown
-      value: 
-      objectReference: {fileID: 1232788666084432822}
     - target: {fileID: 4555562748003804155, guid: c79cad2550100ab4da224d65ae2aa255,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1519,6 +1504,21 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 167562399753701277, guid: c79cad2550100ab4da224d65ae2aa255,
+        type: 3}
+      propertyPath: siblingUp
+      value: 
+      objectReference: {fileID: 1735714620152185487}
+    - target: {fileID: 167562399753701277, guid: c79cad2550100ab4da224d65ae2aa255,
+        type: 3}
+      propertyPath: siblingDown
+      value: 
+      objectReference: {fileID: 1232788666084432822}
+    - target: {fileID: 6453782164347636133, guid: c79cad2550100ab4da224d65ae2aa255,
+        type: 3}
+      propertyPath: m_Name
+      value: Back
+      objectReference: {fileID: 0}
     - target: {fileID: 8980198442419697226, guid: c79cad2550100ab4da224d65ae2aa255,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -1571,11 +1571,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1071838887814170747}
     m_Modifications:
-    - target: {fileID: 2089142618052675159, guid: 5121972adfb595b4ea41c626295ec41d,
-        type: 3}
-      propertyPath: m_Name
-      value: Music Slider
-      objectReference: {fileID: 0}
     - target: {fileID: 4467572091346032601, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1696,6 +1691,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.0176793
       objectReference: {fileID: 0}
+    - target: {fileID: 2089142618052675159, guid: 5121972adfb595b4ea41c626295ec41d,
+        type: 3}
+      propertyPath: m_Name
+      value: Music Slider
+      objectReference: {fileID: 0}
     - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: siblingUp
@@ -1719,7 +1719,7 @@ PrefabInstance:
     - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
       propertyPath: startValue
-      value: -10
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 2065349880750897322, guid: 5121972adfb595b4ea41c626295ec41d,
         type: 3}
@@ -1753,11 +1753,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1071838887814170747}
     m_Modifications:
-    - target: {fileID: 1005742918081997227, guid: de62dbb706e3f8a44b947f0e859789a1,
-        type: 3}
-      propertyPath: m_Name
-      value: LBUnhoverableButton_Journal
-      objectReference: {fileID: 0}
     - target: {fileID: 8567298163855252271, guid: de62dbb706e3f8a44b947f0e859789a1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1863,6 +1858,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1005742918081997227, guid: de62dbb706e3f8a44b947f0e859789a1,
+        type: 3}
+      propertyPath: m_Name
+      value: LBUnhoverableButton_Journal
+      objectReference: {fileID: 0}
     - target: {fileID: 5755907609277573233, guid: de62dbb706e3f8a44b947f0e859789a1,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -1922,11 +1922,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8450701188225996751}
     m_Modifications:
-    - target: {fileID: 5690291802388764490, guid: 82a98b2a227a7084ea75a6ef6cb78fd6,
-        type: 3}
-      propertyPath: m_Name
-      value: RBUnhoverableButton_Journal
-      objectReference: {fileID: 0}
     - target: {fileID: 3884301548911961550, guid: 82a98b2a227a7084ea75a6ef6cb78fd6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2031,6 +2026,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5690291802388764490, guid: 82a98b2a227a7084ea75a6ef6cb78fd6,
+        type: 3}
+      propertyPath: m_Name
+      value: RBUnhoverableButton_Journal
       objectReference: {fileID: 0}
     - target: {fileID: 928850506894431888, guid: 82a98b2a227a7084ea75a6ef6cb78fd6,
         type: 3}

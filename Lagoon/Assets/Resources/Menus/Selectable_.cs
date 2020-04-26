@@ -26,7 +26,7 @@ public class Selectable_ : MenuItem_
 
 
     protected static readonly float OPTION_SWAP_COOLDOWN = 0.3f;
-    protected static readonly float OPTION_SWAP_DEADZONE = 0.1f;
+    protected static readonly float OPTION_SWAP_DEADZONE = 0.3f;
 
     protected event System.Action InternalEvent_BeginHoverOver;
     protected event System.Action InternalEvent_UpdateHoverOver;
@@ -44,6 +44,8 @@ public class Selectable_ : MenuItem_
     protected event System.Action InternalEvent_BeginUnSelect;
     protected event System.Action InternalEvent_UpdateUnSelect;
     protected event System.Action InternalEvent_EndUnSelect;
+
+
 
     protected void SetupNavigation(Selectable_ up = null, Selectable_ down = null, Selectable_ left = null, Selectable_ right = null)
     {
@@ -109,6 +111,8 @@ public class Selectable_ : MenuItem_
 
     void internalBeginSelect()
     {
+        GM_.Instance.audio.PlaySFX(sfxArgs_select);
+
         selectable_state = SELECTABLE_STATE.SELECTED;
         if (animationSelect != null)
         {
@@ -126,6 +130,8 @@ public class Selectable_ : MenuItem_
 
     void internalBeginHoverOver()
     {
+        GM_.Instance.audio.PlaySFX(sfxArgs_hoverChange);
+
         selectable_state = SELECTABLE_STATE.HOVERED_OVER;
         if (animationHoverOver != null)
         {
@@ -255,6 +261,8 @@ public class Selectable_ : MenuItem_
         Init();
     }
 
+    AudioManager.SFXArgs sfxArgs_hoverChange;
+    AudioManager.SFXArgs sfxArgs_select;
     protected sealed override void ThisInit_Layer1()
     {
         InternalEvent_BeginHoverOver += internalBeginHoverOver;
@@ -264,6 +272,22 @@ public class Selectable_ : MenuItem_
         InternalEvent_UpdateSelected += internalUpdateSelected;
 
         selectable_state = SELECTABLE_STATE.UNHOVERED_OVER;
+
+
+        sfxArgs_hoverChange = new AudioManager.SFXArgs
+        (
+           GM_.Instance.audio.GetSFX("UI_HoverChange"),
+           null,
+           IsMenuSound_: true
+        );
+
+        sfxArgs_select = new AudioManager.SFXArgs
+        (
+            GM_.Instance.audio.GetSFX("UI_ButtonSelect"),
+           null,
+           IsMenuSound_: true
+        );
+
         ThisInit_Layer2();
     }
 

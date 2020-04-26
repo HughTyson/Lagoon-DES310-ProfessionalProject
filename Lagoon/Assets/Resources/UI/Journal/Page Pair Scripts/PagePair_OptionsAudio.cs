@@ -117,6 +117,7 @@ public class PagePair_OptionsAudio : BasePagePair
     void sliderUnSelected()
     {
         goBackButton.Event_Selected += request_GoBack;
+        goBackButton.ListenForSelection();
     }
 
     public override void BegunExitingPage()

@@ -114,6 +114,7 @@ public class MenuScreen_OptionsGame : MenuScreenBase
     void sliderUnSelected()
     {
         goBackButton.Event_Selected += start_transitionToMain;
+        goBackButton.ListenForSelection();
     }
 
     void finishedShowingSlider()
