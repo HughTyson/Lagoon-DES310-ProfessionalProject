@@ -62,7 +62,14 @@ public class CharacterControllerMovement : MonoBehaviour
         NO_MOVEMENT,         //Player can not move
         ROT_CAMERA           //Rotates to the cameras rotation in real time
     }
-    
+
+
+    CharacterAnimationHandler animationHandler;
+    private void Awake()
+    {
+        animationHandler = GetComponent<CharacterAnimationHandler>();
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -82,13 +89,21 @@ public class CharacterControllerMovement : MonoBehaviour
 
 
     float refVelocity_velocity;
+
+
+
+
     void FixedUpdate()
     {
         switch (current_state)
         {
             case STATE.FREE_MOVEMENT:
                 {
-                    desired_velocity = max_velocity * new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.LH), GM_.Instance.input.GetAxis(InputManager.AXIS.LV)).magnitude;
+                    // when -0.5 = min
+                    // when -1 = max
+                    float normalizedUnderwaterModified = 1.0f - Mathf.Clamp01(((transform.position.y - (-0.2f)) / (-1.5f - (-0.2f))));
+                    normalizedUnderwaterModified = Mathf.Max(normalizedUnderwaterModified, 0.6f);
+                    desired_velocity = max_velocity * Mathf.Min(normalizedUnderwaterModified, (new Vector2(GM_.Instance.input.GetAxis(InputManager.AXIS.LH), GM_.Instance.input.GetAxis(InputManager.AXIS.LV)).magnitude));
 
                     HandleInput();
                     Rotation();

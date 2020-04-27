@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4df07c300a0c628478b007417d6a0715, type: 3}
   m_Name: Sand_FootTrigger
   m_EditorClassIdentifier: 
-  audioSFX: {fileID: 0}
+  audioSFX: {fileID: 11400000, guid: b0561e809af318f47ae1e22bae5bba0b, type: 2}
   characterAnimationIsGrounded: 1
-  characterAnimationIsGroundedVal: 0.99
+  characterAnimationIsGroundedVal: 0.5
   touchingGround: 1
   minVelocity: 0
+  defaultMultipleTriggeredPriority: 128

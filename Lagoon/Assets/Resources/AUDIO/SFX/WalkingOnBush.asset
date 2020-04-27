@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2656df3881e508242b670992d3f467da, type: 3}
+  m_Name: WalkingOnBush
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: b9280205b850849429ecde59e7df1b7e, type: 3}
+  isLooping: 0
+  pitch: 1
+  spatialBlend2DTo3D: 1
+  volume: 0.2
+  panning: 0
+  doppplerEffect: 0
+  priority: 128
+  maxDistance: 10
+  minDistance: 2
+  volumeFallOff:
+    enabled: 0
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  audioSpread:
+    enabled: 0
+    animationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4

@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4df07c300a0c628478b007417d6a0715, type: 3}
   m_Name: Wood_FootTrigger
   m_EditorClassIdentifier: 
-  audioSFX: {fileID: 0}
+  audioSFX: {fileID: 11400000, guid: 91b3b3236fc56d94fbe71cd5a8fa7065, type: 2}
   characterAnimationIsGrounded: 1
-  characterAnimationIsGroundedVal: 0.99
+  characterAnimationIsGroundedVal: 0.5
   touchingGround: 1
   minVelocity: 0
+  defaultMultipleTriggeredPriority: 129
