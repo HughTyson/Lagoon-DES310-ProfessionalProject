@@ -433,6 +433,9 @@ public class PlayerFishingState : BaseState
                     if (GAME_UI.Instance.transition.IsInWaitingTransition())
                     {
                         fishingBob.GetComponentInChildren<FishingBobLogic>().DetachFromSupplyCrate();
+
+                        GM_.Instance.audio.PlaySFX(GM_.Instance.audio.GetSFX("Crate_Break"),null);
+
                         CancelCasted();
                         fishing_state = FISHING_STATE.SUPPLY_DROP_CONTENT;
                         hookedSupplyBox.gameObject.SetActive(false);
