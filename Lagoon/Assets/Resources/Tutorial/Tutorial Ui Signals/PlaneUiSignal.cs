@@ -8,7 +8,7 @@ public class PlaneUiSignal : MonoBehaviour
 
     [SerializeField] Transform look_at;
     [SerializeField] HDRP_SpriteSheet ui_signal_spritesheet;
-   
+
     HDRP_Unlit_ManualAnimator manual_sprite_animator;
     Material material;
 

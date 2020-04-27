@@ -68,6 +68,7 @@ public class RadioSignal : MonoBehaviour
         talking = GM_.Instance.audio.PlaySFX(sfx_talking, null);
 
         GM_.Instance.story.RequestGameEventContinue();
+        GM_.Instance.day_night_cycle.SetTime(0);
     }
 
     private void BarrierStart(StoryManager.BarrierStartArgs obj)
@@ -88,6 +89,7 @@ public class RadioSignal : MonoBehaviour
         incoming_transmission =  GM_.Instance.audio.PlaySFX(sfx_radio, transform);
 
         GM_.Instance.day_night_cycle.SetBaseTime(0.0f);
+       
     }
 
 

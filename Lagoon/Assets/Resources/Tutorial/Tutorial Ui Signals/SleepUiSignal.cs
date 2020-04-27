@@ -31,7 +31,22 @@ public class SleepUiSignal : MonoBehaviour
         sleep_signal_tween = new TweenManager.TweenPathBundle(
             // frame index
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(0, (ui_signal_spritesheet.Animations[0].FrameIndexes.Count - 1) + 0.01f, ui_signal_spritesheet.Animations[0].Duration, TweenManager.CURVE_PRESET.LINEAR)
+                new TweenManager.TweenPart_Start(0, (ui_signal_spritesheet.Animations[0].FrameIndexes.Count - 1) + 0.01f, 0.25f, TweenManager.CURVE_PRESET.EASE_IN),
+                new TweenManager.TweenPart_Delay(0.5f)
+                ),
+            // alpha
+            new TweenManager.TweenPath(
+                 new TweenManager.TweenPart_Start(0, 1, 0.25f, TweenManager.CURVE_PRESET.LINEAR),
+                 new TweenManager.TweenPart_Delay(0.5f),
+                 new TweenManager.TweenPart_Continue(0, 0.25f, TweenManager.CURVE_PRESET.LINEAR)
+                ),
+            // X scale
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(transform.localScale.x * 2.0f, transform.localScale.x, 0.40f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
+                ),
+            // Y scale
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start((transform.localScale.x * ui_signal_spritesheet.SpriteToHeightAspectRation) / 2.0f, transform.localScale.x * ui_signal_spritesheet.SpriteToHeightAspectRation, 0.40f, TweenCurveLibrary.DefaultLibrary, "OVERSHOOT")
                 )
 
             );
@@ -39,6 +54,10 @@ public class SleepUiSignal : MonoBehaviour
 
         sleep_signal_animation = new TweenAnimator.Animation(
             sleep_signal_tween,
+            new TweenAnimator.Transf_(
+                transform,
+                local_scale: new TweenAnimator.Transf_.LocalScale_(true, 2, true, 3, false, -1, TweenAnimator.MOD_TYPE.ABSOLUTE)
+                ),
             new TweenAnimator.HDRP_Animator_(
                 manual_sprite_animator,
                new TweenAnimator.HDRP_Animator_.Frame_(
@@ -46,6 +65,13 @@ public class SleepUiSignal : MonoBehaviour
                 TweenAnimator.Base.IntProperty.INT_SELECTION_METHOD.FLOOR,
                 TweenAnimator.MOD_TYPE.ABSOLUTE
                 )
+                ),
+            new TweenAnimator.HDRP_Unlit_Material_(
+                material,
+                new TweenAnimator.HDRP_Unlit_Material_.Color_(
+                    false, 0, false, 0, false, 0, true, 1,
+                    TweenAnimator.MOD_TYPE.ABSOLUTE
+                    )
                 )
                 );
     }

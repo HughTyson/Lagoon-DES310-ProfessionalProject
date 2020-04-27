@@ -50,6 +50,7 @@ public class SupplyDrop : MonoBehaviour
             GM_.Instance.story.EventRequest_GameEventContinue += Blocker; //called when requesting the node to continue
 
             do_stuff = true;
+            animation.animatePhysics = true;
             animation.Play(clip.name);
             boxes_dropped = 0;
 
@@ -107,7 +108,7 @@ public class SupplyDrop : MonoBehaviour
                 }
             }
             
-            if(boxes_dropped == drop_points.Count)
+            if(boxes_dropped > 0)
             {
                 if(!animation.isPlaying)
                 {
