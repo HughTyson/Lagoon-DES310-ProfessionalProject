@@ -219,13 +219,13 @@ public class PlaneCamera : MonoBehaviour
 
         look_at = new TweenManager.TweenPathBundle(
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(old_look_at.position.x, prop.position.x, 1.0f, TweenManager.CURVE_PRESET.EASE_INOUT)
+                new TweenManager.TweenPart_Start(old_look_at.position.x, prop.position.x, 1.5f, TweenManager.CURVE_PRESET.EASE_INOUT)
             ),
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(old_look_at.position.y, prop.position.y, 1.0f, TweenManager.CURVE_PRESET.EASE_INOUT)
+                new TweenManager.TweenPart_Start(old_look_at.position.y, prop.position.y, 1.5f, TweenManager.CURVE_PRESET.EASE_INOUT)
             ),
             new TweenManager.TweenPath(
-                new TweenManager.TweenPart_Start(old_look_at.position.z, prop.position.z, 1.0f, TweenManager.CURVE_PRESET.EASE_INOUT)
+                new TweenManager.TweenPart_Start(old_look_at.position.z, prop.position.z, 1.5f, TweenManager.CURVE_PRESET.EASE_INOUT)
             )
         );
 
@@ -256,10 +256,9 @@ public class PlaneCamera : MonoBehaviour
        );
 
         zoom = false;
-        //c_look = new Vector3(look_at_x.value, look_at_y.value, look_at_z.value);
 
-        active_segment_type = PlaneSegments.SegmentType.PROPELLER;
-        old_segment_type = PlaneSegments.SegmentType.PROPELLER;
+        active_segment_type = PlaneSegments.SegmentType.ENGINE_MID;
+        old_segment_type = PlaneSegments.SegmentType.ENGINE_MID;
 
         current_state = PlaneCameraStates.INIT;
 

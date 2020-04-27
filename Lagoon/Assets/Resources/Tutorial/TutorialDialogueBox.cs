@@ -184,24 +184,39 @@ public class TutorialDialogueBox : MonoBehaviour
 
     public void SkipTransition()
     {
-        if (!specialText.AreAllCompleted())
+
+        //if (!specialText.AreAllCompleted())
+        //{
+        //    specialText.ForceAll();
+        //}
+
+        //while (transitioning)
+        //{
+        //    if (currentTweenInstance.Exists)
+        //    {
+        //        currentTweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
+        //        if (!specialText.AreAllCompleted())
+        //        {
+        //            specialText.ForceAll();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        break;
+        //    }
+        //}
+
+        if (currentTweenInstance.Exists)
+        {
+            currentTweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
+            if (!specialText.AreAllCompleted())
+            {
+                specialText.ForceAll();
+            }
+        }
+        else
         {
             specialText.ForceAll();
-        }
-        while (transitioning)
-        {
-            if (currentTweenInstance.Exists)
-            {
-                currentTweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
-                if (!specialText.AreAllCompleted())
-                {
-                    specialText.ForceAll();
-                }
-            }
-            else
-            {
-                break;
-            }
         }
 
     }

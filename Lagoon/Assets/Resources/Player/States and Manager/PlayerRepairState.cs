@@ -39,7 +39,7 @@ public class PlayerRepairState : BaseState
 
         state = RepairState.FULLPLANE;
 
-        selected_part = 0;
+        selected_part = 6;
 
         counter = 0;
 
@@ -49,7 +49,7 @@ public class PlayerRepairState : BaseState
           
         for(int i = 0; i < plane_segments.Count; i++)
         {
-            if(plane_segments[selected_part].type == PlaneSegments.SegmentType.PROPELLER)
+            if(plane_segments[i].type == PlaneSegments.SegmentType.ENGINE_MID)
             {
                 plane_camera.old_look_at = plane_segments[selected_part].transform;
             }
