@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2656df3881e508242b670992d3f467da, type: 3}
   m_Name: WalkingOnWood
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: 0a5c282e883f38745a059d127342fb57, type: 3}
   isLooping: 0
   pitch: 1
-  spatialBlend2DTo3D: 0
-  volume: 1
+  spatialBlend2DTo3D: 1
+  volume: 0.6
   panning: 0
   doppplerEffect: 0
   priority: 128
-  maxDistance: 1
-  minDistance: 0.1
+  maxDistance: 10
+  minDistance: 2
   volumeFallOff:
     enabled: 0
     animationCurve:

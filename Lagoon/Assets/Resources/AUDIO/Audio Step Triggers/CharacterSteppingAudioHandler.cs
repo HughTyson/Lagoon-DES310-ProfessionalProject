@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 public class CharacterSteppingAudioHandler : MonoBehaviour
 {
 
@@ -11,7 +11,7 @@ public class CharacterSteppingAudioHandler : MonoBehaviour
 
     [SerializeField] LayerMask layerMask_StepAudio;
 
-
+    
 
     FootTrigger leftFoot;
     FootTrigger rightFoot;
@@ -45,11 +45,27 @@ public class CharacterSteppingAudioHandler : MonoBehaviour
 
     CharacterFootAudioTrigger GetCharacterFootAudioTrigger(Vector3 position)
     {
-        Collider[] colliders = Physics.OverlapSphere(position, 0.01f, layerMask_StepAudio);
+        Collider[] colliders = Physics.OverlapSphere(position, 0.2f, layerMask_StepAudio);
 
         if (colliders.Length != 0)
         {
-            return colliders[0].GetComponent<CharacterFootAudioTriggerLogic>().AudioTrigger;
+
+
+            CharacterFootAudioTriggerLogic highestOutput = colliders[0].GetComponent<CharacterFootAudioTriggerLogic>();
+            int highestPriority = highestOutput.Priority();
+
+            for (int i = 1; i < colliders.Length; i++)
+            {
+                CharacterFootAudioTriggerLogic output = colliders[i].GetComponent<CharacterFootAudioTriggerLogic>();
+                int priority = output.Priority();
+                if (priority > highestPriority)
+                {
+                    highestPriority = priority;
+                    highestOutput = output;
+
+                }
+            }
+            return highestOutput.AudioTrigger;
         }
         return null;
     }
@@ -60,7 +76,8 @@ public class CharacterSteppingAudioHandler : MonoBehaviour
         Animator animator;
         CharacterAnimationHandler animHandler;
         CharacterControllerMovement characterControllerMovement;
-        CharacterFootAudioTrigger audioTrigger = null;
+        CharacterFootAudioTrigger audioTrigger;
+
         Transform boneTransform;
         string animatorGroundedParameter;
 
@@ -101,8 +118,8 @@ public class CharacterSteppingAudioHandler : MonoBehaviour
                 {
                     if (normalizedVelocity > 0.4f)
                     {
-                        AudioSettings.AnyFloatSetting.Constant footPitch = new AudioSettings.AnyFloatSetting.Constant(Mathf.Lerp(0.85f, 1.10f, ((normalizedVelocity - 0.4f) / 0.8f)));
-                        GM_.Instance.audio.PlaySFX(audioTrigger.audio_SFX, boneTransform, settingPitch: footPitch);
+                        //    AudioSettings.AnyFloatSetting.Constant footPitch = new AudioSettings.AnyFloatSetting.Constant(Mathf.Lerp(0.85f, 1.10f, ((normalizedVelocity - 0.4f) / 0.8f)));
+                        GM_.Instance.audio.PlaySFX(audioTrigger.audio_SFX, boneTransform);//, settingPitch: footPitch);
                     }
                     firstFrameLeftStep = false;
                 }
