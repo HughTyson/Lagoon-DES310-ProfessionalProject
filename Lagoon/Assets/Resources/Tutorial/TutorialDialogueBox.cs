@@ -184,7 +184,6 @@ public class TutorialDialogueBox : MonoBehaviour
 
     public void SkipTransition()
     {
-
         
         if (!specialText.AreAllCompleted())
         {
@@ -206,6 +205,7 @@ public class TutorialDialogueBox : MonoBehaviour
                 break;
             }
         }
+
     }
     public bool IsTransitioning()
     {
