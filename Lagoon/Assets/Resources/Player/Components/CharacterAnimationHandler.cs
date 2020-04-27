@@ -46,7 +46,6 @@ public class CharacterAnimationHandler : MonoBehaviour
 
     private void Awake()
     {
-        audio_sandStep = GM_.Instance.audio.GetSFX("WalkingOnSand");
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
 
@@ -54,7 +53,7 @@ public class CharacterAnimationHandler : MonoBehaviour
         //defaultTransformRotation = ;
     }
 
-    AudioSFX audio_sandStep;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -311,53 +310,12 @@ public class CharacterAnimationHandler : MonoBehaviour
 
 
 
-        audioCalcs();
 
     }
 
 
 
-    void audioCalcs()
-    {
-        float normalizedVelocity = characterControllerMovement.CurrentNormalizedVelocity;
-
-        if (animator.GetFloat("LeftFootGrounded") < 0.99f)
-        {
-            firstFrameLeftStep = true;
-        }
-        else
-        {
-            if (firstFrameLeftStep)
-            {
-                    if (normalizedVelocity > 0.4f)
-                    {
-                        AudioSettings.AnyFloatSetting.Constant footPitch = new AudioSettings.AnyFloatSetting.Constant(Mathf.Lerp(0.85f, 1.10f, ((normalizedVelocity - 0.4f) / 0.8f)));
-                        GM_.Instance.audio.PlaySFX(audio_sandStep, animator.GetBoneTransform(HumanBodyBones.LeftFoot), settingPitch: footPitch);
-                    }
-
-
-                firstFrameLeftStep = false;
-            }
-        }
-        if (animator.GetFloat("RightFootGrounded") < 0.99f)
-        {
-            firstFrameRightStep = true;
-        }
-        else
-        {
-            if (firstFrameRightStep)
-            {
-
-                    if (normalizedVelocity > 0.4f)
-                    {
-                        AudioSettings.AnyFloatSetting.Constant footPitch = new AudioSettings.AnyFloatSetting.Constant(Mathf.Lerp(0.85f, 1.10f, ((normalizedVelocity - 0.4f) / 0.8f)));
-                        GM_.Instance.audio.PlaySFX(audio_sandStep, animator.GetBoneTransform(HumanBodyBones.RightFoot), settingPitch: footPitch);
-                    }
-
-                firstFrameRightStep = false;
-            }
-        }
-    }
+  
 
     private void LateUpdate()
     {

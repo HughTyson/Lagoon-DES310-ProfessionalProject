@@ -77,11 +77,11 @@ public class AudioManager : MonoBehaviour
         hasBeenInit = true;
         uniqueIDCount = 0;
 
-        masterMixer = (AudioMixer)Resources.Load("Sound FX/MasterMixer");
+        masterMixer = (AudioMixer)Resources.Load("AUDIO/Mixers/MasterMixer");
         masterMusicMixerGroup = masterMixer.FindMatchingGroups("Music")[0];
         masterFXMixerGroup = masterMixer.FindMatchingGroups("Sound FX")[0];
 
-        nonMenuMixer = (AudioMixer)Resources.Load("Sound FX/NonMenuFXMixer");
+        nonMenuMixer = (AudioMixer)Resources.Load("AUDIO/Mixers/NonMenuFXMixer");
         nonMenuFXMixerGroup = nonMenuMixer.FindMatchingGroups("Master")[0];
 
 
