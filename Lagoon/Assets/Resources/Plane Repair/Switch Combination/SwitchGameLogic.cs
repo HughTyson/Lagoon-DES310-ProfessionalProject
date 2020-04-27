@@ -148,10 +148,50 @@ public class SwitchGameLogic : RepairGameBase
         {
             Debug.Log("Hello");
             game_complete = true;
-            GM_.Instance.audio.PlaySFX(complete_sfx, null);
+
             GM_.Instance.inventory.RemoveItemType(typeof(SwitchItem));
+
+
+            GM_.Instance.audio.PlaySFX(complete_sfx, null, Event_SoundStopped: celebrationSoundComplete);
+
+            GM_.Instance.tween_manager.StartTweenInstance(
+            fishCelebrationMusicLower_Tween,
+            new TypeRef<float>[] { typeRef_RelativeMusicVolume },
+            tweenUpdatedDelegate_: update_FishCelebrationMusicLower,
+            speed_: 100.0f
+            );
+
         }
     }
+     TypeRef<float> typeRef_RelativeMusicVolume = new TypeRef<float>();
+   
+
+void update_FishCelebrationMusicLower()
+{
+    GM_.Instance.audio.AdditionalMusicVolume = typeRef_RelativeMusicVolume.value;
+}
+
+void celebrationSoundComplete()
+{
+
+    GM_.Instance.tween_manager.StartTweenInstance(
+        fishCelebrationMusicLower_Tween,
+        new TypeRef<float>[] { typeRef_RelativeMusicVolume },
+        tweenUpdatedDelegate_: update_FishCelebrationMusicLower,
+        startingDirection_: TweenManager.DIRECTION.END_TO_START,
+        speed_: 1.0f
+        );
+
+}
+
+readonly TweenManager.TweenPathBundle fishCelebrationMusicLower_Tween = new TweenManager.TweenPathBundle(
+        new TweenManager.TweenPath(
+            new TweenManager.TweenPart_Start(0, -100.0f, 1.0f, TweenManager.CURVE_PRESET.LINEAR)
+            )
+        );
+
+
+
 
     public override void GameCleanUp()
     {

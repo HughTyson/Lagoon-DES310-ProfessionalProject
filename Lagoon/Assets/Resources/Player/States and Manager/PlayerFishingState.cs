@@ -433,6 +433,9 @@ public class PlayerFishingState : BaseState
                     if (GAME_UI.Instance.transition.IsInWaitingTransition())
                     {
                         fishingBob.GetComponentInChildren<FishingBobLogic>().DetachFromSupplyCrate();
+
+                        GM_.Instance.audio.PlaySFX(GM_.Instance.audio.GetSFX("Crate_Break"),null);
+
                         CancelCasted();
                         fishing_state = FISHING_STATE.SUPPLY_DROP_CONTENT;
                         hookedSupplyBox.gameObject.SetActive(false);
@@ -823,6 +826,19 @@ public class PlayerFishingState : BaseState
 
 
     bool call_waiting_transition_once = false;
+
+
+
+
+
+
+    readonly TweenManager.TweenPathBundle fishCelebrationMusicLower_Tween = new TweenManager.TweenPathBundle(
+        new TweenManager.TweenPath(
+            new TweenManager.TweenPart_Start(0,-100.0f,1.0f, TweenManager.CURVE_PRESET.LINEAR)
+            )
+        );
+
+
     void FishFightSuccess()
     {
         GAME_UI.Instance.helperButtons.DisableAll();
@@ -832,7 +848,38 @@ public class PlayerFishingState : BaseState
         GAME_UI.Instance.transition.FadePreset(UITransition.FADE_PRESET.DEFAULT);
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
 
-        call_waiting_transition_once = false;      
+        call_waiting_transition_once = false;
+
+
+        GM_.Instance.audio.PlaySFX(fish_caught_sfx, null, Event_SoundStopped: celebrationSoundComplete);
+
+        GM_.Instance.tween_manager.StartTweenInstance(
+            fishCelebrationMusicLower_Tween,
+            new TypeRef<float>[] { typeRef_RelativeMusicVolume },
+            tweenUpdatedDelegate_: update_FishCelebrationMusicLower,
+            speed_: 100.0f
+            );
+
+        
+    }
+    TypeRef<float> typeRef_RelativeMusicVolume = new TypeRef<float>();
+
+    void update_FishCelebrationMusicLower()
+    {
+        GM_.Instance.audio.AdditionalMusicVolume = typeRef_RelativeMusicVolume.value;
+    }
+
+    void celebrationSoundComplete()
+    {
+
+        GM_.Instance.tween_manager.StartTweenInstance(
+            fishCelebrationMusicLower_Tween,
+            new TypeRef<float>[] { typeRef_RelativeMusicVolume },
+            tweenUpdatedDelegate_: update_FishCelebrationMusicLower,
+            startingDirection_: TweenManager.DIRECTION.END_TO_START,
+            speed_: 1.0f
+            );
+
     }
 
 
@@ -877,7 +924,7 @@ public class PlayerFishingState : BaseState
                 thirdPersonCamera.enabled = false;
                 celebrationCamera.enabled = true;
 
-                GM_.Instance.audio.PlaySFX(fish_caught_sfx, null);
+
 
             }
         }
