@@ -90,11 +90,22 @@ public class IntroductionManager : MonoBehaviour
             waves_noise_handler = GM_.Instance.audio.PlaySFX(waves_noise, null, appliedID: "OCEAN_NOISE");
         }
 
+        
     }
 
+    bool first_update = true;
     // Update is called once per frame
     void Update()
     {
+
+        if(first_update)
+        {
+            first_update = false;
+            GM_.Instance.audio.PlayMusic(GM_.Instance.audio.GetMUSIC("Island"), fadeInOfNewMusic: GM_.Instance.audio.GetMusicFadePreset(AudioManager.MUSIC_FADE_PRESETS.DEFAULT_FADEIN), fadeOutOfOldMusic: GM_.Instance.audio.GetMusicFadePreset(AudioManager.MUSIC_FADE_PRESETS.DEFAULT_FADEOUT));
+        }
+
+        
+
         movement_.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
         GM_.Instance.day_night_cycle.SetTime(0);
 
