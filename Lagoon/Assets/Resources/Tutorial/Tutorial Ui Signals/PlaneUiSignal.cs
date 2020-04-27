@@ -8,14 +8,14 @@ public class PlaneUiSignal : MonoBehaviour
 
     [SerializeField] Transform look_at;
     [SerializeField] HDRP_SpriteSheet ui_signal_spritesheet;
-
+   
     HDRP_Unlit_ManualAnimator manual_sprite_animator;
     Material material;
 
     TweenAnimator.Animation repair_signal_animation;
     TweenManager.TweenPathBundle repair_signal_tween;
 
-    bool run_ui = false;
+    [SerializeField] bool run_ui = false;
 
     private void Awake()
     {
