@@ -22,19 +22,24 @@ public class SupplyDrop : MonoBehaviour
     [SerializeField] AnimationClip clip;
     Animation animation;
 
+    AudioSFX plane_sfx;
+    AudioManager.SFXInstanceInterface plane_sfx_interface;
+
+
+
+    public void Awake()
+    {
+        GM_.Instance.story.Event_GameEventStart += SupplyStart;       //start plane moving and setup
+        Application.quitting += Quitting;
+
+        plane_sfx = GM_.Instance.audio.GetSFX("Plane Noise");
+    }
+
     public void Start()
     {
         animation = GetComponent<Animation>();
         animation.AddClip(clip, clip.name);
 
-    }
-
-    public void Awake()
-    {
-        GM_.Instance.story.Event_GameEventStart += SupplyStart;       //start plane moving and setup
-
-
-        Application.quitting += Quitting;
     }
 
     public void SupplyStart(StoryManager.GameEventTriggeredArgs args)
@@ -67,6 +72,8 @@ public class SupplyDrop : MonoBehaviour
                 required_amount.Add(args.certainItemDrops[i].ammount);
                 
             }
+
+            plane_sfx_interface = GM_.Instance.audio.PlaySFX(plane_sfx,transform);
 
         }
     }
@@ -107,6 +114,7 @@ public class SupplyDrop : MonoBehaviour
                     do_stuff = false;
                     GM_.Instance.story.EventRequest_GameEventContinue -= Blocker;
                     GM_.Instance.story.RequestGameEventContinue();
+                    
                 }
             }
         }
