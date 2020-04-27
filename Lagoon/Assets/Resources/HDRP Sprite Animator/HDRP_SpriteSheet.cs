@@ -20,23 +20,17 @@ public class HDRP_SpriteSheet : ScriptableObject
 
 
     bool init_called = false;
-    void Init()
+
+    private void OnEnable()
     {
-        if (init_called)
-            return;
+        
 
-
-        init_called = true;
         animationFramesDictionary = new Dictionary<int, AnimationFrames>();
         for (int i = 0; i < animations.Count; i++)
         {
             animations[i].SetParent(this);
             animationFramesDictionary.Add(animations[i].ID, animations[i]);
         }
-    }
-    private void OnEnable()
-    {
-        Init();
     }
 
     public AnimationFrames GetAnimationFrames(int ID)
