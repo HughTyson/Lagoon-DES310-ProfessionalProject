@@ -15,7 +15,7 @@ public class PlaneUiSignal : MonoBehaviour
     TweenAnimator.Animation repair_signal_animation;
     TweenManager.TweenPathBundle repair_signal_tween;
 
-    bool run_ui = false;
+    public bool run_ui = false;
 
     private void Awake()
     {
