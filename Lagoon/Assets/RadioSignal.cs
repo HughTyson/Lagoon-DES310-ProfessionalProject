@@ -150,6 +150,13 @@ public class RadioSignal : MonoBehaviour
 
     private void OnDestroy()
     {
+
+        if(incoming_transmission != null)
+        {
+            incoming_transmission.Stop();
+        }
+
+
         if (!quiting)
         {
             GM_.Instance.story_objective.Event_BarrierObjectiveComplete -= Story_objective_Event_BarrierObjectiveComplete;
@@ -157,6 +164,7 @@ public class RadioSignal : MonoBehaviour
             GM_.Instance.story.Event_ConvoEnter -= ConvoStart;
         }
 
+        
     }
 
     bool quiting = false;
@@ -164,4 +172,6 @@ public class RadioSignal : MonoBehaviour
     {
         quiting = true;
     }
+
+    
 }

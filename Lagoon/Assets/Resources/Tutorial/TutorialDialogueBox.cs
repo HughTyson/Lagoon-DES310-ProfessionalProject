@@ -23,7 +23,7 @@ public class TutorialDialogueBox : MonoBehaviour
     Vector2 AButtonShowingPosition;
 
     Color imageColour;
-    bool transitioning = false;
+    public bool transitioning = false;
     bool isBoxShowing = false;
     private void Start()
     {
@@ -185,40 +185,27 @@ public class TutorialDialogueBox : MonoBehaviour
     public void SkipTransition()
     {
 
-        //if (!specialText.AreAllCompleted())
-        //{
-        //    specialText.ForceAll();
-        //}
-
-        //while (transitioning)
-        //{
-        //    if (currentTweenInstance.Exists)
-        //    {
-        //        currentTweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
-        //        if (!specialText.AreAllCompleted())
-        //        {
-        //            specialText.ForceAll();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        break;
-        //    }
-        //}
-
-        if (currentTweenInstance.Exists)
-        {
-            currentTweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
-            if (!specialText.AreAllCompleted())
-            {
-                specialText.ForceAll();
-            }
-        }
-        else
+        
+        if (!specialText.AreAllCompleted())
         {
             specialText.ForceAll();
         }
 
+        while (transitioning)
+        {
+            if (currentTweenInstance.Exists)
+            {
+                currentTweenInstance.StopTween(TweenManager.STOP_COMMAND.IMMEDIATE_TO_END);
+                if (!specialText.AreAllCompleted())
+                {
+                    specialText.ForceAll();
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
     }
     public bool IsTransitioning()
     {

@@ -74,13 +74,13 @@ public class PagePair_OptionsAudio : BasePagePair
 
 
 
-        goBackButton.Show();
-        controlsButton.Show();
-        gameButton.Show();
-        masterSlider.Show();
-        musicSlider.Show();
-        sfxSlider.Show();
-        back_SButton.Show();
+        //goBackButton.Show();
+        //controlsButton.Show();
+        //gameButton.Show();
+        //masterSlider.Show();
+        //musicSlider.Show();
+        //sfxSlider.Show();
+        //back_SButton.Show();
 
 
 
@@ -91,13 +91,13 @@ public class PagePair_OptionsAudio : BasePagePair
         musicSlider.SetValue(GM_.Instance.audio.MusicVolume);
         sfxSlider.SetValue(GM_.Instance.audio.SFXVolume);
 
-        goBackButton.Show();
-        controlsButton.Show();
-        gameButton.Show();
-        masterSlider.Show();
-        musicSlider.Show();
-        sfxSlider.Show();
-        back_SButton.Show();
+        //goBackButton.Show();
+        //controlsButton.Show();
+        //gameButton.Show();
+        //masterSlider.Show();
+        //musicSlider.Show();
+        //sfxSlider.Show();
+        //back_SButton.Show();
     }
 
     public override void FinishedEnteringPage()
