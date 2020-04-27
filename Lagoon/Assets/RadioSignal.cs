@@ -89,7 +89,7 @@ public class RadioSignal : MonoBehaviour
         incoming_transmission =  GM_.Instance.audio.PlaySFX(sfx_radio, transform);
 
         GM_.Instance.day_night_cycle.SetBaseTime(0.0f);
-        GM_.Instance.day_night_cycle.SetTime();
+       
     }
 
 

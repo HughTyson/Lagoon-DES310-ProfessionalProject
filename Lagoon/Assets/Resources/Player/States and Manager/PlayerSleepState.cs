@@ -63,6 +63,8 @@ public class PlayerSleepState : BaseState
 
         cycle.ChangeAtmosphereTweenTime(6f);
 
+        GM_.Instance.day_night_cycle.SetTime();
+
     }
 
     // Update is called once per frame

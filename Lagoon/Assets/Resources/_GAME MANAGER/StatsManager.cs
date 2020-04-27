@@ -27,7 +27,7 @@ public class StatsManager
     public List<PlaneStats_> plane_segments_stats = new List<PlaneStats_>();
     PlaneStats_ temp;
 
-    bool stats_update = false;
+    bool stats_update = true;
 
 
     public void DayCountIncrease()

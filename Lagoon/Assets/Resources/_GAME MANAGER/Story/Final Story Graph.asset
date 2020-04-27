@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Barrier
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -1304, y: 568}
+  position: {x: -1176, y: 568}
   ports:
     keys:
     - input
@@ -609,7 +609,7 @@ MonoBehaviour:
     dialog_text: "Doing good my friend,[#Delay(0.3)] enjoying some time out.[#Delay(0.3)]
       I need to fix the plane since the [Shiver(0.05,20)] [Colour(255,0,0)]incident
       [/Shiver][/Colour],[#Delay(0.3)] but need parts.[#Delay(0.3)] Can you source
-      them Over.\"\r"
+      them. [#Delay(0.3)] Over.\"\r"
   input: 0
   output: 0
   nodeWidth: 300
@@ -1723,7 +1723,7 @@ MonoBehaviour:
   m_Name: Dialog
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -920, y: 536}
+  position: {x: -856, y: 536}
   ports:
     keys:
     - input
