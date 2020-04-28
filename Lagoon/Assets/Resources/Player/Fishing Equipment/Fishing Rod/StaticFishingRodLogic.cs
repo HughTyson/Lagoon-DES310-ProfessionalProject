@@ -12,6 +12,8 @@ public class StaticFishingRodLogic : MonoBehaviour
     [SerializeField] Vector3 FishFightingMiddleRotation = new Vector3(-5, 0, -8.12f);
     [SerializeField] Vector3 FishFightingRightRotation = new Vector3(-17, 0, -40);
 
+    [SerializeField] Animator characterAnimator;
+
     //[SerializeField] float RotationXMaxUp;
     //[SerializeField] float RotationXMaxDown;
 
@@ -20,9 +22,15 @@ public class StaticFishingRodLogic : MonoBehaviour
 
     //[SerializeField] float analogMovementRodSpeed = 10;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+   //     transform.position = characterAnimator.GetBoneTransform(HumanBodyBones.LeftHand).position;
+   //     transform.rotation = characterAnimator.GetBoneTransform(HumanBodyBones.LeftHand).rotation;
+    }
     void Start()
     {
-        transform.localRotation = Quaternion.Euler(DefaultRotationXZ.x, 0, DefaultRotationXZ.y);
+        //transform.localRotation = Quaternion.Euler(DefaultRotationXZ.x, 0, DefaultRotationXZ.y);
     }
 
     public enum STATE
@@ -41,21 +49,21 @@ public class StaticFishingRodLogic : MonoBehaviour
 
     public void SetFishFightingState(float analog_value)
     {
-      //  fish_fighting_state = state;
-        current_state = STATE.FREEZE;
 
-        Vector3 eulerRotations;
+    //    current_state = STATE.FREEZE;
 
-        if (analog_value < 0)
-        {
-            eulerRotations = Vector3.Lerp(FishFightingLeftRotation, FishFightingMiddleRotation, analog_value + 1.0f);
-        }
-        else
-        {
-            eulerRotations = Vector3.Lerp(FishFightingMiddleRotation, FishFightingRightRotation, analog_value);
-        }
+    //    Vector3 eulerRotations;
 
-        transform.localRotation = Quaternion.Euler(eulerRotations);
+    //    if (analog_value < 0)
+    //    {
+    //        eulerRotations = Vector3.Lerp(FishFightingLeftRotation, FishFightingMiddleRotation, analog_value + 1.0f);
+    //    }
+    //    else
+    //    {
+    //        eulerRotations = Vector3.Lerp(FishFightingMiddleRotation, FishFightingRightRotation, analog_value);
+    //    }
+
+    //    transform.localRotation = Quaternion.Euler(eulerRotations);
     }
 
     public void SetRodRotation(float percentageX, float percentageZ)
@@ -83,62 +91,47 @@ public class StaticFishingRodLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch(current_state)
-        {
-            case STATE.GO_TO_DEFAULT_POSITION:
-                {
-                    transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(DefaultRotationXZ.x, 0, DefaultRotationXZ.y), 1);
-                    break;
-                }
-            //case STATE.ANALOG_CONTROL:
-            //    {
-            //        Vector2 analog = new Vector2(Input.GetAxis("PlayerLH"), Input.GetAxis("PlayerLV")); // normalized to change square into circle
-            //        Vector3 eulerRotations = Vector3.zero;
-            //        if (analog.x < 0)
-            //        {
-            //            eulerRotations.z = Mathf.Lerp(RotationZMaxLeft, DefaultRotationXZ.y, analog.x + 1.0f);
-            //        }
-            //        else
-            //        {
-            //            eulerRotations.z = Mathf.Lerp(DefaultRotationXZ.y, RotationZMaxRight, analog.x);
-            //        }
 
-            //        if (analog.y < 0)
-            //        {
-            //            eulerRotations.x = Mathf.Lerp(RotationXMaxDown, DefaultRotationXZ.x, analog.y + 1.0f);
-            //        }
-            //        else
-            //        {
-            //            eulerRotations.x = Mathf.Lerp(DefaultRotationXZ.x,RotationXMaxUp, analog.y);
-            //        }
-            //        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(eulerRotations), Time.deltaTime* analogMovementRodSpeed);
-            //        break;
-            //    }
-            case STATE.FREEZE:
-                {
+        transform.localRotation = Quaternion.Euler(rotationOffset);
+        transform.localPosition = positionOffset;
 
-                    break;
-                }
-            //case STATE.ANALOG_CONTROL_H_ONLY:
-            //    {
-            //        Vector2 analog = new Vector2(Input.GetAxis("PlayerLH"), Input.GetAxis("PlayerLV")); // normalized to change square into circle
-            //        Vector3 eulerRotations = transform.localRotation.eulerAngles;
-            //        if (analog.x < 0)
-            //        {
-            //            eulerRotations.z = Mathf.Lerp(RotationZMaxLeft, DefaultRotationXZ.y, analog.x + 1.0f);
-            //        }
-            //        else
-            //        {
-            //            eulerRotations.z = Mathf.Lerp(DefaultRotationXZ.y, RotationZMaxRight, analog.x);
-            //        }
+        //switch(current_state)
+        //{
+        //    case STATE.GO_TO_DEFAULT_POSITION:
+        //        {
+        //            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(DefaultRotationXZ.x, 0, DefaultRotationXZ.y), 1);
+        //            break;
+        //        }
 
-            //        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(eulerRotations), Time.deltaTime * analogMovementRodSpeed);
-            //        break;
-            //    }            
-
-        }
+        //}
     }
 
 
+    [SerializeField] Vector3 rotationOffset;
+    [SerializeField] Vector3 positionOffset;
+
+
+    bool firstLateUpate = true;
+
+
+    private void LateUpdate()
+    {
+
+
+   //     transform.position = handTransform.TransformPoint(positionOffset);
+   //     transform.rotation = initRotaiton * (handTransform.rotation * Quaternion.Inverse(initHandRotation));// * Quaternion.Euler(rotationOffset) ;
+
+
+
+    }
+
+
+    //public void OnDrawGizmos()
+    //{
+    //    Transform handTransform = characterAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
+
+
+    //    Gizmos.DrawWireSphere(handTransform.TransformPoint(positionOffset), 0.1f);
+    //}
 
 }

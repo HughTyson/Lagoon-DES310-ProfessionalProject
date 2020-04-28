@@ -83,6 +83,8 @@ public class ThirdPersonCamera : MonoBehaviour
 
     public STATE transition_;
 
+
+    Vector3 smoothDampVel_targetPos ;
     void Start()
     {
         _camera = transform;
@@ -91,7 +93,7 @@ public class ThirdPersonCamera : MonoBehaviour
         
 
 
-        target_pos = rot_target.position;
+        target_pos = Vector3.SmoothDamp(target_pos, rot_target.position,ref smoothDampVel_targetPos, 0.5f, 1000f);
         destination = Quaternion.Euler(camera_input.y, camera_input.x, 0) * -Vector3.forward * distance_from_target;
         destination += target_pos;
 
