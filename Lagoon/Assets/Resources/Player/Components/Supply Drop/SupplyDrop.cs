@@ -24,8 +24,10 @@ public class SupplyDrop : MonoBehaviour
 
     AudioSFX plane_sfx;
     AudioManager.SFXInstanceInterface plane_sfx_interface;
+    TypeRef<float> volume = new TypeRef<float>();
 
-
+    TweenManager.TweenPathBundle sound_fall_off;
+    TweenManager.TweenInstanceInterface sound_interface;
 
     public void Awake()
     {
@@ -39,6 +41,13 @@ public class SupplyDrop : MonoBehaviour
     {
         animation = GetComponent<Animation>();
         animation.AddClip(clip, clip.name);
+
+        volume.value = plane_sfx.Volume;
+
+        sound_fall_off = new TweenManager.TweenPathBundle(
+            new TweenManager.TweenPath(
+                new TweenManager.TweenPart_Start(plane_sfx.Volume, 0, 1.5f, TweenManager.CURVE_PRESET.EASE_INOUT)
+            ));
 
     }
 
@@ -75,6 +84,7 @@ public class SupplyDrop : MonoBehaviour
             }
 
             plane_sfx_interface = GM_.Instance.audio.PlaySFX(plane_sfx,transform);
+            Debug.Log(plane_sfx_interface.Volume);
 
         }
     }
@@ -110,9 +120,11 @@ public class SupplyDrop : MonoBehaviour
             
             if(boxes_dropped > 0)
             {
+                
                 if(!animation.isPlaying)
                 {
                     do_stuff = false;
+                    
                     GM_.Instance.story.EventRequest_GameEventContinue -= Blocker;
                     GM_.Instance.story.RequestGameEventContinue();
                     
@@ -145,6 +157,26 @@ public class SupplyDrop : MonoBehaviour
         new_box.transform.position = spawn_pos;
     }
 
+    public void VolumeLower()
+    {
+        GM_.Instance.tween_manager.StartTweenInstance(
+            sound_fall_off,
+            new TypeRef<float>[] { volume },
+            tweenUpdatedDelegate_: UpdateVolume,
+            tweenCompleteDelegate_: StopSound
+            );
+    }
+
+    void UpdateVolume()
+    {
+        plane_sfx_interface.Volume = volume.value;
+    }
+
+    void StopSound()
+    {
+        plane_sfx_interface.Stop();
+    }
+    
 
     bool quitting = false;
 

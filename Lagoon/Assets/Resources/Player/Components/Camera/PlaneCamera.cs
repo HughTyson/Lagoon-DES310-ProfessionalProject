@@ -191,8 +191,8 @@ public class PlaneCamera : MonoBehaviour
     void Start()
     {
         disable_input = true;
-        active_segment_type = PlaneSegments.SegmentType.PROPELLER;
-        old_segment_type = PlaneSegments.SegmentType.PROPELLER;
+        active_segment_type = PlaneSegments.SegmentType.ENGINE_MID;
+        old_segment_type = PlaneSegments.SegmentType.ENGINE_MID;
 
         zoom = true;
 

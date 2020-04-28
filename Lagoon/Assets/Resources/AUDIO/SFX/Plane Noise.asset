@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2656df3881e508242b670992d3f467da, type: 3}
   m_Name: Plane Noise
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 8300000, guid: 0a515d55eb04695449bd960816aaa12b, type: 3}
+  audioClip: {fileID: 8300000, guid: c87fc52c70998334cae664db4fb4174e, type: 3}
   isLooping: 0
   pitch: 1
-  spatialBlend2DTo3D: 1
+  spatialBlend2DTo3D: 0.8
   volume: 1
   panning: 0
   doppplerEffect: 0
   priority: 128
-  maxDistance: 1000
+  maxDistance: 70
   minDistance: 0.1
   volumeFallOff:
     enabled: 0
@@ -30,17 +30,17 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 1
-        inSlope: -1.0039835
-        outSlope: -1.0039835
+        inSlope: -1.6667154
+        outSlope: -1.6667154
         tangentMode: 34
         weightedMode: 0
         inWeight: 0
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 1.0007324
-        value: -0.0047187805
-        inSlope: -1.0039835
-        outSlope: -1.0039835
+        time: 0.5999756
+        value: 0.000011444092
+        inSlope: -1.6667154
+        outSlope: -1.6667154
         tangentMode: 34
         weightedMode: 0
         inWeight: 0.33333334
