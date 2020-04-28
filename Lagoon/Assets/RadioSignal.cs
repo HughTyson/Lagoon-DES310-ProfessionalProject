@@ -121,6 +121,13 @@ public class RadioSignal : MonoBehaviour
                 );
     }
 
+    private void OnDisable()
+    {
+        if (incoming_transmission != null)
+            incoming_transmission.Stop();
+
+    }
+
     // Update is called once per frame
     void Update()
     {
