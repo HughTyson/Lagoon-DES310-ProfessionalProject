@@ -967,12 +967,21 @@ public class PlayerFishingState : BaseState
                 if(GM_.Instance.input.GetButtonDownDisabled(InputManager.BUTTON.A))
                 {
                     displaying_tutorial_box = GM_.Instance.tutorial_manger.CloseTutorial(type);
+
+
+                    
                     
                     if(!displaying_tutorial_box)
                     {
                         Time.timeScale = 1; 
                         GM_.Instance.input.InputEnabled = true;
                         fishingBob.GetComponentInChildren<FishingBobLogic>().Tutorial(temp_bob_state);
+
+                        if (type == TutorialManager.TutorialType.REEL)
+                        {
+                            fishing_tutorial_complete = true;
+                        }
+                        
                     }
 
                 }
