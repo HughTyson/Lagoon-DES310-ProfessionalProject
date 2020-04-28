@@ -67,6 +67,15 @@ public class FishingLineLogic : MonoBehaviour
         public Vector3 position = Vector3.zero;
         public Vector3 accelleration = Physics.gravity * 0.01f;
         public float dragPercentage = 0.01f;
+
+
+        public void Clear()
+        {
+            oldPosition = Vector3.zero;
+            position = Vector3.zero;
+            accelleration = Physics.gravity * 0.01f;
+            dragPercentage = 0.01f;
+        }
     }
 
     ObjectPooler<LineParticle> LineParticlesPool = new ObjectPooler<LineParticle>(100);
@@ -76,6 +85,12 @@ public class FishingLineLogic : MonoBehaviour
     {
         public GameObject connected_joint = null;
         public LineParticle particle = new LineParticle();
+
+        public void Clear()
+        {
+            connected_joint = null;
+            particle.Clear();
+        }
     }
 
 
@@ -91,11 +106,15 @@ public class FishingLineLogic : MonoBehaviour
 
         LineParticle new_particle;
         new_particle = LineParticlesPool.ActivateObject();
+        new_particle.Clear();
+
         new_particle.position = FishingLineTip.position;
         new_particle.oldPosition = FishingLineTip.position;
 
 
         new_particle = LineParticlesPool.ActivateObject();
+        new_particle.Clear();
+
         new_particle.position = FishingLineTip.position;
         new_particle.oldPosition = FishingLineTip.position;
 
@@ -112,7 +131,7 @@ public class FishingLineLogic : MonoBehaviour
         for (int joint = 0; joint < FlexibleRodRings.Count - 1; joint++)
         {
             RodJointParticles new_joint_particle = RodLineParticlesPool.ActivateObject();
-
+            new_joint_particle.Clear();
 
             new_joint_particle.particle.position = FlexibleRodRings[joint].transform.position;
             new_joint_particle.particle.oldPosition = new_joint_particle.particle.position;
@@ -123,7 +142,7 @@ public class FishingLineLogic : MonoBehaviour
             for (int i = 1; i < RodDecorationLineParticlesCountPerJoint - 2; i++)
             {
                 new_joint_particle = RodLineParticlesPool.ActivateObject();
-
+                new_joint_particle.Clear();
 
                 new_joint_particle.particle.position = Vector3.Lerp(FlexibleRodRings[joint].transform.position, FlexibleRodRings[joint + 1].transform.position, ((float)i) / ((float)(RodDecorationLineParticlesCountPerJoint - 1)));
                 new_joint_particle.particle.oldPosition = new_joint_particle.particle.position;
@@ -133,6 +152,7 @@ public class FishingLineLogic : MonoBehaviour
             }
 
             new_joint_particle = RodLineParticlesPool.ActivateObject();
+            new_joint_particle.Clear();
 
             new_joint_particle.particle.position = FlexibleRodRings[joint + 1].transform.position;
             new_joint_particle.particle.oldPosition = new_joint_particle.particle.position;
@@ -366,6 +386,7 @@ public class FishingLineLogic : MonoBehaviour
         {
             linePos[i] = rodLineParticles[i].particle.position;
         }
+        fishingRodDecoratorLineRenderer.positionCount = linePos.Length;
         fishingRodDecoratorLineRenderer.SetPositions(linePos);
 
 
