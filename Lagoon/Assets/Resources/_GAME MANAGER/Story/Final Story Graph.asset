@@ -606,10 +606,10 @@ MonoBehaviour:
     dialog_text: Hey Buddy, how are ya?[#Delay(0.3)] Not seen you about the base in
       a few day.
   - whoIsTalking: 0
-    dialog_text: "Doing good my friend,[#Delay(0.3)] enjoying some time out.[#Delay(0.3)]
+    dialog_text: Doing good my friend,[#Delay(0.3)] enjoying some time out.[#Delay(0.3)]
       I need to fix the plane since the [Shiver(0.05,20)] [Colour(255,0,0)]incident
       [/Shiver][/Colour],[#Delay(0.3)] but need parts.[#Delay(0.3)] Can you source
-      them. [#Delay(0.3)] Over.\"\r"
+      them. [#Delay(0.3)] Over.
   input: 0
   output: 0
   nodeWidth: 300
@@ -1146,7 +1146,7 @@ MonoBehaviour:
   - whoIsTalking: 0
     dialog_text: I've not fished since I was young.[#Delay(0.3)] And I've brought
       my [Colour(0,255,255)][WaveScaled(1,3,1)]Journal.[/Colour][/WaveScaled] to write
-      about thefish I catch.
+      about the fish I catch.
   - whoIsTalking: 1
     dialog_text: '[CharSpeed(3)]Well... that''s good [/CharSpeed]. Anyway,[#Delay(0.3)]
       will try sort them parts out for you my friend.[#Delay(0.3)] It was good to
@@ -1773,8 +1773,8 @@ MonoBehaviour:
   - whoIsTalking: 0
     dialog_text: Lagoon 1 0 here, [#Delay(0.6)]who is this? Over. [#Delay(1.3)]
   - whoIsTalking: 0
-    dialog_text: '[Colour(200,200,200)](Oh well...[#Delay(0.5)] better go catch dinner
-      for tonight)[/Colour]'
+    dialog_text: '[Colour(200,200,200)]Oh well...[#Delay(0.5)] better go catch dinner
+      for tonight[/Colour]'
   input: 0
   output: 0
   nodeWidth: 300
