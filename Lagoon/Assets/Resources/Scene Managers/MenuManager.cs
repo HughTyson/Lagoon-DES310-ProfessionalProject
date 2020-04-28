@@ -22,7 +22,6 @@ public class MenuManager : MonoBehaviour
             waves_noise_handler = GM_.Instance.audio.PlaySFX(waves_noise, null, appliedID: "OCEAN_NOISE");
         }
 
-        
     }
 
     // Update is called once per frame
