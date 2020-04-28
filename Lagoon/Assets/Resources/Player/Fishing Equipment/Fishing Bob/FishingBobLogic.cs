@@ -49,6 +49,9 @@ public class FishingBobLogic : MonoBehaviour
     // the current interacting fish            
 
     AudioSFX sfx_hitWater;
+
+    AudioSFX sfx_fishBitLure;
+    AudioSFX sfx_fishTestedLure;
     void hitWater()
     {
         if (GetComponentInParent<Rigidbody>().velocity.magnitude > 3.0f)
@@ -58,6 +61,8 @@ public class FishingBobLogic : MonoBehaviour
     private void Start()
     {
         sfx_hitWater = GM_.Instance.audio.GetSFX("FishingBob_HitWater");
+        sfx_fishBitLure = GM_.Instance.audio.GetSFX("Fish_Swerving");
+        sfx_fishTestedLure = GM_.Instance.audio.GetSFX("Fish_Swerving");
         physicsBuoyancy.Event_HitWater += hitWater;
     }
 
@@ -273,13 +278,18 @@ public class FishingBobLogic : MonoBehaviour
         return (current_state == STATE.HOOKED_TO_CRATE);
     }
 
+
+   
     public void FishBitLure()
     {
         GetComponentInParent<Rigidbody>().AddForce(-Vector3.up * 10.0f, ForceMode.VelocityChange);
+        GM_.Instance.audio.PlaySFX(sfx_fishBitLure, transform);
+
     }
     public void FishTestedLure()
     {
         GetComponentInParent<Rigidbody>().AddForce(-Vector3.up * 3.0f, ForceMode.VelocityChange);
+        GM_.Instance.audio.PlaySFX(sfx_fishTestedLure, transform);
     }
 
 

@@ -68,11 +68,19 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.50136983
+        functionName: PlayRodWhipSound
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: c34c63f2a4ea72c4c956f5d9de8b24a3,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 0.96
     - serializedVersion: 16
       name: Fishing_Idle
       takeName: Take 001

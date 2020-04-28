@@ -90,9 +90,10 @@ public class FishLogic : MonoBehaviour
     Vector2 headVectorXZ = new Vector2();
 
 
-
+    AudioSFX sfx_fishSwerve;
     private void Awake()
     {
+        sfx_fishSwerve = GM_.Instance.audio.GetSFX("Fish_Swerving");
         parentRigidbody = GetComponentInParent<Rigidbody>();
     }
     void Start()
@@ -669,7 +670,9 @@ public class FishLogic : MonoBehaviour
 
         fightingStateVars.fleeingDriveForce = fleeingDriveForce;
 
-       // Debug.Log("Init Player Distance: " + fightingStateVars.distanceToPlayer);
+
+        GM_.Instance.audio.PlaySFX(sfx_fishSwerve, transform, settingPitch: new AudioSettings.AnyFloatSetting.Constant(Random.Range(0.9f, 1.1f)));
+        // Debug.Log("Init Player Distance: " + fightingStateVars.distanceToPlayer);
 
     }
 
@@ -839,22 +842,32 @@ public class FishLogic : MonoBehaviour
                         {
                             Vector2 lookAtLeft = Vector2Extension.Rotate(fishFromCentreDir,-90.0f);
                             lookatXZ = Vector2Extension.Slerp(lookAtLeft, fishFromCentreDir, fightingStateVars.currentVelocity + 1.0f);
+
+                            if (prevFightingVelocity > 0)
+                            {
+                              GM_.Instance.audio.PlaySFX(sfx_fishSwerve, transform, settingPitch: new AudioSettings.AnyFloatSetting.Constant(Random.Range(0.9f,1.1f)));
+                            }
                         }
                         else
                         {
                             Vector2 lookAtRight = Vector2Extension.Rotate(fishFromCentreDir, 90.0f);
                             lookatXZ = Vector2Extension.Slerp(fishFromCentreDir, lookAtRight, fightingStateVars.currentVelocity);
+
+                            if (prevFightingVelocity <= 0)
+                            {
+                                GM_.Instance.audio.PlaySFX(sfx_fishSwerve, transform, settingPitch: new AudioSettings.AnyFloatSetting.Constant(Random.Range(0.9f, 1.1f)));
+                            }
                         }
                     
                         transform.parent.transform.rotation = Quaternion.LookRotation(new Vector3(lookatXZ.x,0, lookatXZ.y), Vector3.up);
                     }
-
+                    prevFightingVelocity = fightingStateVars.currentVelocity;
                     break;
                 }
         }
-       
-    }
 
+    }
+    float prevFightingVelocity;
 
    
     public float GetLineStrengthPercentageLeft()

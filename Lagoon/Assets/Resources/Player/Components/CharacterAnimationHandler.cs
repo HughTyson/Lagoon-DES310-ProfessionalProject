@@ -12,6 +12,10 @@ public class CharacterAnimationHandler : MonoBehaviour
 
     [SerializeField] CharacterControllerMovement characterControllerMovement;
     int idParam_MovementSpeed = Animator.StringToHash("Movement Speed");
+    int idParam_LeftStickHorizontal = Animator.StringToHash("LeftStickHorizontal");
+
+    int idParam_RTValue = Animator.StringToHash("RTValue");
+
 
     [SerializeField] float smoothnessTime = 0.2f;
     [SerializeField] float maxSmoothnessVelocity = 1.0f;
@@ -77,8 +81,8 @@ public class CharacterAnimationHandler : MonoBehaviour
     void Update()
     {
         //animator.SetFloat(idParam_MovementSpeed, GM_.Instance.input.GetAxis( InputManager.AXIS.RT) + GM_.Instance.input.GetAxis(InputManager.AXIS.LT), 0.1f, Time.deltaTime);
-
-
+        animator.SetFloat(idParam_RTValue,GM_.Instance.input.GetAxis(InputManager.AXIS.RT) , 0.1f, Time.deltaTime);
+        animator.SetFloat(idParam_LeftStickHorizontal, GM_.Instance.input.GetAxis(InputManager.AXIS.LH), 0.1f, Time.deltaTime);
          animator.SetFloat(idParam_MovementSpeed, characterControllerMovement.CurrentNormalizedVelocity, 0.1f, Time.deltaTime);
        // animator.SetFloat(idParam_MovementSpeed, characterControllerMovement.CurrentNormalizedVelocity);
 

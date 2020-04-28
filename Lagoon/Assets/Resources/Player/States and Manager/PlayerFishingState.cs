@@ -109,9 +109,11 @@ public class PlayerFishingState : BaseState
     private void Awake()
     {
         //     sfx_reeling = GM_.Instance.audio.GetSFX("Fishing_Reeling");
+        sfx_rodwhip = GM_.Instance.audio.GetSFX("FishingRod_Whip");
         fish_caught_sfx = GM_.Instance.audio.GetSFX("Completion Noise");
 
         characterAnimator = GetComponent<Animator>();
+
     }
 
     public void OnEnable()
@@ -771,6 +773,12 @@ public class PlayerFishingState : BaseState
                 }
             }
         }
+    }
+
+    AudioSFX sfx_rodwhip;
+    void PlayRodWhipSound()
+    {
+        GM_.Instance.audio.PlaySFX(sfx_rodwhip, fishingRodTip);
     }
 
     void FishInteractingFailed()
