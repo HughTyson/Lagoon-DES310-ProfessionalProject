@@ -56,6 +56,8 @@ public class FishingRodLogic : MonoBehaviour
 
     private void LateUpdate()
     {
+
+
         Vector3 FixedDir = (FixedFishingTip.position - FixedFishingBottom.position).normalized;
         Vector3 FlexDir = (FlexibleFishingTip.position - FixedFishingBottom.position).normalized;
 

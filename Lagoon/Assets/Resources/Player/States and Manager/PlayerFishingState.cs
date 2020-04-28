@@ -52,7 +52,6 @@ public class PlayerFishingState : BaseState
     [SerializeField] Transform handTransform;
     [SerializeField] CelebrationCamera celebrationCamera;
 
-    [SerializeField] Animator fixedRodAnimator;
 
     [SerializeField] JournalLogic journal;
     [SerializeField] BasePagePair testPageForSupplyDrop;
@@ -105,12 +104,14 @@ public class PlayerFishingState : BaseState
     // third person camera
     // fishing indicator
 
-    
 
+    Animator characterAnimator;
     private void Awake()
     {
         //     sfx_reeling = GM_.Instance.audio.GetSFX("Fishing_Reeling");
         fish_caught_sfx = GM_.Instance.audio.GetSFX("Completion Noise");
+
+        characterAnimator = GetComponent<Animator>();
     }
 
     public void OnEnable()
@@ -124,7 +125,6 @@ public class PlayerFishingState : BaseState
         staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
        
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
-        fixedRodAnimator.enabled = true;
 
         thirdPersonCamera.current_state = ThirdPersonCamera.STATE.FREE;
 
@@ -139,13 +139,16 @@ public class PlayerFishingState : BaseState
 
         firstUpdate = true;
 
+        characterAnimator.SetBool("Fishing", true);
+
     }
 
     public void OnDisable()
     {
- //       sfx_reeling_interface?.Stop();
+        //       sfx_reeling_interface?.Stop();
 
-
+        characterAnimator.SetBool("Fishing", false);
+        characterAnimator.SetBool("Casting", false);
 
         if (fishingLineLogic != null)
             fishingLineLogic.gameObject.SetActive(false);
@@ -162,8 +165,6 @@ public class PlayerFishingState : BaseState
             fishingBob.SetActive(false);
         }
 
-        if (fixedRodAnimator != null)
-            fixedRodAnimator.enabled = false;
 
         if (fishingIndicatorLogic != null)
             fishingIndicatorLogic.gameObject.SetActive(false);
@@ -237,7 +238,6 @@ public class PlayerFishingState : BaseState
                     }
                     else if (GM_.Instance.input.GetAxis(InputManager.AXIS.LV) > 0.9f) // release the cast and throw the bob
                     {
-                        fixedRodAnimator.enabled = true;
                         BeginCastingAnimation();
                     }
                     else
@@ -249,11 +249,14 @@ public class PlayerFishingState : BaseState
                 }
             case FISHING_STATE.CASTING_ANIMATION: // the bob has been thrown
                 {
-                   AnimatorStateInfo test = fixedRodAnimator.GetCurrentAnimatorStateInfo(0);
-                    if (test.speed == 0)
+                    if (characterAnimator.GetCurrentAnimatorStateInfo(0).IsName("Casting"))
                     {
-                        fixedRodAnimator.enabled = false;
-                        PowerUpThrow();
+                        if (characterAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f)
+                        {
+                            PowerUpThrow();
+                        }
+
+
                     }
 
 
@@ -527,6 +530,8 @@ public class PlayerFishingState : BaseState
         GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.B, "Cancel Fishing");
         GAME_UI.Instance.helperButtons.EnableLeftStick(false, false, false, true, "Begin Cast");
 
+        characterAnimator.SetBool("Casting", false);
+
 
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.ROT_CAMERA;
         staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
@@ -539,7 +544,7 @@ public class PlayerFishingState : BaseState
 
         fishing_state = FISHING_STATE.CASTING_ANIMATION;
         characterControllerMovement.current_state = CharacterControllerMovement.STATE.NO_MOVEMENT;
-        GetComponentInChildren<Animator>().Play("Rod Flick");
+        characterAnimator.SetBool("Casting", true);
     }
 
 
@@ -642,6 +647,8 @@ public class PlayerFishingState : BaseState
 
     void CancelCasted()
     {
+        characterAnimator.SetBool("Casting", false);
+
         fishingBob.GetComponent<FishingBobCollisionEvent>().Event_EnterCollision -= StartFishing;
 
         GAME_UI.Instance.helperButtons.DisableAll();
