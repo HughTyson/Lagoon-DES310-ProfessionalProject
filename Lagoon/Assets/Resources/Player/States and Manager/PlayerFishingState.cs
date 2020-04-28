@@ -822,8 +822,7 @@ public class PlayerFishingState : BaseState
         GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.RT, "Reel In");
         GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.B, "Cancel Fight");
         GAME_UI.Instance.helperButtons.EnableLeftStick(true, true, false, false, "Fight Fish");
-
-
+        characterAnimator.SetTrigger("FishHooked");
         GM_.Instance.input.SetVibration(InputManager.VIBRATION_MOTOR.LEFT ,0);
 
         fishing_state = FISHING_STATE.FISH_FIGHTING;
@@ -910,6 +909,8 @@ public class PlayerFishingState : BaseState
     {
         if (call_waiting_transition_once)
         {
+            interactingFish.SetCaughtPosition(handTransform);
+
             if (GM_.Instance.input.GetButtonDown(InputManager.BUTTON.A))
             {
               
@@ -922,13 +923,14 @@ public class PlayerFishingState : BaseState
                 CancelCasted();
                 GM_.Instance.input.SetVibrationWithPreset(InputManager.VIBRATION_PRESET.MENU_BUTTON_PRESSED);
             }
+
         }
         else
         {
             if (GAME_UI.Instance.transition.IsInWaitingTransition())
             {
                 call_waiting_transition_once = true;
-
+                characterAnimator.SetTrigger("FishCaught");
 
                 GAME_UI.Instance.helperButtons.DisableAll();
                 GAME_UI.Instance.helperButtons.EnableButton(UIHelperButtons.BUTTON_TYPE.A, "Continue");
@@ -939,7 +941,7 @@ public class PlayerFishingState : BaseState
                 GAME_UI.Instance.state_fishVictory.SetVictoryStats(interactingFish.varsFromFishGenerator.fishTypeName, interactingFish.varsFromFishGenerator.teir, interactingFish.varsFromFishGenerator.size);
                 GAME_UI.Instance.state_fishVictory.Show();
                 
-                interactingFish.SetCaughtPosition(handTransform.position);
+                interactingFish.SetCaughtPosition(handTransform);
                 staticFishingRodLogic.SetState(StaticFishingRodLogic.STATE.GO_TO_DEFAULT_POSITION);
                 fishingLineLogic.gameObject.SetActive(false);
                 fishingBob.SetActive(false);

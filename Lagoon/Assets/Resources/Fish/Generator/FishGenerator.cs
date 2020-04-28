@@ -51,8 +51,37 @@ public class FishGenerator : MonoBehaviour
 
 
     // Start is called before the first frame update
+
+
+    [SerializeField] bool allowBigFishToSpawn = false;
+    void AllowBigFishSpawning()
+    {
+        if (startedBigFishBarrier)
+        {
+            allowBigFishToSpawn = true;
+        }
+    }
+
+    bool startedBigFishBarrier = false;
+    void bigFishBarrierstart(StoryManager.BarrierStartArgs args)
+    {
+        for (int i = 0; i < args.Barriers.Count; i++)
+        {
+            if (args.Barriers[i] == RootNode.BARRIER_STATE.NEXT_DAY)
+            {
+                startedBigFishBarrier = true;
+            }
+
+        }
+    }
+
+
     void Start()
         {
+
+        GM_.Instance.story.Event_BarrierStart += bigFishBarrierstart;
+        GM_.Instance.story.Event_BarrierOpened += AllowBigFishSpawning;
+
         // create spawner chance weightings based on size of colliders.
         // This makes sure that if colliders have different sizes, they won't all have the same weighting (e.i collider A is 2x bigger than collider B so A should be 2x more likely to be the chosen spawn collider)
         for (int i = 0; i < fishGenerationStats.Count; i++)
@@ -81,8 +110,15 @@ public class FishGenerator : MonoBehaviour
         for (int k = 0; k < fishGenerationStats.Count; k++)
         {
             FishGenerationStats fishRing = fishGenerationStats[k];
-            if (fishRing.fishList.Count != fishRing.maxFish)
+
+            if (fishGenerationStats[k].fishTeirEnum == FishType.FISH_TEIR.T4)
             {
+                if (!allowBigFishToSpawn)
+                    continue;
+            }
+
+            if (fishRing.fishList.Count != fishRing.maxFish)
+            {                
                 SpawnFish(fishRing);
             }
 
@@ -141,10 +177,12 @@ public class FishGenerator : MonoBehaviour
         new_position.z = (Random.value - 0.5f) * trans.lossyScale.z;
 
 
+
+        float spawnedInDepth = -2.0f; 
         // convert point to be OOB
         new_position = trans.rotation * new_position;
         new_position += trans.position;
-        new_position.y = -fishSpawnDepth;
+        new_position.y = spawnedInDepth;
 
         Fish new_fish = new Fish();
 
@@ -183,6 +221,9 @@ public class FishGenerator : MonoBehaviour
         fish_vars.fishTypeName = chosen_fish_type.fishTypeName;
         fish_vars.teir = fishRing.fishTeirEnum;
         fish_vars.depth = -fishSpawnDepth;
+        fish_vars.spawnInDepth = spawnedInDepth;
+        fish_vars.spawnedInTransitionTime = 2.0f;
+
         new_fish.fishObject.GetComponentInChildren<FishLogic>().Init(fish_vars);
 
         //if (fishRing.fishTeirEnum == FishType.FISH_TEIR.T2)

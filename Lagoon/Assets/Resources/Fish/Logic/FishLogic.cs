@@ -43,6 +43,10 @@ public class FishLogic : MonoBehaviour
         public float defaultTurnForce;
         public float maxTurnForce;
         public float maxVelocity;
+
+
+        public float spawnInDepth;
+        public float spawnedInTransitionTime;
     
     }
     public VarsFromFishGenerator varsFromFishGenerator;
@@ -240,18 +244,21 @@ public class FishLogic : MonoBehaviour
                 }
             case STATE.CAUGHT:
                 {
-
                     break;
                 }
         }
 
     }
 
-
+    
     public STATE GetState()
     {
         return current_state;
     }
+
+
+    float currentSpawnInYTime = 0.0f;
+
     void FixedUpdate()
     {
         for (int i = 0; i < avoidingObjects.Count; i++)
@@ -292,8 +299,9 @@ public class FishLogic : MonoBehaviour
 
         }
 
+        currentSpawnInYTime += Time.fixedDeltaTime;
         Vector3 setYPosition = parentRigidbody.position;
-        setYPosition.y = varsFromFishGenerator.depth;
+        setYPosition.y = Mathf.Lerp(varsFromFishGenerator.spawnInDepth, varsFromFishGenerator.depth, currentSpawnInYTime / varsFromFishGenerator.spawnedInTransitionTime);
         parentRigidbody.MovePosition(setYPosition);
     }
 
@@ -303,6 +311,8 @@ public class FishLogic : MonoBehaviour
 
         headVectorXZ.x = transform.parent.transform.position.x;
         headVectorXZ.y = transform.parent.transform.position.z;
+
+
     }
 
     // Wander aimlessly
@@ -703,6 +713,8 @@ public class FishLogic : MonoBehaviour
     }
     public void FightingStateUpdate()
     {
+        if (current_state == STATE.CAUGHT)
+            return;
 
         switch (fightingStateVars.state)
         {
@@ -859,11 +871,20 @@ public class FishLogic : MonoBehaviour
 
     }
 
-    public void SetCaughtPosition(Vector3 pos)
+
+    Transform caughtTransform;
+
+    [SerializeField] Vector3 handPositionOffset;
+    public void SetCaughtPosition(Transform pos)
     {
-        transform.parent.transform.rotation = Quaternion.LookRotation(Vector3.up, -Vector3.right);
-        transform.parent.transform.position = pos + (transform.parent.transform.position - fishheadTransform.position);
+       
+        caughtTransform = pos;
+        transform.parent.rotation = Quaternion.LookRotation(Vector3.up, pos.forward);
+        transform.parent.position = pos.position + handPositionOffset - (Quaternion.LookRotation(Vector3.up, pos.forward) * fishheadTransform.localPosition);
+        parentRigidbody.isKinematic = true;
+        current_state = STATE.CAUGHT;
     }
+
 
     public bool IsInDespawnableState()
     {

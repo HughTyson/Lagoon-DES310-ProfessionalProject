@@ -6,6 +6,8 @@ public class wristPositioner : MonoBehaviour
 {
     Animator characterAnimator;
     // Start is called before the first frame update
+
+    [SerializeField] HumanBodyBones boneToAttachTo;
     void Awake()
     {
         characterAnimator = GetComponentInParent<Animator>();
@@ -14,7 +16,7 @@ public class wristPositioner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Transform leftHandTrans = characterAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
+        Transform leftHandTrans = characterAnimator.GetBoneTransform(boneToAttachTo);
         transform.position = leftHandTrans.position;
         transform.rotation = leftHandTrans.rotation;
 
