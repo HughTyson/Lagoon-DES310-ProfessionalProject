@@ -1023,7 +1023,6 @@ MonoBehaviour:
   - {fileID: 134544054205602124}
   - {fileID: 6665581349954894498}
   - {fileID: -4331506898311387213}
-  - {fileID: 187078404802300547}
 --- !u!114 &134544054205602124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1037,7 +1036,7 @@ MonoBehaviour:
   m_Name: Barrier
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
-  position: {x: -504, y: 168}
+  position: {x: -488, y: 568}
   ports:
     keys:
     - input
@@ -1050,7 +1049,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: output
-        node: {fileID: 187078404802300547}
+        node: {fileID: 6665581349954894498}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -1081,63 +1080,6 @@ MonoBehaviour:
   barriers: 01000000
   output: 0
   input: 0
---- !u!114 &187078404802300547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 082bee13cc9ec184f81ba5ce88c98576, type: 3}
-  m_Name: Event
-  m_EditorClassIdentifier: 
-  graph: {fileID: 11400000}
-  position: {x: -488, y: 600}
-  ports:
-    keys:
-    - input
-    - output
-    - additionalInfo
-    values:
-    - _fieldName: input
-      _node: {fileID: 187078404802300547}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: output
-        node: {fileID: 6665581349954894498}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: output
-      _node: {fileID: 187078404802300547}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: input
-        node: {fileID: 134544054205602124}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: additionalInfo
-      _node: {fileID: 187078404802300547}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  additionalInfo: 0
-  input: 0
-  output: 0
-  event_occured: 0
 --- !u!114 &687803313877274557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1806,7 +1748,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: input
-        node: {fileID: 187078404802300547}
+        node: {fileID: 134544054205602124}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
