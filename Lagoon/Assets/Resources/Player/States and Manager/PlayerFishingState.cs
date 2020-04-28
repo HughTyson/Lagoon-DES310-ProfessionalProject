@@ -588,15 +588,31 @@ public class PlayerFishingState : BaseState
         // projectile motion calculations are done in 2d for simplicity and then converted to 3d
 
         Vector3 Velocity = transform.forward * Mathf.PingPong(castingTime,1.0f)* fishingCastVelocity;
-        Vector3 cast_position = fishingRodTip.position;
+        Vector3 cast_position;
 
         Vector2 XZVelocity = new Vector2(Velocity.x, Velocity.z);
         float range = calculateProjectileRange(XZVelocity.magnitude);
 
 
-        cast_position.x += XZVelocity.normalized.x * range;
-        cast_position.z += XZVelocity.normalized.y * range;
+        cast_position.x = XZVelocity.normalized.x * range;
+        cast_position.z = XZVelocity.normalized.y * range;
         cast_position.y = GlobalVariables.WATER_LEVEL;
+
+        float offset = 1.25f; // offset due to animation 
+
+        cast_position += transform.right * offset;
+
+        //float sin = Mathf.Sin(degrees_offset * Mathf.Deg2Rad);
+        //float cos = Mathf.Cos(degrees_offset * Mathf.Deg2Rad);
+
+        //float tx = cast_position.x;
+        //float tz = cast_position.z;
+        //cast_position.x = (cos * tx) - (sin * tz);
+        //cast_position.z = (sin * tx) + (cos * tz);
+
+
+        cast_position.x += fishingRodTip.position.x;
+        cast_position.z += fishingRodTip.position.z;
 
         fishingProjectileIndicator.transform.position = cast_position;
     }
