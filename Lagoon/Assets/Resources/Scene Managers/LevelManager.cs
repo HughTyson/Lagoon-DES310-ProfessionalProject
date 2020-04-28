@@ -45,6 +45,8 @@ public class LevelManager : MonoBehaviour
 
 
         GM_.Instance.inventory.Reset();
+
+        GM_.Instance.stats.JournalPrompt();
     }
 
 

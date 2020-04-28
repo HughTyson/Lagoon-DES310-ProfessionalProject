@@ -27,7 +27,7 @@ public class StatsManager
     public List<PlaneStats_> plane_segments_stats = new List<PlaneStats_>();
     PlaneStats_ temp;
 
-    bool stats_update = true;
+    bool stats_update = false;
 
 
     public void DayCountIncrease()
@@ -134,6 +134,11 @@ public class StatsManager
         }
     }
 
+    public void JournalPrompt()
+    {
+        stats_update = true;
+    }
+
     public void ResetStats()
     {
         bigestFishStats.size = 0;
@@ -191,5 +196,7 @@ public class StatsManager
     {
         plane_segments_stats.Clear();
     }
+
+
 
 }

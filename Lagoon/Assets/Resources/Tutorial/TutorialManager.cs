@@ -397,7 +397,8 @@ public class TutorialManager : MonoBehaviour
 
     public bool CloseTutorial(TutorialType type)
     {
-        if(GAME_UI.Instance.state_Tutorial.box.specialText.AreAllCompleted())
+        
+        if(!GAME_UI.Instance.state_Tutorial.box.transitioning && GAME_UI.Instance.state_Tutorial.box.specialText.AreAllCompleted())
         {
             switch (currently_playing)
             {
